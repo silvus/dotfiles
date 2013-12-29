@@ -1,0 +1,23 @@
+##### Import each alias files
+
+### Prompt
+# [07:25:41]-[silvus@lubuntu]-[~/.bash]-[git master] $
+if [ -f ~/.bash/.bash_prompt ]; then
+	. ~/.bash/.bash_prompt
+fi
+
+### Various aliases
+if [ -f ~/.bash/.bash_alias ]; then
+	. ~/.bash/.bash_alias
+fi
+
+### SSH stuffs
+# alias servername='ssh user@serverip')
+if [ -f ~/.bash/.bash_ssh ]; then
+	. ~/.bash/.bash_ssh
+fi
+
+### Git, PHP, etc...
+if [ -f ~/.bash/.bash_dev ]; then
+	. ~/.bash/.bash_dev
+fi
