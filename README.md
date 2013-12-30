@@ -1,10 +1,10 @@
-.bash
+My bashrc
 ====
 
-Just somes personals bash alias (for Ubuntu-like).
+Somes personals bash aliases (for Ubuntu-like).
 
-Install
--------
+Installation
+------------
 
 ```shell
 cd ~ ;
@@ -16,4 +16,12 @@ vi .bash_aliases ;
 if [ -f ~/.bash/.bash_import ]; then
 	. ~/.bash/.bash_import
 fi
+```
+
+Optionnal
+---------
+
+```shell
+touch ~/.bash/.bash_ssh ;
+touch ~/.bash/.bash_dev ;
 ```
