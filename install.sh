@@ -6,6 +6,10 @@ dir=~/.dotfiles # dotfiles directory
 
 # Backup and cleanup
 #----------------------------
+if [ ! -d $dir/backup ]; then
+	mkdir -p $dir/backup
+fi
+
 if [ -f ~/.bash_aliases ]; then
 	echo "backup current bash_aliases in $dir/backup/.bash_aliases.bak"
 	mv ~/.bash_aliases $dir/backup/.bash_aliases.bak
@@ -27,6 +31,9 @@ ln -s $dir/bash/bash_aliases ~/.bash_aliases
 # Vim
 #----------------------------
 echo "Creating symlink to vim molokai color"
+if [ ! -d $dir/backup ]; then
+	mkdir -p ~/.vim/colors
+fi
 ln -s $dir/vim/colors/molokai.vim ~/.vim/colors/molokai.vim
 
 echo "Creating symlink to vimrc"
