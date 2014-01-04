@@ -31,7 +31,7 @@ ln -s $dir/bash/bash_aliases ~/.bash_aliases
 # Vim
 #----------------------------
 echo "Creating symlink to vim molokai color"
-if [ ! -d $dir/backup ]; then
+if [ ! -d ~/.vim/colors ]; then
 	mkdir -p ~/.vim/colors
 fi
 ln -s $dir/vim/colors/molokai.vim ~/.vim/colors/molokai.vim
