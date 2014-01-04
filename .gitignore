@@ -1,2 +1,3 @@
-.bash_ssh
-.bash_dev
+*.bak
+bash/bash_ssh
+bash/bash_dev

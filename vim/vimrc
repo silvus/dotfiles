@@ -1,0 +1,50 @@
+set nocompatible          " get rid of Vi compatibility mode. SET FIRST!
+filetype plugin indent on " filetype detection[ON] plugin[ON] indent[ON]
+
+filetype indent on        " activates indenting for files
+set autoindent            " auto-indent
+set nohlsearch            " Don't continue to highlight searched phrases.
+set incsearch             " But do highlight as you type your search.
+set ignorecase            " Make searches case-insensitive.
+set shiftround            " always indent/outdent to the nearest tabstop
+set nowrap                " don't wrap text
+set showmatch             " Show matching brackets when text indicator is over them
+
+set backspace=2           " backspace in insert mode works like normal editor
+
+set encoding=utf-8
+
+" Theme
+" ---------------------
+set t_Co=256              " enable 256-color mode.
+syntax enable             " enable syntax highlighting (previously syntax on).
+colorscheme molokai       " set colorscheme
+" set background=dark
+
+set ruler                 " Always show info along bottom.
+set rulerformat=%=%h%m%r%w\ %(%c%V%),%l/%L\ %P
+set number                " show line numbers
+set cursorline            " highlights the current line
+set showmode              " current mode in status line
+set showcmd               " display the number of (characters|lines) in visual mode, also cur command
+set scrolloff=1           " places a line between the current line and the screen edge
+set sidescrolloff=2       " places a couple columns between the current column and the screen edge
+
+" Backups and undo
+" ---------------------
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+set nobackup
+set nowb
+set noswapfile
+
+" Format the status line
+" ---------------------
+set laststatus=2          " last window always has a statusline
+
+set statusline=%<%f\ " Filename
+set statusline+=%w%h%m%r " Options
+set statusline+=\ [%{getcwd()}] " current dir
+set statusline+=\ [%{&ff}/%Y] " filetype
+set statusline+=%#warningmsg#
+set statusline+=%*
+set statusline+=%=%l/%L\ %p%% " Right aligned file nav info

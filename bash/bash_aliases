@@ -1,0 +1,23 @@
+##### Import each files
+
+### Prompt
+# [07:25:41]-[silvus@lubuntu]-[~/.dotfiles]-[git master] $
+if [ -f ~/.dotfiles/bash/bash_prompt ]; then
+	. ~/.dotfiles/bash/bash_prompt
+fi
+
+### Various aliases
+if [ -f ~/.dotfiles/bash/bash_myaliases ]; then
+	. ~/.dotfiles/bash/bash_myaliases
+fi
+
+### SSH stuffs
+# alias servername='ssh user@serverip')
+if [ -f ~/.dotfiles/bash/bash_ssh ]; then
+	. ~/.dotfiles/bash/bash_ssh
+fi
+
+### Git, PHP, etc...
+if [ -f ~/.dotfiles/bash/bash_dev ]; then
+	. ~/.dotfiles/bash/bash_dev
+fi
