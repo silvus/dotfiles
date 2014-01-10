@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# the a2dissite (Apache) for Nginx
+# The a2dissite (Apache) for Nginx
 # From : https://gist.github.com/fideloper/8261546
 
 if [ $EUID -ne 0 ]; then
