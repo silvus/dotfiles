@@ -2,6 +2,9 @@
 if [ -d "/data/dev/bin" ] ; then
 	export PATH=/data/dev/bin:$PATH
 fi
+if [ -d "$HOME/.dotfiles/bin" ] ; then
+	export PATH=$HOME/.dotfiles/bin:$PATH
+fi
 
 ### Various
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
