@@ -1,18 +1,29 @@
 set nocompatible          " get rid of Vi compatibility mode. SET FIRST!
-filetype plugin indent on " filetype detection[ON] plugin[ON] indent[ON]
 
+" Plugins
+" ---------------------
+" execute pathogen#infect()
+
+" Indent
+" ---------------------
+filetype plugin indent on " filetype detection[ON] plugin[ON] indent[ON]
 filetype indent on        " activates indenting for files
 set autoindent            " auto-indent
-set nohlsearch            " Don't continue to highlight searched phrases.
-set incsearch             " But do highlight as you type your search.
-set ignorecase            " Make searches case-insensitive.
 set shiftround            " always indent/outdent to the nearest tabstop
+
+" Misc
+" ---------------------
+set wildmenu              " show list instead of just completing
 set nowrap                " don't wrap text
-set showmatch             " Show matching brackets when text indicator is over them
-
+set mouse=a 			  " Activate mouse
 set backspace=2           " backspace in insert mode works like normal editor
-
 set encoding=utf-8
+
+" Search
+" ---------------------
+set incsearch             " find as you type search
+set hlsearch              " highlight search terms
+set ignorecase            " Make searches case-insensitive.
 
 " Theme
 " ---------------------
@@ -29,22 +40,145 @@ set showmode              " current mode in status line
 set showcmd               " display the number of (characters|lines) in visual mode, also cur command
 set scrolloff=1           " places a line between the current line and the screen edge
 set sidescrolloff=2       " places a couple columns between the current column and the screen edge
+set showmatch             " Show matching brackets when text indicator is over them
 
 " Backups and undo
 " ---------------------
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
-set nobackup
-set nowb
-set noswapfile
+" Turn backup off
+" set nobackup
+" set nowb
+" set noswapfile
+" Swap files out of the project root
+set backupdir=~/.vim/backup/
+set directory=~/.vim/swap/
 
 " Format the status line
 " ---------------------
 set laststatus=2          " last window always has a statusline
 
-set statusline=%<%f\ " Filename
-set statusline+=%w%h%m%r " Options
-set statusline+=\ [%{getcwd()}] " current dir
-set statusline+=\ [%{&ff}/%Y] " filetype
-set statusline+=%#warningmsg#
-set statusline+=%*
-set statusline+=%=%l/%L\ %p%% " Right aligned file nav info
+" set statusline=%w%h%m%r 		" Options
+" set statusline+=\ {ChangeStatuslineColor()}
+" set statusline+=\ [%{toupper(g:currentmode[mode()])}]
+" set statusline+=\ [%<%F] 		" Filepath
+" set statusline+=%#warningmsg# " Messages
+" set statusline+=%=        	" Switch to the right side
+" set statusline+=%{FileSize()}	" Filesize
+" set statusline+=\ [%{&ff}/%Y] " Filetype
+" set statusline+=\ [%l/%L\]  	" File nav info (lines)
+" set statusline+=\ %p%% 		" File nav info (percentage)
+
+" Find out current buffer's size and output it.
+" ---------------------
+function! FileSize() "{{{
+	let bytes = getfsize(expand('%:p'))
+	if (bytes >= 1024)
+		let kbytes = bytes / 1024
+	endif
+	if (exists('kbytes') && kbytes >= 1000)
+		let mbytes = kbytes / 1000
+	endif
+
+	if bytes <= 0
+		return 'null'
+	endif
+
+	if (exists('mbytes'))
+		return mbytes . 'MB'
+	elseif (exists('kbytes'))
+		return kbytes . 'KB'
+	else
+		return bytes . 'B'
+	endif
+endfunction "}}}
+
+" -----------------------------------------------------------------
+" Neat and simple status line - because Powerline is overrated
+"    _   _            _   ____  _        _             
+"   | \ | | ___  __ _| |_/ ___|| |_ __ _| |_ _   _ ___ 
+"   |  \| |/ _ \/ _` | __\___ \| __/ _` | __| | | / __|
+"   | |\  |  __/ (_| | |_ ___) | || (_| | |_| |_| \__ \
+"   |_| \_|\___|\__,_|\__|____/ \__\__,_|\__|\__,_|___/
+"   Vim plugin by Luke Maciak (c) 2012
+
+let g:last_mode=""
+
+" Black on Green
+if !exists('g:NeatStatusLine_color_normal')   | let g:NeatStatusLine_color_normal   = 'guifg=#000000 guibg=#7dcc7d gui=NONE ctermfg=0 ctermbg=2 cterm=NONE'    | endif
+" White on Red
+if !exists('g:NeatStatusLine_color_insert')   | let g:NeatStatusLine_color_insert   = 'guifg=#ffffff guibg=#ff0000 gui=bold ctermfg=15 ctermbg=9 cterm=bold'   | endif
+" Yellow on Blue
+if !exists('g:NeatStatusLine_color_replace')  | let g:NeatStatusLine_color_replace  = 'guifg=#ffff00 guibg=#5b7fbb gui=bold ctermfg=190 ctermbg=67 cterm=bold' | endif
+" White on Purple
+if !exists('g:NeatStatusLine_color_visual')   | let g:NeatStatusLine_color_visual   = 'guifg=#ffffff guibg=#810085 gui=NONE ctermfg=15 ctermbg=53 cterm=NONE'  | endif
+" White on Black
+if !exists('g:NeatStatusLine_color_position') | let g:NeatStatusLine_color_position = 'guifg=#ffffff guibg=#000000 ctermfg=15 ctermbg=0'                       | endif
+" White on Pink
+if !exists('g:NeatStatusLine_color_modified') | let g:NeatStatusLine_color_modified = 'guifg=#ffffff guibg=#ff00ff ctermfg=15 ctermbg=5'                       | endif
+" Pink on Black
+if !exists('g:NeatStatusLine_color_line')     | let g:NeatStatusLine_color_line     = 'guifg=#ff00ff guibg=#000000 gui=NONE ctermfg=207 ctermbg=0 cterm=NONE'  | endif
+" Black on Cyan
+if !exists('g:NeatStatusLine_color_filetype') | let g:NeatStatusLine_color_filetype = 'guifg=#000000 guibg=#00ffff gui=NONE ctermfg=0 ctermbg=51 cterm=NONE'   | endif
+" Separator
+if !exists('g:NeatStatusLine_separator')      | let g:NeatStatusLine_separator = '|' | endif
+
+" Set up the colors for the status bar
+function! SetNeatstatusColorscheme()
+    " Basic color presets
+    exec 'hi User1 '.g:NeatStatusLine_color_normal
+    exec 'hi User2 '.g:NeatStatusLine_color_replace
+    exec 'hi User3 '.g:NeatStatusLine_color_insert
+    exec 'hi User4 '.g:NeatStatusLine_color_visual
+    exec 'hi User5 '.g:NeatStatusLine_color_position
+    exec 'hi User6 '.g:NeatStatusLine_color_modified
+    exec 'hi User7 '.g:NeatStatusLine_color_line
+    exec 'hi User8 '.g:NeatStatusLine_color_filetype
+endfunc
+
+" pretty mode display - converts the one letter status notifiers to words
+function! Mode()
+    redraw
+    let l:mode = mode()
+
+    if     mode ==# "n"  | exec 'hi User1 '.g:NeatStatusLine_color_normal  | return "NORMAL"
+    elseif mode ==# "i"  | exec 'hi User1 '.g:NeatStatusLine_color_insert  | return "INSERT"
+    elseif mode ==# "R"  | exec 'hi User1 '.g:NeatStatusLine_color_replace | return "REPLACE"
+    elseif mode ==# "v"  | exec 'hi User1 '.g:NeatStatusLine_color_visual  | return "VISUAL"
+    elseif mode ==# "V"  | exec 'hi User1 '.g:NeatStatusLine_color_visual  | return "V-LINE"
+    elseif mode ==# "" | exec 'hi User1 '.g:NeatStatusLine_color_visual  | return "V-BLOCK"
+    else                 | return l:mode
+    endif
+endfunc    
+
+" set up color scheme now
+call SetNeatstatusColorscheme()
+
+function! SetStatusLineStyle()
+    let &stl=""
+
+    " mode (changes color)
+    let &stl.="%1*\ %{Mode()} %0*"
+    " read only, modified, modifiable flags
+    let &stl.="%5* %([%R%M]%) %0*"
+    " file path
+    let &stl.=" %<%F "
+
+    " right-aligh everything past this point
+    let &stl.="%= "
+
+    " readonly flag
+    let &stl.="%(%3* %{(&ro!=0?'readonly':'')} %)"
+    " modified / unmodified
+    let &stl.="%(%2* %{&modified ? 'modified':''} %)"
+    " file type (eg. python, ruby, etc..)
+    let &stl.="%6*%( %{&filetype} %)%0* "
+    " file format (eg. unix, dos, etc..)
+    let &stl.="%{&fileformat} ".g:NeatStatusLine_separator." "
+    " file encoding (eg. utf8, latin1, etc..)
+    let &stl.="%(%{(&fenc!=''?&fenc:&enc)} ".g:NeatStatusLine_separator." %)"
+    " buffer number
+    let &stl.="%{FileSize()} "
+    "line number / total lines [percentage done]
+    let &stl.="%5*  %l/%L  [%p%%]%0*"
+endfunc
+
+call SetStatusLineStyle()
