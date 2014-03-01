@@ -8,5 +8,5 @@ git clone https://github.com/Silvus/dotfiles.git ~/.dotfiles
 ~/.dotfiles/install.sh
 
 mkdir -p ~/.vim/backup/
-mkdir -p set directory=~/.vim/swap/
+mkdir -p ~/.vim/swap/
 ```
