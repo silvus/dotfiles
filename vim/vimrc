@@ -15,7 +15,7 @@ set shiftround            " always indent/outdent to the nearest tabstop
 " ---------------------
 set wildmenu              " show list instead of just completing
 set nowrap                " don't wrap text
-set mouse=a 			  " Activate mouse
+" set mouse=a 		  " Activate mouse
 set backspace=2           " backspace in insert mode works like normal editor
 set encoding=utf-8
 

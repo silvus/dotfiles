@@ -3,15 +3,10 @@
 # The a2ensite (Apache) for Nginx
 # From : https://gist.github.com/fideloper/8261546
 
-if [ $EUID -ne 0 ]; then
-    echo "You must be root"
-    exit 1
-fi
-
 # -z str: Returns True if the length of str is equal to zero.
 if [ -z "$1" ]; then
     echo "Please choose a site."
-    exit 1
+    exit 0
 else
     echo "Enabling site $1..."
     # -h filename: True if file exists and is a symbolic link.
@@ -22,13 +17,15 @@ else
     else
         if [ ! -f "/etc/nginx/sites-available/$1" ]; then
             echo "Site $1 does not exist in /etc/nginx/sites-available."
-            exit 1
+            exit 0
         else
             echo "Enabled $1"
-            ln -s /etc/nginx/sites-available/$1 /etc/nginx/sites-enabled/$1
+            sudo ln -s /etc/nginx/sites-available/$1 /etc/nginx/sites-enabled/$1
+
             echo "Reload Nginx config"
-            /etc/init.d/nginx reload
-            exit 0
+            sudo service nginx reload
+            
+            exit 1
         fi
     fi
 fi
