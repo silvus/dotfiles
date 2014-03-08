@@ -1,6 +1,8 @@
+DOTFILES_PATH="$HOME/.dotfiles"
+
 # Paths
 # -----------------------------------------------------------------------------
-if [ -d "$HOME/.dotfiles/bin" ] ; then
+if [ -d "$DOTFILES_PATH/bin" ] ; then
 	export PATH=$HOME/.dotfiles/bin:$PATH
 fi
 

@@ -9,6 +9,7 @@ alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | x
 
 # Navigation
 # -----------------------------------------------------------------------------
+alias dot="cd $DOTFILES_PATH"
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'
