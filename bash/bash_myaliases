@@ -1,14 +1,10 @@
 ### Paths
-if [ -d "/data/dev/bin" ] ; then
-	export PATH=/data/dev/bin:$PATH
-fi
 if [ -d "$HOME/.dotfiles/bin" ] ; then
 	export PATH=$HOME/.dotfiles/bin:$PATH
 fi
 
 ### Various
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
-alias search='apt-cache search'
 alias space='du -h --max-depth=1'
 alias vi='vim'
 alias l='ls -lhaF --color=always'
@@ -25,10 +21,18 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
+### Quick search in a directory for a string ($1).
+search () {
+	if [ -x /usr/bin/ack-grep ]; then
+		ack-grep $1 .
+	else
+		grep -r $1 .
+	fi
+}
+
 ### Extraire une archive peut importe son type
 extract () {
-	if [ -f $1 ]
-	then
+	if [ -f $1 ]; then
 		case $1 in
 			(*.7z) 7z x $1 ;;
 			(*.lzma) unlzma $1 ;;
@@ -48,7 +52,7 @@ extract () {
 		esac
 	else
 		echo "Error: '$1' is not a valid file!"
-		exit 0
+		# exit 0
 	fi
 }
 
