@@ -1,19 +1,14 @@
-### Paths
-if [ -d "$HOME/.dotfiles/bin" ] ; then
-	export PATH=$HOME/.dotfiles/bin:$PATH
-fi
-
-### Various
+# Misc
+# -----------------------------------------------------------------------------
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
-alias space='du -h --max-depth=1'
 alias vi='vim'
 alias l='ls -lhaF --color=always'
-alias grep='grep --color=auto -in'
 alias gitlog="git log --oneline --graph --decorate"
 # Cherche les fichier en double (taille puis md5)
 alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
 
-### Navigation
+# Navigation
+# -----------------------------------------------------------------------------
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -21,16 +16,32 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-### Quick search in a directory for a string ($1).
+# Navigate to projects folders
+# -----------------------------------------------------------------------------
+dev () {
+	if [ -n "$PROJECTS_FOLDER" ]; then
+		if [ -d "$PROJECTS_FOLDER/$1" ]; then
+			cd "$PROJECTS_FOLDER/$1";
+		else 
+			cd "$PROJECTS_FOLDER";
+		fi
+	else
+		echo "PROJECTS_FOLDER is not defined"
+	fi
+}
+
+# Quick search in a directory for a string ($1).
+# -----------------------------------------------------------------------------
 search () {
 	if [ -x /usr/bin/ack-grep ]; then
 		ack-grep $1 .
 	else
-		grep -r $1 .
+		grep -rnI --exclude-dir=dir --color=always $1 .
 	fi
 }
 
-### Extraire une archive peut importe son type
+# Extract a package without pain
+# -----------------------------------------------------------------------------
 extract () {
 	if [ -f $1 ]; then
 		case $1 in
@@ -52,16 +63,17 @@ extract () {
 		esac
 	else
 		echo "Error: '$1' is not a valid file!"
-		# exit 0
 	fi
 }
 
-### Faire une copie de sauvegarde d'un fichier
+# Make a file backup
+# -----------------------------------------------------------------------------
 save () {
-	cp $1 ${1}-`date +%Y%m%d%H%M`.backup ;
+	cp $1 ${1}-`date +%Y%m%d%H%M`.bak ;
 }
 
-### Tu vas crever, oui ? !
+# Die motherfucker !
+# -----------------------------------------------------------------------------
 killbill () {
 	BAK=$IFS
 	IFS=$'\n'

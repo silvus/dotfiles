@@ -1,23 +1,24 @@
-##### Import each files
+# Paths
+# -----------------------------------------------------------------------------
+if [ -d "$HOME/.dotfiles/bin" ] ; then
+	export PATH=$HOME/.dotfiles/bin:$PATH
+fi
 
-### Prompt
-# [07:25:41]-[silvus@lubuntu]-[~/.dotfiles]-[git master] $
+# Import prompt
+# Look like this : [07:25:41]-[silvus@lubuntu]-[~/.dotfiles]-[git master] $
+# -----------------------------------------------------------------------------
 if [ -f ~/.dotfiles/bash/bash_prompt ]; then
-	. ~/.dotfiles/bash/bash_prompt
+	source ~/.dotfiles/bash/bash_prompt
 fi
 
-### Various aliases
-if [ -f ~/.dotfiles/bash/bash_myaliases ]; then
-	. ~/.dotfiles/bash/bash_myaliases
+# Import my aliases
+# -----------------------------------------------------------------------------
+if [ -f ~/.dotfiles/bash/bash_main ]; then
+	source ~/.dotfiles/bash/bash_main
 fi
 
-### SSH stuffs
-# alias servername='ssh user@serverip')
-if [ -f ~/.dotfiles/bash/bash_ssh ]; then
-	. ~/.dotfiles/bash/bash_ssh
-fi
-
-### Git, PHP, etc...
+# Import dev stuffs
+# -----------------------------------------------------------------------------
 if [ -f ~/.dotfiles/bash/bash_dev ]; then
-	. ~/.dotfiles/bash/bash_dev
+	source ~/.dotfiles/bash/bash_dev
 fi
