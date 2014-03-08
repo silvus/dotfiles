@@ -1,0 +1,23 @@
+{
+	"font_size": 10,
+	"highlight_modified_tabs": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+
+	// Disables horizontal scrolling if enabled.
+    // May be set to true, false, or "auto", where it will be disabled for
+    // source code, and otherwise enabled.
+	"word_wrap": false,
+
+	// Always visualise the viewport on the minimap, as oppossed to only
+    // showing it on mouse over
+	"always_show_minimap_viewport": true,
+
+	// Set to true to removing trailing white space on save
+    "trim_trailing_white_space_on_save": true,
+
+    // Display line endings in the status bar
+    "show_line_endings": true
+}
