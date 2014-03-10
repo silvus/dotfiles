@@ -46,7 +46,7 @@ ln -s "$DOTFILES_DIR/vim/colors/molokai.vim" "$HOME/.vim/colors/molokai.vim"
 echo "Creating symlink to vimrc"
 ln -s "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
 
-# Sublime text
+# Sublime Text 3
 #----------------------------
 if [ -d "/opt/sublime_text" ]; then
 	DOTFILES_SUBLIMETEXT="$DOTFILES_DIR/sublime_text_3"
