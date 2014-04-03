@@ -1,0 +1,12 @@
+{
+    "extensions":
+    [
+        "md"
+    ],
+    "auto_complete": true,
+    "spell_check": true,
+    "dictionary": "Packages/Language - French - Français/fr_FR (all variants).dic",
+    "line_numbers": false,
+    "draw_centered": false,
+    "translate_tabs_to_spaces": false
+}

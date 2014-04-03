@@ -51,7 +51,7 @@ ln -s "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
 if [ -d "/opt/sublime_text" ]; then
 	DOTFILES_SUBLIMETEXT="$DOTFILES_DIR/sublime_text_3"
 	echo "Installing config for Sublime Text 3"
-	source "$DOTFILES_SUBLIMETEXT/install.sh"
+	source "$DOTFILES_SUBLIMETEXT/include_install_st3.sh"
 fi
 
 # End
