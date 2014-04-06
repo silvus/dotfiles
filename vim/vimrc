@@ -6,10 +6,10 @@ set nocompatible          " get rid of Vi compatibility mode. SET FIRST!
 
 " Indent
 " ---------------------
-filetype plugin indent on " filetype detection[ON] plugin[ON] indent[ON]
-filetype indent on        " activates indenting for files
-set autoindent            " auto-indent
-set shiftround            " always indent/outdent to the nearest tabstop
+" filetype plugin indent on " filetype detection[ON] plugin[ON] indent[ON]
+" filetype indent on        " activates indenting for files
+" set autoindent            " auto-indent
+" set shiftround            " always indent/outdent to the nearest tabstop
 
 " Misc
 " ---------------------
@@ -93,8 +93,8 @@ endfunction "}}}
 
 " -----------------------------------------------------------------
 " Neat and simple status line - because Powerline is overrated
-"    _   _            _   ____  _        _             
-"   | \ | | ___  __ _| |_/ ___|| |_ __ _| |_ _   _ ___ 
+"    _   _            _   ____  _        _
+"   | \ | | ___  __ _| |_/ ___|| |_ __ _| |_ _   _ ___
 "   |  \| |/ _ \/ _` | __\___ \| __/ _` | __| | | / __|
 "   | |\  |  __/ (_| | |_ ___) | || (_| | |_| |_| \__ \
 "   |_| \_|\___|\__,_|\__|____/ \__\__,_|\__|\__,_|___/
@@ -147,7 +147,7 @@ function! Mode()
     elseif mode ==# "" | exec 'hi User1 '.g:NeatStatusLine_color_visual  | return "V-BLOCK"
     else                 | return l:mode
     endif
-endfunc    
+endfunc
 
 " set up color scheme now
 call SetNeatstatusColorscheme()
