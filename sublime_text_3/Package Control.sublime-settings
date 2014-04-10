@@ -2,11 +2,11 @@
 	"installed_packages":
 	[
 		"Alignment",
-		"ApacheConf.tmLanguage",
 		"DocBlockr",
 		"GitGutter",
 		"JsFormat",
 		"Language - French - Français",
+		"Laravel Blade Highlighter",
 		"LESS",
 		"PHP Companion",
 		"PHP Completions Kit",
