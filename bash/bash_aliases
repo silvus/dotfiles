@@ -3,24 +3,24 @@ DOTFILES_PATH="$HOME/.dotfiles"
 # Paths
 # -----------------------------------------------------------------------------
 if [ -d "$DOTFILES_PATH/bin" ] ; then
-	export PATH=$HOME/.dotfiles/bin:$PATH
+	export PATH="$DOTFILES_PATH/bin:$PATH"
 fi
 
 # Import prompt
 # Look like this : [07:25:41]-[silvus@lubuntu]-[~/.dotfiles]-[git master] $
 # -----------------------------------------------------------------------------
-if [ -f ~/.dotfiles/bash/bash_prompt ]; then
-	source ~/.dotfiles/bash/bash_prompt
+if [ -f "$DOTFILES_PATH/bash/bash_prompt" ]; then
+	source "$DOTFILES_PATH/bash/bash_prompt"
 fi
 
 # Import my aliases
 # -----------------------------------------------------------------------------
-if [ -f ~/.dotfiles/bash/bash_main ]; then
-	source ~/.dotfiles/bash/bash_main
+if [ -f "$DOTFILES_PATH/bash/bash_main" ]; then
+	source "$DOTFILES_PATH/bash/bash_main"
 fi
 
 # Import dev stuffs
 # -----------------------------------------------------------------------------
-if [ -f ~/.dotfiles/bash/bash_dev ]; then
-	source ~/.dotfiles/bash/bash_dev
+if [ -f "$DOTFILES_PATH/bash/bash_dev" ]; then
+	source "$DOTFILES_PATH/bash/bash_dev"
 fi
