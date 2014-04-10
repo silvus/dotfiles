@@ -1,5 +1,6 @@
 {
 	"always_show_minimap_viewport": true,
+	"color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
 	"default_line_ending": "unix",
 	"detect_indentation": false,
 	"ensure_newline_at_eof_on_save": true,
@@ -10,11 +11,11 @@
 		"Vintage"
 	],
 	"shift_tab_unindent": true,
-	"show_line_endings": true,
 	"show_encoding": true,
-	"trim_trailing_white_space_on_save": true,
-	"word_wrap": false,
-	"tab_size": 4,
+	"show_line_endings": true,
 	"spell_check": false,
+	"tab_size": 4,
 	"translate_tabs_to_spaces": false,
+	"trim_trailing_white_space_on_save": true,
+	"word_wrap": false
 }

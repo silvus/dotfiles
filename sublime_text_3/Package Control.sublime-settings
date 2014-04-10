@@ -1,0 +1,16 @@
+{
+	"installed_packages":
+	[
+		"Alignment",
+		"ApacheConf.tmLanguage",
+		"DocBlockr",
+		"GitGutter",
+		"JsFormat",
+		"Language - French - Français",
+		"LESS",
+		"PHP Companion",
+		"PHP Completions Kit",
+		"SideBarEnhancements",
+		"sublimelint"
+	]
+}
