@@ -1,3 +1,5 @@
+export EDITOR=vim
+
 # Misc
 # -----------------------------------------------------------------------------
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
