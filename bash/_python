@@ -1,5 +1,8 @@
 PROJECTS_FOLDER="/data/dev"
 
+# Quick web server
+alias server="python3 -m http.server"
+
 # Quick navigate to projects folders
 # -----------------------------------------------------------------------------
 dev () {
