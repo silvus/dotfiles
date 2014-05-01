@@ -25,7 +25,7 @@ dev () {
 	if [ -n "$PROJECTS_FOLDER" ]; then
 		if [ -d "$PROJECTS_FOLDER/$1" ]; then
 			cd "$PROJECTS_FOLDER/$1";
-		else 
+		else
 			cd "$PROJECTS_FOLDER";
 		fi
 	else

@@ -1,0 +1,30 @@
+# Quick navigate to projects
+# -----------------------------------------------------------------------------
+PROJECTS_FOLDER="/data/dev"
+
+
+# Virtualenvwrapper
+# -----------------------------------------------------------------------------
+# Python version to use
+# export VIRTUALENVWRAPPER_PYTHON= /usr/bin/python3
+
+# Virtualenv version to use
+# export VIRTUALENVWRAPPER_VIRTUALENV=
+
+# Virtualenvwrapper virtualenvs folder
+export WORKON_HOME=$PROJECTS_FOLDER/.virtualenvs
+
+# Virtualenvwrapper projects root folder
+export PROJECT_HOME=$PROJECTS_FOLDER/python
+
+# Load virtualenvwrapper
+export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+
+# Lazy virtualenvwrapper
+# source /usr/local/bin/virtualenvwrapper_lazy.sh
+
+
+# Pip
+# -----------------------------------------------------------------------------
+export PIP_DOWNLOAD_CACHE=$HOME/.pip/cache
+export PIP_REQUIRE_VIRTUALENV=true
