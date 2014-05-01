@@ -19,20 +19,6 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-# Navigate to projects folders
-# -----------------------------------------------------------------------------
-dev () {
-	if [ -n "$PROJECTS_FOLDER" ]; then
-		if [ -d "$PROJECTS_FOLDER/$1" ]; then
-			cd "$PROJECTS_FOLDER/$1";
-		else
-			cd "$PROJECTS_FOLDER";
-		fi
-	else
-		echo "PROJECTS_FOLDER is not defined"
-	fi
-}
-
 # Quick search in a directory for a string ($1).
 # -----------------------------------------------------------------------------
 search () {

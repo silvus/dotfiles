@@ -16,7 +16,7 @@ SUBLIMETEXT_CONF_PHP="PHP.sublime-settings"
 SUBLIMETEXT_CONF_PYTHON="Python.sublime-settings"
 SUBLIMETEXT_CONF_PACKAGECONTROL="Package Control.sublime-settings"
 
-# Functions
+# Function for backup a file and make a symlink
 #----------------------------
 make_link() {
 	local file_name="$1"
