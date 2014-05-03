@@ -59,6 +59,7 @@ fi
 
 make_link "molokai.vim" "$DOTFILES_VIM/colors/molokai.vim" "$HOME/.vim/colors/molokai.vim"
 make_link "vimrc" "$DOTFILES_VIM/vimrc" "$HOME/.vimrc"
+make_link "vimrc_secure" "$DOTFILES_VIM/vimrc_secure" "$HOME/.vim/.vimrc_secure"
 
 # Sublime Text 3
 #----------------------------

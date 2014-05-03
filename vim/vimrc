@@ -18,6 +18,7 @@ set nowrap                " don't wrap text
 " set mouse=a 		  " Activate mouse
 set backspace=2           " backspace in insert mode works like normal editor
 set encoding=utf-8
+set cm=blowfish		  " cryptmethod
 
 " Search
 " ---------------------

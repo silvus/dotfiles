@@ -16,3 +16,4 @@ for file in "$DOTFILES_PATH/bash/"*; do
 		fi
 	fi
 done
+
