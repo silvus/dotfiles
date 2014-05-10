@@ -35,7 +35,7 @@ pass_generate () {
 	local password=$(tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${lenght})
 	echo "$password"
 
-	if [[ -f /usr/bin/xclip ]]; then
+	if [ -f /usr/bin/xclip ]; then
 		echo $password | tr -d '\n' | xclip -i -selection clipboard
 		echo "Password copied to clipboard"
 	else
