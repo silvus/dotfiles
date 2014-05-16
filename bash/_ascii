@@ -1,14 +1,15 @@
 asciiart() {
 	local OS=$(uname -s)
 	local ARCH=$(uname -m)
-	local VER=$(uname -r)
+	local KERNEL=$(uname -r)
 	local DATE=$(date)
 	local UPTIME=$(uptime)
+	local HOST=$(hostname -s)
 
-	echo -e '     .--.     '
-	echo -e '    |o_o |    ' "OS $OS"
-	echo -e '    |:_/ |    ' "Processor $ARCH"
-	echo -e '   //   \ \   ' "Kernel $VER"
+	echo -e '     .--.     ' "$HOST"
+	echo -e '    |o_o |    ' "$OS" "$ARCH" "$KERNEL"
+	echo -e '    |:_/ |    '
+	echo -e '   //   \ \   '
 	echo -e '  (|     | )  ' "Uptime $UPTIME"
 	echo -e ' / \_   _/ \  '
 	echo -e ' \___)=(___/  ' "$DATE"
