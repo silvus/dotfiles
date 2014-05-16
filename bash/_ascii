@@ -1,14 +1,15 @@
 asciiart() {
-	local OS="Ubuntu 12.04"
+	local OS=$(uname -s)
+	local ARCH=$(uname -m)
+	local VER=$(uname -r)
 
-	echo -e '     .--.     ' "$OS"
-	echo -e '    |o_o |    '
+	echo -e '     .--.     ' "$OS" "$ARCH"
+	echo -e '    |o_o |    ' "$VER"
 	echo -e '    |:_/ |    '
 	echo -e '   //   \ \   '
 	echo -e '  (|     | )  '
 	echo -e ' / \_   _/ \  '
 	echo -e ' \___)=(___/  '
-
 }
 
 asciiart
