@@ -1,0 +1,14 @@
+asciiart() {
+	local OS="Ubuntu 12.04"
+
+	echo -e '     .--.     ' "$OS"
+	echo -e '    |o_o |    '
+	echo -e '    |:_/ |    '
+	echo -e '   //   \ \   '
+	echo -e '  (|     | )  '
+	echo -e ' / \_   _/ \  '
+	echo -e ' \___)=(___/  '
+
+}
+
+asciiart
