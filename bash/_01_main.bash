@@ -21,7 +21,7 @@ alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
 alias l='ls -lhaF --color=always'
 alias git='LANG=en_US git'
 alias gitlog="git log --oneline --graph --decorate"
-# Cherche les fichier en double (taille puis md5)
+# Searches for duplicate file (size and md5)
 alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
 alias process='ps aux | grep'
 
@@ -39,7 +39,6 @@ complete -F _docker docker  # Résult from : complete -p docker
 # Pass
 # -----------------------------------------------------------------------------
 alias pass="vi_sec $DOTFILES_PATH/.pass" # Crypt
-# alias pass_generate="< /dev/urandom tr -dc A-Za-z0-9_ | head -c15"
 pass_generate() {
 	local lenght=$1
 	[ "$lenght" == "" ] && lenght=16
