@@ -10,10 +10,10 @@ DOTFILES_SUBLIMETEXT="$DOTFILES_DIR/sublime_text_3"
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
 SUBLIMETEXT_CONF_KEYMAP="Default (Linux).sublime-keymap"
 SUBLIMETEXT_CONF_SETTINGS="Preferences.sublime-settings"
+SUBLIMETEXT_CONF_SIDEBAR="Side Bar.sublime-settings"
 SUBLIMETEXT_CONF_MARKDOWN="Markdown.sublime-settings"
 SUBLIMETEXT_CONF_PHP="PHP.sublime-settings"
 SUBLIMETEXT_CONF_PYTHON="Python.sublime-settings"
-# SUBLIMETEXT_CONF_PACKAGECONTROL="Package Control.sublime-settings"
 
 # Function for backup a file and make a symlink
 # --------------------------------------------------------
@@ -34,7 +34,7 @@ make_link() {
 
 		# File already exist, make backup
 		if [ -f "$file_path" ]; then
-			echo "${yellow}$backup current $file_name in $DOTFILES_DIR/backup/$file_name.bak${reset}"
+			echo "${yellow}Backup current $file_name in $DOTFILES_DIR/backup/$file_name.bak${reset}"
 			mv "$file_path" "$DOTFILES_DIR/backup/$file_name.bak"
 		fi
 
@@ -77,6 +77,7 @@ if [ -d "/opt/sublime_text" ]; then
 
 	make_link "$SUBLIMETEXT_CONF_KEYMAP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_KEYMAP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_KEYMAP"
 	make_link "$SUBLIMETEXT_CONF_SETTINGS" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SETTINGS" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SETTINGS"
+	make_link "$SUBLIMETEXT_CONF_SIDEBAR" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SIDEBAR" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SIDEBAR"
 	make_link "$SUBLIMETEXT_CONF_MARKDOWN" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_MARKDOWN" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_MARKDOWN"
 	make_link "$SUBLIMETEXT_CONF_PHP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_PHP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_PHP"
 	make_link "$SUBLIMETEXT_CONF_PYTHON" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_PYTHON" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_PYTHON"
