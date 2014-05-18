@@ -27,12 +27,12 @@ __vcs_name () {
 
 # Colors
 black=$(tput -Txterm setaf 0)
-red=$(tput -Txterm setaf 1)
+# red=$(tput -Txterm setaf 1)
 green=$(tput -Txterm setaf 2)
 yellow=$(tput -Txterm setaf 3)
 dk_blue=$(tput -Txterm setaf 4)
 pink=$(tput -Txterm setaf 5)
-lt_blue=$(tput -Txterm setaf 6)
+# lt_blue=$(tput -Txterm setaf 6)
 
 # Styles
 bold=$(tput -Txterm bold)
