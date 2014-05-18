@@ -3,6 +3,7 @@
 # -----------------------------------------------------------------------------
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
 alias l='ls -lhaF --color=always'
+alias git='LANG=en_US git'
 alias gitlog="git log --oneline --graph --decorate"
 # Cherche les fichier en double (taille puis md5)
 alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
