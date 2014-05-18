@@ -1,20 +1,9 @@
 
-# Misc
+# History
 # -----------------------------------------------------------------------------
-alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
-alias l='ls -lhaF --color=always'
-alias git='LANG=en_US git'
-alias gitlog="git log --oneline --graph --decorate"
-# Cherche les fichier en double (taille puis md5)
-alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
-alias process='ps aux | grep'
-alias docker="sudo docker.io"
-
-# Vim
-# -----------------------------------------------------------------------------
-export EDITOR=vim
-alias vi='vim'
-alias vi_sec="vim -u $HOME/.vim/.vimrc_secure"
+export HISTSIZE=2000 # Lines in memory
+export HISTFILESIZE=10000 # Lines on disk
+export HISTCONTROL=erasedups # Erase duplicates
 
 # Navigation
 # -----------------------------------------------------------------------------
@@ -25,6 +14,27 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
+
+# Misc
+# -----------------------------------------------------------------------------
+alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
+alias l='ls -lhaF --color=always'
+alias git='LANG=en_US git'
+alias gitlog="git log --oneline --graph --decorate"
+# Cherche les fichier en double (taille puis md5)
+alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
+alias process='ps aux | grep'
+
+# Vim
+# -----------------------------------------------------------------------------
+export EDITOR=vim
+alias vi='vim'
+alias vi_sec="vim -u $HOME/.vim/.vimrc_secure"
+
+# Docker
+# -----------------------------------------------------------------------------
+alias docker="sudo docker.io"
+complete -F _docker docker  # Résult from : complete -p docker
 
 # Pass
 # -----------------------------------------------------------------------------
