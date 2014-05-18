@@ -1,6 +1,6 @@
 # Prompt
 # --------------------------------------------------------------------------------------
-__has_parent_dir () {
+_has_parent_dir () {
 	# Utility function so we can test for things like .git/.hg without firing up a separate process
 	test -d "$1" && return 0;
 
@@ -15,12 +15,12 @@ __has_parent_dir () {
 	return 1;
 }
 
-__vcs_name () {
+_vcs_name () {
 	if [ -d .svn ]; then
 		echo "-[svn]";
-	elif __has_parent_dir ".git"; then
+	elif _has_parent_dir ".git"; then
 		echo "-[$(__git_ps1 'git %s')]";
-	elif __has_parent_dir ".hg"; then
+	elif _has_parent_dir ".hg"; then
 		echo "-[hg $(hg branch)]"
 	fi
 }
@@ -38,4 +38,4 @@ pink=$(tput -Txterm setaf 5)
 bold=$(tput -Txterm bold)
 reset=$(tput -Txterm sgr0)
 
-export PS1='\[$bold\]\[$black\][\[$dk_blue\]\D{%T}\[$black\]]-[\[$green\]\u\[$yellow\]@\[$green\]\h\[$black\]]-[\[$pink\]\w\[$black\]]\[\033[0;33m\]$(__vcs_name) \[\033[00m\]\[$reset\]\$ '
+export PS1='\[$bold\]\[$black\][\[$dk_blue\]\D{%T}\[$black\]]-[\[$green\]\u\[$yellow\]@\[$green\]\h\[$black\]]-[\[$pink\]\w\[$black\]]\[\033[0;33m\]$(_vcs_name) \[\033[00m\]\[$reset\]\$ '

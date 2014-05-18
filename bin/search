@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Quick search in a directory for a string ($1).
+# -----------------------------------------------------------------------------
+if [ -x /usr/bin/ack-grep ]; then
+	ack-grep $1 .
+else
+	grep -rnI --exclude-dir=dir --color=always $1 .
+fi

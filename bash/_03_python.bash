@@ -1,11 +1,11 @@
 PROJECTS_FOLDER="/data/dev"
 
-# Quick web server
+# Launch simple web server
 alias server="python3 -m http.server"
 
 # Quick navigate to projects folders
 # -----------------------------------------------------------------------------
-dev () {
+dev() {
 	if [ -d "$PROJECTS_FOLDER/$1" ]; then
 		# workon "$1"
 		cd "$PROJECTS_FOLDER/$1";

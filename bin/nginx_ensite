@@ -6,7 +6,7 @@
 # -z str: Returns True if the length of str is equal to zero.
 if [ -z "$1" ]; then
     echo "Please choose a site."
-    exit 0
+    exit 1
 else
     echo "Enabling site $1..."
     # -h filename: True if file exists and is a symbolic link.
@@ -17,15 +17,15 @@ else
     else
         if [ ! -f "/etc/nginx/sites-available/$1" ]; then
             echo "Site $1 does not exist in /etc/nginx/sites-available."
-            exit 0
+            exit 1
         else
             echo "Enabled $1"
             sudo ln -s /etc/nginx/sites-available/$1 /etc/nginx/sites-enabled/$1
 
             echo "Reload Nginx config"
             sudo service nginx reload
-            
-            exit 1
+
+            exit 0
         fi
     fi
 fi

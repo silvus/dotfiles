@@ -2,13 +2,13 @@
 # Get uptime
 # --------------------------------------------------------------------
 _uptime() {
-	uptime=$(</proc/uptime)
-	uptime=${uptime%%.*}
+	local uptime=$(</proc/uptime)
+	local uptime=${uptime%%.*}
 
-	seconds=$(( uptime%60 ))
-	minutes=$(( uptime/60%60 ))
-	hours=$(( uptime/60/60%24 ))
-	days=$(( uptime/60/60/24 ))
+	local seconds=$(( uptime%60 ))
+	local minutes=$(( uptime/60%60 ))
+	local hours=$(( uptime/60/60%24 ))
+	local days=$(( uptime/60/60/24 ))
 
 	echo "$days days, $hours hours, $minutes minutes, $seconds seconds"
 }
@@ -54,16 +54,16 @@ asciiart() {
 
 	# Colors
 	local green=$(tput -Txterm setaf 2;tput setab 0)
-	local blue=$(tput -Txterm setaf 0;tput setab 2)
+	local backgreen=$(tput -Txterm setaf 0;tput setab 2)
 	local reset=$(tput -Txterm sgr0)
 
-	echo -e "$blue"'      .--.     '"$green" "${USER^} - ${HOST^} - $IP_LOCAL"
-	echo -e "$blue"'     |o_o |    '"$green" "$OS $ARCH $KERNEL"
-	echo -e "$blue"'     |:_/ |    '"$green" "Uptime $UPTIME"
-	echo -e "$blue"'    //   \ \   '
-	echo -e "$blue"'   (|     | )  '"$green" "$UPDATE"
-	echo -e "$blue"'  / \_   _/ \  '
-	echo -e "$blue"'  \___)=(___/  '"$green" "${DATE^}"
+	echo -e "$backgreen"'      .--.     '"$green" "${USER^} - ${HOST^} - $IP_LOCAL"
+	echo -e "$backgreen"'     |o_o |    '"$green" "$OS $ARCH $KERNEL"
+	echo -e "$backgreen"'     |:_/ |    '"$green" "Uptime $UPTIME"
+	echo -e "$backgreen"'    //   \ \   '
+	echo -e "$backgreen"'   (|     | )  '"$green" "$UPDATE"
+	echo -e "$backgreen"'  / \_   _/ \  '
+	echo -e "$backgreen"'  \___)=(___/  '"$green" "${DATE^}"
 	echo -e  "$reset"
 }
 
