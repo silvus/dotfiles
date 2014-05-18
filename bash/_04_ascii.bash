@@ -53,17 +53,17 @@ asciiart() {
 	local UPDATE=$(_packageupdate)
 
 	# Colors
-	local green=$(tput -Txterm setaf 2)
-	local blue=$(tput -Txterm setaf 4)
+	local green=$(tput -Txterm setaf 2;tput setab 0)
+	local blue=$(tput -Txterm setaf 0;tput setab 2)
 	local reset=$(tput -Txterm sgr0)
 
-	echo -e "$blue"'     .--.     '"$green" "${USER^} - ${HOST^} - $IP_LOCAL"
-	echo -e "$blue"'    |o_o |    '"$green" "$OS $ARCH $KERNEL"
-	echo -e "$blue"'    |:_/ |    '"$green" "Uptime $UPTIME"
-	echo -e "$blue"'   //   \ \   '
-	echo -e "$blue"'  (|     | )  '"$green" "$UPDATE"
-	echo -e "$blue"' / \_   _/ \  '
-	echo -e "$blue"' \___)=(___/  '"$green" "${DATE^}"
+	echo -e "$blue"'      .--.     '"$green" "${USER^} - ${HOST^} - $IP_LOCAL"
+	echo -e "$blue"'     |o_o |    '"$green" "$OS $ARCH $KERNEL"
+	echo -e "$blue"'     |:_/ |    '"$green" "Uptime $UPTIME"
+	echo -e "$blue"'    //   \ \   '
+	echo -e "$blue"'   (|     | )  '"$green" "$UPDATE"
+	echo -e "$blue"'  / \_   _/ \  '
+	echo -e "$blue"'  \___)=(___/  '"$green" "${DATE^}"
 	echo -e  "$reset"
 }
 
