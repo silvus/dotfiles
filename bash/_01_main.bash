@@ -34,11 +34,25 @@ alias vi_sec="vim -u $HOME/.vim/.vimrc_secure"
 # Docker
 # -----------------------------------------------------------------------------
 alias docker="sudo docker.io"
+alias dockercleancontainers="sudo docker.io ps -a --no-trunc | grep 'Exit' | awk '{print \$1}' | xargs -L 1 -r sudo docker.io rm" # Remove temporary built images
+alias dockercleanimages="sudo docker.io images -a --no-trunc | grep none | awk '{print \$3}' | xargs -L 1 -r sudo docker.io rmi" # Remove Docker containers with Exit status
 complete -F _docker docker  # Résult from : complete -p docker
+
+# Tmux autostart... Maybe one day...
+# -----------------------------------------------------------------------------
+# if which tmux 2>&1 >/dev/null; then
+#     # if no session is started, start a new session
+#     test -z ${TMUX} && tmux
+
+#     # when quitting tmux, try to attach
+#     while test -z ${TMUX}; do
+#         tmux attach || break
+#     done
+# fi
 
 # Pass
 # -----------------------------------------------------------------------------
-alias pass="vi_sec $DOTFILES_PATH/.pass" # Crypt
+alias pass="vi_sec $DOTFILES_PATH/.pass" # Crypt with :X
 pass_generate() {
 	local lenght=$1
 	[ "$lenght" == "" ] && lenght=16
