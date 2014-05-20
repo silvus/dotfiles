@@ -1,3 +1,4 @@
 *.bak
 .pas*
+*work
 bash/_ssh

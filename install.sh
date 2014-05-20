@@ -5,6 +5,7 @@
 DOTFILES_DIR="$HOME/.dotfiles" # dotfiles directory
 DOTFILES_BASH="$DOTFILES_DIR/bash"
 DOTFILES_VIM="$DOTFILES_DIR/vim"
+DOTFILES_TMUX="$DOTFILES_DIR/tmux"
 DOTFILES_SUBLIMETEXT="$DOTFILES_DIR/sublime_text_3"
 
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
@@ -23,10 +24,8 @@ make_link() {
 	local file_path="$3"
 
 	# Colors
-	local red=$(tput setaf 1)
 	local green=$(tput setaf 2)
 	local yellow=$(tput setaf 3)
-	local blue=$(tput setaf 4)
 	local reset=$(tput sgr0)
 
 	#  If file_path is not already a symlink or doesn't exist
@@ -43,7 +42,6 @@ make_link() {
 	else
 		echo "${green}$file_name is already install${reset}"
 	fi
-
 }
 
 # Bashrc
@@ -69,6 +67,12 @@ fi
 make_link "molokai.vim" "$DOTFILES_VIM/colors/molokai.vim" "$HOME/.vim/colors/molokai.vim"
 make_link "vimrc" "$DOTFILES_VIM/vimrc" "$HOME/.vimrc"
 make_link "vimrc_secure" "$DOTFILES_VIM/vimrc_secure" "$HOME/.vim/.vimrc_secure"
+
+# Tmux
+# --------------------------------------------------------
+echo "--- Tmux ---"
+
+make_link "vimrc" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
 
 # Sublime Text 3
 # --------------------------------------------------------
