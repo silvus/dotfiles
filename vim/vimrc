@@ -38,6 +38,21 @@ set scrolloff=1           " Places a line between the current line and the scree
 set sidescrolloff=2       " Places a couple columns between the current column and the screen edge
 set showmatch             " Show matching brackets when text indicator is over them
 
+" Make Vim recognize XTerm escape sequences for Page and Arrow keys combined with modifiers such as Shift, Control, and Alt
+" http://sunaku.github.io/vim-256color-bce.html
+" ---------------------
+if &term =~ '^screen'
+  " Page keys http://sourceforge.net/p/tmux/tmux-code/ci/master/tree/FAQ
+  execute "set t_kP=\e[5;*~"
+  execute "set t_kN=\e[6;*~"
+
+  " Arrow keys http://unix.stackexchange.com/a/34723
+  execute "set <xUp>=\e[1;*A"
+  execute "set <xDown>=\e[1;*B"
+  execute "set <xRight>=\e[1;*C"
+  execute "set <xLeft>=\e[1;*D"
+endif
+
 " Backups and undo
 " ---------------------
 " Swap files out of the project root
