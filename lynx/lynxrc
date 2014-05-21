@@ -1,0 +1,624 @@
+# Include base config
+INCLUDE:/etc/lynx-cur/lynx.cfg
+
+# Homepage
+STARTFILE:https://duckduckgo.com/
+# 'I' key
+DEFAULT_INDEX_FILE:https://duckduckgo.com/
+
+# Save to
+SAVE_SPACE:/tmp
+
+# Trim trailing whitespace
+TRIM_INPUT_FIELDS:TRUE
+
+
+# If AUTO_SESSION is TRUE lynx will save/restore useful information about
+# your browsing history when closing/starting current lynx session if
+# no command-line session switches override this setting.
+# This setting is useful only if SESSION_FILE is defined here or in the user's
+# .lynxrc file.
+#
+#AUTO_SESSION:FALSE
+
+# SESSION_FILE defines the file name where lynx will store user sessions.
+# This setting is used only when AUTO_SESSION is true.
+# Note: the default setting will store/resume each session in a different
+# folder under same file name (if that is allowed by operating system)
+# when lynx is invoked from different directories.
+# (The current working directory may be changed inside lynx)
+#
+# If you want to use the same session file wherever you invoke Lynx,
+# enter the full path below, eg '/home/<username>/.lynx_session'.
+#
+# If you do not want this feature, leave the setting commented.
+# Users can still customize SESSION_FILE and AUTO_SESSION via
+# their .lynxrc file.
+#
+#SESSION_FILE:lynx_session
+
+# If SET_COOKIES is set FALSE, Lynx will ignore Set-Cookie headers
+# in http server replies.  Note that if a COOKIE_FILE is in use (see
+# below) that contains cookies at startup, Lynx will still send those
+# persistent cookies in requests as appropriate.  Setting SET_COOKIES
+# to FALSE just prevents accepting any new cookies from servers.  To
+# prevent all cookie processing (sending *and* receiving) in a session,
+# make sure that PERSISTENT_COOKIES is not TRUE or that COOKIE_FILE does
+# not point to a file with cookies, in addition to setting SET_COOKIES
+# to FALSE.
+# The default is defined in userdefs.h, and can be overridden here,
+# and/or toggled via the -cookies command line switch.
+#
+#SET_COOKIES:TRUE
+
+# If ACCEPT_ALL_COOKIES is set TRUE, Lynx will accept cookies from all
+# domains with no user interaction.  This is equivalent to automatically
+# replying to all cookie 'Allow?' prompts with 'A'lways.  Note that it
+# does not preempt validity checking, which has to be controlled separately
+# (see below).
+# The default is defined in userdefs.h and can be overridden here, or
+# in the .lynxrc file via an o(ptions) screen setting.  It may also be
+# toggled via the -accept_all_cookies command line switch.
+#
+#ACCEPT_ALL_COOKIES:FALSE
+
+# COOKIE_ACCEPT_DOMAINS and COOKIE_REJECT_DOMAINS are comma-delimited lists
+# of domains from which Lynx should automatically accept or reject cookies
+# without asking for confirmation.  If the same domain is specified in both
+# lists, rejection will take precedence.
+# Note that in order to match cookies, domains have to be spelled out exactly
+# in the form in which they would appear on the Cookie Jar page (case is
+# insignificant).  They are not wildcards.  Domains that apply to more than
+# one host have a leading '.', but have to match *the cookie's* domain
+# exactly.
+#
+#COOKIE_ACCEPT_DOMAINS:
+#COOKIE_REJECT_DOMAINS:
+
+# COOKIE_LOOSE_INVALID_DOMAINS, COOKIE_STRICT_INVALID_DOMAINS, and
+# COOKIE_QUERY_INVALID_DOMAINS are comma-delimited lists of domains.
+# They control the degree of validity checking that is applied to cookies
+# for the specified domains.
+# Note that in order to match cookies, domains have to be spelled out exactly
+# in the form in which they would appear on the Cookie Jar page (case is
+# insignificant).  They are not wildcards.  Domains that apply to more than
+# one host have a leading '.', but have to match *the cookie's* domain
+# exactly.
+# If a domain is set to strict checking, strict conformance to RFC 2109 will
+# be applied.  A domain with loose checking will be allowed to set cookies
+# with an invalid path or domain attribute.  All domains will default to
+# asking the user for confirmation in case of an invalid path or domain.
+# Cookie validity checking takes place as a separate step before the
+# final decision to accept or reject (see previous options), therefore
+# a cookie that passes validity checking may still be automatically
+# rejected or cause another prompt.
+#
+#COOKIE_LOOSE_INVALID_DOMAINS:
+#COOKIE_STRICT_INVALID_DOMAINS:
+#COOKIE_QUERY_INVALID_DOMAINS:
+
+# MAX_COOKIES_DOMAIN,
+# MAX_COOKIES_GLOBAL and
+# MAX_COOKIES_BUFFER are limits on the total number of cookies for each domain,
+# globally, and the per-cookie buffer size.  These limits are by default large
+# enough for reasonable usage; if they are very high, some sites may present
+# undue performance waste.
+#
+#MAX_COOKIES_DOMAIN:50
+#MAX_COOKIES_GLOBAL:500
+#MAX_COOKIES_BUFFER:4096
+
+# PERSISTENT_COOKIES indicates that cookies should be read at startup from
+# the COOKIE_FILE, and saved at exit for storage between Lynx sessions.
+# It is not used if Lynx was compiled without USE_PERSISTENT_COOKIES.
+# The default is FALSE, so that the feature needs to be enabled here
+# explicitly if you want it.
+#
+PERSISTENT_COOKIES:FALSE
+
+# COOKIE_FILE is the default file from which persistent cookies are read
+# at startup (if the file exists), if Lynx was compiled with
+# USE_PERSISTENT_COOKIES and the PERSISTENT_COOKIES option is enabled.
+# The cookie file can also be specified in .lynxrc or on the command line.
+#
+#COOKIE_FILE:~/.lynx_cookies
+
+# COOKIE_SAVE_FILE is the default file in which persistent cookies are
+# stored at exit, if Lynx was compiled with USE_PERSISTENT_COOKIES and the
+# PERSISTENT_COOKIES option is enabled.  The cookie save file can also be
+# specified on the command line.
+#
+# With an interactive Lynx session, COOKIE_SAVE_FILE will default to
+# COOKIE_FILE if it is not set.  With a non-interactive Lynx session (e.g.,
+# -dump), cookies will only be saved to file if COOKIE_SAVE_FILE is set.
+#
+#COOKIE_SAVE_FILE:~/.lynx_cookies
+
+# Vi or Emacs movement keys, i.e. familiar hjkl or ^N^P^F^B .
+# These are defaults, which can be changed in the Options Menu or .lynxrc .
+#VI_KEYS_ALWAYS_ON:FALSE
+#EMACS_KEYS_ALWAYS_ON:FALSE
+
+# DEFAULT_BOOKMARK_FILE is the filename used for storing personal bookmarks.
+# It will be prepended by the user's home directory.
+# NOTE that a file ending in .html or other suffix mapped to text/html
+# should be used to ensure its treatment as HTML.  The built-in default
+# is lynx_bookmarks.html.  On both Unix and VMS, if a subdirectory off of
+# the HOME directory is desired, the path should begin with "./" (e.g.,
+# ./BM/lynx_bookmarks.html), but the subdirectory must already exist.
+# Lynx will create the bookmark file, if it does not already exist, on
+# the first ADD_BOOKMARK attempt if the HOME directory is indicated
+# (i.e., if the definition is just filename.html without any slashes),
+# but requires a pre-existing subdirectory to create the file there.
+# The user can re-define the default bookmark file, as well as a set
+# of sub-bookmark files if multiple bookmark file support is enabled
+# (see below), via the 'o'ptions menu, and can save those definitions
+# in the .lynxrc file.
+#
+#DEFAULT_BOOKMARK_FILE:lynx_bookmarks.html
+
+# DEFAULT_USER_MODE sets the default user mode for Lynx users.
+# NOVICE shows a three line help message at the bottom of the screen.
+# INTERMEDIATE shows normal amount of help (one line).
+# ADVANCED help is replaced by the URL of the current link.
+#
+#DEFAULT_USER_MODE:NOVICE
+
+# VERBOSE_IMAGES controls whether Lynx replaces [LINK], [INLINE] and [IMAGE]
+# (for images without ALT) with filenames of these images.
+# This can be useful in determining what images are important
+# and which are mere decorations, e.g. button.gif, line.gif,
+# provided the author uses meaningful names.
+#
+# The definition here will override the setting in userdefs.h.
+#
+#VERBOSE_IMAGES:TRUE
+
+# If MAKE_LINKS_FOR_ALL_IMAGES is TRUE, all images will be given links
+# which can be ACTIVATEd.  For inlines, the ALT or pseudo-ALT ("[INLINE]")
+# strings will be links for the resolved SRC rather than just text.
+# For ISMAP or other graphic links, ALT or pseudo-ALT ("[ISMAP]" or "[LINK]")
+# will have '-' and a link labeled "[IMAGE]" for the resolved SRC appended.
+# See also VERBOSE_IMAGES flag.
+#
+# The definition here will override that in userdefs.h
+# and can be toggled via an "-image_links" command-line switch.
+# The user can also use the LYK_IMAGE_TOGGLE key (default `*')
+# or `Show Images' in the Form-based Options Menu.
+#
+#MAKE_LINKS_FOR_ALL_IMAGES:FALSE
+
+# If MAKE_PSEUDO_ALTS_FOR_INLINES is FALSE, inline images which don't specify
+# an ALT string will not have "[INLINE]" inserted as a pseudo-ALT,
+# i.e. they'll be treated as having ALT="".
+# Otherwise (if TRUE), pseudo-ALTs will be created for inlines,
+# so that they can be used as links to the SRCs.
+# See also VERBOSE_IMAGES flag.
+#
+# The definition here will override that in userdefs.h
+# and can be toggled via a "-pseudo_inlines" command-line switch.
+# The user can also use the LYK_INLINE_TOGGLE key (default `[')
+# or `Show Images' in the Form-based Options Menu.
+#
+#MAKE_PSEUDO_ALTS_FOR_INLINES:TRUE
+
+# Key remapping definitions!
+#
+# You may redefine the keymapping of any function in Lynx by
+# using the KEYMAP option.  The basic form of KEYMAP is:
+#  KEYMAP:<KEYSTROKE>:<LYNX FUNCTION>
+# (See below for an extended format.)
+#
+# You must map upper and lowercase keys separately.
+#
+# A representative list of functions mapped to their default keys is
+# provided below.  All of the mappings are commented out by default
+# since they just repeat the default mappings, except for TOGGLE_HELP
+# (see below).  See LYKeymap.c for the complete key mapping.  Use the
+# 'K'eymap command when running Lynx for a list of the _current_ keymappings.
+#
+# (However, in contrast to the output of 'K' command,
+# 'H'elp (lynx_help/*.html and lynx_help/keystrokes/*.html files) shows
+# the default mapping unless you change that files manually,
+# so you are responsible for possible deviations
+# when you are changing any KEYMAP below).
+#
+# Lynx accepts special keys either by name, or by lynx-specific codes.  These
+# names and codes are listed below, with a brief description:
+.nf
+#         UPARROW: 0x100 (Up Arrow)
+#         DNARROW: 0x101 (Down Arrow)
+#         RTARROW: 0x102 (Right Arrow)
+#         LTARROW: 0x103 (Left Arrow)
+#          PGDOWN: 0x104 (Page Down)
+#            PGUP: 0x105 (Page Up)
+#            HOME: 0x106 (Keypad Home)
+#             END: 0x107 (Keypad End)
+#              F1: 0x108 (VT220 Function-key 1, also Help Key)
+#          DO_KEY: 0x109 (VT220 Function key 16, also "Do" Key)
+#        FIND_KEY: 0x10A (VT220 key with label "Home" may be treated as Find)
+#      SELECT_KEY: 0x10B (VT220 key with label "End" may be treated as Select)
+#      INSERT_KEY: 0x10C (VT220 Insert Key)
+#      REMOVE_KEY: 0x10D (VT220 Remove (DEL) Key)
+#      DO_NOTHING: 0x10E (reserved for internal use, DO_NOTHING)
+#     BACKTAB_KEY: 0x10F (Back Tab, e.g., using Shift)
+#              F2: 0x110 (VT220 Function-key 2)
+#              F3: 0x111 (VT220 Function-key 3)
+#              F4: 0x112 (VT220 Function-key 4)
+#              F5: 0x113 (VT220 Function-key 5)
+#              F6: 0x114 (VT220 Function-key 6)
+#              F7: 0x115 (VT220 Function-key 7)
+#              F8: 0x116 (VT220 Function-key 8)
+#              F9: 0x117 (VT220 Function-key 9)
+#             F10: 0x118 (VT220 Function-key 10)
+#             F11: 0x119 (VT220 Function-key 11)
+#             F12: 0x11A (VT220 Function-key 12)
+#           MOUSE: 0x11D (reserved for internal use with -use_mouse)
+.fi
+# Other codes not listed above may be available for additional keys,
+# depending on operating system and libraries used to compile Lynx.
+# On some systems, if compiled with recent versions of slang or ncurses
+# (if macro USE_KEYMAPS was in effect during compilation), an additional
+# level of key mapping is supported via an external ".lynx-keymaps" file.
+# This file, if found in the home directory at startup, will always be
+# used under those conditions; see lynx-keymaps distributed in the samples
+# subdirectory for further explanation.  Note that mapping via
+# .lynx-keymaps, if applicable, is a step that logically comes before the
+# mappings done here: KEYMAP maps the result of that step (which still
+# represents a key) to a function (which represents an action that Lynx
+# should perform).
+.nf
+#
+#KEYMAP:0x5C:SOURCE		# Toggle source viewing mode (show HTML source)
+#KEYMAP:^R:RELOAD		# Reload the current document and redisplay
+#KEYMAP:^U:NEXT_DOC		# Undo PREV_DOC)
+#KEYMAP:q:QUIT			# Ask the user to quit
+#KEYMAP:Q:ABORT			# Quit without verification
+#KEYMAP:0x20:NEXT_PAGE		# Move down to next page
+#KEYMAP:-:PREV_PAGE		# Move up to previous page
+#KEYMAP:^P:UP_TWO		# Move display up two lines
+#KEYMAP:INSERT_KEY:UP_TWO	# Function key Insert - Move display up two lines
+#KEYMAP:^N:DOWN_TWO		# Move display down two lines
+#KEYMAP:REMOVE_KEY:DOWN_TWO	# Function key Remove - Move display down two lines
+#KEYMAP:(:UP_HALF		# Move display up half a page
+#KEYMAP:):DOWN_HALF		# Move display down half a page
+#KEYMAP:^W:REFRESH		# Refresh the screen
+#KEYMAP:^A:HOME			# Go to top of current document
+#KEYMAP:HOME:HOME		# Keypad Home - Go to top of current document
+#KEYMAP:FIND_KEY:HOME		# Function key Find - Go to top of current document
+#KEYMAP:^E:END			# Go to bottom of current document
+#KEYMAP:END:END			# Keypad End - Go to bottom of current document
+#KEYMAP:SELECT_KEY:END		# Function key Select - Go to bottom of current document
+#KEYMAP:UPARROW:PREV_LINK	# Move to the previous link or page
+#KEYMAP:DNARROW:NEXT_LINK	# Move to the next link or page
+#KEYMAP:BACKTAB_KEY:FASTBACKW_LINK 	# Back Tab - Move to previous link or text area
+#KEYMAP:^I:FASTFORW_LINK	# Tab key - Move always to next link or text area
+#KEYMAP:^:FIRST_LINK		# Move to the first link on line
+#KEYMAP:$:LAST_LINK		# Move to the last link on line
+#KEYMAP:<:UP_LINK		# Move to the link above
+#KEYMAP:>:DOWN_LINK		# Move to the link below
+#KEYMAP:0x7F:HISTORY		# Show the history list
+#KEYMAP:0x08:HISTORY		# Show the history list
+#KEYMAP:LTARROW:PREV_DOC	# Return to the previous document in history stack
+#KEYMAP:RTARROW:ACTIVATE	# Select the current link
+#KEYMAP:DO_KEY:ACTIVATE		# Function key Do - Select the current link
+#KEYMAP:g:GOTO			# Goto a random URL
+#KEYMAP:G:ECGOTO		# Edit the current document's URL and go to it
+#KEYMAP:H:HELP			# Show default help screen
+#KEYMAP:F1:DWIMHELP		# Function key Help - Show a help screen
+#KEYMAP:i:INDEX			# Show default index
+#*** Edit FORM_LINK_* messages in LYMessages_en.h if you change NOCACHE ***
+#KEYMAP:x:NOCACHE		# Force submission of form or link with no-cache
+#*** Do not change INTERRUPT from 'z' & 'Z' ***
+#KEYMAP:z:INTERRUPT		# Interrupt network transmission
+#KEYMAP:m:MAIN_MENU		# Return to the main menu
+#KEYMAP:o:OPTIONS		# Show the options menu
+#KEYMAP:i:INDEX_SEARCH		# Search a server based index
+#KEYMAP:/:WHEREIS		# Find a string within the current document
+#KEYMAP:n:NEXT			# Find next occurrence of string within document
+#KEYMAP:c:COMMENT		# Comment to the author of the current document
+#KEYMAP:C:CHDIR			# Change current directory
+#KEYMAP:e:EDIT			# Edit current document or form's textarea (call: ^Ve)
+#KEYMAP:E:ELGOTO		# Edit the current link's URL or ACTION and go to it
+#KEYMAP:=:INFO			# Show info about current document
+#KEYMAP:p:PRINT			# Show print options
+#KEYMAP:a:ADD_BOOKMARK		# Add current document to bookmark list
+#KEYMAP:v:VIEW_BOOKMARK		# View the bookmark list
+#KEYMAP:V:VLINKS		# List links visited during the current Lynx session
+#KEYMAP:!:SHELL			# Spawn default shell
+#KEYMAP:d:DOWNLOAD		# Download current link
+#KEYMAP:j:JUMP			# Jump to a predefined target
+#KEYMAP:k:KEYMAP		# Display the current key map
+#KEYMAP:l:LIST			# List the references (links) in the current document
+#KEYMAP:#:TOOLBAR		# Go to the Toolbar or Banner in the current document
+#KEYMAP:^T:TRACE_TOGGLE		# Toggle detailed tracing for debugging
+#KEYMAP:;:TRACE_LOG		# View trace log if available for the current session
+#KEYMAP:*:IMAGE_TOGGLE		# Toggle inclusion of links for all images
+#KEYMAP:[:INLINE_TOGGLE		# Toggle pseudo-ALTs for inlines with no ALT string
+#KEYMAP:]:HEAD			# Send a HEAD request for current document or link
+#*** Must be compiled with USE_EXTERNALS to enable EXTERN_LINK, EXTERN_PAGE ***
+#KEYMAP:,:EXTERN_PAGE		# Run external program with current page
+#KEYMAP:.:EXTERN_LINK		# Run external program with current link
+#*** Escaping from text input fields with ^V is independent from this: ***
+#KEYMAP:^V:SWITCH_DTD		# Toggle between SortaSGML and TagSoup HTML parsing
+#KEYMAP:0x00:DO_NOTHING		# Does nothing (ignore this key)
+#KEYMAP:DO_NOTHING:DO_NOTHING	# Does nothing (ignore this key)
+#KEYMAP:{:SHIFT_LEFT		# shift the screen left
+#KEYMAP:}:SHIFT_RIGHT		# shift the screen right
+#KEYMAP:|:LINEWRAP_TOGGLE	# toggle linewrap on/off, for shift-commands
+#KEYMAP:~:NESTED_TABLES		# toggle nested-tables parsing on/off
+.fi
+# In addition to the bindings available by default, the following functions
+# are not directly mapped to any keys by default, although some of them may
+# be mapped in specific line-editor bindings (effective while in text input
+# fields):
+.nf
+#
+#KEYMAP:???:RIGHT_LINK		# Move to the link to the right
+#KEYMAP:???:LEFT_LINK		# Move to the link to the left
+#KEYMAP:???:LPOS_PREV_LINK	# Like PREV_LINK, last column pos if form input
+#KEYMAP:???:LPOS_NEXT_LINK	# Like NEXT_LINK, last column pos if form input
+#*** Only useful in form text fields , need PASS or prefixing with ^V: ***
+#KEYMAP:???:DWIMHELP		# Display help page that may depend on context
+#KEYMAP:???:DWIMEDIT		# Use external editor for context-dependent purpose
+#*** Only useful in a form textarea, need PASS or prefixing with ^V: ***
+#KEYMAP:???:EDITTEXTAREA	# use external editor to edit a form textarea
+#KEYMAP:???:GROWTEXTAREA	# Add some blank lines to bottom of textarea
+#KEYMAP:???:INSERTFILE		# Insert file into a textarea (just above cursor)
+#*** Only useful with dired support and OK_INSTALL: ***
+#KEYMAP:???:INSTALL		# install (i.e. copy) local files to new location
+.fi
+#
+# If TOGGLE_HELP is mapped, in novice mode the second help menu line
+# can be toggled among NOVICE_LINE_TWO_A, _B, and _C, as defined in
+# LYMessages_en.h  Otherwise, it will be NOVICE_LINE_TWO.
+#
+#KEYMAP:O:TOGGLE_HELP		# Show other commands in the novice help menu
+#
+# KEYMAP lines can have one or two additional fields.  The extended format is
+#  KEYMAP:<KEYSTROKE>:[<MAIN LYNX FUNCTION>]:<OTHER BINDING>[:<SELECT>]
+#
+# If the additional field OTHER BINDING specifies DIRED, then the function is
+# mapped in the override table used only in DIRED mode.  This is only valid
+# if lynx was compiled with dired support and OK_OVERRIDE defined.  A
+# MAIN LYNX FUNCTION must be given (it should of course be one that makes
+# sense in Dired mode), and SELECT is meaningless.  Default built-in override
+# mappings are
+#
+#KEYMAP:^U:NEXT_DOC:DIRED	# Undo going back to the previous document
+#KEYMAP:.:TAG_LINK:DIRED	# Tag a file or directory for later action
+#KEYMAP:c:CREATE:DIRED		# Create a new file or directory
+#KEYMAP:C:CHDIR:DIRED		# change current directory
+#KEYMAP:f:DIRED_MENU:DIRED	# Display a menu of file operations
+#KEYMAP:m:MODIFY:DIRED		# Modify name or location of a file or directory
+#KEYMAP:r:REMOVE:DIRED		# Remove files or directories
+#KEYMAP:t:TAG_LINK:DIRED	# Tag a file or directory for later action
+#KEYMAP:u:UPLOAD:DIRED		# Show menu of "Upload Options"
+#
+# If the OTHER BINDING field does not specify DIRED, then it is taken as a
+# line-editor action.  It is possible to keep the MAIN LYNX FUNCTION field
+# empty in that case, for changing only the line-editing behavior.
+# If alternative line edit styles are compiled in, and modifying a key's
+# line-editor binding on a per style basis is possible, then SELECT can be
+# used to specify which styles are affected.  By default, or if SELECT is
+# 0, all line edit styles are affected.  If SELECT is a positive integer
+# number, only the binding for the numbered style is changed (numbering
+# is in the order in which styles are shown in the Options Menu, starting
+# with 1 for the Default style).  If SELECT is negative (-n), all styles
+# except n are affected.
+.nf
+#
+#  NOP		# Do Nothing
+#  ABORT	# Input cancelled
+#
+#  BOL		# Go to begin of line
+#  EOL		# Go to end   of line
+#  FORW		# Cursor forwards
+#  FORW_RL	# Cursor forwards or right link
+#  BACK		# Cursor backwards
+#  FORWW	# Word forward
+#  BACKW	# Word back
+#  BACK_LL	# Cursor backwards or left link
+#
+#  DELN		# Delete next/curr char
+#  DELP		# Delete prev      char
+#  DELNW	# Delete next word
+#  DELPW	# Delete prev word
+#  DELBL	# Delete back to BOL
+#  DELEL	# Delete thru EOL
+#  ERASE	# Erase the line
+#  LOWER	# Lower case the line
+#  UPPER	# Upper case the line
+#
+#  LKCMD	# In fields: Invoke key command prompt (default for ^V)
+#  PASS		# In fields: handle as non-lineedit key; in prompts: ignore
+#
+.fi
+# Modify following key (prefixing only works within line-editing, edit actions
+# of some resulting prefixed keys are built-in, see Line Editor help pages)
+#  SETM1	# Set modifier 1 flag (default for ^X - key prefix)
+#  SETM2	# Set modifier 2 flag (another key prefix - same effect)
+#
+# May not always be compiled in:
+.nf
+#
+#  TPOS		# Transpose characters
+#  SETMARK	# emacs-like set-mark-command
+#  XPMARK	# emacs-like exchange-point-and-mark
+#  KILLREG	# emacs-like kill-region
+#  YANK		# emacs-like yank
+#  SWMAP	# Switch input keymap
+#  PASTE	# ClipBoard to Lynx - Windows Extension
+#
+.fi
+# May work differently from expected if not bound to their expected keys:
+.nf
+#
+#  CHAR		# Insert printable char (default for all ASCII printable)
+#  ENTER	# Input complete, return char/lynxkeycode (for RETURN/ENTER)
+#  TAB		# Input complete, return TAB (for ASCII TAB char ^I)
+#
+.fi
+# Internal use, probably not useful for binding, listed for completeness:
+.nf
+#
+#  UNMOD	# Fall back to no-modifier command
+#  AIX		# Hex 97
+#  C1CHAR	# Insert C1 char if printable
+#
+.fi
+# If OTHER BINDING specifies PASS, then if the key is pressed in a text input
+# field it is passed by the built-in line-editor to normal KEYMAP handling,
+# i.e. this flag acts like an implied ^V escape (always overrides line-editor
+# behavior of the key).  For example,
+#KEYMAP:INSERT_KEY:UP_TWO:PASS # Function key Insert - Move display up two lines
+#
+# Other examples (repeating built-in bindings)
+#KEYMAP:^V::LKCMD	# set (only) line-edit action for ^V
+#KEYMAP:^V:SWITCH_DTD:LKCMD # set main lynxaction and line-edit action for ^V
+#KEYMAP:^U::ERASE:1	# set line-edit binding for ^U, for default style
+#KEYMAP:^[::SETM2:3	# use escape key as modifier - works only sometimes
+
+
+# LIST_FORMAT defines the display for local files when Lynx has been
+# compiled with LONG_LIST defined in the Makefile.  The default is set
+# in userdefs.h, normally to "ls -l" format, and can be changed here
+# by uncommenting the indicated lines, or adding a definition with a
+# modified parameter list.
+#
+# This feature is not available for VMS.
+#
+# The percent items in the list are interpreted as follows:
+.nf
+#
+#	%p	Unix-style permission bits
+#	%l	link count
+#	%o	owner of file
+#	%g	group of file
+#	%d	date of last modification
+#	%a	anchor pointing to file or directory
+#	%A	as above but don't show symbolic links
+#	%t	type of file (description derived from MIME type)
+#	%T	MIME type as known by Lynx (from mime.types or default)
+#	%k	size of file in Kilobytes
+#	%K	as above but omit size for directories
+#	%s	size of file in bytes
+#
+.fi
+# Anything between the percent and the letter is passed on to sprintf.
+# A double percent yields a literal percent on output.  Other characters
+# are passed through literally.
+#
+# If you want only the filename:
+#
+.ex
+#LIST_FORMAT:    %a
+#
+# If you want a brief output:
+#
+.ex
+#LIST_FORMAT:   %4K %-12.12d %a
+#
+# If you want the Unix "ls -l" format:
+#
+.ex
+#LIST_FORMAT:    %p %4l %-8.8o %-8.8g %7s %-12.12d %a
+
+# COLORS are only available if compiled with SVr4 curses or slang.  This is
+# the old color configuration.  The COLOR_STYLE configuration is compiled-in
+# and can simulate this if the ".lss" filename is empty.
+#
+# The line must be of the form:
+#
+# COLOR:Integer:Foreground:Background
+.nf
+#
+# The Integer value is interpreted as follows:
+#   0 - normal                      - normal text
+#   1 - bold                        - hyperlinks, see also BOLD_* options above
+#   2 - reverse                     - statusline
+#   3 - bold + reverse              (not used)
+#   4 - underline                   - text emphasis (EM, I, B tags etc.)
+#   5 - bold + underline            - hyperlinks within text emphasis
+#   6 - reverse + underline         - currently selected hyperlink
+#   7 - reverse + underline + bold  - WHEREIS search hits
+#
+# Each Foreground and Background value must be one of:
+#   black         red            green         brown
+#   blue          magenta        cyan          lightgray
+#   gray          brightred      brightgreen   yellow
+#   brightblue    brightmagenta  brightcyan    white
+.fi
+# or (if you have configured using --enable-default-colors with ncurses or
+# slang), "default" may be used for foreground and background.
+#
+# Note that in most cases a white background is really "lightgray", since
+# terminals generally do not implement bright backgrounds.
+#
+# Uncomment and change any of the compilation defaults.
+#
+#COLOR:0:black:white
+#COLOR:1:blue:white
+#COLOR:2:yellow:blue
+#COLOR:3:green:white
+#COLOR:4:magenta:white
+#COLOR:5:blue:white
+#COLOR:6:red:white
+COLOR:6:brightred:black
+#COLOR:7:magenta:cyan
+
+# Also known as "lss" (lynx style-sheet), the color-style file assigns color
+# combination to tags and combinations of tags.  Normally a non-empty value
+# is compiled into lynx, and the user can override that using the -lss
+# command-line option.  The configure script allows one to compile in an
+# empty string.  If lynx finds no value for this setting, it simulates the
+# non-color-style assignments using the COLOR settings.
+#
+# If neither the command-line "-lss" or this COLOR_STYLE setting are given,
+# lynx tries the environment variables "LYNX_LSS" and "lynx_lss".  If neither
+# is set, lynx uses the first compiled-in value (which as noted, may be empty).
+#
+# At startup, lynx remembers the name of the color-style file which was used,
+# and together with each file specified, provides those as choices in the
+# O)ptions menu.
+#
+#COLOR_STYLE: lynx.lss
+#COLOR_STYLE: blue-background.lss
+#COLOR_STYLE: bright-blue.lss
+#COLOR_STYLE: midnight.lss
+#COLOR_STYLE: mild-colors.lss
+#COLOR_STYLE: opaque.lss
+
+# If built with a library that recognizes default colors (usually ncurses or
+# slang), and if the corresponding option is compiled into lynx, lynx
+# initializes it to assume the corresponding foreground and background colors.
+# Default colors are those that the terminal (emulator) itself is initialized
+# to.  For instance, you might have an xterm running with black text on a white
+# background, and want lynx to display colored text on the white background,
+# but leave the possibility of using the same configuration to draw colored
+# text on a different xterm, this time using its background set to black.
+#
+# If built with conventional SVr3/SVr4 curses, tells lynx to use color pair 0
+# when the given colors match this setting.  That gives a similar effect,
+# though not as flexible.  You will get the best results by setting the
+# terminal's default colors to match the prevailing text and background colors
+# that you have setup with lynx, and then alter the ASSUMED_COLOR setting to
+# match that.  If you do not alter the ASSUMED_COLOR setting, curses assumes
+# color pair 0's background is black, which implies that its foreground (text)
+# is white.
+#
+# The first value given is the foreground, the second is the background.
+#ASSUMED_COLOR:default:default
+
+# If built with a library that recognizes default colors (usually ncurses or
+# slang), and if the corresponding option is compiled into lynx, lynx
+# initializes it to assume the corresponding foreground and background colors.
+# Default colors are those that the terminal (emulator) itself is initialized
+# to.
+#
+# Use this feature to disable the default-colors feature at runtime.
+# This is useful for constructing scripts which use the non-color-style
+# scheme, e.g., the oldlynx script.
+#
+# This should precede ASSUMED_COLOR settings.
+#DEFAULT_COLORS:true

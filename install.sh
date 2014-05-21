@@ -6,6 +6,7 @@ DOTFILES_DIR="$HOME/.dotfiles" # dotfiles directory
 DOTFILES_BASH="$DOTFILES_DIR/bash"
 DOTFILES_VIM="$DOTFILES_DIR/vim"
 DOTFILES_TMUX="$DOTFILES_DIR/tmux"
+DOTFILES_LYNX="$DOTFILES_DIR/lynx"
 DOTFILES_SUBLIMETEXT="$DOTFILES_DIR/sublime_text_3"
 
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
@@ -73,6 +74,17 @@ make_link "vimrc_secure" "$DOTFILES_VIM/vimrc_secure" "$HOME/.vim/.vimrc_secure"
 echo "--- Tmux ---"
 
 make_link "vimrc" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
+
+# Lynx
+# --------------------------------------------------------
+echo "--- Lynx ---"
+
+# Create folders if necessary
+if [ ! -d "$HOME/.lynx" ]; then
+	mkdir -p "$HOME/.lynx"
+fi
+
+make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
 
 # Sublime Text 3
 # --------------------------------------------------------

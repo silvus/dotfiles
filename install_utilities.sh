@@ -3,8 +3,6 @@
 OS_VERSION_NAME=$(lsb_release -cs)
 
 sudo apt-get update
-sudo apt-get install \
-	python-software-properties `# Add PPA`
 
 # Ubuntu 14.04 specific
 # ----------------------------------------------------------------
@@ -17,6 +15,8 @@ fi
 # Ubuntu 12.04 specific
 # ----------------------------------------------------------------
 if [ $OS_VERSION_NAME = 'precise' ]; then
+	# Add PPA for tmux 1.8
+	sudo apt-get install python-software-properties
 	sudo add-apt-repository ppa:kalakris/tmux
 fi
 
@@ -31,27 +31,21 @@ sudo apt-get install \
 	rsync `# Synchronisation` \
 	build-essential `# Compiling things` \
 	ack-grep `# Search` \
-	tmux `# Split terminal`
+	tmux `# Split terminal` \
+	lynx `# Web browser` \
+	newsbeuter `# Rss reader`
 
-
-# Need tests
+# Need Configuration
 # ----------------------------------------------------------------
-# Rss
-# 	newsbeuter (http://synflood.at/newsbeuter/newsbeuter.html)
-
 # Mail
 # 	mutt
 
+# Need tests
+# ----------------------------------------------------------------
 # Music
-# 	MOC - music on console
 # 	cmus
+# 	MOC - music on console
 # 	Mpg123
-
-# Web
-# 	lynx
-
-# File
-# 	ranger
 
 # Stats
 # 	GoAccess # Base on access logs, for Apache/Nginx
@@ -65,4 +59,6 @@ sudo apt-get install \
 # Twitter
 # 	ttytter
 #	turses
-#	earthquake
+
+# Calendar
+# 	calcurse
