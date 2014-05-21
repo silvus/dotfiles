@@ -6,13 +6,12 @@ sudo apt-get update
 sudo apt-get install \
 	python-software-properties `# Add PPA`
 
-echo $OS_VERSION_NAME
-
 # Ubuntu 14.04 specific
 # ----------------------------------------------------------------
 if [ $OS_VERSION_NAME = 'trusty' ]; then
 	sudo apt-get install \
-		dfc `# Disk space`
+		dfc `# Disk space` \
+		iftop `# htop for net traffic`
 fi
 
 # Ubuntu 12.04 specific
@@ -35,9 +34,35 @@ sudo apt-get install \
 	tmux `# Split terminal`
 
 
-# Draft
+# Need tests
 # ----------------------------------------------------------------
 # Rss
-# 	newsbeuter
+# 	newsbeuter (http://synflood.at/newsbeuter/newsbeuter.html)
+
 # Mail
 # 	mutt
+
+# Music
+# 	MOC - music on console
+# 	cmus
+# 	Mpg123
+
+# Web
+# 	lynx
+
+# File
+# 	ranger
+
+# Stats
+# 	GoAccess # Base on access logs, for Apache/Nginx
+# 	cloc # Stats for code
+
+# Scan
+# 	mtr # traceroute
+# 	nmap # Ports scan
+# 	netstat # Ports scan
+
+# Twitter
+# 	ttytter
+#	turses
+#	earthquake
