@@ -1,0 +1,136 @@
+
+# Newsbeuter configuration
+#----------------------------------------------------------
+
+## configuration option: always-display-description
+## description: If true, then the description will always displayed even if e.g. a content:encoded tag has been found.
+## parameter syntax: [true/false]
+# always-display-description false
+
+## configuration option: article-sort-order
+## description: The sortfield specifies which article property shall be used for sorting (currently available: date, title, flags, author, link, guid). The optional direction specifies the sort direction ("asc" specifies ascending sorting, "desc" specifies descending sorting. for date, "desc" is default, for all others, "asc" is default).
+## parameter syntax: <sortfield>[-<direction>]
+# article-sort-order date
+article-sort-order date
+
+## configuration option: articlelist-format
+## description: This variable defines the format of entries in the article list. See the respective section in the documentation for more information on format strings.
+## parameter syntax: <format>
+# articlelist-format "%4i %f %D %6L %?T?|%-17T| ?%t"
+
+## configuration option: auto-reload
+## description: If enabled, all feeds will be automatically reloaded at start up and then continuously after a certain time has passed (see reload-time).
+## parameter syntax: [yes/no]
+# auto-reload no
+
+## configuration option: browser
+## description: Set the browser command to use when opening an article in the browser. If <browser-command> contains %u, it will be used as complete commandline and %u will be replaced with the URL that shall be opened.
+## parameter syntax: <browser-command>
+browser lynx
+
+## configuration option: datetime-format
+## description: This format specifies the date/time format in the article list. For a detailed documentation on the allowed formats, consult the manpage of strftime(3).
+## parameter syntax: <date/time format>
+# datetime-format %b %d
+
+## configuration option: feed-sort-order
+## description: If set to "firsttag", the feeds in the feed list will be sorted by their first tag in the urls file.
+## parameter syntax: <sortorder>
+# feed-sort-order none
+
+## configuration option: feedlist-format
+## description: This variable defines the format of entries in the feed list. See the respective section in the documentation for more information on format strings.
+## parameter syntax: <format>
+# feedlist-format "%4i %n %11u %t"
+
+## configuration option: goto-first-unread
+## description: If set to yes (the default), then the first unread article will be selected whenever a feed is entered.
+## parameter syntax: [yes/no]
+# goto-first-unread yes
+
+## configuration option: keep-articles-days
+## description: If set the a number greater than 0, only articles that are were published within the last <n> days are kept, and older articles are deleted. If set to 0 (default value), this option is not active.
+## parameter syntax: <days>
+# keep-articles-days 0
+
+## configuration option: mark-as-read-on-hover
+## description: If set to yes, then all articles that get selected in the article list are marked as read.
+## parameter syntax: [yes/no]
+# mark-as-read-on-hover no
+
+## configuration option: notify-format
+## description: Format string that is used for formatting notifications. See the chapter on format strings for more information.
+## parameter syntax: <string>
+# notify-format "newsbeuter: finished reload, %f unread feeds (%n unread articles total)"
+
+## configuration option: notify-program
+## description: If set, then the configured program will be executed if new articles arrived (through a reload) or if notify-always is true. The first parameter of the called program contains the notification message.
+## parameter syntax: <path>
+# notify-program ""
+
+## configuration option: notify-always
+## description: If no, notifications will only be made when there are new feeds or articles. If yes, notifications will be made regardless.
+## parameter syntax: [yes/no]
+# notify-always no
+
+## configuration option: notify-screen
+## description: If yes, then a "privacy message" will be sent to the terminal, containing a notification message about new articles. This is especially useful if you use terminal emulations such as GNU screen which implement privacy messages.
+## parameter syntax: [yes/no]
+# notify-screen no
+
+## configuration option: notify-xterm
+## description: If yes, then the xterm window title will be set to a notification message about new articles.
+## parameter syntax: [yes/no]
+# notify-xterm no
+
+## configuration option: notify-beep
+## description: If yes, then the speaker beep on new articles.
+## parameter syntax: [yes/no]
+# notify-beep no
+
+## configuration option: opml-url
+## description: If the OPML online subscription mode is enabled, then the list of feeds will be taken from the OPML file found on this location. Optionally, you can specify more than one URL. All the listed OPML URLs will then be taken into account when loading the feed list.
+## parameter syntax: <url> ...
+# opml-url ""
+
+## configuration option: prepopulate-query-feeds
+## description: If yes, then all query feeds are prepopulated with articles on startup.
+## parameter syntax: [yes/no]
+# prepopulate-query-feeds no
+
+## configuration option: reload-time
+## description: The number of minutes between automatic reloads.
+## parameter syntax: <number>
+# reload-time 60
+
+## configuration option: reload-threads
+## description: The number of parallel reload threads that shall be started when all feeds are reloaded.
+## parameter syntax: <number>
+# reload-threads 1
+
+## configuration option: save-path
+## description: The default path where articles shall be saved to. If an invalid path is specified, the current directory is used.
+## parameter syntax: <path>
+# save-path ~/inbox/podbeuter/
+
+## configuration option: search-highlight-colors
+## description: This configuration command specifies the highlighting colors when searching for text from the article view.
+## parameter syntax: <fgcolor> <bgcolor> [<attribute> ...]
+# search-highlight-colors black yellow bold
+
+## configuration option: show-keymap-hint
+## description: If no, then the keymap hints on the bottom of screen will not be displayed.
+## parameter syntax: [yes/no]
+# show-keymap-hint yes
+
+## configuration option: show-read-feeds
+## description: If yes, then all feeds, including those without unread articles, are listed. If no, then only feeds with one or more unread articles are list.
+## parameter syntax: [yes/no]
+# show-read-feeds yes
+show-read-feeds no
+
+## configuration option: show-read-articles
+## description: If yes, then all articles of a feed are listed in the article list. If no, then only unread articles are listed.
+## parameter syntax: [yes/no]
+# show-read-articles yes
+show-read-articles no

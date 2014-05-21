@@ -7,6 +7,7 @@ DOTFILES_BASH="$DOTFILES_DIR/bash"
 DOTFILES_VIM="$DOTFILES_DIR/vim"
 DOTFILES_TMUX="$DOTFILES_DIR/tmux"
 DOTFILES_LYNX="$DOTFILES_DIR/lynx"
+DOTFILES_NEWSBEUTER="$DOTFILES_DIR/newsbeuter"
 DOTFILES_SUBLIMETEXT="$DOTFILES_DIR/sublime_text_3"
 
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
@@ -85,6 +86,17 @@ if [ ! -d "$HOME/.lynx" ]; then
 fi
 
 make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
+
+# Newsbeuter
+# --------------------------------------------------------
+echo "--- Newsbeuter ---"
+
+# Create folders if necessary
+if [ ! -d "$HOME/.newsbeuter/" ]; then
+	mkdir -p "$HOME/.newsbeuter"
+fi
+
+make_link "newsbeuter/config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/config"
 
 # Sublime Text 3
 # --------------------------------------------------------
