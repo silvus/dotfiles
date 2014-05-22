@@ -18,17 +18,18 @@ SUBLIMETEXT_CONF_MARKDOWN="Markdown.sublime-settings"
 SUBLIMETEXT_CONF_PHP="PHP.sublime-settings"
 SUBLIMETEXT_CONF_PYTHON="Python.sublime-settings"
 
+# Colors
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+reset=$(tput sgr0)
+
 # Function for backup a file and make a symlink
 # --------------------------------------------------------
 make_link() {
 	local file_name="$1"
 	local dot_file_path="$2"
 	local file_path="$3"
-
-	# Colors
-	local green=$(tput setaf 2)
-	local yellow=$(tput setaf 3)
-	local reset=$(tput sgr0)
 
 	#  If file_path is not already a symlink or doesn't exist
 	if [ ! -L "$file_path" ]; then
@@ -42,18 +43,36 @@ make_link() {
 		# Make symlink
 		ln -sv "$dot_file_path" "$file_path"
 	else
-		echo "${green}$file_name is already install${reset}"
+		echo "${green}$file_name is already installed${reset}"
+	fi
+}
+
+# Clone if doesn't exist, else update
+# --------------------------------------------------------
+clone_or_update() {
+	local git_url="$1"
+	local install_path="$2"
+	local depot_name="$3"
+
+	if [ -d "$install_path" ]; then
+		# Update
+		echo "${green}Update $depot_name${reset}"
+		( cd "$install_path" && git pull )
+	else
+		# Clone
+		echo "${yellow}Install $depot_name"
+		git clone "$git_url" "$install_path${reset}"
 	fi
 }
 
 # Bashrc
 # --------------------------------------------------------
-echo "--- Bash ---"
+echo "${blue}--- Bash ---${reset}"
 make_link "bash_aliases" "$DOTFILES_BASH/bash_aliases" "$HOME/.bash_aliases"
 
 # Vim
 # --------------------------------------------------------
-echo "--- Vim ---"
+echo "${blue}--- Vim ---${reset}"
 
 # Create folders if necessary
 if [ ! -d "$HOME/.vim/backup" ]; then
@@ -65,20 +84,39 @@ fi
 if [ ! -d "$HOME/.vim/colors" ]; then
 	mkdir -p "$HOME/.vim/colors"
 fi
+if [ ! -d "$HOME/.vim/autoload" ]; then
+	mkdir -p "$HOME/.vim/autoload"
+fi
+if [ ! -d "$HOME/.vim/bundle" ]; then
+	mkdir -p "$HOME/.vim/bundle"
+fi
 
 make_link "molokai.vim" "$DOTFILES_VIM/colors/molokai.vim" "$HOME/.vim/colors/molokai.vim"
 make_link "vimrc" "$DOTFILES_VIM/vimrc" "$HOME/.vimrc"
 make_link "vimrc_secure" "$DOTFILES_VIM/vimrc_secure" "$HOME/.vim/.vimrc_secure"
 
+# Vim plugins
+# --------------------------------------------------------
+echo "${blue}--- Vim plugins ---${reset}"
+
+echo "Pathogen"
+curl -LSso "$HOME/.vim/autoload/pathogen.vim" "https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
+
+# Nerdtree
+clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree" "Nerdtree"
+# Syntastic
+clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic" "Syntastic"
+# Supertab
+clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab" "Supertab"
+
 # Tmux
 # --------------------------------------------------------
-echo "--- Tmux ---"
-
+echo "${blue}--- Tmux ---${reset}"
 make_link "vimrc" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
 
 # Lynx
 # --------------------------------------------------------
-echo "--- Lynx ---"
+echo "${blue}--- Lynx ---${reset}"
 
 # Create folders if necessary
 if [ ! -d "$HOME/.lynx" ]; then
@@ -89,7 +127,7 @@ make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
 
 # Newsbeuter
 # --------------------------------------------------------
-echo "--- Newsbeuter ---"
+echo "${blue}--- Newsbeuter ---${reset}"
 
 # Create folders if necessary
 if [ ! -d "$HOME/.newsbeuter/" ]; then
@@ -101,7 +139,7 @@ make_link "newsbeuter/config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/c
 # Sublime Text 3
 # --------------------------------------------------------
 if [ -d "/opt/sublime_text" ]; then
-	echo "--- Sublime Text 3 ---"
+	echo "${blue}--- Sublime Text 3 ---${reset}"
 
 	make_link "$SUBLIMETEXT_CONF_KEYMAP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_KEYMAP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_KEYMAP"
 	make_link "$SUBLIMETEXT_CONF_SETTINGS" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SETTINGS" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SETTINGS"
@@ -113,4 +151,4 @@ fi
 
 # End
 # --------------------------------------------------------
-echo "--- Done ! ---"
+echo "${blue}--- Done ! ---${reset}"

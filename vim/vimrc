@@ -1,5 +1,8 @@
 set nocompatible          " Get rid of Vi compatibility mode
 
+" Pathogen
+execute pathogen#infect()
+
 " Misc
 " ---------------------
 set wildmenu              " Show list instead of just completing
