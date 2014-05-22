@@ -65,6 +65,15 @@ clone_or_update() {
 	fi
 }
 
+# Create directory if necessary
+# --------------------------------------------------------
+dir_check() {
+	local dir_path="$1"
+	if [ ! -d "$dir_path" ]; then
+		mkdir -p "$dir_path"
+	fi
+}
+
 # Bashrc
 # --------------------------------------------------------
 echo "${blue}--- Bash ---${reset}"
@@ -74,22 +83,11 @@ make_link "bash_aliases" "$DOTFILES_BASH/bash_aliases" "$HOME/.bash_aliases"
 # --------------------------------------------------------
 echo "${blue}--- Vim ---${reset}"
 
-# Create folders if necessary
-if [ ! -d "$HOME/.vim/backup" ]; then
-	mkdir -p "$HOME/.vim/backup"
-fi
-if [ ! -d "$HOME/.vim/swap" ]; then
-	mkdir -p "$HOME/.vim/swap"
-fi
-if [ ! -d "$HOME/.vim/colors" ]; then
-	mkdir -p "$HOME/.vim/colors"
-fi
-if [ ! -d "$HOME/.vim/autoload" ]; then
-	mkdir -p "$HOME/.vim/autoload"
-fi
-if [ ! -d "$HOME/.vim/bundle" ]; then
-	mkdir -p "$HOME/.vim/bundle"
-fi
+dir_check "$HOME/.vim/backup"
+dir_check "$HOME/.vim/swap"
+dir_check "$HOME/.vim/colors"
+dir_check "$HOME/.vim/autoload"
+dir_check "$HOME/.vim/bundle"
 
 make_link "molokai.vim" "$DOTFILES_VIM/colors/molokai.vim" "$HOME/.vim/colors/molokai.vim"
 make_link "vimrc" "$DOTFILES_VIM/vimrc" "$HOME/.vimrc"
@@ -117,30 +115,19 @@ make_link "vimrc" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
 # Lynx
 # --------------------------------------------------------
 echo "${blue}--- Lynx ---${reset}"
-
-# Create folders if necessary
-if [ ! -d "$HOME/.lynx" ]; then
-	mkdir -p "$HOME/.lynx"
-fi
-
+dir_check "$HOME/.lynx"
 make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
 
 # Newsbeuter
 # --------------------------------------------------------
 echo "${blue}--- Newsbeuter ---${reset}"
-
-# Create folders if necessary
-if [ ! -d "$HOME/.newsbeuter/" ]; then
-	mkdir -p "$HOME/.newsbeuter"
-fi
-
+dir_check "$HOME/.newsbeuter"
 make_link "newsbeuter/config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/config"
 
 # Sublime Text 3
 # --------------------------------------------------------
 if [ -d "/opt/sublime_text" ]; then
 	echo "${blue}--- Sublime Text 3 ---${reset}"
-
 	make_link "$SUBLIMETEXT_CONF_KEYMAP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_KEYMAP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_KEYMAP"
 	make_link "$SUBLIMETEXT_CONF_SETTINGS" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SETTINGS" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SETTINGS"
 	make_link "$SUBLIMETEXT_CONF_SIDEBAR" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SIDEBAR" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SIDEBAR"
