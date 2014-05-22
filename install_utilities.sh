@@ -27,7 +27,6 @@ sudo apt-get install \
 	htop `# Better "top" command` \
 	curl `# Play with HTTP` \
 	wget `# Downloader` \
-	dfc `# Disk space` \
 	rsync `# Synchronisation` \
 	build-essential `# Compiling things` \
 	ack-grep `# Search` \
