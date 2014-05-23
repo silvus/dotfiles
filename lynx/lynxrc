@@ -12,6 +12,13 @@ SAVE_SPACE:/tmp
 # Trim trailing whitespace
 TRIM_INPUT_FIELDS:TRUE
 
+# Cookies
+SET_COOKIES:TRUE
+ACCEPT_ALL_COOKIES:TRUE
+PERSISTENT_COOKIES:TRUE
+COOKIE_FILE:~/.lynx/lynx_cookies
+COOKIE_SAVE_FILE:~/.lynx/lynx_cookies
+FORCE_SSL_COOKIES_SECURE:FALSE
 
 # If AUTO_SESSION is TRUE lynx will save/restore useful information about
 # your browsing history when closing/starting current lynx session if
@@ -36,103 +43,6 @@ TRIM_INPUT_FIELDS:TRUE
 # their .lynxrc file.
 #
 #SESSION_FILE:lynx_session
-
-# If SET_COOKIES is set FALSE, Lynx will ignore Set-Cookie headers
-# in http server replies.  Note that if a COOKIE_FILE is in use (see
-# below) that contains cookies at startup, Lynx will still send those
-# persistent cookies in requests as appropriate.  Setting SET_COOKIES
-# to FALSE just prevents accepting any new cookies from servers.  To
-# prevent all cookie processing (sending *and* receiving) in a session,
-# make sure that PERSISTENT_COOKIES is not TRUE or that COOKIE_FILE does
-# not point to a file with cookies, in addition to setting SET_COOKIES
-# to FALSE.
-# The default is defined in userdefs.h, and can be overridden here,
-# and/or toggled via the -cookies command line switch.
-#
-#SET_COOKIES:TRUE
-
-# If ACCEPT_ALL_COOKIES is set TRUE, Lynx will accept cookies from all
-# domains with no user interaction.  This is equivalent to automatically
-# replying to all cookie 'Allow?' prompts with 'A'lways.  Note that it
-# does not preempt validity checking, which has to be controlled separately
-# (see below).
-# The default is defined in userdefs.h and can be overridden here, or
-# in the .lynxrc file via an o(ptions) screen setting.  It may also be
-# toggled via the -accept_all_cookies command line switch.
-#
-#ACCEPT_ALL_COOKIES:FALSE
-
-# COOKIE_ACCEPT_DOMAINS and COOKIE_REJECT_DOMAINS are comma-delimited lists
-# of domains from which Lynx should automatically accept or reject cookies
-# without asking for confirmation.  If the same domain is specified in both
-# lists, rejection will take precedence.
-# Note that in order to match cookies, domains have to be spelled out exactly
-# in the form in which they would appear on the Cookie Jar page (case is
-# insignificant).  They are not wildcards.  Domains that apply to more than
-# one host have a leading '.', but have to match *the cookie's* domain
-# exactly.
-#
-#COOKIE_ACCEPT_DOMAINS:
-#COOKIE_REJECT_DOMAINS:
-
-# COOKIE_LOOSE_INVALID_DOMAINS, COOKIE_STRICT_INVALID_DOMAINS, and
-# COOKIE_QUERY_INVALID_DOMAINS are comma-delimited lists of domains.
-# They control the degree of validity checking that is applied to cookies
-# for the specified domains.
-# Note that in order to match cookies, domains have to be spelled out exactly
-# in the form in which they would appear on the Cookie Jar page (case is
-# insignificant).  They are not wildcards.  Domains that apply to more than
-# one host have a leading '.', but have to match *the cookie's* domain
-# exactly.
-# If a domain is set to strict checking, strict conformance to RFC 2109 will
-# be applied.  A domain with loose checking will be allowed to set cookies
-# with an invalid path or domain attribute.  All domains will default to
-# asking the user for confirmation in case of an invalid path or domain.
-# Cookie validity checking takes place as a separate step before the
-# final decision to accept or reject (see previous options), therefore
-# a cookie that passes validity checking may still be automatically
-# rejected or cause another prompt.
-#
-#COOKIE_LOOSE_INVALID_DOMAINS:
-#COOKIE_STRICT_INVALID_DOMAINS:
-#COOKIE_QUERY_INVALID_DOMAINS:
-
-# MAX_COOKIES_DOMAIN,
-# MAX_COOKIES_GLOBAL and
-# MAX_COOKIES_BUFFER are limits on the total number of cookies for each domain,
-# globally, and the per-cookie buffer size.  These limits are by default large
-# enough for reasonable usage; if they are very high, some sites may present
-# undue performance waste.
-#
-#MAX_COOKIES_DOMAIN:50
-#MAX_COOKIES_GLOBAL:500
-#MAX_COOKIES_BUFFER:4096
-
-# PERSISTENT_COOKIES indicates that cookies should be read at startup from
-# the COOKIE_FILE, and saved at exit for storage between Lynx sessions.
-# It is not used if Lynx was compiled without USE_PERSISTENT_COOKIES.
-# The default is FALSE, so that the feature needs to be enabled here
-# explicitly if you want it.
-#
-PERSISTENT_COOKIES:FALSE
-
-# COOKIE_FILE is the default file from which persistent cookies are read
-# at startup (if the file exists), if Lynx was compiled with
-# USE_PERSISTENT_COOKIES and the PERSISTENT_COOKIES option is enabled.
-# The cookie file can also be specified in .lynxrc or on the command line.
-#
-#COOKIE_FILE:~/.lynx_cookies
-
-# COOKIE_SAVE_FILE is the default file in which persistent cookies are
-# stored at exit, if Lynx was compiled with USE_PERSISTENT_COOKIES and the
-# PERSISTENT_COOKIES option is enabled.  The cookie save file can also be
-# specified on the command line.
-#
-# With an interactive Lynx session, COOKIE_SAVE_FILE will default to
-# COOKIE_FILE if it is not set.  With a non-interactive Lynx session (e.g.,
-# -dump), cookies will only be saved to file if COOKIE_SAVE_FILE is set.
-#
-#COOKIE_SAVE_FILE:~/.lynx_cookies
 
 # Vi or Emacs movement keys, i.e. familiar hjkl or ^N^P^F^B .
 # These are defaults, which can be changed in the Options Menu or .lynxrc .
