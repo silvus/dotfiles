@@ -1,0 +1,9 @@
+http://sametmax.com/feed/ tech "~Sam et Max"
+http://linuxfr.org/news.atom tech "~LinuxFr"
+http://www.numerama.com/rss/news.rss tech "Numerama"
+http://rss.slashdot.org/Slashdot/slashdot tech "~Slashdot"
+https://news.ycombinator.com/rss tech "~Hacker News"
+
+http://xkcd.com/rss.xml comic "xkcd"
+
+http://rss.lemonde.fr/c/205/f/3050/index.rss news "~Le Monde"
