@@ -1,6 +1,7 @@
-http://www.numerama.com/rss/news.rss tech "~Numerama"
 https://news.ycombinator.com/rss tech "~Hacker News"
 http://rss.slashdot.org/Slashdot/slashdot tech "~Slashdot"
+http://www.numerama.com/rss/news.rss tech "~Numerama"
+http://www.nextinpact.com/rss/news.xml tech "~Next INpact"
 https://blog.mozilla.org/feed/ tech "~Mozilla"
 
 http://linuxfr.org/news.atom linux "~LinuxFr"
