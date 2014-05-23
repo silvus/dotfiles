@@ -26,7 +26,8 @@ article-sort-order date
 ## configuration option: browser
 ## description: Set the browser command to use when opening an article in the browser. If <browser-command> contains %u, it will be used as complete commandline and %u will be replaced with the URL that shall be opened.
 ## parameter syntax: <browser-command>
-browser lynx
+# browser lynx
+browser ~/.newsbeuter/browse
 
 ## configuration option: datetime-format
 ## description: This format specifies the date/time format in the article list. For a detailed documentation on the allowed formats, consult the manpage of strftime(3).

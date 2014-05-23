@@ -123,6 +123,7 @@ make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
 echo "${blue}--- Newsbeuter ---${reset}"
 dir_check "$HOME/.newsbeuter"
 make_link "newsbeuter/config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/config"
+make_link "newsbeuter/browse" "$DOTFILES_NEWSBEUTER/browse" "$HOME/.newsbeuter/browse"
 
 # Sublime Text 3
 # --------------------------------------------------------

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if echo "$1" | grep -e jpg$ -e jpeg$ -e gif$ -e png$; then
+	# Picture
+	firefox "$1"
+else
+	# Flash
+        if echo "$1" | grep -e swf$ -e flv$; then
+	        firefox "$1"
+	# Text
+        else
+		lynx -cfg=$HOME/.lynx/.lynxrc "$1"
+	fi
+fi
+
