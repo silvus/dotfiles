@@ -41,23 +41,9 @@ sudo apt-get install \
 
 # Need tests
 # ----------------------------------------------------------------
-# Music
-# 	cmus
-# 	MOC - music on console
-# 	Mpg123
-
 # Stats
 # 	GoAccess # Base on access logs, for Apache/Nginx
-# 	cloc # Stats for code
-
-# Scan
-# 	mtr # traceroute
-# 	nmap # Ports scan
-# 	netstat # Ports scan
 
 # Twitter
-# 	ttytter
-#	turses
-
-# Calendar
-# 	calcurse
+# 	ttytter (perl : http://www.floodgap.com/software/ttytter/dist2/2.1.00.txt)
+#	turses (python : https://github.com/alejandrogomez/turses)
