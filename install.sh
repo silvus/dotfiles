@@ -118,6 +118,7 @@ make_link "vimrc" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
 echo "${blue}--- Lynx ---${reset}"
 dir_check "$HOME/.lynx"
 make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
+make_link "lynx_bookmarks.html" "$DOTFILES_LYNX/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
 
 # Newsbeuter
 # --------------------------------------------------------
