@@ -60,8 +60,8 @@ clone_or_update() {
 		( cd "$install_path" && git pull )
 	else
 		# Clone
-		echo "${yellow}Install $depot_name"
-		git clone "$git_url" "$install_path${reset}"
+		echo "${yellow}Install $depot_name${reset}"
+		git clone "$git_url" "$install_path"
 	fi
 }
 
