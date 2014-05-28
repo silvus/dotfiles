@@ -1,14 +1,13 @@
 https://news.ycombinator.com/rss tech "~Hacker News"
 http://rss.slashdot.org/Slashdot/slashdot tech "~Slashdot"
-http://www.numerama.com/rss/news.rss tech "~Numerama"
-http://www.nextinpact.com/rss/news.xml tech "~Next INpact"
+http://bridge.silvus.fr/?action=display&bridge=NumeramaBridge&format=AtomFormat
+http://bridge.silvus.fr/?action=display&bridge=NextInpactBridge&format=AtomFormat
 https://blog.mozilla.org/feed/ tech "~Mozilla"
 
 http://linuxfr.org/news.atom linux "~LinuxFr"
 http://feeds.feedburner.com/d0od linux "~OMG! Ubuntu!"
 http://feeds2.feedburner.com/webupd8 linux "~Web Upd8"
 http://lubuntu.net/rss.xml linux "~Lubuntu"
-http://lubuntublog.blogspot.com/feeds/posts/default?alt=rss linux "~Lubuntu Blog"
 
 http://sametmax.com/feed/ blog "~Sam et Max"
 http://sebsauvage.net/rhaa/rss_fulltext.php blog "~Sebsauvage blog"
@@ -22,17 +21,13 @@ http://taylorotwell.com/feed/ blog "~Taylor Otwell"
 http://fideloper.com/feed blog "~Fideloper"
 http://nikic.github.io/rss.xml blog "~Nikic"
 https://igor.io/index.atom blog "~Igor"
-http://feeds.feedburner.com/Ircmaxell blog "~William Durand"
-http://williamdurand.fr/atom.xml blog "~Ircmaxell"
+http://feeds.feedburner.com/Ircmaxell blog "~Ircmaxell"
+http://williamdurand.fr/atom.xml blog "~William Durand"
 http://paulrouget.com/index.xml blog "~Paul Rouget"
 http://notch.net/feed/ blog "~Notch"
 http://www.maitre-eolas.fr/feed/atom blog "~Journal d'un avocat"
 http://ploum.net/feed/ blog "~Ploum"
 http://odieuxconnard.wordpress.com/feed/ blog "~Odieux Connard"
-
-http://xkcd.com/rss.xml comic "~xkcd"
-http://www.commitstrip.com/fr/feed/ comic "~Commitstrip"
-http://feeds.feedburner.com/oatmealfeed comic "~Oatmeal"
 
 http://rss.lemonde.fr/c/205/f/3050/index.rss news "~Le Monde"
 http://reflets.info/feed/ news "~Reflets"

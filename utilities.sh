@@ -20,14 +20,13 @@ sudo apt-get install \
 
 # Need Configuration
 # ----------------------------------------------------------------
-# Mail
-# 	mutt
+# gitconfig :
+
+# Mail :
+#	mutt-patched
+# 	Sylpheed
 
 # Need tests
 # ----------------------------------------------------------------
 # Stats
 # 	GoAccess # Base on access logs, for Apache/Nginx
-
-# Twitter
-# 	ttytter (perl : http://www.floodgap.com/software/ttytter/dist2/2.1.00.txt)
-#	turses (python : https://github.com/alejandrogomez/turses)
