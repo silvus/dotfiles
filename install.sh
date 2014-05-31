@@ -8,6 +8,7 @@ DOTFILES_VIM="$DOTFILES_DIR/vim"
 DOTFILES_TMUX="$DOTFILES_DIR/tmux"
 DOTFILES_LYNX="$DOTFILES_DIR/lynx"
 DOTFILES_NEWSBEUTER="$DOTFILES_DIR/newsbeuter"
+DOTFILES_RANGER="$DOTFILES_DIR/ranger"
 DOTFILES_SUBLIMETEXT="$DOTFILES_DIR/sublime_text_3"
 
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
@@ -119,6 +120,12 @@ echo "${blue}--- Lynx ---${reset}"
 dir_check "$HOME/.lynx"
 make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
 make_link "lynx_bookmarks.html" "$DOTFILES_LYNX/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
+
+# Ranger
+# --------------------------------------------------------
+echo "${blue}--- Ranger ---${reset}"
+dir_check "$HOME/.config/ranger"
+make_link "rc.conf" "$DOTFILES_RANGER/rc.conf" "$HOME/.config/ranger/rc.conf"
 
 # Newsbeuter
 # --------------------------------------------------------

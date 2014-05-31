@@ -1,6 +1,9 @@
 # Virtualenvwrapper projects root folder
 export PROJECT_HOME="/data/dev"
 
+# Doc folder
+export DOCUMENTATION_HOME="/data/doc"
+
 # Launch simple web server
 alias server="python3 -m http.server"
 

@@ -16,7 +16,8 @@ sudo apt-get install \
 	vim `# Text editor` \
 	tmux `# Split terminal` \
 	lynx `# Web browser` \
-	newsbeuter `# Rss reader`
+	newsbeuter `# Rss reader`\
+	ranger highlight caca-utils `# File manager and dependencies`
 
 # Need Configuration
 # ----------------------------------------------------------------
