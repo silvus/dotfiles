@@ -2,7 +2,7 @@
 	"always_show_minimap_viewport": true,
 	"default_line_ending": "unix",
 	"detect_indentation": false,
-	"ensure_newline_at_eof_on_save": true,
+	"ensure_newline_at_eof_on_save": false,
 	"font_size": 10,
 	"highlight_modified_tabs": true,
 	"ignored_packages":
