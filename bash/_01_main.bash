@@ -39,36 +39,6 @@ alias dockercleancontainers="sudo docker.io ps -a --no-trunc | grep 'Exit' | awk
 alias dockercleanimages="sudo docker.io images -a --no-trunc | grep none | awk '{print \$3}' | xargs -L 1 -r sudo docker.io rmi" # Remove Docker containers with Exit status
 complete -F _docker docker  # Résult from : complete -p docker
 
-# Tmux autostart... Maybe one day...
-# -----------------------------------------------------------------------------
-# if which tmux 2>&1 >/dev/null; then
-#     # if no session is started, start a new session
-#     test -z ${TMUX} && tmux
-
-#     # when quitting tmux, try to attach
-#     while test -z ${TMUX}; do
-#         tmux attach || break
-#     done
-# fi
-
-# Pass
-# -----------------------------------------------------------------------------
-alias pass="vi_sec $DOTFILES_PATH/.pass" # Crypt with :X
-pass_generate() {
-	local lenght=$1
-	[ "$lenght" == "" ] && lenght=16
-	# tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${lenght} | xargs
-	local password=$(tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${lenght})
-	echo "$password"
-
-	if [ -f /usr/bin/xclip ]; then
-		echo $password | tr -d '\n' | xclip -i -selection clipboard
-		echo "Password copied to clipboard"
-	else
-		echo "You should install xclip"
-	fi
-}
-
 # Make a file backup
 # -----------------------------------------------------------------------------
 save() {

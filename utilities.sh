@@ -14,6 +14,8 @@ sudo apt-get install \
 	build-essential `# Compiling things` \
 	ack-grep `# Search` \
 	vim `# Text editor` \
+	xclip `# Add to clipboard` \
+	pass `# Passwords manager` \
 	tmux `# Split terminal` \
 	lynx `# Web browser` \
 	newsbeuter `# Rss reader`\
