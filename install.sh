@@ -126,6 +126,7 @@ make_link "lynx_bookmarks.html" "$DOTFILES_LYNX/lynx_bookmarks.html" "$HOME/.lyn
 echo "${blue}--- Ranger ---${reset}"
 dir_check "$HOME/.config/ranger"
 make_link "rc.conf" "$DOTFILES_RANGER/rc.conf" "$HOME/.config/ranger/rc.conf"
+make_link "rifle.conf" "$DOTFILES_RANGER/rifle.conf" "$HOME/.config/ranger/rifle.conf"
 
 # Newsbeuter
 # --------------------------------------------------------
