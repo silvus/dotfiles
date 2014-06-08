@@ -12,7 +12,7 @@ git config --global core.autocrlf "input"
 
 git config --global alias.st "status"
 git config --global alias.co "commit -a"
-git config --global alias.lg "log --oneline --graph --decorate"
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
 git config --global alias.gr "grep -p"
 git config --global alias.aa "add --all"
 git config --global alias.co "commit -a"
