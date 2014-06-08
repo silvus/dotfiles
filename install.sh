@@ -108,9 +108,6 @@ clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/
 clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic" "Syntastic"
 # Supertab
 clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab" "Supertab"
-# Vim Markdown
-clone_or_update "https://github.com/plasticboy/vim-markdown.git" "$HOME/.vim/bundle/vim-markdown" "Vim Markdown"
-
 
 # Tmux
 # --------------------------------------------------------

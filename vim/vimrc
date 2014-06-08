@@ -12,6 +12,9 @@ set backspace=2           " Backspace in insert mode works like normal editor
 set encoding=utf-8        " Encoding
 set cm=blowfish		  	  " Cryptmethod
 
+" Understand markdown
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
 " Copy
 " ------------------------------------------------------------------------------------
 " set clipboard=unnamedplus " use + buffer (the system clipboard) if +xterm_clipboard
