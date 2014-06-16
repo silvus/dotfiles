@@ -102,14 +102,18 @@ echo "${blue}--- Vim plugins ---${reset}"
 echo "Pathogen"
 curl -LSso "$HOME/.vim/autoload/pathogen.vim" "https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
 
-# Nerdtree
-# clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree" "Nerdtree"
+# Ctrl P
+clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp" "Ctrl P"
+# Vim Airline
+clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline" "Vim Airline"
 # Syntastic
 clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic" "Syntastic"
 # Supertab
 clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab" "Supertab"
-# Ctrl P
-clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp" "Ctrl P"
+# Nerdtree
+# clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree" "Nerdtree"
+# Vim Fugitive
+# clone_or_update "https://github.com/tpope/vim-fugitive.git" "$HOME/.vim/bundle/vim-fugitive" "Vim Fugitive"
 
 # Tmux
 # --------------------------------------------------------

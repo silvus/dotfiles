@@ -21,15 +21,3 @@ sudo apt-get install \
 	newsbeuter `# Rss reader`\
 	ranger highlight caca-utils `# File manager and dependencies`
 
-# Need Configuration
-# ----------------------------------------------------------------
-# gitconfig :
-
-# Mail :
-#	mutt-patched
-# 	Sylpheed
-
-# Need tests
-# ----------------------------------------------------------------
-# Stats
-# 	GoAccess # Base on access logs, for Apache/Nginx

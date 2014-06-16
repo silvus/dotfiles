@@ -10,24 +10,35 @@ set wildmenu              " Show list instead of just completing
 set nowrap                " Don't wrap text
 set backspace=2           " Backspace in insert mode works like normal editor
 set encoding=utf-8        " Encoding
-set cm=blowfish		      " Cryptmethod
+set cm=blowfish           " Cryptmethod
+set hidden                " Switch between buffers without saving
+set splitright            " Split windows
 
-" Understand markdown
+" Understand *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Spaces - Tabs - Indent
 " ------------------------------------------------------------------------------------
-set tabstop=4       	  " Number of visual spaces per TAB
-set softtabstop=4   	  " Number of spaces in tab when editing
-set expandtab       	  " Tabs are spaces
-" filetype indent on      " load filetype-specific indent files
+set tabstop=4             " Number of visual spaces per TAB
+set softtabstop=4         " Number of spaces in tab when editing
+set expandtab             " Tabs are spaces
+filetype on
+filetype plugin on
+filetype indent on        " Load filetype-specific indent files
 
-" Copy
+" Keymap
 " ------------------------------------------------------------------------------------
+" Copy
 " set clipboard=unnamedplus " use + buffer (the system clipboard) if +xterm_clipboard
 " In line copy and paste to system clipboard
 vmap <C-c> y:call system("xclip -i -selection clipboard", getreg("\""))<CR>:call system("xclip -i", getreg("\""))<CR>
 nmap <C-v> :call setreg("\"",system("xclip -o -selection clipboard"))<CR>p
+
+" Split with Ctrl + hjkl
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 " Search
 " ------------------------------------------------------------------------------------
@@ -46,12 +57,13 @@ set directory=~/.vim/swap/
 " ------------------------------------------------------------------------------------
 set t_Co=256              " Enable 256-color mode.
 syntax enable             " Enable syntax highlighting (previously syntax on).
-colorscheme jellybeans	  " Set colorscheme
+colorscheme jellybeans    " Set colorscheme
 " colorscheme molokai
 " set background=dark
 
 set ruler                 " Always show info along bottom.
 set rulerformat=%=%h%m%r%w\ %(%c%V%),%l/%L\ %P
+set rulerformat=''
 " set number                " Show line numbers
 set cursorline            " Highlights the current line
 set showmode              " Current mode in status line
@@ -60,43 +72,34 @@ set scrolloff=1           " Places a line between the current line and the scree
 set sidescrolloff=2       " Places a couple columns between the current column and the screen edge
 set showmatch             " Show matching brackets when text indicator is over them
 
-" Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
-" ------------------------------------------------------------------------------------
-" Solution 1
-" Disable Background Color Erase (BCE) so that color schemes render properly when inside 256-color tmux and GNU screen.
-if &term =~ '256color'
-  set t_ut=
-endif
-
-" Solution 2
-" Make Vim recognize XTerm escape sequences for Page and Arrow keys combined with modifiers such as Shift, Control, and Alt
-" if &term =~ '^screen'
-"   " Page keys http://sourceforge.net/p/tmux/tmux-code/ci/master/tree/FAQ
-"   execute "set t_kP=\e[5;*~"
-"   execute "set t_kN=\e[6;*~"
-"
-"   " Arrow keys http://unix.stackexchange.com/a/34723
-"   execute "set <xUp>=\e[1;*A"
-"   execute "set <xDown>=\e[1;*B"
-"   execute "set <xRight>=\e[1;*C"
-"   execute "set <xLeft>=\e[1;*D"
-" endif
-
 " Status line
 " ------------------------------------------------------------------------------------
 set laststatus=2          " Last window always has a statusline
+set timeoutlen=50
 
-" Colors list (http://vim.wikia.com/wiki/Xterm256_color_names_for_console_Vim?file=Xterm-color-table.png)
-hi User1 	ctermfg=15	ctermbg=0	cterm=NONE " White on Black
-hi User2 	ctermfg=0	ctermbg=2	cterm=NONE " Black on Green
-hi User3 	ctermfg=15	ctermbg=9	cterm=bold " White on Red (bold)
-hi User4 	ctermfg=15	ctermbg=4	cterm=NONE " White on Blue
-hi User5 	ctermfg=0	ctermbg=4	cterm=NONE " Black on Blue
+" Plugins
+" ------------------------------------------------------------------------------------
+" vim-airline
+let g:airline_theme = 'jellybeans'
+let g:airline_enable_branch = 1
+let g:airline_enable_syntastic = 1
+let g:airline#extensions#tabline#enabled = 1
 
-set statusline=
-set statusline+=%2*\ %<%F\            		" Full path
-set statusline+=%= 							" Right-aligh everything past this point
-set statusline+=%3*%w%h%m%r             	" Options and Modified flag
-set statusline+=%4*\ %y\                	" File type
-set statusline+=%5*[%{&ff}]\            	" File format
-set statusline+=%1*\ [%l/%L]\ [%p%%]\ 		" Rownumber/total %
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_readonly_symbol = '[RO]'
+" let g:airline_branch_prefix = ''
+" let g:airline_linecolumn_prefix = ''
+
+" Ctrl P
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+let g:ctrlp_clear_cache_on_exit=0
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*,*/__pycache__/*
+
+" Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
+" ------------------------------------------------------------------------------------
+if &term =~ '256color'
+  set t_ut=
+endif
