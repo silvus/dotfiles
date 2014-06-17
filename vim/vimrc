@@ -31,8 +31,8 @@ filetype indent on        " Load filetype-specific indent files
 " Copy
 " set clipboard=unnamedplus " use + buffer (the system clipboard) if +xterm_clipboard
 " In line copy and paste to system clipboard
-vmap <C-c> y:call system("xclip -i -selection clipboard", getreg("\""))<CR>:call system("xclip -i", getreg("\""))<CR>
-nmap <C-v> :call setreg("\"",system("xclip -o -selection clipboard"))<CR>p
+" vmap <C-c> y:call system("xclip -i -selection clipboard", getreg("\""))<CR>:call system("xclip -i", getreg("\""))<CR>
+" nmap <C-v> :call setreg("\"",system("xclip -o -selection clipboard"))<CR>p
 
 " Split with Ctrl + hjkl
 nnoremap <C-J> <C-W><C-J>
