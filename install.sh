@@ -10,6 +10,7 @@ DOTFILES_LYNX="$DOTFILES_DIR/lynx"
 DOTFILES_NEWSBEUTER="$DOTFILES_DIR/newsbeuter"
 DOTFILES_RANGER="$DOTFILES_DIR/ranger"
 DOTFILES_SUBLIMETEXT="$DOTFILES_DIR/sublime_text_3"
+DOTFILES_VIRTUALENV="$DOTFILES_DIR/virtualenvs"
 
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
 SUBLIMETEXT_CONF_KEYMAP="Default (Linux).sublime-keymap"
@@ -142,6 +143,13 @@ make_link "newsbeuter_config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/c
 make_link "newsbeuter_browse" "$DOTFILES_NEWSBEUTER/browse" "$HOME/.newsbeuter/browse"
 make_link "newsbeuter_urls" "$DOTFILES_NEWSBEUTER/urls" "$HOME/.newsbeuter/urls"
 
+# Virtualenvwrapper
+# --------------------------------------------------------
+if [ -d "/data/dev/.virtualenvs" ]; then
+    echo "${blue}--- Virtualenv Hooks ---${reset}" 
+    make_link "postactivate" "$DOTFILES_VIRTUALENV/postactivate" "/data/dev/.virtualenvs/postactivate"
+fi
+
 # Sublime Text 3
 # --------------------------------------------------------
 if [ -d "/opt/sublime_text" ]; then
@@ -157,3 +165,4 @@ fi
 # End
 # --------------------------------------------------------
 echo "${blue}--- Done ! ---${reset}"
+
