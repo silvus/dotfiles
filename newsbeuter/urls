@@ -1,5 +1,6 @@
 https://news.ycombinator.com/rss tech "~Hacker News"
 http://rss.slashdot.org/Slashdot/slashdot tech "~Slashdot"
+http://techcrunch.com/feed/ "~TechCrunch"
 http://bridge.silvus.fr/?action=display&bridge=NumeramaBridge&format=AtomFormat
 http://bridge.silvus.fr/?action=display&bridge=NextInpactBridge&format=AtomFormat
 https://blog.mozilla.org/feed/ tech "~Mozilla"
@@ -19,6 +20,7 @@ http://blog.goetter.fr/feed.xml blog "~Goetter"
 http://philsturgeon.co.uk/blog/rss/all.rss blog "~Phil Sturgeon"
 http://taylorotwell.com/feed/ blog "~Taylor Otwell"
 http://fideloper.com/feed blog "~Fideloper"
+http://serversforhackers.com/feed.xml "~Servers for Hackers"
 http://nikic.github.io/rss.xml blog "~Nikic"
 https://igor.io/index.atom blog "~Igor"
 http://feeds.feedburner.com/Ircmaxell blog "~Ircmaxell"
