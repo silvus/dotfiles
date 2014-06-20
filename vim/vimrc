@@ -28,6 +28,8 @@ filetype indent on        " Load filetype-specific indent files
 
 " Keymap
 " ------------------------------------------------------------------------------------
+let mapleader=","         " Change the mapleader from \ to ,
+
 " Copy
 " set clipboard=unnamedplus " use + buffer (the system clipboard) if +xterm_clipboard
 " In line copy and paste to system clipboard
