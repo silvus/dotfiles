@@ -1,19 +1,84 @@
 #!/usr/bin/env bash
 
-# Open doc folder with ranger
-# -----------------------------------------------------------------------------
+usage() {
+cat << EOF
+$0 [OPTIONS]
 
-# Check if ranger is installed
-if [[ ! -x /usr/bin/ranger ]]; then
-	echo "Ranger is not installed"
-	exit 0
-fi
+Commit/update and open doc folder with ranger or vim.
 
-# Check if $DOCUMENTATION_HOME exist
-if [[ -d "$DOCUMENTATION_HOME" ]]; then
-	ranger $DOCUMENTATION_HOME
-else
-	echo "$DOCUMENTATION_HOME is not a folder"
-	exit 0
-fi
+OPTIONS:
+    -h       Show this message
+    -g       Do not update/commit
+    -v       Open with vim
+EOF
+}
 
+# Variables - Default values
+# ------------------------------
+# Open with ranger
+OPEN_WITH="ranger"
+
+# Update/Commit by default
+COMMIT=1
+
+# Go to docs folder if exist
+# ------------------------------
+goto_folder() {
+    if [[ -d "$DOCUMENTATION_HOME" ]]; then
+        cd "$DOCUMENTATION_HOME"
+    else
+        echo "$DOCUMENTATION_HOME is not a folder"
+        exit 0
+    fi
+}
+
+# Update and commit
+# ------------------------------
+autocommit() {
+    if [[ "$COMMIT" -eq 1 ]]; then
+        git pull origin master
+        git add .
+        git commit -m "Autocommit $(date +'%d/%m/%Y %T')"
+    fi
+}
+
+# Open doc folder
+# ------------------------------
+open_folder() {
+    # Open with vi
+    if [[ "$OPEN_WITH" == "vim" ]]; then
+        vim
+
+    # Check if ranger is installed
+    elif [[ -x "/usr/bin/ranger" ]]; then
+        ranger
+
+    # No Ranger ? Try vim...
+    else
+        echo "Ranger is not installed"
+        vim
+    fi
+}
+
+# Parse arguments
+# ------------------------------
+while getopts hvg OPTIONS; do
+    case "$OPTIONS" in
+        h)
+            usage
+            exit 0
+            ;;
+        v)
+            OPEN_WITH="vim"
+            ;;
+        g)
+            COMMIT=0
+            ;;
+    esac
+done
+
+# Main
+# ------------------------------
+goto_folder
+autocommit
+open_folder
