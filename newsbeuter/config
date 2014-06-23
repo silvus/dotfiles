@@ -138,9 +138,9 @@ show-read-articles no
 
 # Colorschemes
 color listnormal green default
-color listfocus green default reverse
+color listfocus white default reverse
 color listnormal_unread green default
-color listfocus_unread green default reverse
+color listfocus_unread white default reverse
 color info green default reverse
 color background green default
 color article default default
