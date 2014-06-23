@@ -135,3 +135,13 @@ show-read-feeds no
 ## parameter syntax: [yes/no]
 # show-read-articles yes
 show-read-articles no
+
+# Colorschemes
+color listnormal green default
+color listfocus green default reverse
+color listnormal_unread green default
+color listfocus_unread green default reverse
+color info green default reverse
+color background green default
+color article default default
+
