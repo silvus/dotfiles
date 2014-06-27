@@ -133,5 +133,20 @@ show-read-feeds no
 ## configuration option: show-read-articles
 ## description: If yes, then all articles of a feed are listed in the article list. If no, then only unread articles are listed.
 ## parameter syntax: [yes/no]
-# show-read-articles yes
+# show-read-articles yes
 show-read-articles no
+
+# Colorschemes
+color listnormal green default
+color listfocus white default reverse
+color listnormal_unread green default
+color listfocus_unread white default reverse
+color info green default reverse
+color background green default
+color article default default
+
+# highlights
+highlight article "^(Feed|Link):.*$" green default bold
+highlight article "^(Title|Date|Author):.*$" green default bold
+highlight article "https?://[^ ]+" green default underline
+
