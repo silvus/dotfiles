@@ -33,6 +33,7 @@ browser ~/.newsbeuter/browse
 ## description: This format specifies the date/time format in the article list. For a detailed documentation on the allowed formats, consult the manpage of strftime(3).
 ## parameter syntax: <date/time format>
 # datetime-format %b %d
+datetime-format %R
 
 ## configuration option: feed-sort-order
 ## description: If set to "firsttag", the feeds in the feed list will be sorted by their first tag in the urls file.
