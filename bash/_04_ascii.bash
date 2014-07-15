@@ -50,7 +50,6 @@ asciiart() {
 	local HOST=$(hostname -s)
 	local IP_LOCAL=$(hostname  -I | cut -f1 -d' ')
 	local UPTIME=$(_uptime)
-	local UPDATE=$(_packageupdate)
 
 	# Colors
 	local green=$(tput -Txterm setaf 2;tput setab 0)
@@ -59,9 +58,9 @@ asciiart() {
 
 	echo -e "$backgreen"'      .--.     '"$green" "${USER^} - ${HOST^} - $IP_LOCAL"
 	echo -e "$backgreen"'     |o_o |    '"$green" "$OS $ARCH $KERNEL"
-	echo -e "$backgreen"'     |:_/ |    '"$green" "Uptime $UPTIME"
-	echo -e "$backgreen"'    //   \ \   '
-	echo -e "$backgreen"'   (|     | )  '"$green" "$UPDATE"
+	echo -e "$backgreen"'     |:_/ |    '
+	echo -e "$backgreen"'    //   \ \   '"$green" "Uptime $UPTIME"
+	echo -e "$backgreen"'   (|     | )  '
 	echo -e "$backgreen"'  / \_   _/ \  '
 	echo -e "$backgreen"'  \___)=(___/  '"$green" "${DATE^}"
 	echo -e  "$reset"
