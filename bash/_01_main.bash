@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 export HISTSIZE=2000 # Lines in memory
 export HISTFILESIZE=10000 # Lines on disk
-export HISTCONTROL=erasedups # Erase duplicates
+export HISTCONTROL=ignoreboth # ignoredups + ignorespace
 
 # Navigation
 # -----------------------------------------------------------------------------
