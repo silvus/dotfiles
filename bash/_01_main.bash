@@ -19,7 +19,7 @@ alias ......='cd ../../../../../'
 # -----------------------------------------------------------------------------
 alias l='ls -lhaF --color=always'
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
-alias git='LANG=en_US git'
+alias git='LC_ALL=en_US git'
 # Searches for duplicate file (size and md5)
 alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
 alias process='ps aux | grep'
