@@ -49,7 +49,7 @@ _vcs_prompt_git() {
 	# Defaut color
 	local STATE_COLOR="${blue}"
 	# Defaut picto
-	local PICTO="★"
+	local PICTO="✔"
 
 	local STATUS="$(git status 2>&1)"
 
