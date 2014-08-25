@@ -19,6 +19,7 @@ SUBLIMETEXT_CONF_SIDEBAR="Side Bar.sublime-settings"
 SUBLIMETEXT_CONF_MARKDOWN="Markdown.sublime-settings"
 SUBLIMETEXT_CONF_PHP="PHP.sublime-settings"
 SUBLIMETEXT_CONF_PYTHON="Python.sublime-settings"
+SUBLIMETEXT_CONF_YAML="YAML.sublime-settings"
 
 # Colors
 green=$(tput setaf 2)
@@ -148,7 +149,7 @@ make_link "newsbeuter_urls" "$DOTFILES_NEWSBEUTER/urls" "$HOME/.newsbeuter/urls"
 # Virtualenvwrapper
 # --------------------------------------------------------
 if [ -d "/data/dev/.virtualenvs" ]; then
-    echo "${blue}--- Virtualenv Hooks ---${reset}" 
+    echo "${blue}--- Virtualenv Hooks ---${reset}"
     make_link "postactivate" "$DOTFILES_VIRTUALENV/postactivate" "/data/dev/.virtualenvs/postactivate"
 fi
 
@@ -162,6 +163,7 @@ if [ -d "/opt/sublime_text" ]; then
 	make_link "$SUBLIMETEXT_CONF_MARKDOWN" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_MARKDOWN" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_MARKDOWN"
 	make_link "$SUBLIMETEXT_CONF_PHP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_PHP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_PHP"
 	make_link "$SUBLIMETEXT_CONF_PYTHON" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_PYTHON" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_PYTHON"
+	make_link "$SUBLIMETEXT_CONF_YAML" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_YAML" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_YAML"
 fi
 
 # End
