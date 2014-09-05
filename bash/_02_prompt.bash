@@ -72,8 +72,4 @@ _vcs_prompt_git() {
 	echo "${bold}${black}-[${STATE_COLOR}${GIT_PROMPT}${black}]${black}-[${STATE_COLOR}${PICTO}${black}]${reset}"
 }
 
-prompt_func() {
-	export PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_vcs_name)${reset}\$ '
-}
-
-PROMPT_COMMAND=prompt_func
+export PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_vcs_name)${reset}\$ '
