@@ -3,7 +3,10 @@
 
 # Change prompt
 # ----------------------------------------------------------------
-PS1="[`basename \"$VIRTUAL_ENV\"`] $_OLD_VIRTUAL_PS1"
+prompt_func() {
+	export PS1="[`basename \"$VIRTUAL_ENV\"`] $_OLD_VIRTUAL_PS1"
+}
+PROMPT_COMMAND=prompt_func
 
 # Go to directory and update
 # ----------------------------------------------------------------
@@ -13,7 +16,7 @@ if [ -d "$VIRTUAL_ENV_ABSOLUTE" ]; then
 	cd "$VIRTUAL_ENV_ABSOLUTE"
 
 	# git update
-	if [ "git rev-parse --git-dir > /dev/null 2>&1" ]; then
+	if [ -d "$VIRTUAL_ENV_ABSOLUTE/.git" ]; then
 		git pull origin master
 	fi
 fi
