@@ -27,3 +27,5 @@ git config --global difftool.prompt false
 
 git config --global github.user "Silvus"
 git config --global credential.helper "cache --timeout=3600"
+
+git config --global core.excludesfile ~/.gitignore_global

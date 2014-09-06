@@ -82,6 +82,10 @@ dir_check() {
 echo "${blue}--- Bash ---${reset}"
 make_link "bash_aliases" "$DOTFILES_BASH/bash_aliases" "$HOME/.bash_aliases"
 
+# Git
+# --------------------------------------------------------
+make_link "gitignore_global" "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
+
 # Vim
 # --------------------------------------------------------
 echo "${blue}--- Vim ---${reset}"
