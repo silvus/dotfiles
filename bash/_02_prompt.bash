@@ -54,7 +54,7 @@ _vcs_prompt_git() {
 	local STATUS="$(git status 2>&1)"
 
 	if [[ "$STATUS" == *'Not a git repository'* ]]; then
-        exit 0
+		echo ''
     else
         if [[ "$STATUS" != *'working directory clean'* ]]; then
             # red if need to commit
