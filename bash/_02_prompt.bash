@@ -13,6 +13,11 @@ cyan=$(tput -Txterm setaf 6)
 bold=$(tput -Txterm bold)
 reset=$(tput -Txterm sgr0)
 
+# Terminal size
+# TODO : Make a minimalist prompt when terminal width < ?
+# terminal_width=$(tput cols)
+# terminal_height=$(tput lines)
+
 # Prompt
 # --------------------------------------------------------------------------------------
 
