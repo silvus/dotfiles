@@ -106,7 +106,5 @@ else
     PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_end_prompt) '
 fi
 
-echo "$terminal_width"
-
 export PS1
 
