@@ -14,12 +14,9 @@ bold=$(tput -Txterm bold)
 reset=$(tput -Txterm sgr0)
 
 # Terminal size
-# TODO : Make a minimalist prompt when terminal width < ?
-# terminal_width=$(tput cols)
+terminal_width=$(tput cols)
 # terminal_height=$(tput lines)
 
-# Prompt
-# --------------------------------------------------------------------------------------
 
 # Utility function so we can test for things like .git/.hg without firing up a separate process
 _has_parent_dir() {
@@ -37,7 +34,7 @@ _has_parent_dir() {
 }
 
 _vcs_name() {
-	if [ -d .svn ]; then
+	if  [[ -d .svn ]]; then
 		echo "-[svn]";
 	elif _has_parent_dir ".git"; then
 		_vcs_prompt_git
@@ -77,4 +74,14 @@ _vcs_prompt_git() {
 	echo "${bold}${black}-[${STATE_COLOR}${GIT_PROMPT}${black}]${black}-[${STATE_COLOR}${PICTO}${black}]${reset}"
 }
 
-export PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_vcs_name)${reset}\$ '
+
+# Prompt
+# --------------------------------------------------------------------------------------
+if [[ "$terminal_width" < 80 ]]; then
+    # Short prompt
+    export PS1='${bold}${black}[${green}\u${yellow}@${green}\h${black}][${pink}\W${black}]${reset}\$ '
+else
+    export PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_vcs_name)${reset}\$ '
+fi
+
+
