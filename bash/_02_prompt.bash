@@ -34,7 +34,7 @@ _has_parent_dir() {
 }
 
 _vcs_name() {
-	if  [[ -d .svn ]]; then
+	if [[ -d ".svn" ]]; then
 		echo "-[svn]";
 	elif _has_parent_dir ".git"; then
 		_vcs_prompt_git
@@ -77,11 +77,12 @@ _vcs_prompt_git() {
 
 # Prompt
 # --------------------------------------------------------------------------------------
-if [[ "$terminal_width" < 80 ]]; then
+# 120 >= terminal_width
+if [[ 120 -ge "$terminal_width" ]]; then
     # Short prompt
     export PS1='${bold}${black}[${green}\u${yellow}@${green}\h${black}][${pink}\W${black}]${reset}\$ '
 else
     export PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_vcs_name)${reset}\$ '
 fi
 
-
+echo "$terminal_width"
