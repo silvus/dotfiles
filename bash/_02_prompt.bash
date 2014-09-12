@@ -45,8 +45,8 @@ _has_parent_dir() {
     test -d "$1" && return 0;
 
     current="."
-    while [ ! "$current" -ef "$current/.." ]; do
-        if [ -d "$current/$1" ]; then
+    while [[ ! "$current" -ef "$current/.." ]]; do
+        if [[ -d "$current/$1" ]]; then
             return 0;
         fi
         current="$current/..";
@@ -57,12 +57,10 @@ _has_parent_dir() {
 
 _end_prompt() {
     if [[ -d ".svn" ]]; then
-        echo "${yellow}-[svn]${reset}";
+        echo "${yellow}-[svn]${reset}"
     elif _has_parent_dir ".git"; then
         _vcs_prompt_git
-    elif _has_parent_dir ".hg"; then
-        echo "-[hg $(hg branch)]"
-    else 
+    else
         echo "${reset}\$"
     fi
 }
@@ -72,7 +70,6 @@ _vcs_prompt_git() {
     local STATUS="$(git status 2>&1)"
 
     if [[ "$STATUS" != *'Not a git repository'* ]]; then
-
         local GIT_PROMPT=$(__git_ps1 '%s')
         # Defaut color
         local STATE_COLOR="$blue"
@@ -89,8 +86,8 @@ _vcs_prompt_git() {
             PICTO="↑"
         fi
 
-        if [[ 120 -ge "$terminal_width" ]]; then
-            # Short version - without branch 
+        if [[ 120 -ge "$terminal_width" ]] && [[ "$terminal_width" != 80 ]]; then
+            # Short version - without branch
             echo "${STATE_COLOR}${PICTO}${reset}"
         else
             echo "${black}-[${STATE_COLOR}${GIT_PROMPT}${black}]${STATE_COLOR}${PICTO}${reset}"
@@ -101,13 +98,15 @@ _vcs_prompt_git() {
 
 # Prompt
 # --------------------------------------------------------------------------------------
-# 120 >= terminal_width
-if [[ 120 -ge "$terminal_width" ]]; then
+# 120 >= terminal_width (80 ... bug with guake ?)
+if [[ 120 -ge "$terminal_width" ]] && [[ "$terminal_width" != 80 ]]; then
     # Short prompt
     PS1='${bold}${black}[${green}\u${yellow}@${green}\h${black}][${pink}\W${black}]$(_end_prompt) '
 else
     PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_end_prompt) '
 fi
+
+echo "$terminal_width"
 
 export PS1
 
