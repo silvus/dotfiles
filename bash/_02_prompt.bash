@@ -85,4 +85,3 @@ else
     export PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_vcs_name)${reset}\$ '
 fi
 
-echo "$terminal_width"
