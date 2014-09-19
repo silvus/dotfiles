@@ -14,8 +14,11 @@ bold=$(tput -Txterm bold)
 reset=$(tput -Txterm sgr0)
 
 # Terminal size
-terminal_width=$(tput cols)
+# terminal_width=$(tput cols)
 # terminal_height=$(tput lines)
+if [[ -z "$PROMPT_LENGTH" ]]; then
+    PROMPT_LENGTH="normal" # or "short"
+fi
 
 # TODO : Do something more clean with this
 # https://github.com/taringamberini/vcs-bash-prompt
@@ -86,7 +89,7 @@ _vcs_prompt_git() {
             PICTO="↑"
         fi
 
-        if [[ 120 -ge "$terminal_width" ]] && [[ "$terminal_width" != 80 ]]; then
+        if [[ "$PROMPT_LENGTH" == "short" ]]; then
             # Short version - without branch
             echo "${STATE_COLOR}${PICTO}${reset}"
         else
@@ -98,8 +101,7 @@ _vcs_prompt_git() {
 
 # Prompt
 # --------------------------------------------------------------------------------------
-# 120 >= terminal_width (80 ... bug with guake ?)
-if [[ 120 -ge "$terminal_width" ]] && [[ "$terminal_width" != 80 ]]; then
+if [[ "$PROMPT_LENGTH" == "short" ]]; then
     # Short prompt
     PS1='${bold}${black}[${green}\u${yellow}@${green}\h${black}][${pink}\W${black}]$(_end_prompt) '
 else
