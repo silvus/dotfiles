@@ -59,3 +59,13 @@ search() {
 		grep -rnI --exclude-dir=dir --color=always "$1" .
 	fi
 }
+
+# Prompt
+# -----------------------------------------------------------------------------
+TXTRESET='\[\e[0m\]'
+TXTGREEN='\[\e[0;32m\]'
+TXTYELLOW='\[\e[0;33m\]'
+TXTBLUE="\[\e[0;34m\]"
+TXTRED="\[\e[0;31m\]"
+
+PS1="┌─[${TXTUSER}\u${TXTYELLOW}@${TXTGREEN}\h${TXTRESET}]\n└─[${TXTBLUE}\w${TXTRESET}] \$ "
