@@ -1,0 +1,47 @@
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
+
+alias l='ls -lhaF --color=always'
+
+alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
+alias process='ps aux | grep'
+
+# Extract a package without pain
+# -----------------------------------------------------------------------------
+extract() {
+	if [[ -f "$1" ]]; then
+		case "$1" in
+			(*.7z) 7z x "$1" ;;
+			(*.lzma) unlzma "$1" ;;
+			(*.rar) unrar x "$1" ;;
+			(*.tar) tar xvf "$1" ;;
+			(*.tar.bz2) tar xvjf "$1" ;;
+			(*.bz2) bunzip2 "$1" ;;
+			(*.tar.gz) tar xvzf "$1" ;;
+			(*.gz) gunzip "$1" ;;
+			(*.tar.xz) tar Jxvf "$1" ;;
+			(*.xz) xz -d "$1" ;;
+			(*.tbz2) tar xvjf "$1" ;;
+			(*.tgz) tar xvzf "$1" ;;
+			(*.zip) unzip "$1" ;;
+			(*.Z) uncompress ;;
+			(*) echo "Don't know how to extract $1"	;;
+		esac
+	else
+		echo "Error: "$1" is not a valid file"
+	fi
+}
+
+# Quick search in a directory for a string ($1).
+# -----------------------------------------------------------------------------
+search() {
+	if [[ -x "/usr/bin/ack-grep" ]]; then
+		ack-grep "$1" .
+	else
+		grep -rnI --exclude-dir=dir --color=always "$1" .
+	fi
+}

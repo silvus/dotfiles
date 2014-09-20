@@ -35,10 +35,10 @@ make_link() {
 	local file_path="$3"
 
 	#  If file_path is not already a symlink or doesn't exist
-	if [ ! -L "$file_path" ]; then
+	if [[ ! -L "$file_path" ]]; then
 
 		# File already exist, make backup
-		if [ -f "$file_path" ]; then
+		if [[ -f "$file_path" ]]; then
 			echo "${yellow}Backup current $file_name in $DOTFILES_DIR/backup/$file_name.bak${reset}"
 			mv "$file_path" "$DOTFILES_DIR/backup/$file_name.bak"
 		fi
@@ -57,7 +57,7 @@ clone_or_update() {
 	local install_path="$2"
 	local depot_name="$3"
 
-	if [ -d "$install_path" ]; then
+	if [[ -d "$install_path" ]]; then
 		# Update
 		echo "${green}Update $depot_name${reset}"
 		( cd "$install_path" && git pull )
@@ -72,7 +72,7 @@ clone_or_update() {
 # --------------------------------------------------------
 dir_check() {
 	local dir_path="$1"
-	if [ ! -d "$dir_path" ]; then
+	if [[ ! -d "$dir_path" ]]; then
 		mkdir -p "$dir_path"
 	fi
 }
@@ -128,6 +128,13 @@ clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/su
 echo "${blue}--- Tmux ---${reset}"
 make_link "vimrc" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
 
+# SSHRC
+# --------------------------------------------------------
+echo "${blue}--- SSHRC ---${reset}"
+curl -sS "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" -o "$DOTFILES_DIR/bin/sshrc"
+chmod 775 "$DOTFILES_DIR/bin/sshrc"
+make_link "sshrc" "$DOTFILES_DIR/sshrc/sshrc" "$HOME/.sshrc"
+
 # Lynx
 # --------------------------------------------------------
 echo "${blue}--- Lynx ---${reset}"
@@ -144,22 +151,24 @@ make_link "rifle.conf" "$DOTFILES_RANGER/rifle.conf" "$HOME/.config/ranger/rifle
 
 # Newsbeuter
 # --------------------------------------------------------
-echo "${blue}--- Newsbeuter ---${reset}"
-dir_check "$HOME/.newsbeuter"
-make_link "newsbeuter_config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/config"
-make_link "newsbeuter_browse" "$DOTFILES_NEWSBEUTER/browse" "$HOME/.newsbeuter/browse"
-make_link "newsbeuter_urls" "$DOTFILES_NEWSBEUTER/urls" "$HOME/.newsbeuter/urls"
+if [[ -x "/usr/bin/newsbeuter" ]]; then
+	echo "${blue}--- Newsbeuter ---${reset}"
+	dir_check "$HOME/.newsbeuter"
+	make_link "newsbeuter_config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/config"
+	make_link "newsbeuter_browse" "$DOTFILES_NEWSBEUTER/browse" "$HOME/.newsbeuter/browse"
+	make_link "newsbeuter_urls" "$DOTFILES_NEWSBEUTER/urls" "$HOME/.newsbeuter/urls"
+fi
 
 # Virtualenvwrapper
 # --------------------------------------------------------
-if [ -d "/data/dev/.virtualenvs" ]; then
+if [[ -d "/data/dev/.virtualenvs" ]]; then
     echo "${blue}--- Virtualenv Hooks ---${reset}"
     make_link "postactivate" "$DOTFILES_VIRTUALENV/postactivate" "/data/dev/.virtualenvs/postactivate"
 fi
 
 # Sublime Text 3
 # --------------------------------------------------------
-if [ -d "/opt/sublime_text" ]; then
+if [[ -d "/opt/sublime_text" ]]; then
 	echo "${blue}--- Sublime Text 3 ---${reset}"
 	make_link "$SUBLIMETEXT_CONF_KEYMAP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_KEYMAP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_KEYMAP"
 	make_link "$SUBLIMETEXT_CONF_SETTINGS" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SETTINGS" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SETTINGS"
