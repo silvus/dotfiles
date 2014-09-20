@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Make a package without pain
+# -----------------------------------------------------------------------------
+
+target=${1%/} # Remove trailing slash
+
+if [[ -f "$target" || -d "$target" ]]; then
+	currentdate=`date +%Y%m%d`
+	tar -zcvf "${target}_${currentdate}.tar.gz" "$target"
+else
+	echo "Error: $target is not valid "
+	exit 1
+fi
+
+exit 0

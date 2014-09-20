@@ -1,3 +1,4 @@
+#!/bin/sh
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -35,6 +36,19 @@ extract() {
 		echo "Error: "$1" is not a valid file"
 	fi
 }
+
+# Make a package without pain
+# -----------------------------------------------------------------------------
+compress() {
+	local target=${1%/}
+	if [[ -f "$target" || -d "$target" ]]; then
+		local currentdate=`date +%Y%m%d`
+		tar -zcvf "${target}_${currentdate}.tar.gz" "$target"
+	else
+		echo "Error: $target is not valid "
+	fi
+}
+
 
 # Quick search in a directory for a string ($1).
 # -----------------------------------------------------------------------------
