@@ -1,28 +1,28 @@
 #!/bin/bash
 
 # Colors
-# black=$(tput -Txterm setaf 0)
-red=$(tput -Txterm setaf 1)
-green=$(tput -Txterm setaf 2)
-yellow=$(tput -Txterm setaf 3)
-blue=$(tput -Txterm setaf 4)
-pink=$(tput -Txterm setaf 5)
-cyan=$(tput -Txterm setaf 6)
+# TXTBLACK=$(tput -Txterm setaf 0)
+TXTRED=$(tput -Txterm setaf 1)
+TXTGREEN=$(tput -Txterm setaf 2)
+TXTYELLOW=$(tput -Txterm setaf 3)
+TXTBLUE=$(tput -Txterm setaf 4)
+# TXTPURPLE=$(tput -Txterm setaf 5)
+TXTCYAN=$(tput -Txterm setaf 6)
 
 # Styles
 # bold=$(tput -Txterm bold)
-reset=$(tput -Txterm sgr0)
+TXTRESET=$(tput -Txterm sgr0)
 
 # Utility function so we can test for things like .git/.hg without firing up a separate process
 _has_parent_dir() {
     test -d "$1" && return 0;
 
-    current="."
+    local current="."
     while [[ ! "$current" -ef "$current/.." ]]; do
         if [[ -d "$current/$1" ]]; then
             return 0;
         fi
-        current="$current/..";
+        local current="$current/..";
     done
 
     return 1;
@@ -35,27 +35,27 @@ _vcs_prompt_git() {
     if [[ "$STATUS" != *'Not a git repository'* ]]; then
         local GIT_PROMPT=$(__git_ps1 '%s')
         # Defaut color
-        local STATE_COLOR="$blue"
+        local STATE_COLOR="$TXTBLUE"
         # Defaut picto
         local PICTO="✔"
 
         if [[ "$STATUS" != *'working directory clean'* ]]; then
             # red if need to commit
-            STATE_COLOR="$red"
-            PICTO="⚡"
+            local STATE_COLOR="$TXTRED"
+            local PICTO="⚡"
         elif [[ "$STATUS" == *'Your branch is ahead'* ]]; then
             # cyan if need to push
-            STATE_COLOR="$cyan"
-            PICTO="↑"
+            local STATE_COLOR="$TXTCYAN"
+            local PICTO="↑"
         fi
 
-        echo "-[${STATE_COLOR}${GIT_PROMPT}${reset}]-[${STATE_COLOR}${PICTO}${reset}]"
+        echo "-[${STATE_COLOR}${GIT_PROMPT}${TXTRESET}]-[${STATE_COLOR}${PICTO}${TXTRESET}]"
     fi
 }
 
 _vcs_prompt() {
     if [[ -d ".svn" ]]; then
-        echo "-[${yellow}svn${reset}]"
+        echo "-[${TXTYELLOW}svn${TXTRESET}]"
     elif _has_parent_dir ".git"; then
         _vcs_prompt_git
     fi
@@ -63,4 +63,4 @@ _vcs_prompt() {
 
 # Prompt
 # --------------------------------------------------------------------------------------
-PS1='\n┌─[${green}\D{%T}${reset}]-[${green}\u${yellow}@${green}\h${reset}]$(_vcs_prompt)\n└─[${blue}\w${reset}] \$ '
+PS1='\n┌─[${TXTGREEN}\D{%T}${TXTRESET}]-[${TXTGREEN}\u${TXTYELLOW}@${TXTGREEN}\h${TXTRESET}]$(_vcs_prompt)\n└─[${TXTBLUE}\w${TXTRESET}] \$ '
