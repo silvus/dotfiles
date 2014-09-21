@@ -26,18 +26,17 @@ asciiart() {
 	local UPTIME=$(_uptime)
 
 	# Colors
-	local green=$(tput -Txterm setaf 2;tput setab 0)
-	local backgreen=$(tput -Txterm setaf 0;tput setab 2)
-	local reset=$(tput -Txterm sgr0)
+	local TXTGREEN=$(tput -Txterm setaf 2)
+	local TXTBLUE=$(tput -Txterm setaf 4)
+	local TXTRESET=$(tput -Txterm sgr0)
 
-	echo -e "$backgreen"'      .--.     '"$green ${USER^} - ${HOST^} - $IP_LOCAL $reset"
-	echo -e "$backgreen"'     |o_o |    '"$green $OS $ARCH $KERNEL $reset"
-	echo -e "$backgreen"'     |:_/ |    '"$reset"
-	echo -e "$backgreen"'    //   \ \   '"$green Uptime $UPTIME $reset"
-	echo -e "$backgreen"'   (|     | )  '"$reset"
-	echo -e "$backgreen"'  / \_   _/ \  '"$reset"
-	echo -e "$backgreen"'  \___)=(___/  '"$green ${DATE^}"
-	echo -e  "$reset"
+	echo -e "$TXTGREEN"'      .--.      '"${USER^} - ${HOST^} - $IP_LOCAL $TXTRESET"
+	echo -e "$TXTGREEN"'     |o_o |     '"OS $ARCH $KERNEL $TXTRESET"
+	echo -e "$TXTGREEN"'     |:_/ |     '
+	echo -e "$TXTGREEN"'    //   \ \    '"Uptime $UPTIME $TXTRESET"
+	echo -e "$TXTGREEN"'   (|     | )   '
+	echo -e "$TXTGREEN"'  / \_   _/ \   '
+	echo -e "$TXTGREEN"'  \___)=(___/   '"${DATE^}$TXTRESET"
 }
 
 asciiart
