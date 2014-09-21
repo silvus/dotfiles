@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Colors
-black=$(tput -Txterm setaf 0)
+# black=$(tput -Txterm setaf 0)
 red=$(tput -Txterm setaf 1)
 green=$(tput -Txterm setaf 2)
 yellow=$(tput -Txterm setaf 3)
@@ -10,38 +10,8 @@ pink=$(tput -Txterm setaf 5)
 cyan=$(tput -Txterm setaf 6)
 
 # Styles
-bold=$(tput -Txterm bold)
+# bold=$(tput -Txterm bold)
 reset=$(tput -Txterm sgr0)
-
-# Terminal size
-# terminal_width=$(tput cols)
-# terminal_height=$(tput lines)
-if [[ -z "$PROMPT_LENGTH" ]]; then
-    PROMPT_LENGTH="normal" # or "short"
-fi
-
-# TODO : Do something more clean with this
-# https://github.com/taringamberini/vcs-bash-prompt
-#_prompt_git() {
-#    $(git rev-parse --is-inside-git-dir 2>/dev/null ) \
-#        && return 1
-#    $(git rev-parse --is-inside-work-tree 2>/dev/null ) \
-#        || return 1
-#    git status &>/dev/null
-#    branch=$(git symbolic-ref --quiet HEAD 2>/dev/null ) \
-#        || branch=$(git rev-parse --short HEAD 2>/dev/null ) \
-#        || branch='unknown'
-#    branch=${branch##*/}
-#    git diff --quiet --ignore-submodules --cached \
-#        || state=${state}+
-#    git diff-files --quiet --ignore-submodules -- \
-#        || state=${state}!
-#    $(git rev-parse --verify refs/stash &>/dev/null ) \
-#        && state=${state}^
-#    [ -n "$(git ls-files --others --exclude-standard )" ] \
-#        && state=${state}?
-#    printf '[%s]' "${branch:-unknown}${state}"
-#}
 
 # Utility function so we can test for things like .git/.hg without firing up a separate process
 _has_parent_dir() {
@@ -56,16 +26,6 @@ _has_parent_dir() {
     done
 
     return 1;
-}
-
-_end_prompt() {
-    if [[ -d ".svn" ]]; then
-        echo "${yellow}-[svn]${reset}"
-    elif _has_parent_dir ".git"; then
-        _vcs_prompt_git
-    else
-        echo "${reset}\$"
-    fi
 }
 
 _vcs_prompt_git() {
@@ -89,24 +49,18 @@ _vcs_prompt_git() {
             PICTO="↑"
         fi
 
-        if [[ "$PROMPT_LENGTH" == "short" ]]; then
-            # Short version - without branch
-            echo "${STATE_COLOR}${PICTO}${reset}"
-        else
-            echo "${black}-[${STATE_COLOR}${GIT_PROMPT}${black}]${STATE_COLOR}${PICTO}${reset}"
-        fi
+        echo "-[${STATE_COLOR}${GIT_PROMPT}${reset}]-[${STATE_COLOR}${PICTO}${reset}]"
     fi
 }
 
+_vcs_prompt() {
+    if [[ -d ".svn" ]]; then
+        echo "-[${yellow}svn${reset}]"
+    elif _has_parent_dir ".git"; then
+        _vcs_prompt_git
+    fi
+}
 
 # Prompt
 # --------------------------------------------------------------------------------------
-if [[ "$PROMPT_LENGTH" == "short" ]]; then
-    # Short prompt
-    PS1='${bold}${black}[${green}\u${yellow}@${green}\h${black}][${pink}\W${black}]$(_end_prompt) '
-else
-    PS1='${bold}${black}[${blue}\D{%T}${black}]-[${green}\u${yellow}@${green}\h${black}]-[${pink}\w${black}]$(_end_prompt) '
-fi
-
-export PS1
-
+PS1='\n┌─[${green}\D{%T}${reset}]-[${green}\u${yellow}@${green}\h${reset}]$(_vcs_prompt)\n└─[${blue}\w${reset}] \$ '
