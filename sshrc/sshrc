@@ -42,13 +42,29 @@ extract() {
 mktar() {
 	local target=${1%/}
 	if [[ -f "$target" || -d "$target" ]]; then
-		local currentdate=`date +%Y%m%d`
-		tar -zcvf "${target}_${currentdate}.tar.gz" "$target"
+		tar -zcvf "${target}_$(date +%Y%m%d).tar.gz" "$target"
 	else
 		echo "Error: $target is not valid "
 	fi
 }
 
+mkgz() {
+	local target=${1%/} # Remove trailing slash
+	if [[ -f "$target" || -d "$target" ]]; then
+		gzip "$target"
+	else
+		echo "Error: $target is not valid "
+	fi
+}
+
+mkzip() {
+	local target=${1%/} # Remove trailing slash
+	if [[ -f "$target" || -d "$target" ]]; then
+		zip -r "${target}_$(date +%Y%m%d).zip" "$target"
+	else
+		echo "Error: $target is not valid "
+	fi
+}
 
 # Quick search in a directory for a string ($1).
 # -----------------------------------------------------------------------------
@@ -58,6 +74,10 @@ search() {
 	else
 		grep -rnI --exclude-dir=dir --color=always "$1" .
 	fi
+}
+
+savefile() {
+	cp "$1" "${1}_$(date +%Y%m%d).bak"
 }
 
 # Prompt

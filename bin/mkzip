@@ -6,8 +6,7 @@
 target=${1%/} # Remove trailing slash
 
 if [[ -f "$target" || -d "$target" ]]; then
-	currentdate=`date +%Y%m%d`
-	zip -r "${target}_${currentdate}.zip" "$target"
+	zip -r "${target}_$(date +%Y%m%d).zip" "$target"
 else
 	echo "Error: $target is not valid "
 	exit 1
