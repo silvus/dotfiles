@@ -37,3 +37,8 @@ alias docker="sudo docker.io"
 alias dockercleancontainers="sudo docker.io ps -a --no-trunc | grep 'Exit' | awk '{print \$1}' | xargs -L 1 -r sudo docker.io rm" # Remove temporary built images
 alias dockercleanimages="sudo docker.io images -a --no-trunc | grep none | awk '{print \$3}' | xargs -L 1 -r sudo docker.io rmi" # Remove Docker containers with Exit status
 complete -F _docker docker  # Résult from : complete -p docker
+
+#complete -F _known_hosts sshrc
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" sshrc
+
+complete -F _ssh sshrc
