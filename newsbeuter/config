@@ -138,13 +138,13 @@ show-read-feeds no
 show-read-articles no
 
 # Colorschemes
-color listnormal green default
-color listfocus white default reverse
-color listnormal_unread green default
-color listfocus_unread white default reverse
-color info green default reverse
-color background green default
-color article default default
+color listnormal        green   default
+color listfocus         white   default reverse
+color listnormal_unread green   default
+color listfocus_unread  white   default reverse
+color info              blue    default reverse
+color background        black   default
+color article           default default
 
 # highlights
 highlight article "^(Feed|Link):.*$" green default bold
