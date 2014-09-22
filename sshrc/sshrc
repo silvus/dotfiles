@@ -39,7 +39,7 @@ extract() {
 
 # Make a package without pain
 # -----------------------------------------------------------------------------
-compress() {
+mktar() {
 	local target=${1%/}
 	if [[ -f "$target" || -d "$target" ]]; then
 		local currentdate=`date +%Y%m%d`
