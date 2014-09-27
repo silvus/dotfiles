@@ -17,7 +17,7 @@ alias ......='cd ../../../../../'
 
 # Misc
 # -----------------------------------------------------------------------------
-alias l='ls -lhaF --color=always'
+alias l='ls -lhaF --color=always --group-directories-first'
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
 alias git='LC_ALL=en_US git'
 # Searches for duplicate file (size and md5)
