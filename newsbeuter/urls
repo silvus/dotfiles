@@ -1,15 +1,15 @@
 https://news.ycombinator.com/rss tech "~Hacker News"
 http://rss.slashdot.org/Slashdot/slashdot tech "~Slashdot"
 http://techcrunch.com/feed/ tech "~TechCrunch"
-http://bridge.silvus.fr/?action=display&bridge=NumeramaBridge&format=AtomFormat tech "Numerama"
-http://bridge.silvus.fr/?action=display&bridge=NextInpactBridge&format=AtomFormat tech "NextImpact"
+http://www.numerama.com/rss/news.rss tech "~Numerama"
+http://www.nextinpact.com/rss/news.xml tech "~NextImpact"
 https://blog.mozilla.org/feed/ tech "~Mozilla"
 http://serversforhackers.com/feed.xml tech "~Servers for Hackers"
 http://www.framablog.org/index.php/feed/atom tech "~Framablog"
 http://www.24joursdeweb.fr/feed/ tech "~24 jours de web"
 http://php.net/feed.atom tech "~PHP.net news"
 http://phpixie.com/feed/ tech "~PHPixie"
-http://neovim.org/news.xml tech Neovim
+http://neovim.org/news.xml tech "~Neovim"
 
 http://linuxfr.org/news.atom linux "~LinuxFr"
 http://feeds.feedburner.com/d0od linux "~OMG! Ubuntu!"
@@ -41,8 +41,6 @@ http://www.dadall.info/blog/feed.php?rss blog "~Blog de dada"
 http://www.cdetc.fr/feed/ blog "~cd /etc/etera"
 http://www.foxmask.info/feed/ blog "~FoxMaSk"
 http://postblue.info/rss/ blog "~Postblue"
-
-http://bridge.silvus.fr/?action=display&bridge=DansTonChatBridge&format=AtomFormat
 
 http://rss.lemonde.fr/c/205/f/3050/index.rss news "~Le Monde"
 http://reflets.info/feed/ news "~Reflets"
