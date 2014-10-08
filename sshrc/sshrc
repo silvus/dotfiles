@@ -82,10 +82,12 @@ savefile() {
 
 # Prompt
 # -----------------------------------------------------------------------------
-TXTRESET='\[\e[0m\]'
-TXTGREEN='\[\e[0;32m\]'
-TXTYELLOW='\[\e[0;33m\]'
+TXTRESET="\[\e[0m\]"
+TXTGREEN="\[\e[0;32m\]"
+TXTYELLOW="\[\e[0;33m\]"
 TXTBLUE="\[\e[0;34m\]"
 TXTRED="\[\e[0;31m\]"
+TXTMAGENTA="\[\e[0;35m\]"
 
-PS1="[${TXTBLUE}\D{%T}${TXTRESET}]-[${TXTGREEN}\u${TXTYELLOW}@${TXTGREEN}\h${TXTRESET}]-[${TXTBLUE}\w${TXTRESET}] \$ "
+PS1="[${TXTBLUE}\D{%T}${TXTRESET}]-[${TXTGREEN}\u${TXTYELLOW}@${TXTMAGENTA}\h${TXTRESET}]-[${TXTBLUE}\w${TXTRESET}] \$ "
+
