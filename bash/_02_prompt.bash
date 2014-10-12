@@ -1,17 +1,20 @@
 #!/bin/bash
 
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
 # Colors
-# TXTBLACK=$(tput -Txterm setaf 0)
-TXTRED=$(tput -Txterm setaf 1)
-TXTGREEN=$(tput -Txterm setaf 2)
-TXTYELLOW=$(tput -Txterm setaf 3)
-TXTBLUE=$(tput -Txterm setaf 4)
-# TXTPURPLE=$(tput -Txterm setaf 5)
-TXTCYAN=$(tput -Txterm setaf 6)
+# TXTBLACK=$(tput setaf 0)
+TXTRED=$(tput setaf 1)
+TXTGREEN=$(tput setaf 2)
+TXTYELLOW=$(tput setaf 3)
+TXTBLUE=$(tput setaf 4)
+# TXTPURPLE=$(tput setaf 5)
+TXTCYAN=$(tput setaf 6)
 
 # Styles
-# bold=$(tput -Txterm bold)
-TXTRESET=$(tput -Txterm sgr0)
+# bold=$(tput bold)
+TXTRESET=$(tput sgr0)
 
 # Utility function so we can test for things like .git/.hg without firing up a separate process
 _has_parent_dir() {
@@ -63,4 +66,4 @@ _vcs_prompt() {
 
 # Prompt
 # --------------------------------------------------------------------------------------
-PS1='\n┌─[${TXTGREEN}\D{%T}${TXTRESET}]-[${TXTGREEN}\u${TXTYELLOW}@${TXTGREEN}\h${TXTRESET}]$(_vcs_prompt)\n└─[${TXTBLUE}\w${TXTRESET}] \$ '
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$TXTGREEN\]\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
