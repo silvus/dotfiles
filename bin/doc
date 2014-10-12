@@ -14,16 +14,16 @@ EOF
 }
 
 # Variables - Default values
-# ------------------------------
+# ------------------------------------------------------------
 # Open with ranger
-OPEN_WITH="ranger"
+DOC_OPEN_WITH="ranger"
 
 # Update/Commit by default
-COMMIT=1
+DOC_AUTOCOMMIT=1
 
 # Go to docs folder if exist
-# ------------------------------
-goto_folder() {
+# ------------------------------------------------------------
+_doc_goto_folder() {
     if [[ -d "$DOCUMENTATION_HOME" ]]; then
         cd "$DOCUMENTATION_HOME"
     else
@@ -33,9 +33,9 @@ goto_folder() {
 }
 
 # Update and commit
-# ------------------------------
-autocommit() {
-    if [[ "$COMMIT" -eq 1 ]]; then
+# ------------------------------------------------------------
+_doc_autocommit() {
+    if [[ "$DOC_AUTOCOMMIT" -eq 1 ]]; then
         git pull origin master
         git add .
         git commit -m "Autocommit $(date +'%d/%m/%Y %T')"
@@ -43,10 +43,10 @@ autocommit() {
 }
 
 # Open doc folder
-# ------------------------------
-open_folder() {
+# ------------------------------------------------------------
+_doc_open_folder() {
     # Open with vi
-    if [[ "$OPEN_WITH" == "vim" ]]; then
+    if [[ "$DOC_OPEN_WITH" == "vim" ]]; then
         vim
 
     # Check if ranger is installed
@@ -61,24 +61,21 @@ open_folder() {
 }
 
 # Parse arguments
-# ------------------------------
+# ------------------------------------------------------------
 while getopts hvg OPTIONS; do
     case "$OPTIONS" in
         h)
             usage
-            exit 0
-            ;;
+            exit 0 ;;
         v)
-            OPEN_WITH="vim"
-            ;;
+            DOC_OPEN_WITH="vim" ;;
         g)
-            COMMIT=0
-            ;;
+            DOC_AUTOCOMMIT=0 ;;
     esac
 done
 
 # Main
-# ------------------------------
-goto_folder
-autocommit
-open_folder
+# ------------------------------------------------------------
+_doc_goto_folder
+_doc_autocommit
+_doc_open_folder

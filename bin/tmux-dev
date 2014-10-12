@@ -2,7 +2,7 @@
 
 # Launch tmux
 # -----------------------------------------------------------------------------
-if [ -f "/usr/bin/tmux" ]; then
+if [[ -f "/usr/bin/tmux" ]]; then
 	SESSION=$USER
 
 	#  Launch session
@@ -36,5 +36,5 @@ if [ -f "/usr/bin/tmux" ]; then
 	# Attach to session
 	tmux -2 attach-session -d
 else
-	echo "You must install tmux"
+	echo "Tmux is not installed"
 fi

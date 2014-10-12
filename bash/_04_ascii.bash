@@ -26,9 +26,9 @@ asciiart() {
 	local UPTIME=$(_uptime)
 
 	# Colors
-	local TXTGREEN=$(tput -Txterm setaf 2)
-	local TXTBLUE=$(tput -Txterm setaf 4)
-	local TXTRESET=$(tput -Txterm sgr0)
+	local TXTGREEN=$(tput setaf 2)
+	local TXTBLUE=$(tput setaf 4)
+	local TXTRESET=$(tput sgr0)
 
 	echo -e "$TXTGREEN"'      .--.      '"${USER^} - ${HOST^} - $IP_LOCAL $TXTRESET"
 	echo -e "$TXTGREEN"'     |o_o |     '"OS $ARCH $KERNEL $TXTRESET"

@@ -9,7 +9,7 @@ else
 	        firefox "$1"
 	# Text
         else
-		lynx -cfg=$HOME/.lynx/.lynxrc "$1"
+		lynx -cfg=$HOME/.lynx/.lynxrc -lss=$HOME/.lynx/lynx.lss "$1"
 	fi
 fi
 

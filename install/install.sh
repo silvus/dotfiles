@@ -140,6 +140,7 @@ make_link "sshrc" "$DOTFILES_DIR/sshrc/sshrc" "$HOME/.sshrc"
 echo "${blue}--- Lynx ---${reset}"
 dir_check "$HOME/.lynx"
 make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
+make_link "lynx.lss" "$DOTFILES_LYNX/lynx.lss" "$HOME/.lynx/lynx.lss"
 make_link "lynx_bookmarks.html" "$DOTFILES_LYNX/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
 
 # Ranger

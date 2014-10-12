@@ -66,6 +66,10 @@ mkzip() {
 	fi
 }
 
+savefile() {
+	cp -v "$1" "${1}_$(date +%Y%m%d).bak"
+}
+
 # Quick search in a directory for a string ($1).
 # -----------------------------------------------------------------------------
 search() {
@@ -76,17 +80,27 @@ search() {
 	fi
 }
 
-savefile() {
-	cp "$1" "${1}_$(date +%Y%m%d).bak"
-}
-
 # Prompt
 # -----------------------------------------------------------------------------
-TXTRESET="\[\e[0m\]"
-TXTGREEN="\[\e[0;32m\]"
-TXTYELLOW="\[\e[0;33m\]"
-TXTBLUE="\[\e[0;34m\]"
-TXTRED="\[\e[0;31m\]"
+TXTRED=$(tput setaf 1)
+TXTGREEN=$(tput setaf 2)
+TXTYELLOW=$(tput setaf 3)
+TXTBLUE=$(tput setaf 4)
+TXTRESET=$(tput sgr0)
 
 PS1="[${TXTBLUE}\D{%T}${TXTRESET}]-[${TXTGREEN}\u${TXTYELLOW}@${TXTRED}\h${TXTRESET}]-[${TXTBLUE}\w${TXTRESET}] \$ "
 
+# Ascii
+# -----------------------------------------------------------------------------
+_asciiart() {
+	echo ''
+	echo "${TXTBLUE} Welcome to ${TXTRED}$(hostname -s)${TXTBLUE} "
+	echo "      ${TXTBLUE}-----${TXTGREEN}                    "
+	echo "        ${TXTBLUE}\\${TXTGREEN}"'   ^__^               '
+	echo "         ${TXTBLUE}\\${TXTGREEN}"'  (oo)\_______       '
+	echo '            (__)\       )\/\   '
+	echo '                ||----w |      '
+	echo '                ||     ||      '
+	echo "$TXTRESET"
+}
+_asciiart
