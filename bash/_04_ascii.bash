@@ -30,7 +30,7 @@ asciiart() {
 	local TXTBLUE=$(tput setaf 4)
 	local TXTRESET=$(tput sgr0)
 
-	echo -e "$TXTGREEN"'      .--.      '"${USER^} - ${HOST^} - $IP_LOCAL $TXTRESET"
+	echo -e "$TXTGREEN"'      .--.      '"${USER}@${HOST} - $IP_LOCAL $TXTRESET"
 	echo -e "$TXTGREEN"'     |o_o |     '"OS $ARCH $KERNEL $TXTRESET"
 	echo -e "$TXTGREEN"'     |:_/ |     '
 	echo -e "$TXTGREEN"'    //   \ \    '"Uptime $UPTIME $TXTRESET"
