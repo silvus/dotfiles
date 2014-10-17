@@ -8,6 +8,7 @@ export HISTCONTROL=ignoreboth # ignoredups + ignorespace
 # Navigation
 # -----------------------------------------------------------------------------
 alias dot="cd $DOTFILES_PATH"
+alias dot_upgrade="make --no-print-directory -C $DOTFILES_PATH"
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'
