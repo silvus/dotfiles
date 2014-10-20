@@ -17,6 +17,8 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
+mkcd() { mkdir "$1" && cd "$1"; }
+
 # Misc
 # -----------------------------------------------------------------------------
 alias l='ls -lhaF --color=always --group-directories-first'
