@@ -126,7 +126,7 @@ clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/su
 # Tmux
 # --------------------------------------------------------
 echo "${blue}--- Tmux ---${reset}"
-make_link "vimrc" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
+make_link "tmux" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
 
 # Sshrc
 # --------------------------------------------------------
