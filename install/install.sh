@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Variables
 # --------------------------------------------------------
-DOTFILES_DIR="$(readlink -e $(dirname $0))/../" # dotfiles directory
+DOTFILES_DIR="$(readlink -e $(dirname $0))/.." # dotfiles directory
 DOTFILES_BASH="$DOTFILES_DIR/bash"
 DOTFILES_VIM="$DOTFILES_DIR/vim"
 DOTFILES_TMUX="$DOTFILES_DIR/tmux"
@@ -22,85 +22,36 @@ SUBLIMETEXT_CONF_PYTHON="Python.sublime-settings"
 SUBLIMETEXT_CONF_YAML="YAML.sublime-settings"
 
 # Colors
-green=$(tput setaf 2)
-yellow=$(tput setaf 3)
-blue=$(tput setaf 4)
-reset=$(tput sgr0)
+_TXTCOLOR_BLUE=$(tput setaf 4)
+_TXTCOLOR_RESET=$(tput sgr0)
 
-# Function for backup a file and make a symlink
-# --------------------------------------------------------
-make_link() {
-	local file_name="$1"
-	local dot_file_path="$2"
-	local file_path="$3"
-
-	#  If file_path is not already a symlink or doesn't exist
-	if [[ ! -L "$file_path" ]]; then
-
-		# File already exist, make backup
-		if [[ -f "$file_path" ]]; then
-			echo "${yellow}Backup current $file_name in $DOTFILES_DIR/backup/$file_name.bak${reset}"
-			mv "$file_path" "$DOTFILES_DIR/backup/$file_name.bak"
-		fi
-
-		# Make symlink
-		ln -sv "$dot_file_path" "$file_path"
-	else
-		echo "${green}$file_name is already installed${reset}"
-	fi
-}
-
-# Clone if doesn't exist, else update
-# --------------------------------------------------------
-clone_or_update() {
-	local git_url="$1"
-	local install_path="$2"
-	local depot_name="$3"
-
-	if [[ -d "$install_path" ]]; then
-		# Update
-		echo "${green}Update $depot_name${reset}"
-		( cd "$install_path" && git pull )
-	else
-		# Clone
-		echo "${yellow}Install $depot_name${reset}"
-		git clone "$git_url" "$install_path"
-	fi
-}
-
-# Create directory if necessary
-# --------------------------------------------------------
-dir_check() {
-	local dir_path="$1"
-	if [[ ! -d "$dir_path" ]]; then
-		mkdir -p "$dir_path"
-	fi
-}
+# Source functions
+source "$DOTFILES_DIR/install/_functions.bash"
 
 # Bashrc
 # --------------------------------------------------------
-echo "${blue}--- Bash ---${reset}"
-make_link "bash_aliases" "$DOTFILES_BASH/bash_aliases" "$HOME/.bash_aliases"
+echo "${_TXTCOLOR_BLUE}--- Bash ---${_TXTCOLOR_RESET}"
+make_symlink "bash_aliases" "$DOTFILES_BASH/bash_aliases" "$HOME/.bash_aliases"
 
 # Git
 # --------------------------------------------------------
-make_link "gitignore_global" "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
+make_symlink "gitignore_global" "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
 
 # Vim
 # --------------------------------------------------------
-echo "${blue}--- Vim ---${reset}"
+echo "${_TXTCOLOR_BLUE}--- Vim ---${_TXTCOLOR_RESET}"
 dir_check "$HOME/.vim/backup"
 dir_check "$HOME/.vim/swap"
 dir_check "$HOME/.vim/colors"
 dir_check "$HOME/.vim/autoload"
 dir_check "$HOME/.vim/bundle"
-make_link "jellybeans.vim" "$DOTFILES_VIM/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
-make_link "vimrc" "$DOTFILES_VIM/vimrc" "$HOME/.vimrc"
-make_link "vimrc_secure" "$DOTFILES_VIM/vimrc_secure" "$HOME/.vim/.vimrc_secure"
+make_symlink "jellybeans.vim" "$DOTFILES_VIM/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
+make_symlink "vimrc" "$DOTFILES_VIM/vimrc" "$HOME/.vimrc"
+make_symlink "vimrc_secure" "$DOTFILES_VIM/vimrc_secure" "$HOME/.vim/.vimrc_secure"
 
 # Vim plugins
 # --------------------------------------------------------
-echo "${blue}--- Vim plugins ---${reset}"
+echo "${_TXTCOLOR_BLUE}--- Vim plugins ---${_TXTCOLOR_RESET}"
 
 echo "Pathogen"
 curl -LSso "$HOME/.vim/autoload/pathogen.vim" "https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
@@ -118,66 +69,66 @@ clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/su
 
 # Tmux
 # --------------------------------------------------------
-echo "${blue}--- Tmux ---${reset}"
-make_link "tmux" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
+echo "${_TXTCOLOR_BLUE}--- Tmux ---${_TXTCOLOR_RESET}"
+make_symlink "tmux" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
 
 # Sshrc
 # --------------------------------------------------------
-echo "${blue}--- SSHRC ---${reset}"
+echo "${_TXTCOLOR_BLUE}--- SSHRC ---${_TXTCOLOR_RESET}"
 curl -sS "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" -o "$DOTFILES_DIR/bin/sshrc"
 chmod 775 "$DOTFILES_DIR/bin/sshrc"
-make_link "sshrc" "$DOTFILES_DIR/sshrc/sshrc" "$HOME/.sshrc"
+make_symlink "sshrc" "$DOTFILES_DIR/sshrc/sshrc" "$HOME/.sshrc"
 
 # Lynx
 # --------------------------------------------------------
 if [[ -x "/usr/bin/lynx" ]]; then
-    echo "${blue}--- Lynx ---${reset}"
+    echo "${_TXTCOLOR_BLUE}--- Lynx ---${_TXTCOLOR_RESET}"
     dir_check "$HOME/.lynx"
-    make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
-    make_link "lynx.lss" "$DOTFILES_LYNX/lynx.lss" "$HOME/.lynx/lynx.lss"
-    make_link "lynx_bookmarks.html" "$DOTFILES_LYNX/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
+    make_symlink "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
+    make_symlink "lynx.lss" "$DOTFILES_LYNX/lynx.lss" "$HOME/.lynx/lynx.lss"
+    make_symlink "lynx_bookmarks.html" "$DOTFILES_LYNX/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
 fi
 
 # Ranger
 # --------------------------------------------------------
 if [[ -x "/usr/bin/ranger" ]]; then
-    echo "${blue}--- Ranger ---${reset}"
+    echo "${_TXTCOLOR_BLUE}--- Ranger ---${_TXTCOLOR_RESET}"
     dir_check "$HOME/.config/ranger"
-    make_link "rc.conf" "$DOTFILES_RANGER/rc.conf" "$HOME/.config/ranger/rc.conf"
-    make_link "rifle.conf" "$DOTFILES_RANGER/rifle.conf" "$HOME/.config/ranger/rifle.conf"
+    make_symlink "rc.conf" "$DOTFILES_RANGER/rc.conf" "$HOME/.config/ranger/rc.conf"
+    make_symlink "rifle.conf" "$DOTFILES_RANGER/rifle.conf" "$HOME/.config/ranger/rifle.conf"
 fi
 
 # Newsbeuter
 # --------------------------------------------------------
 if [[ -x "/usr/bin/newsbeuter" ]]; then
-	echo "${blue}--- Newsbeuter ---${reset}"
+	echo "${_TXTCOLOR_BLUE}--- Newsbeuter ---${_TXTCOLOR_RESET}"
 	dir_check "$HOME/.newsbeuter"
-	make_link "newsbeuter_config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/config"
-	make_link "newsbeuter_browse" "$DOTFILES_NEWSBEUTER/browse" "$HOME/.newsbeuter/browse"
-	make_link "newsbeuter_urls" "$DOTFILES_NEWSBEUTER/urls" "$HOME/.newsbeuter/urls"
+	make_symlink "newsbeuter_config" "$DOTFILES_NEWSBEUTER/config" "$HOME/.newsbeuter/config"
+	make_symlink "newsbeuter_browse" "$DOTFILES_NEWSBEUTER/browse" "$HOME/.newsbeuter/browse"
+	make_symlink "newsbeuter_urls" "$DOTFILES_NEWSBEUTER/urls" "$HOME/.newsbeuter/urls"
 fi
 
 # Virtualenvwrapper
 # --------------------------------------------------------
 if [[ -d "/data/dev/.virtualenvs" ]]; then
-    echo "${blue}--- Virtualenv Hooks ---${reset}"
-    make_link "postactivate" "$DOTFILES_VIRTUALENV/postactivate" "/data/dev/.virtualenvs/postactivate"
+    echo "${_TXTCOLOR_BLUE}--- Virtualenv Hooks ---${_TXTCOLOR_RESET}"
+    make_symlink "postactivate" "$DOTFILES_VIRTUALENV/postactivate" "/data/dev/.virtualenvs/postactivate"
 fi
 
 # Sublime Text 3
 # --------------------------------------------------------
 if [[ -d "/opt/sublime_text" ]]; then
-	echo "${blue}--- Sublime Text 3 ---${reset}"
-	make_link "$SUBLIMETEXT_CONF_KEYMAP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_KEYMAP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_KEYMAP"
-	make_link "$SUBLIMETEXT_CONF_SETTINGS" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SETTINGS" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SETTINGS"
-	make_link "$SUBLIMETEXT_CONF_SIDEBAR" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SIDEBAR" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SIDEBAR"
-	make_link "$SUBLIMETEXT_CONF_MARKDOWN" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_MARKDOWN" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_MARKDOWN"
-	make_link "$SUBLIMETEXT_CONF_PHP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_PHP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_PHP"
-	make_link "$SUBLIMETEXT_CONF_PYTHON" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_PYTHON" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_PYTHON"
-	make_link "$SUBLIMETEXT_CONF_YAML" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_YAML" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_YAML"
+	echo "${_TXTCOLOR_BLUE}--- Sublime Text 3 ---${_TXTCOLOR_RESET}"
+	make_symlink "$SUBLIMETEXT_CONF_KEYMAP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_KEYMAP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_KEYMAP"
+	make_symlink "$SUBLIMETEXT_CONF_SETTINGS" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SETTINGS" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SETTINGS"
+	make_symlink "$SUBLIMETEXT_CONF_SIDEBAR" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_SIDEBAR" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_SIDEBAR"
+	make_symlink "$SUBLIMETEXT_CONF_MARKDOWN" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_MARKDOWN" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_MARKDOWN"
+	make_symlink "$SUBLIMETEXT_CONF_PHP" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_PHP" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_PHP"
+	make_symlink "$SUBLIMETEXT_CONF_PYTHON" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_PYTHON" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_PYTHON"
+	make_symlink "$SUBLIMETEXT_CONF_YAML" "$DOTFILES_SUBLIMETEXT/$SUBLIMETEXT_CONF_YAML" "$SUBLIMETEXT_CONF_DIR/$SUBLIMETEXT_CONF_YAML"
 fi
 
 # End
 # --------------------------------------------------------
-echo "${blue}--- Done ! ---${reset}"
+echo "${_TXTCOLOR_BLUE}--- Done ! ---${_TXTCOLOR_RESET}"
 
