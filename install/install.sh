@@ -115,10 +115,6 @@ clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle
 clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary" "Vim Commentary"
 # Supertab
 clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab" "Supertab"
-# Nerdtree
-# clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree" "Nerdtree"
-# Vim Fugitive
-# clone_or_update "https://github.com/tpope/vim-fugitive.git" "$HOME/.vim/bundle/vim-fugitive" "Vim Fugitive"
 
 # Tmux
 # --------------------------------------------------------
