@@ -19,7 +19,6 @@ http://lubuntu.net/rss.xml linux "~Lubuntu"
 http://sametmax.com/feed/ blog "~Sam et Max"
 http://sebsauvage.net/rhaa/rss_fulltext.php blog "~Sebsauvage blog"
 http://sebsauvage.net/links/?do=rss blog "~Sebsauvage"
-http://www.foxmask.info/feed/ blog "~Foxmask"
 http://bluetouff.com/feed/ blog "~Bluetouff"
 http://www.hteumeuleu.fr/feed/ blog "~Hteumeuleu"
 http://blog.goetter.fr/feed.xml blog "~Goetter"
@@ -44,3 +43,5 @@ http://postblue.info/rss/ blog "~Postblue"
 
 http://rss.lemonde.fr/c/205/f/3050/index.rss news "~Le Monde"
 http://reflets.info/feed/ news "~Reflets"
+
+http://bridge.suumitsu.eu/?action=display&bridge=DansTonChatBridge&format=AtomFormat fun "~DansTonChat"
