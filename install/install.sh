@@ -89,14 +89,11 @@ make_link "gitignore_global" "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitign
 # Vim
 # --------------------------------------------------------
 echo "${blue}--- Vim ---${reset}"
-
 dir_check "$HOME/.vim/backup"
 dir_check "$HOME/.vim/swap"
 dir_check "$HOME/.vim/colors"
 dir_check "$HOME/.vim/autoload"
 dir_check "$HOME/.vim/bundle"
-
-#make_link "molokai.vim" "$DOTFILES_VIM/colors/molokai.vim" "$HOME/.vim/colors/molokai.vim"
 make_link "jellybeans.vim" "$DOTFILES_VIM/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
 make_link "vimrc" "$DOTFILES_VIM/vimrc" "$HOME/.vimrc"
 make_link "vimrc_secure" "$DOTFILES_VIM/vimrc_secure" "$HOME/.vim/.vimrc_secure"
@@ -137,18 +134,22 @@ make_link "sshrc" "$DOTFILES_DIR/sshrc/sshrc" "$HOME/.sshrc"
 
 # Lynx
 # --------------------------------------------------------
-echo "${blue}--- Lynx ---${reset}"
-dir_check "$HOME/.lynx"
-make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
-make_link "lynx.lss" "$DOTFILES_LYNX/lynx.lss" "$HOME/.lynx/lynx.lss"
-make_link "lynx_bookmarks.html" "$DOTFILES_LYNX/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
+if [[ -x "/usr/bin/lynx" ]]; then
+    echo "${blue}--- Lynx ---${reset}"
+    dir_check "$HOME/.lynx"
+    make_link "lynxrc" "$DOTFILES_LYNX/lynxrc" "$HOME/.lynx/.lynxrc"
+    make_link "lynx.lss" "$DOTFILES_LYNX/lynx.lss" "$HOME/.lynx/lynx.lss"
+    make_link "lynx_bookmarks.html" "$DOTFILES_LYNX/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
+fi
 
 # Ranger
 # --------------------------------------------------------
-echo "${blue}--- Ranger ---${reset}"
-dir_check "$HOME/.config/ranger"
-make_link "rc.conf" "$DOTFILES_RANGER/rc.conf" "$HOME/.config/ranger/rc.conf"
-make_link "rifle.conf" "$DOTFILES_RANGER/rifle.conf" "$HOME/.config/ranger/rifle.conf"
+if [[ -x "/usr/bin/ranger" ]]; then
+    echo "${blue}--- Ranger ---${reset}"
+    dir_check "$HOME/.config/ranger"
+    make_link "rc.conf" "$DOTFILES_RANGER/rc.conf" "$HOME/.config/ranger/rc.conf"
+    make_link "rifle.conf" "$DOTFILES_RANGER/rifle.conf" "$HOME/.config/ranger/rifle.conf"
+fi
 
 # Newsbeuter
 # --------------------------------------------------------
