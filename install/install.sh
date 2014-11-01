@@ -3,6 +3,7 @@
 # Variables
 # --------------------------------------------------------
 DOTFILES_DIR="$(readlink -e $(dirname $0))/.." # dotfiles directory
+BASH_COMPLETION_DIR="/etc/bash_completion.d"
 BACKUP_DIR="$DOTFILES_DIR/backup"
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
 
@@ -17,6 +18,7 @@ source "$DOTFILES_DIR/install/_functions.bash"
 # --------------------------------------------------------
 echo "${_TXTCOLOR_BLUE}--- Bash ---${_TXTCOLOR_RESET}"
 make_symlink "bash_aliases" "$DOTFILES_DIR/bash/bash_aliases" "$HOME/.bash_aliases"
+make_symlink "completion_sshrc" "$DOTFILES_DIR/bash/completion/sshrc" "$BASH_COMPLETION_DIR/sshrc" "sudo"
 
 # Git
 # --------------------------------------------------------
