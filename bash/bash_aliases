@@ -2,9 +2,9 @@
 # ------------------------------------------------------
 _bash_source="${BASH_SOURCE[0]}"
 while [ -h "$_bash_source" ]; do # resolve $_bash_source until the file is no longer a symlink
-  DOTFILES_PATH="$( cd -P "$( dirname "$_bash_source" )"/../ && pwd )"
-  _bash_source="$(readlink "$_bash_source")"
-  [[ $_bash_source != /* ]] && _bash_source="$DIR/$SOURCE" # if $_bash_source was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  	DOTFILES_PATH="$( cd -P "$( dirname "$_bash_source" )"/../ && pwd )"
+	_bash_source="$(readlink "$_bash_source")"
+	[[ $_bash_source != /* ]] && _bash_source="$DIR/$SOURCE" # if $_bash_source was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
 
 export DOTFILES_PATH="$( cd -P "$( dirname "$_bash_source" )"/../ && pwd )"

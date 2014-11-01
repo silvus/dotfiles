@@ -9,13 +9,18 @@ make_symlink() {
 	local dot_file_path="$2"
 	local file_path="$3"
 
+	if [[ ! -d "$BACKUP_DIR" ]]; then
+		echo "Backup directory $BACKUP_DIR doesn\'t exist"
+		exit 1
+	fi
+
 	#  If file_path is not already a symlink or doesn't exist
 	if [[ ! -L "$file_path" ]]; then
 
-		# File already exist, make backup
-		if [[ -f "$file_path" ]]; then
-			echo "${_TXTCOLOR_YELLOW}Backup current $file_name in $DOTFILES_DIR/backup/$file_name.bak${_TXTCOLOR_RESET}"
-			mv "$file_path" "$DOTFILES_DIR/backup/$file_name.bak"
+		# File or directory already exist, make backup
+		if [[ -f "$file_path" ]] || [[ -d "$file_path" ]]; then
+			echo "${_TXTCOLOR_YELLOW}Backup current $file_name in $BACKUP_DIR/$file_name.bak${_TXTCOLOR_RESET}"
+			mv "$file_path" "$BACKUP_DIR/$file_name.bak"
 		fi
 
 		# Make symlink

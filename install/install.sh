@@ -3,6 +3,7 @@
 # Variables
 # --------------------------------------------------------
 DOTFILES_DIR="$(readlink -e $(dirname $0))/.." # dotfiles directory
+BACKUP_DIR="$DOTFILES_DIR/backup"
 DOTFILES_BASH="$DOTFILES_DIR/bash"
 DOTFILES_VIM="$DOTFILES_DIR/vim"
 DOTFILES_TMUX="$DOTFILES_DIR/tmux"
