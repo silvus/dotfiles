@@ -10,6 +10,7 @@ alias ......='cd ../../../../../'
 mkcd() { mkdir -p "$@" && cd "$_"; }
 
 alias l='ls -lhaF --color=always --group-directories-first'
+alias sudosu="sudo -Es"
 
 alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
 alias process='ps aux | grep'
@@ -91,7 +92,17 @@ TXTYELLOW=$(tput setaf 3)
 TXTBLUE=$(tput setaf 4)
 TXTRESET=$(tput sgr0)
 
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$TXTGREEN\]\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
+_user_color() {
+	# Root
+	if [[ "$EUID" -eq 0 ]]; then
+		echo "$TXTPURPLE"
+	# Other user
+	else
+		echo "$TXTGREEN"
+	fi
+}
+
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
 
 # Ascii
 # -----------------------------------------------------------------------------

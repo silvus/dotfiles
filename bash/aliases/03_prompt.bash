@@ -9,12 +9,22 @@ TXTRED=$(tput setaf 1)
 TXTGREEN=$(tput setaf 2)
 TXTYELLOW=$(tput setaf 3)
 TXTBLUE=$(tput setaf 4)
-# TXTPURPLE=$(tput setaf 5)
+TXTPURPLE=$(tput setaf 5)
 TXTCYAN=$(tput setaf 6)
 
 # Styles
-# bold=$(tput bold)
+# TXTBOLD=$(tput bold)
 TXTRESET=$(tput sgr0)
+
+_user_color() {
+	# Root
+	if [[ "$EUID" -eq 0 ]]; then
+		echo "$TXTPURPLE"
+	# Other user
+	else
+		echo "$TXTGREEN"
+	fi
+}
 
 # Utility function so we can test for things like .git/.hg without firing up a separate process
 _has_parent_dir() {
@@ -66,4 +76,4 @@ _vcs_prompt() {
 
 # Prompt
 # --------------------------------------------------------------------------------------
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$TXTGREEN\]\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
