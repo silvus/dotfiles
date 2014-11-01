@@ -1,3 +1,4 @@
 *.bak
 *work
 bin/sshrc
+bin/composer

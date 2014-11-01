@@ -73,7 +73,13 @@ clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/su
 echo "${_TXTCOLOR_BLUE}--- Tmux ---${_TXTCOLOR_RESET}"
 make_symlink "tmux" "$DOTFILES_TMUX/tmux.conf" "$HOME/.tmux.conf"
 
-# Sshrc
+# Composer
+# --------------------------------------------------------
+echo "${_TXTCOLOR_BLUE}--- Composer ---${_TXTCOLOR_RESET}"
+curl -sS "https://getcomposer.org/composer.phar" -o "$DOTFILES_DIR/bin/composer"
+chmod 775 "$DOTFILES_DIR/bin/composer"
+
+# SSHRC
 # --------------------------------------------------------
 echo "${_TXTCOLOR_BLUE}--- SSHRC ---${_TXTCOLOR_RESET}"
 curl -sS "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" -o "$DOTFILES_DIR/bin/sshrc"
