@@ -10,6 +10,7 @@ export HISTCONTROL=ignoreboth # ignoredups + ignorespace
 alias dot="cd $DOTFILES_PATH"
 alias dot_update="git --git-dir=$DOTFILES_PATH/.git --work-tree=$DOTFILES_PATH pull"
 alias dot_upgrade="make --no-print-directory -C $DOTFILES_PATH"
+alias dot_reload="source $HOME/.bashrc"
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'

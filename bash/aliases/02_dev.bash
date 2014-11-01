@@ -1,3 +1,4 @@
+
 # Virtualenvwrapper projects root folder
 export PROJECT_HOME="/data/dev"
 
@@ -5,12 +6,12 @@ export PROJECT_HOME="/data/dev"
 export DOCUMENTATION_HOME="/data/doc"
 
 # Launch simple web server
-alias server="python3 -m http.server"
+alias server="php -sS localhost:8000"
 
 # Quick navigate to projects folders
 # -----------------------------------------------------------------------------
 dev() {
-	if [ -d "$PROJECT_HOME/$1" ]; then
+	if [[ -d "$PROJECT_HOME/$1" ]]; then
 		# workon "$1"
 		cd "$PROJECT_HOME/$1";
 	else

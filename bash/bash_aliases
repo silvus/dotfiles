@@ -1,3 +1,4 @@
+
 # Dotfiles path
 # ------------------------------------------------------
 _bash_source="${BASH_SOURCE[0]}"
@@ -9,20 +10,20 @@ done
 
 export DOTFILES_PATH="$( cd -P "$( dirname "$_bash_source" )"/../ && pwd )"
 
-# Add bin to user path
+# Add bins to user path
 # ------------------------------------------------------
-if [[ -d "$DOTFILES_PATH/bin" ]] ; then
+if [[ -d "$HOME/bin" ]]; then
+    export PATH="$HOME/bin:$PATH"
+fi
+
+if [[ -d "$DOTFILES_PATH/bin" ]]; then
 	export PATH="$DOTFILES_PATH/bin:$PATH"
 fi
 
-# Source files from dotfiles/bash folder
+# Source files from bash/aliases folder
 # ------------------------------------------------------
-for file in "$DOTFILES_PATH/bash/"*; do
+for file in "$DOTFILES_PATH/bash/aliases/"*; do
 	if [[ -f "$file" ]]; then
-		# Only if filename begin with underscore
-		if [[ $(basename "$file") == "_"* ]]; then
-			source "$file"
-		fi
+		source "$file"
 	fi
 done
-

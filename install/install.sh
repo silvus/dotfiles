@@ -13,7 +13,7 @@ _TXTCOLOR_RESET=$(tput sgr0)
 # Source functions
 source "$DOTFILES_DIR/install/_functions.bash"
 
-# Bashrc
+# Bash
 # --------------------------------------------------------
 echo "${_TXTCOLOR_BLUE}--- Bash ---${_TXTCOLOR_RESET}"
 make_symlink "bash_aliases" "$DOTFILES_DIR/bash/bash_aliases" "$HOME/.bash_aliases"
@@ -21,6 +21,7 @@ make_symlink "bash_aliases" "$DOTFILES_DIR/bash/bash_aliases" "$HOME/.bash_alias
 # Git
 # --------------------------------------------------------
 if [[ -x "$(which git 2>/dev/null)" ]]; then
+	echo "${_TXTCOLOR_BLUE}--- Git ---${_TXTCOLOR_RESET}"
 	make_symlink "gitignore_global" "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
 fi
 
@@ -129,4 +130,4 @@ fi
 
 # End
 # --------------------------------------------------------
-echo "${_TXTCOLOR_BLUE}--- Done ! ---${_TXTCOLOR_RESET}"
+echo "${_TXTCOLOR_BLUE}--- End ---${_TXTCOLOR_RESET}"

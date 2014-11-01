@@ -67,4 +67,3 @@ _vcs_prompt() {
 # Prompt
 # --------------------------------------------------------------------------------------
 PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$TXTGREEN\]\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
-
