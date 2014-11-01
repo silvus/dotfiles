@@ -6,7 +6,7 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-mkcd() { mkdir "$1" && cd "$1"; }
+mkcd() { mkdir -p "$@" && cd "$_"; }
 
 alias l='ls -lhaF --color=always --group-directories-first'
 
