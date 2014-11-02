@@ -19,6 +19,7 @@ source "$DOTFILES_DIR/install/_functions.bash"
 echo "${_TXTCOLOR_BLUE}--- Bash ---${_TXTCOLOR_RESET}"
 make_symlink "bash_aliases" "$DOTFILES_DIR/bash/bash_aliases" "$HOME/.bash_aliases"
 make_symlink "completion_sshrc" "$DOTFILES_DIR/bash/completion/sshrc" "$BASH_COMPLETION_DIR/sshrc" "sudo"
+make_symlink "completion_dev" "$DOTFILES_DIR/bash/completion/dev" "$BASH_COMPLETION_DIR/dev" "sudo"
 
 # Git
 # --------------------------------------------------------
@@ -72,6 +73,7 @@ if [[ -x "$(which php 2>/dev/null)" ]]; then
 	echo "${_TXTCOLOR_BLUE}--- Composer ---${_TXTCOLOR_RESET}"
 	curl -sS "https://getcomposer.org/composer.phar" -o "$DOTFILES_DIR/bin/composer"
 	chmod 775 "$DOTFILES_DIR/bin/composer"
+	make_symlink "completion_composer" "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
 fi
 
 # SSHRC

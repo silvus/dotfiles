@@ -1,0 +1,9 @@
+
+_dev() {
+	if [[ -d $PROJECT_HOME ]]; then
+		local files=("$PROJECT_HOME/$2"*)
+		[[ -e ${files[0]} ]] && COMPREPLY=( "${files[@]##*/}" )
+	fi
+}
+
+complete -F _dev dev

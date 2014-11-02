@@ -6,7 +6,7 @@ export PROJECT_HOME="/data/dev"
 export DOCUMENTATION_HOME="/data/doc"
 
 # Launch simple web server
-alias server="php -sS localhost:8000"
+alias php_server="php -sS localhost:8000"
 
 # Quick navigate to projects folders
 # -----------------------------------------------------------------------------
@@ -23,13 +23,6 @@ dev() {
 # -----------------------------------------------------------------------------
 export PIP_DOWNLOAD_CACHE="$HOME/.pip/cache"
 export PIP_REQUIRE_VIRTUALENV=true
-# pip bash completion
-_pip_completion() {
-    COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
-                   COMP_CWORD=$COMP_CWORD \
-                   PIP_AUTO_COMPLETE=1 $1 ) )
-}
-complete -o default -F _pip_completion pip
 
 # Virtualenvwrapper
 # -----------------------------------------------------------------------------

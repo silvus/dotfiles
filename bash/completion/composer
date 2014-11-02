@@ -1,0 +1,21 @@
+# Composer completion
+
+_composer()
+{
+    local cur
+    _init_completion || return
+
+    if [[ "$cur" == -* ]]; then
+        COMPREPLY=( $( compgen -W '-h -q -v -V -n -d \
+            --help --quiet --verbose --version --ansi --no-ansi \
+            --no-interaction --profile --working-dir' -- "$cur" ) )
+    else
+        COMPREPLY=( $( compgen -W 'about archive browse clear-cache clearcache config create-project depends\
+		diagnose dump-autoload dumpautoload global help home init install licenses\
+		list remove require run-script search self-update selfupdate show status update validate ' -- "$cur" ) )
+    fi
+
+    return 0
+}
+
+complete -F _composer composer
