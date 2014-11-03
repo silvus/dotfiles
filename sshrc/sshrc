@@ -90,6 +90,7 @@ TXTRED=$(tput setaf 1)
 TXTGREEN=$(tput setaf 2)
 TXTYELLOW=$(tput setaf 3)
 TXTBLUE=$(tput setaf 4)
+TXTPURPLE=$(tput setaf 5)
 TXTRESET=$(tput sgr0)
 
 _user_color() {
