@@ -8,15 +8,15 @@ export DOCUMENTATION_HOME="/data/doc"
 # Launch simple web server
 alias php_server="php -sS localhost:8000"
 
-# Quick navigate to projects folders
-# -----------------------------------------------------------------------------
 dev() {
-	if [[ -d "$PROJECT_HOME/$1" ]]; then
-		# workon "$1"
-		cd "$PROJECT_HOME/$1";
-	else
-		cd "$PROJECT_HOME";
-	fi
+    if [[ -d "$PROJECT_HOME/$1" ]]; then
+        cd "$PROJECT_HOME/$1";
+        if [[ -d ".git" ]]; then
+            git pull origin master
+        fi
+    else
+        cd "$PROJECT_HOME";
+    fi
 }
 
 # Pip
