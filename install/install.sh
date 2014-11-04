@@ -67,10 +67,11 @@ if [[ -x "$(which tmux 2>/dev/null)" ]]; then
 	make_symlink "tmux" "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 fi
 
-# Composer
+# PHP
 # --------------------------------------------------------
 if [[ -x "$(which php 2>/dev/null)" ]]; then
-	echo "${_TXTCOLOR_BLUE}--- Composer ---${_TXTCOLOR_RESET}"
+	# Composer
+	echo "${_TXTCOLOR_BLUE}--- PHP ---${_TXTCOLOR_RESET}"
 	curl -sS "https://getcomposer.org/composer.phar" -o "$DOTFILES_DIR/bin/composer"
 	chmod 775 "$DOTFILES_DIR/bin/composer"
 	make_symlink "completion_composer" "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
