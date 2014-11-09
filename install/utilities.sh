@@ -15,6 +15,7 @@ sudo apt-get install \
 	ack-grep `# Search` \
 	vim `# Text editor` \
 	xclip `# Add to clipboard` \
+	scrot `# Make screenshot` \
 	pass `# Passwords manager` \
 	tmux `# Split terminal` \
 	lynx `# Web browser` \
