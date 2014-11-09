@@ -20,44 +20,41 @@ alias process='ps aux | grep'
 extract() {
 	if [[ -f "$1" ]]; then
 		case "$1" in
-			(*.7z) 7z x "$1" ;;
-			(*.lzma) unlzma "$1" ;;
-			(*.rar) unrar x "$1" ;;
-			(*.tar) tar xvf "$1" ;;
+			(*.7z)      7z x "$1" ;;
+			(*.lzma)    unlzma "$1" ;;
+			(*.rar)     unrar x "$1" ;;
+			(*.tar)     tar xvf "$1" ;;
 			(*.tar.bz2) tar xvjf "$1" ;;
-			(*.bz2) bunzip2 "$1" ;;
-			(*.tar.gz) tar xvzf "$1" ;;
-			(*.gz) gunzip "$1" ;;
-			(*.tar.xz) tar Jxvf "$1" ;;
-			(*.xz) xz -d "$1" ;;
-			(*.tbz2) tar xvjf "$1" ;;
-			(*.tgz) tar xvzf "$1" ;;
-			(*.zip) unzip "$1" ;;
-			(*.Z) uncompress ;;
-			(*) echo "Don't know how to extract $1"	;;
+			(*.bz2)     bunzip2 "$1" ;;
+			(*.tar.gz)  tar xvzf "$1" ;;
+			(*.gz)      gunzip "$1" ;;
+			(*.tar.xz)  tar Jxvf "$1" ;;
+			(*.xz)      xz -d "$1" ;;
+			(*.tbz2)    tar xvjf "$1" ;;
+			(*.tgz)     tar xvzf "$1" ;;
+			(*.zip)     unzip "$1" ;;
+			(*.Z)       uncompress ;;
+			(*)         echo "Don't know how to extract $1"	;;
 		esac
 	else
 		echo "Error: "$1" is not a valid file"
 	fi
 }
 
-# Make a package without pain
+# Compress things without pain
 # -----------------------------------------------------------------------------
-mktar() {
-	local target=${1%/}
-	if [[ -f "$target" || -d "$target" ]]; then
-		tar -zcvf "${target}_$(date +%Y%m%d).tar.gz" "$target"
-	else
-		echo "Error: $target is not valid "
-	fi
-}
-
-mkgz() {
+compress() {
 	local target=${1%/} # Remove trailing slash
-	if [[ -f "$target" || -d "$target" ]]; then
-		gzip "$target"
+	if [[ -d "$target" ]]; then
+		tar -zcvf "${target}_$(date +%Y%m%d).tar.gz" "$target"
+	elif [[ -f "$1" ]]; then
+		case "$1" in
+			(*.sql)     gzip "$target" ;;
+			(*)         tar -zcvf "${target}_$(date +%Y%m%d).tar.gz" "$target" ;;
+		esac
 	else
-		echo "Error: $target is not valid "
+		echo "Error: \"$1\" is not valid"
+		exit 1
 	fi
 }
 

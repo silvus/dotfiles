@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Compress things without pain
+# -----------------------------------------------------------------------------
+
+target=${1%/} # Remove trailing slash
+
+if [[ -d "$target" ]]; then
+	tar -zcvf "${target}_$(date +%Y%m%d).tar.gz" "$target"
+	# zip -r "${target}_$(date +%Y%m%d).zip" "$target"
+elif [[ -f "$1" ]]; then
+	case "$1" in
+		(*.sql)     gzip "$target" ;;
+		(*)         tar -zcvf "${target}_$(date +%Y%m%d).tar.gz" "$target" ;;
+	esac
+else
+	echo "Error: \"$1\" is not valid"
+	exit 1
+fi
+
+exit 0
