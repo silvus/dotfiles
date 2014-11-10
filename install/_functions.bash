@@ -11,7 +11,7 @@ make_symlink() {
 
 	# With sudo ?
 	if [[ "$4" == "sudo" ]]; then
-		local with_sudo="$4"
+		local with_sudo="sudo "
 	else
 		local with_sudo=""
 	fi
@@ -27,11 +27,11 @@ make_symlink() {
 		# File or directory already exist, make backup
 		if [[ -f "$file_path" ]] || [[ -d "$file_path" ]]; then
 			echo "${_TXTCOLOR_YELLOW}Backup current $file_name in $BACKUP_DIR/$file_name.bak${_TXTCOLOR_RESET}"
-			"$with_sudo" mv "$file_path" "$BACKUP_DIR/$file_name.bak"
+			${with_sudo} mv "$file_path" "$BACKUP_DIR/$file_name.bak"
 		fi
 
 		# Make symlink
-		"$with_sudo" ln -sv "$dot_file_path" "$file_path"
+		${with_sudo} ln -sv "$dot_file_path" "$file_path"
 	else
 		echo "${_TXTCOLOR_GREEN}$file_name is already installed${_TXTCOLOR_RESET}"
 	fi
