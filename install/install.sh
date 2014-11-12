@@ -108,6 +108,15 @@ if [[ -x "$(which ranger 2>/dev/null)" ]]; then
     make_symlink "rifle.conf" "$DOTFILES_DIR/ranger/rifle.conf" "$HOME/.config/ranger/rifle.conf"
 fi
 
+# i3
+# --------------------------------------------------------
+if [[ -x "$(which i3 2>/dev/null)" ]]; then
+    echo "${_TXTCOLOR_BLUE}--- i3 ---${_TXTCOLOR_RESET}"
+    dir_check "$HOME/.i3"
+    make_symlink "i3_config" "$DOTFILES_DIR/i3/config" "$HOME/.i3/config"
+    make_symlink "i3_status" "$DOTFILES_DIR/i3/i3status.conf" "$HOME/.i3/i3status.conf"
+fi
+
 # Newsbeuter
 # --------------------------------------------------------
 if [[ -x "$(which newsbeuter 2>/dev/null)" ]]; then

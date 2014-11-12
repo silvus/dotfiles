@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 sudo apt-get update
 
 # Installation
@@ -17,8 +19,10 @@ sudo apt-get install \
 	xclip `# Add to clipboard` \
 	scrot `# Make screenshot` \
 	pass `# Passwords manager` \
+	feh `# Image viewer` \
 	tmux `# Split terminal` \
 	lynx `# Web browser` \
 	newsbeuter `# Rss reader`\
+	cmus `# Music player` \
 	ranger highlight caca-utils `# File manager and dependencies`
 
