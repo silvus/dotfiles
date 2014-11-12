@@ -1,0 +1,26 @@
+
+# Bar on Netbook
+bar {
+	# i3bar position
+    position top
+    # status_command i3status
+    mode dock
+    output LVDS-0
+
+    # font DejaVu Sans
+    # position top
+    colors {
+        # Whole color settings
+        background #000000
+        statusline #00A5FF
+        separator  #666666
+        # Type             border  background font
+        focused_workspace  #008fff #007fff #ffffff
+        active_workspace   #333333 #5f676a #ffffff
+        inactive_workspace #333333 #222222 #888888
+        urgent_workspace   #aa0000 #990000 #ffffff
+    }
+
+    # Using custom i3status.conf
+    status_command i3status -c ~/.i3/i3status.conf
+}

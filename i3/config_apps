@@ -1,0 +1,33 @@
+
+# Config apps
+for_window [class="Xfce4-notifyd"] floating enable
+for_window [class="Guake"] floating enable
+for_window [class="Guake"] border none
+for_window [class="Gcolor2"] floating enable
+for_window [class="Lxappearance"] floating enable
+for_window [class="Keepassx"] border none
+for_window [class="Thunderbird"] border none
+for_window [class="Firefox"] border none
+for_window [class="Google-chrome"] border none
+for_window [class="Google-chrome-beta"] border none
+
+# Assignments
+for_window [title=".*\(Private Browsing\).*"] move to workspace "9"
+for_window [title=".*\(Navigation privée\).*"] move to workspace "9"
+assign [class="Firefox"] 1:web
+assign [class="Google-chrome"] 2:media
+assign [class="Google-chrome-beta"] 2:media
+assign [class="Audacious"] 2:media
+assign [class="Mplayer"] 2:media
+assign [class="Gnome-mplayer"] 2:media
+# assign [class="Sublime_text"] 3:code
+
+workspace 1:web output HDMI-0
+workspace 2:media output VGA-0
+
+# Startup
+exec --no-startup-id nm-applet
+exec --no-startup-id feh --bg-fill ~/.dotfiles/ressources/wallpaper_1.jpg
+exec firefox
+exec thunderbird
+exec guake

@@ -1,7 +1,6 @@
 # Should you change your keyboard layout somewhen, delete
 # this file and re-run i3-config-wizard(1).
 #
-
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
@@ -35,12 +34,6 @@ bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+KP_Enter exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+m focus right
-
-# alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
@@ -50,7 +43,7 @@ bindsym $mod+Right focus right
 bindsym $mod+Tab workspace back_and_forth
 workspace_auto_back_and_forth yes
 
-# alternatively, you can use the cursor keys:
+# move windows
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
@@ -75,12 +68,6 @@ bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
-
-# focus the parent container
-bindsym $mod+q focus parent
-
-# focus the child container
-#bindsym $mod+d focus child
 
 # switch to workspace
 bindsym $mod+ampersand workspace 1:web
@@ -157,16 +144,10 @@ bindsym $mod+r mode "resize"
 # bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 # bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
-# Pulse Audio controls
+# Audio controls
 bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
 bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB-
 bindsym XF86AudioMute exec amixer -q set Master toggle
-# bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase sound volume
-# bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -- -5% #decrease sound volume
-# bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 -- +10% && killall -SIGUSR1 i3status
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -- -10% && killall -SIGUSR1 i3status
-# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-volume 0 -- 0 && killall -SIGUSR1 i3status
 
 # Style
 # border colors:        border: bg:     text:   indicator:
@@ -174,94 +155,3 @@ client.focused          #3F8AC2 #096BAA #ffffff #00DA8E
 client.focused_inactive #333333 #5F676A #ffffff #484e50
 client.unfocused        #333333 #424242 #888888 #292d2e
 client.urgent           #C10004 #900000 #ffffff #900000
-
-# Main bar
-bar {
-	# i3bar position
-    position top
-    # status_command i3status
-    mode dock
-    # The display is connected either via HDMI or via DisplayPort
-    output HDMI-0
-
-    # font DejaVu Sans
-    # position top
-    colors {
-        # Whole color settings
-        background #000000
-        statusline #00A5FF
-        separator  #666666
-        # Type             border  background font
-        focused_workspace  #008fff #007fff #ffffff
-        active_workspace   #333333 #5f676a #ffffff
-        inactive_workspace #333333 #222222 #888888
-        urgent_workspace   #aa0000 #990000 #ffffff
-    }
-
-    # Using custom i3status.conf
-    status_command i3status -c ~/.i3/i3status.conf
-}
-
-# Small bar
-bar {
-	# i3bar position
-    position top
-    # status_command i3status
-    mode dock
-    # show tray icons on the primary monitor
-	tray_output primary
-    # disable system tray
-    tray_output none
-    # The display is connected either via HDMI or via DisplayPort
-    output VGA-0
-
-    # font DejaVu Sans
-    # position top
-    colors {
-        # Whole color settings
-        background #000000
-        statusline #ffffff
-        separator  #666666
-        # Type             border  background font
-        focused_workspace  #008fff #007fff #ffffff
-        active_workspace   #333333 #5f676a #ffffff
-        inactive_workspace #333333 #222222 #888888
-        urgent_workspace   #aa0000 #990000 #ffffff
-    }
-}
-
-# Config apps
-for_window [class="Xfce4-notifyd"] floating enable
-for_window [class="Guake"] floating enable
-for_window [class="Guake"] border none
-for_window [class="Gcolor2"] floating enable
-for_window [class="Lxappearance"] floating enable
-# for_window [class="Steam"] floating enable
-for_window [class="Keepassx"] border none
-for_window [class="Thunderbird"] border none
-for_window [class="Firefox"] border none
-for_window [class="Google-chrome"] border none
-for_window [class="Google-chrome-beta"] border none
-
-# Assignments
-#assign [class="Thunderbird"] 1:web
-for_window [title=".*\(Private Browsing\).*"] move to workspace "9"
-for_window [title=".*\(Navigation privée\).*"] move to workspace "9"
-assign [class="Firefox"] 1:web
-assign [class="Google-chrome"] 2:media
-assign [class="Google-chrome-beta"] 2:media
-assign [class="Audacious"] 2:media
-assign [class="Mplayer"] 2:media
-assign [class="Gnome-mplayer"] 2:media
-assign [class="Sublime_text"] 3:code
-
-workspace 1:web output HDMI-0
-workspace 2:media output VGA-0
-# workspace 3:code output HDMI-0
-
-# Startup
-exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill ~/.dotfiles/ressources/wallpaper_1.jpg
-exec firefox
-exec thunderbird
-exec guake
