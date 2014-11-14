@@ -27,3 +27,9 @@ for file in "$DOTFILES_PATH/bash/aliases/"*; do
 		source "$file"
 	fi
 done
+
+# Environment specific configuration 
+# ------------------------------------------------------
+if [[ -f "$DOTFILES_PATH/bash/bash_env" ]]; then
+    source "$DOTFILES_PATH/bash/bash_env"
+fi
