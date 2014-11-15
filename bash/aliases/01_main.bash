@@ -30,6 +30,7 @@ alias sudosu="sudo -Es"
 alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
 alias process='ps aux | grep'
 alias lynx="lynx -cfg=$HOME/.lynx/.lynxrc -lss=$HOME/.lynx/lynx.lss"
+alias music="mocp"
 
 # Vim
 # -----------------------------------------------------------------------------

@@ -23,6 +23,6 @@ sudo apt-get install \
 	tmux `# Split terminal` \
 	lynx `# Web browser` \
 	newsbeuter `# Rss reader`\
-	cmus `# Music player` \
+	moc `# Music player` \
 	ranger highlight caca-utils `# File manager and dependencies`
 
