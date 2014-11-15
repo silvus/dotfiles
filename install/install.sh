@@ -113,10 +113,10 @@ fi
 # --------------------------------------------------------
 if [[ -x "$(which mocp 2>/dev/null)" ]]; then
     echo "${_TXTCOLOR_BLUE}--- MOC ---${_TXTCOLOR_RESET}"
-    dir_check "$HOME/.moc"
+    dir_check "$HOME/.moc/themes"
     make_symlink "moc_config" "$DOTFILES_DIR/moc/config" "$HOME/.moc/config"
     chmod 644 "$HOME/.moc/config" # Need to be not writable by other
-    make_symlink "moc_theme" "$DOTFILES_DIR/moc/dot_theme" "$HOME/.moc/dot_theme"
+    make_symlink "moc_theme" "$DOTFILES_DIR/moc/dot_theme" "$HOME/.moc/themes/dot_theme"
 fi
 
 # i3
