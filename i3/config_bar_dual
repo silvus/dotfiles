@@ -7,8 +7,8 @@ bar {
     mode dock
     # The display is connected via HDM
     output HDMI-0
-
-    # font DejaVu Sans
+    # Font
+    font pango:DejaVu Sans Mono 7
     # position top
     colors {
         # Whole color settings
@@ -38,8 +38,8 @@ bar {
     tray_output none
     # The display is connected via VGA
     output VGA-0
-
-    # font DejaVu Sans
+	# Font
+    font pango:DejaVu Sans Mono 7
     # position top
     colors {
         # Whole color settings

@@ -24,5 +24,6 @@ sudo apt-get install \
 	lynx `# Web browser` \
 	newsbeuter `# Rss reader`\
 	moc `# Music player` \
+	i3 `# WM` \
 	ranger highlight caca-utils `# File manager and dependencies`
 
