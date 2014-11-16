@@ -87,9 +87,9 @@ StartInMusicDir = yes
 #MP3IgnoreCRCErrors = yes
 
 # Set playback toggles.
-#Repeat = no
-#Shuffle = no
-#AutoNext = yes
+Repeat = yes
+Shuffle = yes
+AutoNext = yes
 
 # Default FormatString:
 #
@@ -167,12 +167,12 @@ StartInMusicDir = yes
 #HideFileExtension = no
 
 # Show file format in menu?
-#ShowFormat = yes
+ShowFormat = no
 
 # Show file time in menu?  Possible values: 'yes', 'no' and 'IfAvailable'
 # (meaning show the time only when it is already known, which often works
 # faster).
-#ShowTime = yes
+ShowTime = no
 
 # Show time played as a percentage in the time progress bar.
 # ShowTimePercent = no
@@ -206,7 +206,7 @@ AutoLoadLyrics = no
 
 # MOC directory (where pid file, socket and state files are stored).
 # You can use ~ at the beginning.
-#MOCDir = ~/.moc
+MOCDir = ~/.moc
 
 # Use mmap() to read files.  mmap() is much slower on NFS.
 #UseMMap = no
@@ -452,7 +452,7 @@ SyncPlaylist = yes
 
 # When the song changes, should the menu be scrolled so that the currently
 # played file is visible?
-#FollowPlayedFile = yes
+FollowPlayedFile = yes
 
 # What to do if the interface was started and the server is already playing
 # something from the playlist?  If CanStartInPlaylist is set to 'yes', the

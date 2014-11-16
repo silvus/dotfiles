@@ -2,39 +2,58 @@
 
 # Launch tmux
 # -----------------------------------------------------------------------------
-if [[ -f "/usr/bin/tmux" ]]; then
-	SESSION=$USER
+_launch_tmux() {
+	local _TMUX_SESSION_NAME="$USER"
 
-	#  Launch session
-	tmux -2 new-session -d -s $SESSION
+	# If more than 200 cols in terminal : it's a big screen
+	if [[ $(tput cols) -gt 200 ]]; then
+		local _BIG_SCREEN=1
+	else
+		local _BIG_SCREEN=0
+	fi
 
-	# Setup a window
-	tmux new-window -t $SESSION:1 -n 'Dev'
-	# Split horizontaly
-	# tmux split-window -h
-	# Select panel
-	# tmux select-pane -t 1
-	# Name doesn't stay ? !
-	tmux rename-window 'Dev'
-	# Lauch command
-	# tmux send-keys "tail -f /var/log" C-m
-	# tmux new-window -t hawkhost:1 -n 'Server1' 'ssh root@10.x.x.x'
+	# make sure tmux server is running
+	# tmux start-server
 
-	# Setup a window
-	tmux new-window -t $SESSION:2 -n 'SysOps'
-	# Split horizontaly
-	# tmux split-window -h
-	# Select panel
-	# tmux select-pane -t 1
+	# Determine if session is running
+	tmux has-session -t ${_TMUX_SESSION_NAME}
+	if [[ "$?" != 0 ]]; then
 
-	# Setup a Postgres window
-	# tmux new-window -t $SESSION:3 -n 'Postgres' 'psql -U postgres'
+		#  Launch session
+		tmux new-session -s ${_TMUX_SESSION_NAME} -d -n 'Dev'
 
-	# Set default window
-	tmux select-window -t $SESSION:1
+		# Split first window vertically
+		if [[ "$_BIG_SCREEN" -eq 1 ]]; then
+			if [[ -x "$(which mocp 2>/dev/null)" ]]; then
+				# Open moc if it's installed
+				tmux split-window -h -p 45 "mocp"
+			else
+				# Split verticaly
+				tmux split-window -h
+			fi
+		fi
+
+		# Select panel
+		tmux select-pane -t 1
+
+		# Setup a window
+		tmux new-window -t ${_TMUX_SESSION_NAME} -n 'SysOps'
+
+		# Setup a Postgres window
+		# tmux new-window -t ${_TMUX_SESSION_NAME} -n 'Postgres' 'psql -U postgres'
+
+		# Focus on first window
+		tmux select-window -t "Dev"
+	fi
 
 	# Attach to session
-	tmux -2 attach-session -d
+	tmux attach -t ${_TMUX_SESSION_NAME}
+}
+
+# Check if tmux is installed
+if [[ -x "$(which tmux 2>/dev/null)" ]]; then
+	_launch_tmux
 else
 	echo "Tmux is not installed"
+	exit 1
 fi

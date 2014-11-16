@@ -14,7 +14,7 @@ _guake_configure() {
     gconftool-2 --set --type bool /apps/guake/general/prompt_on_quit true
     gconftool-2 --set --type bool /apps/guake/general/use_popup false
     gconftool-2 --set --type bool /apps/guake/general/use_trayicon false
-    gconftool-2 --set --type int /apps/guake/general/window_height 98
+    gconftool-2 --set --type int /apps/guake/general/window_height 100
 
     # Keybinding
     gconftool-2 --set --type string /apps/guake/keybindings/global/show_hide "twosuperior"
