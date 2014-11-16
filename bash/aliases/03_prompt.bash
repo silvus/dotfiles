@@ -26,6 +26,15 @@ _user_color() {
 	fi
 }
 
+_prompt_end() {
+	if [[ -w "${PWD}" ]]; then
+		echo "\$"
+    else
+    	# if the user hasn't write permissions on the current directory
+        echo "${TXTYELLOW}\$${TXTRESET}"
+    fi
+}
+
 # Utility function so we can test for things like .git/.hg without firing up a separate process
 _has_parent_dir() {
     test -d "$1" && return 0;
@@ -76,4 +85,4 @@ _vcs_prompt() {
 
 # Prompt
 # --------------------------------------------------------------------------------------
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] $(_prompt_end) '
