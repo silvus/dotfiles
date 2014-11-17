@@ -175,6 +175,7 @@ if [[ -d "/opt/sublime_text" ]]; then
 	make_symlink "PHP" "$DOTFILES_DIR/sublime_text_3/PHP.sublime-settings" "$SUBLIMETEXT_CONF_DIR/PHP.sublime-settings"
 	make_symlink "Python" "$DOTFILES_DIR/sublime_text_3/Python.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Python.sublime-settings"
 	make_symlink "YAML" "$DOTFILES_DIR/sublime_text_3/YAML.sublime-settings" "$SUBLIMETEXT_CONF_DIR/YAML.sublime-settings"
+	make_symlink "LaTeXTools" "$DOTFILES_DIR/sublime_text_3/LaTeXTools.sublime-settings" "$SUBLIMETEXT_CONF_DIR/LaTeXTools.sublime-settings"
 fi
 
 # End
