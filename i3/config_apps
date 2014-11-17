@@ -5,8 +5,6 @@ for_window [class="Guake"] floating enable
 for_window [class="Guake"] border none
 for_window [class="Gcolor2"] floating enable
 for_window [class="Lxappearance"] floating enable
-for_window [class="Keepassx"] border none
-for_window [class="Thunderbird"] border none
 for_window [class="Firefox"] border none
 for_window [class="Google-chrome"] border none
 for_window [class="Google-chrome-beta"] border none
@@ -30,4 +28,4 @@ exec --no-startup-id nm-applet
 exec --no-startup-id feh --bg-fill ~/.dotfiles/ressources/wallpaper_1.jpg
 exec firefox
 exec thunderbird
-exec guake -e tmux-dev --rename-tab "DevOps"
+exec guake
