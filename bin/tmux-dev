@@ -5,13 +5,6 @@
 _launch_tmux() {
 	local _TMUX_SESSION_NAME="$USER"
 
-	# If more than 200 cols in terminal : it's a big screen
-	if [[ $(tput cols) -gt 200 ]]; then
-		local _BIG_SCREEN=1
-	else
-		local _BIG_SCREEN=0
-	fi
-
 	# make sure tmux server is running
 	# tmux start-server
 
@@ -22,8 +15,9 @@ _launch_tmux() {
 		#  Launch session
 		tmux -2 new-session -s ${_TMUX_SESSION_NAME} -d -n 'Dev'
 
-		# Split first window vertically
-		if [[ "$_BIG_SCREEN" -eq 1 ]]; then
+		# If more than 200 cols in terminal : it's a big screen
+		if [[ $(tput cols) -gt 200 ]]; then
+			# Split first window vertically
 			if [[ -x "$(which mocp 2>/dev/null)" ]]; then
 				# Open moc if it's installed
 				tmux split-window -h -p 45 "mocp"
