@@ -9,10 +9,9 @@ bar {
     output HDMI-0
     # Font
     font pango:DejaVu Sans Mono 7
-    # position top
     colors {
         # Whole color settings
-        background #000000
+        background #00141a
         statusline #00A5FF
         separator  #666666
         # Type             border  background font
@@ -23,7 +22,11 @@ bar {
     }
 
     # Using custom i3status.conf
-    status_command i3status -c ~/.i3/i3status.conf
+    # status_command i3status -c ~/.i3/i3status.conf
+
+    # Using Conky
+    status_command ~/.i3/conky_launcher
+
 }
 
 # Small bar
@@ -40,7 +43,6 @@ bar {
     output VGA-0
 	# Font
     font pango:DejaVu Sans Mono 7
-    # position top
     colors {
         # Whole color settings
         background #000000

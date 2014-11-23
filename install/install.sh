@@ -125,6 +125,10 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
     echo "${_TXTCOLOR_BLUE}--- i3 ---${_TXTCOLOR_RESET}"
     dir_check "$HOME/.i3"
 
+    make_symlink "conky_launcher" "$DOTFILES_DIR/i3/conky_launcher" "$HOME/.i3/conky_launcher"
+    chmod 775 "$HOME/.i3/conky_launcher"
+    make_symlink "conky_statusbar" "$DOTFILES_DIR/i3/conky_statusbar" "$HOME/.i3/conky_statusbar"
+
 	SCREEN_COUNT=$(xrandr -q | grep ' connected' | wc -l)
 	echo "Number of screens connected : $SCREEN_COUNT"
 
@@ -145,6 +149,13 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
 	fi
 
 	cat "$DOTFILES_DIR/i3/config_apps" >> "$I3_CONFIG_FILE"
+fi
+
+# Conky
+# --------------------------------------------------------
+if [[ -x "$(which conky 2>/dev/null)" ]]; then
+	echo "${_TXTCOLOR_BLUE}--- Conky ---${_TXTCOLOR_RESET}"
+	make_symlink "conkyrc" "$DOTFILES_DIR/conky/conkyrc" "$HOME/.conkyrc"
 fi
 
 # Newsbeuter

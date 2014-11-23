@@ -1,5 +1,7 @@
 
 # Config apps
+# for_window [class="Conky"] floating enable
+for_window [class="Conky"] border none
 for_window [class="Xfce4-notifyd"] floating enable
 for_window [class="Guake"] floating enable
 for_window [class="Guake"] border none

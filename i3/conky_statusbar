@@ -1,0 +1,78 @@
+# http://i3wm.org/docs/i3bar-protocol.html
+
+out_to_x no
+own_window no
+out_to_console yes
+background no
+max_text_width 0
+
+# Update interval in seconds
+update_interval 1.0
+
+# This is the number of times Conky will update before quitting.
+# Set to zero to run forever.
+total_run_times 0
+
+# Shortens units to a single character (kiB->k, GiB->G, etc.). Default is off.
+short_units yes
+
+# How strict should if_up be when testing an interface for being up?
+# The value is one of up, link or address, to check for the interface
+# being solely up, being up and having link or being up, having link
+# and an assigned IP address.
+if_up_strictness address
+
+# Add spaces to keep things from moving about?  This only affects certain objects.
+# use_spacer should have an argument of left, right, or none
+use_spacer left
+
+# Force UTF8? note that UTF8 support required XFT
+override_utf8_locale no
+
+# number of cpu samples to average
+# set to 1 to disable averaging
+cpu_avg_samples 2
+
+
+# Colors
+# -------------------------------------------------
+# blue : 1e90ff
+# green : 00cd00
+# gray : cccccc
+
+# -------------------------------------------------
+# ${if_running mocp} \
+# 	{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+# 	{ "full_text" : "${moc_timeleft}" , "color" : "\#1e90ff", "separator":false, "separator_block_width":30 },
+# 	{ "full_text" : "${moc_title}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
+# ${endif} \
+# -------------------------------------------------
+TEXT
+[
+\
+{ "full_text" : "🌍" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{ "full_text" : "${addr}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
+\
+${if_mounted /data}
+	{ "full_text" : "data" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+	{ "full_text" : "${fs_used /data} \/${fs_size /data}" , "color" : "\#1e90ff", "separator":false, "separator_block_width":20 },
+${endif}
+{ "full_text" : "root" , "color" : "\#cccccc", "separator":false, "separator_block_width":0 },
+{ "full_text" : "${fs_used /} \/${fs_size /}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
+\
+{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{ "full_text" : "${memperc}%" , "color" : "\#1e90ff", "separator":false, "separator_block_width":20 },
+{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{ "full_text" : "${cpu}%" , "color" : "\#1e90ff" , "separator":true, "separator_block_width":30 },
+\
+{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{ "full_text" : "${time %a %d %b}" , "color" : "\#1e90ff" , "separator":false, "separator_block_width":10 },
+{ "full_text" : "⌚" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{ "full_text" : "${time %H:%M:%S}" , "color" : "\#00cd00" , "separator":true, "separator_block_width":30 },
+\
+{ "full_text" : "♪" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{"full_text":"${exec amixer get Master | awk -F'[]%[]' '/%/ {if ($7 == "off") { print "Mute" } else { print $2"%" }}'}","color":"\#eeeeee", "separator":false, "separator_block_width":10},
+\
+{ "full_text" : "" , "color" : "\#ffffff" , "separator":true, "separator_block_width":40 }
+\
+],

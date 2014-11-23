@@ -1,0 +1,98 @@
+# Fonctionnement de conky
+total_run_times 0            # Temps en secondes ; 0 = toujours actif
+background no                # Pour que conky tourne en arrière plan ; no = pour les tests
+
+# Réglages système
+cpu_avg_samples 4            # Nb d'échantillons pour calculer la moyenne d'utilisation CPU
+net_avg_samples 2            # Nb d'échantillons pour calculer la moyenne d'utilisation CPU
+
+# Mémoire
+double_buffer yes            # Éviter le clignotement
+no_buffers yes               # Soustraire les mémoires tampons de la mémoire utilisée
+
+# Affichage
+out_to_x yes
+out_to_console no            # Affiche le texte sur la sortie standard
+out_to_stderr no
+extra_newline no
+update_interval 1            # Taux de rafraîchissement de la fenêtre (s)
+
+# Fenêtre conky
+alignment top_left           # Alignement
+
+# minimum_size 200 20        # Taille minimum (px) ; largeur / hauteur
+# maximum_width 1679         # Largeur maximum (px)
+
+gap_x 0                      # Écart avec le bord gauche / droit
+gap_y 0                      # Écart avec le bord haut / bas
+
+draw_shades no               # Afficher les ombres
+draw_outline no              # Afficher les contours de fenêtre
+draw_borders no              # Afficher des contours autour des blocs de texte
+draw_graph_borders yes       # Afficher les contours des graph
+border_width 1               # Largeur du contour
+border_inner_margin 1        # Largeur des marges
+stippled_borders 1           # Taille des pointillés
+
+own_window yes               # Utiliser sa propre fenêtre
+own_window_type panel        # Type de fenêtre
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,above
+own_window_transparent no    # Pseudo transparence
+own_window_colour 00141a
+
+# Font
+use_xft yes                  # Utiliser Xft (polices lissées etc)
+xftalpha 1
+override_utf8_locale yes     # Force l'UTF8
+uppercase no                 # Tout le texte en majuscule
+use_spacer left              # Ajoute des espaces après certains objets (qu'avec des polices fixes)
+xftfont DejaVu Sans Mono::size=6
+
+# Unités
+format_human_readable yes
+short_units yes              # Unités courtes
+pad_percents 2               # Unité à 2 décimales
+
+# Graphs et bar
+draw_graph_borders yes
+default_bar_size 100 4
+default_graph_size 100 4
+default_gauge_size 100 4
+show_graph_range no
+show_graph_scale no
+
+# Couleurs
+default_color CCCCCC         # Couleur par défaut
+default_shade_color 333333   # Couleur des ombres
+default_outline_color 000000 # Couleur des contours
+
+color1 CCCCCC                  #  Label
+color2 1e90ff                  #  Valeur
+color3 1e90ff                  #  Bar
+
+
+# -------------------------------------------------
+TEXT
+# Moc
+# ${if_running mocp} \
+# ${if_match "${moc_state}" == "PLAY" }♫ ${endif} \
+# ${if_match "${moc_state}" == "PAUSE" }Pause ${endif} \
+# ${if_match "${moc_state}" == "??" }Nope ${endif} \
+# ${moc_timeleft} \
+# ${moc_title} \
+# ${endif} \
+# ${battery} ${battery_bar} ${battery_percent} ${battery_short} ${battery_time}
+# Disk Usage
+${color1}/ ${color3}${fs_bar /} \
+${if_mounted /data}${color1} /data ${color3}${fs_bar /data}${endif} \
+\
+${alignc} \
+# Network
+${color2}$addr \
+${color1}DOWN ${color3}${downspeedgraph eth0 5,100 red blue -t -l} \
+${color1}UP ${color3}${upspeedgraph eth0 5,100 red blue} \
+\
+${alignr} \
+# Load
+${color1}RAM ${color2}${memperc}% ${color3}${membar} \
+${color1}CPU ${color2}${cpu}% ${color3}${cpubar cpu0}
