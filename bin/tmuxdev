@@ -21,9 +21,9 @@ _launch_tmux() {
 			if [[ -x "$(which mocp 2>/dev/null)" ]]; then
 				# Open moc if it's installed
 				tmux split-window -h -p 45 "mocp"
-			else
-				# Split verticaly
-				tmux split-window -h
+			# else
+			# 	# Split verticaly
+			# 	tmux split-window -h
 			fi
 		fi
 
