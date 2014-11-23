@@ -76,11 +76,6 @@ if [[ -x "$(which php 2>/dev/null)" ]]; then
 	curl -sS "https://getcomposer.org/composer.phar" -o "$DOTFILES_DIR/bin/composer"
 	chmod 775 "$DOTFILES_DIR/bin/composer"
 	make_symlink "completion_composer" "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
-
-	# Bowerphp
-	echo "${_TXTCOLOR_BLUE}--- Bowerphp ---${_TXTCOLOR_RESET}"
-	curl -sS "http://bowerphp.org/bowerphp.phar" -o "$DOTFILES_DIR/bin/bowerphp"
-	chmod 775 "$DOTFILES_DIR/bin/bowerphp"
 fi
 
 # SSHRC
