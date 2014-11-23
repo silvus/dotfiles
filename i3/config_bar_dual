@@ -1,14 +1,15 @@
 
 # Main bar
 bar {
-	# i3bar position
     position top
-    # status_command i3status
     mode dock
+
     # The display is connected via HDM
     output HDMI-0
+
     # Font
     font pango:DejaVu Sans Mono 7
+
     colors {
         # Whole color settings
         background #00141a
@@ -33,19 +34,22 @@ bar {
 bar {
 	# i3bar position
     position top
-    # status_command i3status
     mode dock
+
     # show tray icons on the primary monitor
 	tray_output primary
     # disable system tray
     tray_output none
+
     # The display is connected via VGA
     output VGA-0
+
 	# Font
     font pango:DejaVu Sans Mono 7
+
     colors {
         # Whole color settings
-        background #000000
+        background #00141a
         statusline #ffffff
         separator  #666666
         # Type             border  background font

@@ -1,7 +1,7 @@
 
 # Config apps
 # for_window [class="Conky"] floating enable
-for_window [class="Conky"] border none
+# for_window [class="Conky"] border none
 for_window [class="Xfce4-notifyd"] floating enable
 for_window [class="Xfce4-notifyd"] border none
 for_window [class="Guake"] floating enable
@@ -27,7 +27,7 @@ workspace 2:media output VGA-0
 
 # Startup
 exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill ~/.dotfiles/ressources/wallpaper_1.jpg
+exec --no-startup-id feh --bg-fill ~/.dotfiles/ressources/wallpaper_4.jpg
 exec guake
 exec firefox
 exec thunderbird

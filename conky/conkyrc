@@ -18,13 +18,13 @@ extra_newline no
 update_interval 1            # Taux de rafraîchissement de la fenêtre (s)
 
 # Fenêtre conky
-alignment top_left           # Alignement
+alignment bottom_left           # Alignement
 
-# minimum_size 200 20        # Taille minimum (px) ; largeur / hauteur
-# maximum_width 1679         # Largeur maximum (px)
+minimum_size 1917 10        # Taille minimum (px) ; largeur / hauteur
+maximum_width 1917        # Largeur maximum (px)
 
 gap_x 0                      # Écart avec le bord gauche / droit
-gap_y 0                      # Écart avec le bord haut / bas
+gap_y 0 # 20                     # Écart avec le bord haut / bas
 
 draw_shades no               # Afficher les ombres
 draw_outline no              # Afficher les contours de fenêtre
@@ -35,10 +35,11 @@ border_inner_margin 1        # Largeur des marges
 stippled_borders 1           # Taille des pointillés
 
 own_window yes               # Utiliser sa propre fenêtre
-own_window_type panel        # Type de fenêtre
-own_window_hints undecorate,sticky,skip_taskbar,skip_pager,above
-own_window_transparent no    # Pseudo transparence
-own_window_colour 00141a
+own_window_class Conky
+own_window_type override  	 # Type de fenêtre :  normal dock panel desktop override
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,above # above
+own_window_transparent yes    # Pseudo transparence
+#own_window_colour 00141a
 
 # Font
 use_xft yes                  # Utiliser Xft (polices lissées etc)

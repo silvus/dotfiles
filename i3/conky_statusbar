@@ -50,7 +50,7 @@ cpu_avg_samples 2
 TEXT
 [
 \
-{ "full_text" : "🌍" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
 { "full_text" : "${addr}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
 \
 ${if_mounted /data}
@@ -73,6 +73,6 @@ ${endif}
 { "full_text" : "♪" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
 {"full_text":"${exec amixer get Master | awk -F'[]%[]' '/%/ {if ($7 == "off") { print "Mute" } else { print $2"%" }}'}","color":"\#eeeeee", "separator":false, "separator_block_width":10},
 \
-{ "full_text" : "" , "color" : "\#ffffff" , "separator":true, "separator_block_width":40 }
+{ "full_text" : " " , "color" : "\#ffffff" , "separator":true, "separator_block_width":40 }
 \
 ],
