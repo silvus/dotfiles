@@ -4,9 +4,13 @@
 # -----------------------------------------------------------------------------
 _launch_tmux() {
 	local _TMUX_SESSION_NAME="$USER"
+	local _BIG_SCREEN_WIDTH=200
+	local _SCREEN_WIDTH=$(tput cols)
+	local _SPLIT_WIDTH=35
+	local _SPLIT_HEIGHT=25
 
 	# make sure tmux server is running
-	# tmux start-server
+	tmux start-server
 
 	# Determine if session is running
 	tmux has-session -t ${_TMUX_SESSION_NAME}
@@ -15,29 +19,59 @@ _launch_tmux() {
 		#  Launch session
 		tmux -2 new-session -s ${_TMUX_SESSION_NAME} -d -n 'Dev'
 
+		# First window
+		# -------------
+
 		# If more than 200 cols in terminal : it's a big screen
-		if [[ $(tput cols) -gt 200 ]]; then
+		if [[ "$_SCREEN_WIDTH" -gt "$_BIG_SCREEN_WIDTH" ]]; then
 			# Split first window vertically
 			if [[ -x "$(which mocp 2>/dev/null)" ]]; then
 				# Open moc if it's installed
 				tmux split-window -h -p 45 "mocp"
-			# else
-			# 	# Split verticaly
-			# 	tmux split-window -h
+			else
+				# Split verticaly
+				tmux split-window -h -p "$_SPLIT_WIDTH" "htop"
+				# Split horizontally
+				tmux split-window -v -p "$_SPLIT_HEIGHT"
+				# Show clock
+				tmux clock-mode
 			fi
 		fi
 
-		# Select panel
+		# Select panel 1
 		tmux select-pane -t 1
+
+		# Second window
+		# -------------
 
 		# Setup a window
 		tmux new-window -t ${_TMUX_SESSION_NAME} -n 'SysOps'
+
+		# If it's a big screen
+		if [[ "$_SCREEN_WIDTH" -gt "$_BIG_SCREEN_WIDTH" ]]; then
+			# Split verticaly
+			tmux split-window -h -p "$_SPLIT_WIDTH"
+			# Got to dotfiles folder and update
+			tmux send-keys -t 2 'dot' Enter
+			tmux send-keys -t 2 'dot_update' Enter
+			tmux send-keys -t 2 'dot_upgrade' Enter
+			# Split horizontally
+			tmux split-window -v -p "$_SPLIT_HEIGHT"
+			# Show clock
+			tmux clock-mode
+
+			# Select panel 1
+			tmux select-pane -t 1
+		fi
 
 		# Setup a Postgres window
 		# tmux new-window -t ${_TMUX_SESSION_NAME} -n 'Postgres' 'psql -U postgres'
 
 		# Focus on first window
 		tmux select-window -t "Dev"
+
+		# Change folder
+		# tmux send-keys -t 1 'cd $PROJECT_HOME' Enter
 	fi
 
 	# Attach to session
