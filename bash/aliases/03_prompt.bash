@@ -93,6 +93,26 @@ _vcs_prompt() {
 	fi
 }
 
+# Set directory length
+_prompt_pwd_length() {
+	# If small terminal : last directory only
+	if [[ $(tput cols) -lt 100 ]]; then
+		PROMPT_DIRTRIM=1
+	elif [[ $(tput cols) -lt 130 ]]; then
+		PROMPT_DIRTRIM=2
+	else
+		# Full path
+		PROMPT_DIRTRIM=0
+	fi
+}
+
+
 # Prompt
 # --------------------------------------------------------------------------------------
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] $(_prompt_end) '
+_prompt_command_function() {
+	_prompt_pwd_length
+}
+
+export PROMPT_COMMAND=_prompt_command_function
+
+export PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] $(_prompt_end) '
