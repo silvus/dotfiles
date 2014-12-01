@@ -16,35 +16,6 @@ TXTCYAN=$(tput setaf 6)
 # TXTBOLD=$(tput bold)
 TXTRESET=$(tput sgr0)
 
-_user_color() {
-	# Root
-	if [[ "$EUID" -eq 0 ]]; then
-		echo "$TXTPURPLE"
-	# Other user
-	else
-		echo "$TXTGREEN"
-	fi
-}
-
-# Change color if the user hasn't write permissions on the current directory
-_prompt_end() {
-	if [[ -w "${PWD}" ]]; then
-		echo "\$"
-	else
-		echo "${TXTYELLOW}\$${TXTRESET}"
-	fi
-}
-
-# TODO : Need to use PROMPT_COMMAND to use this
-# The error code of the last command, if it has failed in some way
-# As this get the last returned code, it should be called first
-# _last_command() {
-# 	local error="$?"
-# 	if (( error != 0 )); then
-# 		echo " ${TXTRED}${error}${TXTRESET} "
-# 	fi
-# }
-
 # Utility function so we can test for things like .git/.hg without firing up a separate process
 _has_parent_dir() {
 	test -d "$1" && return 0;
@@ -85,11 +56,41 @@ _vcs_prompt_git() {
 	fi
 }
 
+# TODO : Add this to _prompt_command_function
 _vcs_prompt() {
 	if [[ -d ".svn" ]]; then
 		echo "-[${TXTYELLOW}svn${TXTRESET}]"
 	elif _has_parent_dir ".git"; then
 		_vcs_prompt_git
+	fi
+}
+
+# The error code of the last command, if it has failed in some way
+_last_command() {
+	local error="$?"
+	if [[ "$error" != 0 ]]; then
+		_LAST_COMMAND="-[${TXTRED}${error}${TXTRESET}]"
+	else
+		_LAST_COMMAND=""
+	fi
+}
+
+# Change color if the user hasn't write permissions on the current directory
+_right_to_write() {
+	if [[ -w "${PWD}" ]]; then
+		_COLOR_END="$TXTRESET"
+	else
+		_COLOR_END="$TXTYELLOW"
+	fi
+}
+
+_is_root() {
+	if [[ "$EUID" -eq 0 ]]; then
+		# Root
+		_COLOR_USER="$TXTPURPLE"
+	else
+		# Other user
+		_COLOR_USER="$TXTGREEN"
 	fi
 }
 
@@ -106,13 +107,15 @@ _prompt_pwd_length() {
 	fi
 }
 
-
 # Prompt
 # --------------------------------------------------------------------------------------
 _prompt_command_function() {
+	_last_command # As this get the last returned code, it should be called first
 	_prompt_pwd_length
+	_is_root
+	_right_to_write
 }
 
 export PROMPT_COMMAND=_prompt_command_function
 
-export PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] $(_prompt_end) '
+export PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
