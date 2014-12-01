@@ -83,6 +83,7 @@ search() {
 
 # Prompt
 # -----------------------------------------------------------------------------
+
 TXTRED=$(tput setaf 1)
 TXTGREEN=$(tput setaf 2)
 TXTYELLOW=$(tput setaf 3)
@@ -99,6 +100,24 @@ _user_color() {
 		echo "$TXTGREEN"
 	fi
 }
+
+# Set directory length
+_prompt_pwd_length() {
+	# If small terminal : last directory only
+	if [[ $(tput cols) -lt 100 ]]; then
+		PROMPT_DIRTRIM=1
+	elif [[ $(tput cols) -lt 130 ]]; then
+		PROMPT_DIRTRIM=2
+	else
+		# Full path
+		PROMPT_DIRTRIM=0
+	fi
+}
+
+_prompt_command_function() {
+	_prompt_pwd_length
+}
+
 
 PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
 
