@@ -13,6 +13,7 @@ _TXTCOLOR_BLUE=$(tput setaf 4)
 _TXTCOLOR_RESET=$(tput sgr0)
 
 # Source functions
+# --------------------------------------------------------
 source "$DOTFILES_DIR/install/_functions.bash"
 
 # Bash
@@ -76,6 +77,16 @@ if [[ -x "$(which php 2>/dev/null)" ]]; then
 	curl -sS "https://getcomposer.org/composer.phar" -o "$DOTFILES_DIR/bin/composer"
 	chmod 775 "$DOTFILES_DIR/bin/composer"
 	make_symlink "completion_composer" "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
+fi
+
+# Go
+# --------------------------------------------------------
+if [[ -x "$(which go 2>/dev/null)" ]]; then
+	if [[ -f "/usr/local/go/misc/bash/go" ]]; then
+		# Completion
+		echo "${_TXTCOLOR_BLUE}--- Go ---${_TXTCOLOR_RESET}"
+		make_symlink "completion_go" "/usr/local/go/misc/bash/go" "$BASH_COMPLETION_DIR/go" "sudo"
+	fi
 fi
 
 # SSHRC
