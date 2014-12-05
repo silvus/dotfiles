@@ -118,6 +118,7 @@ _prompt_command_function() {
 	_prompt_pwd_length
 }
 
+export PROMPT_COMMAND=_prompt_command_function
 
 PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
 
