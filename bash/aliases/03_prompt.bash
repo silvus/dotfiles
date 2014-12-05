@@ -1,9 +1,10 @@
-#!/bin/bash
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# Colors
+# Styles
+# -------------------------------------------------------------------------------------------
+
 # TXTBLACK=$(tput setaf 0)
 TXTRED=$(tput setaf 1)
 TXTGREEN=$(tput setaf 2)
@@ -16,7 +17,10 @@ TXTCYAN=$(tput setaf 6)
 # TXTBOLD=$(tput bold)
 TXTRESET=$(tput sgr0)
 
-# Utility function so we can test for things like .git/.hg without firing up a separate process
+# Utility functions
+# -------------------------------------------------------------------------------------------
+
+# Test for things like .git/.hg without firing up a separate process
 _has_parent_dir() {
 	test -d "$1" && return 0;
 
@@ -52,16 +56,21 @@ _vcs_prompt_git() {
 			local PICTO="↑"
 		fi
 
-		echo "-[${STATE_COLOR}${GIT_PROMPT}${TXTRESET}]-[${STATE_COLOR}${PICTO}${TXTRESET}]"
+		_VCS_PROMPT="-[${STATE_COLOR}${GIT_PROMPT}${TXTRESET}]-[${STATE_COLOR}${PICTO}${TXTRESET}]"
 	fi
 }
 
-# TODO : Add this to _prompt_command_function
+# Prompt Command functions
+# -------------------------------------------------------------------------------------------
+
+# Versioning ?
 _vcs_prompt() {
 	if [[ -d ".svn" ]]; then
-		echo "-[${TXTYELLOW}svn${TXTRESET}]"
+		_VCS_PROMPT="-[${TXTYELLOW}svn${TXTRESET}]"
 	elif _has_parent_dir ".git"; then
 		_vcs_prompt_git
+	else
+		_VCS_PROMPT=""
 	fi
 }
 
@@ -84,6 +93,7 @@ _right_to_write() {
 	fi
 }
 
+# Change color if the user is root
 _is_root() {
 	if [[ "$EUID" -eq 0 ]]; then
 		# Root
@@ -114,8 +124,9 @@ _prompt_command_function() {
 	_prompt_pwd_length
 	_is_root
 	_right_to_write
+	_vcs_prompt
 }
 
 export PROMPT_COMMAND=_prompt_command_function
 
-export PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]$(_vcs_prompt)\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
+export PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$TXTGREEN\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
