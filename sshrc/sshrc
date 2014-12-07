@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 
 alias cd..='cd ..'
 alias ..='cd ..'
@@ -101,26 +100,7 @@ _user_color() {
 	fi
 }
 
-# Set directory length
-_prompt_pwd_length() {
-	# If small terminal : last directory only
-	if [[ $(tput cols) -lt 100 ]]; then
-		PROMPT_DIRTRIM=1
-	elif [[ $(tput cols) -lt 130 ]]; then
-		PROMPT_DIRTRIM=2
-	else
-		# Full path
-		PROMPT_DIRTRIM=0
-	fi
-}
-
-_prompt_command_function() {
-	_prompt_pwd_length
-}
-
-export PROMPT_COMMAND=_prompt_command_function
-
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]$(p=${PWD/#"$HOME"/~} ; ((${#p}>30)) && echo "${p::10}…${p:(-19)}" || echo "\w")\[$TXTRESET\]] \$ '
 
 # Ascii
 # -----------------------------------------------------------------------------
