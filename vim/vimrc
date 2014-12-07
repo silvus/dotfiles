@@ -21,7 +21,7 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " ------------------------------------------------------------------------------------
 set tabstop=4             " Number of visual spaces per TAB
 set softtabstop=4         " Number of spaces in tab when editing
-set expandtab             " Tabs are spaces
+" set expandtab           " Tabs are spaces
 filetype on
 filetype plugin on
 filetype indent on        " Load filetype-specific indent files
@@ -65,18 +65,17 @@ set directory=~/.vim/swap/
 set t_Co=256              " Enable 256-color mode.
 syntax enable             " Enable syntax highlighting (previously syntax on).
 colorscheme jellybeans    " Set colorscheme
-" colorscheme molokai
 " set background=dark
 
 set ruler                 " Always show info along bottom.
-set rulerformat=%=%h%m%r%w\ %(%c%V%),%l/%L\ %P
+" set rulerformat=%=%h%m%r%w\ %(%c%V%),%l/%L\ %P
 set rulerformat=''
-" set number                " Show line numbers
+set number                " Show line numbers
 set cursorline            " Highlights the current line
 set showmode              " Current mode in status line
 set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
-set scrolloff=1           " Places a line between the current line and the screen edge
-set sidescrolloff=2       " Places a couple columns between the current column and the screen edge
+set scrolloff=10          " Places a line between the current line and the screen edge
+set sidescrolloff=5       " Places a couple columns between the current column and the screen edge
 set showmatch             " Show matching brackets when text indicator is over them
 
 " Status line

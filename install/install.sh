@@ -75,7 +75,7 @@ if [[ -x "$(which php 2>/dev/null)" ]]; then
 	# Composer
 	echo "${_TXTCOLOR_BLUE}--- Composer ---${_TXTCOLOR_RESET}"
 	curl -sS "https://getcomposer.org/composer.phar" -o "$DOTFILES_DIR/bin/composer"
-	chmod 775 "$DOTFILES_DIR/bin/composer"
+	chmod 770 "$DOTFILES_DIR/bin/composer"
 	make_symlink "completion_composer" "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
 fi
 
@@ -93,8 +93,10 @@ fi
 # --------------------------------------------------------
 echo "${_TXTCOLOR_BLUE}--- SSHRC ---${_TXTCOLOR_RESET}"
 curl -sS "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" -o "$DOTFILES_DIR/bin/sshrc"
-chmod 775 "$DOTFILES_DIR/bin/sshrc"
+chmod 770 "$DOTFILES_DIR/bin/sshrc"
 make_symlink "sshrc" "$DOTFILES_DIR/sshrc/sshrc" "$HOME/.sshrc"
+dir_check "$HOME/.sshrc.d"
+make_symlink "vimrc_sshrc" "$DOTFILES_DIR/vim/vimrc_sshrc" "$HOME/.sshrc.d/.vimrc"
 
 # Lynx
 # --------------------------------------------------------
@@ -132,7 +134,7 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
     dir_check "$HOME/.i3"
 
     make_symlink "conky_launcher" "$DOTFILES_DIR/i3/conky_launcher" "$HOME/.i3/conky_launcher"
-    chmod 775 "$HOME/.i3/conky_launcher"
+    chmod 770 "$HOME/.i3/conky_launcher"
     make_symlink "conky_statusbar" "$DOTFILES_DIR/i3/conky_statusbar" "$HOME/.i3/conky_statusbar"
 
 	SCREEN_COUNT=$(xrandr -q | grep ' connected' | wc -l)

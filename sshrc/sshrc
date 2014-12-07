@@ -1,4 +1,9 @@
+# Vim
+# -----------------------------------------------------------------------------
+export VIMINIT="let \$MYVIMRC='$SSHHOME/.sshrc.d/.vimrc' | source \$MYVIMRC"
 
+# Alias
+# -----------------------------------------------------------------------------
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -100,7 +105,7 @@ _user_color() {
 	fi
 }
 
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]$(p=${PWD/#"$HOME"/~} ; ((${#p}>30)) && echo "${p::10}…${p:(-19)}" || echo "\w")\[$TXTRESET\]] \$ '
+export PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
 
 # Ascii
 # -----------------------------------------------------------------------------
