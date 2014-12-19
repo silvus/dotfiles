@@ -3,7 +3,7 @@
 # Launch tmux
 # -----------------------------------------------------------------------------
 _launch_tmux() {
-	local _TMUX_SESSION_NAME="$USER"
+	local _TMUX_SESSION_NAME="${USER}_dev"
 	local _BIG_SCREEN_WIDTH=200
 	local _SCREEN_WIDTH=$(tput cols)
 	local _SPLIT_WIDTH=35
@@ -22,21 +22,8 @@ _launch_tmux() {
 		# First window
 		# -------------
 
-		# If more than 200 cols in terminal : it's a big screen
-		if [[ "$_SCREEN_WIDTH" -gt "$_BIG_SCREEN_WIDTH" ]]; then
-			# Split first window vertically
-			if [[ -x "$(which mocp 2>/dev/null)" ]]; then
-				# Open moc if it's installed
-				tmux split-window -h -p 45 "mocp"
-			else
-				# Split verticaly
-				tmux split-window -h -p "$_SPLIT_WIDTH" "htop"
-				# Split horizontally
-				tmux split-window -v -p "$_SPLIT_HEIGHT"
-				# Show clock
-				tmux clock-mode
-			fi
-		fi
+		# Show clock
+		tmux clock-mode
 
 		# Select panel 1
 		tmux select-pane -t 1
@@ -47,7 +34,7 @@ _launch_tmux() {
 		# Setup a window
 		tmux new-window -t ${_TMUX_SESSION_NAME} -n 'SysOps'
 
-		# If it's a big screen
+		# If more than 200 cols in terminal : it's a big screen
 		if [[ "$_SCREEN_WIDTH" -gt "$_BIG_SCREEN_WIDTH" ]]; then
 			# Split verticaly
 			tmux split-window -h -p "$_SPLIT_WIDTH"
