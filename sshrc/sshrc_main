@@ -1,23 +1,8 @@
+
 # Vim
 # -----------------------------------------------------------------------------
+export EDITOR=vim
 export VIMINIT="let \$MYVIMRC='$SSHHOME/.sshrc.d/.vimrc' | source \$MYVIMRC"
-
-# Alias
-# -----------------------------------------------------------------------------
-alias cd..='cd ..'
-alias ..='cd ..'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
-alias ......='cd ../../../../../'
-
-mkcd() { mkdir -p "$@" && cd "$_"; }
-
-alias l='ls -lhaF --color=always --group-directories-first'
-alias sudosu="sudo -Es"
-
-alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
-alias process='ps aux | grep'
 
 # Extract a package without pain
 # -----------------------------------------------------------------------------
@@ -84,40 +69,3 @@ search() {
 		grep -rnI --exclude-dir=dir --color=always "$1" .
 	fi
 }
-
-# Prompt
-# -----------------------------------------------------------------------------
-
-TXTRED=$(tput setaf 1)
-TXTGREEN=$(tput setaf 2)
-TXTYELLOW=$(tput setaf 3)
-TXTBLUE=$(tput setaf 4)
-TXTPURPLE=$(tput setaf 5)
-TXTRESET=$(tput sgr0)
-
-_user_color() {
-	# Root
-	if [[ "$EUID" -eq 0 ]]; then
-		echo "$TXTPURPLE"
-	# Other user
-	else
-		echo "$TXTGREEN"
-	fi
-}
-
-export PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[$(_user_color)\u\[$TXTYELLOW\]@\[$TXTRED\]\h\[$TXTRESET\]]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \$ '
-
-# Ascii
-# -----------------------------------------------------------------------------
-_asciiart() {
-	echo ''
-	echo "${TXTBLUE} Welcome to ${TXTRED}$(hostname -s)${TXTBLUE} "
-	echo "      ${TXTBLUE}-----${TXTGREEN}                    "
-	echo "        ${TXTBLUE}\\${TXTGREEN}"'   ^__^               '
-	echo "         ${TXTBLUE}\\${TXTGREEN}"'  (oo)\_______       '
-	echo '            (__)\       )\/\   '
-	echo '                ||----w |      '
-	echo '                ||     ||      '
-	echo "$TXTRESET"
-}
-_asciiart

@@ -1,24 +1,4 @@
 
-# Projects root folder (and for Virtualenvwrapper)
-export PROJECT_HOME="/data/dev"
-
-# Doc folder
-export DOCUMENTATION_HOME="/data/doc"
-
-# Launch simple web server
-alias php_server="php -sS localhost:8000"
-
-dev() {
-	if [[ -d "$PROJECT_HOME/$1" ]]; then
-		cd "$PROJECT_HOME/$1";
-		if [[ -d ".git" ]]; then
-			git pull origin master
-		fi
-	else
-		cd "$PROJECT_HOME";
-	fi
-}
-
 # Pip
 # -----------------------------------------------------------------------------
 export PIP_DOWNLOAD_CACHE="$HOME/.pip/cache"
@@ -36,14 +16,4 @@ if [[ -f "$VIRTUALENVWRAPPER_PATH" ]]; then
 	# export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 	# Load virtualenvwrapper
 	source "$VIRTUALENVWRAPPER_PATH"
-fi
-
-# Golang
-# ------------------------------------------------------
-if [[ -d "/usr/local/go/bin" ]]; then
-    export PATH="$PATH:/usr/local/go/bin"
-    if [[ -d "$PROJECT_HOME/go/bin" ]]; then
-	    export GOPATH="$PROJECT_HOME/go"
-	    export PATH="$PATH:$GOPATH/bin"
-    fi
 fi
