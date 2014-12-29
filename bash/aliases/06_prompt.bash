@@ -116,12 +116,12 @@ _right_to_write() {
 _prompt_pwd_length() {
 	# If small terminal : last directory only
 	if [[ $(tput cols) -lt 100 ]]; then
-		export PROMPT_DIRTRIM=1
+		PROMPT_DIRTRIM=1
 	elif [[ $(tput cols) -lt 130 ]]; then
-		export PROMPT_DIRTRIM=2
+		PROMPT_DIRTRIM=2
 	else
 		# Full path
-		export PROMPT_DIRTRIM=0
+		PROMPT_DIRTRIM=0
 	fi
 }
 
@@ -144,3 +144,4 @@ PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\
 # -n : unexport PS1 so sub-processes will not inherit it (Fix for /bin/sh)
 export -n PS1
 export -n PROMPT_COMMAND
+export -n PROMPT_DIRTRIM
