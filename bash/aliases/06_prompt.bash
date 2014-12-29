@@ -134,9 +134,13 @@ _prompt_command_function() {
 	_vcs_prompt
 }
 
-export PROMPT_COMMAND=_prompt_command_function
+PROMPT_COMMAND=_prompt_command_function
 
 _is_ssh
 _is_root
 
-export PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
+
+# -n : unexport PS1 so sub-processes will not inherit it (Fix for /bin/sh)
+export -n PS1
+export -n PROMPT_COMMAND
