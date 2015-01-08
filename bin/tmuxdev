@@ -50,6 +50,11 @@ _launch_tmux() {
 			tmux select-pane -t 1
 		fi
 
+		# Source env script
+		if [[ -f "${DOTFILES_PATH}/tmux/tmuxdev_env" ]]; then
+			source "${DOTFILES_PATH}/tmux/tmuxdev_env"
+		fi
+
 		# Setup a Postgres window
 		# tmux new-window -t ${_TMUX_SESSION_NAME} -n 'Postgres' 'psql -U postgres'
 
