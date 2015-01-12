@@ -48,8 +48,8 @@ make_symlink() {
 
 		# File or directory already exist, make backup
 		if [[ -f "$file_path" ]] || [[ -d "$file_path" ]]; then
-			echo_warning "Backup current $file_name in $BACKUP_DIR/$file_name"
-			${with_sudo} mv "$file_path" "$BACKUP_DIR/$file_name"
+			echo_warning "Backup current $file_name in $BACKUP_DIR/$file_name*.bak"
+			${with_sudo} mv "$file_path" "$BACKUP_DIR/$file_name*.bak"
 		fi
 
 		# Make symlink
