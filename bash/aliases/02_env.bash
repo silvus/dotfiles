@@ -11,7 +11,7 @@ fi
 
 # History
 # -----------------------------------------------------------------------------
-export HISTSIZE=2000 # Lines in memory
+export HISTSIZE=10000 # Lines in memory
 export HISTFILESIZE=10000 # Lines on disk
 export HISTCONTROL=ignoreboth # ignoredups + ignorespace
 export HISTTIMEFORMAT="[%F %T] " # timestamps
