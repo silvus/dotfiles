@@ -27,7 +27,7 @@ workspace 2:media output VGA-0
 
 # Startup
 exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill --no-xinerama ~/.dotfiles/ressources/wallpaper_8.jpg
+exec --no-startup-id feh --bg-fill --no-xinerama ~/.dotfiles/wallpaper/wallpaper_8.jpg
 exec guake
 exec firefox
 exec thunderbird

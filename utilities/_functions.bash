@@ -9,19 +9,19 @@ _TXTCOLOR_RESET=$(tput sgr0)
 # Echo
 # --------------------------------------------------------
 echo_header() {
-	echo -e "\n${_TXTCOLOR_GREEN}⇒ $@${_TXTCOLOR_RESET}"
+	echo -e "\n ${_TXTCOLOR_BLUE}⇒ $@${_TXTCOLOR_RESET}"
 }
 echo_success() {
-	echo "${_TXTCOLOR_GREEN}✔${_TXTCOLOR_RESET} $@"
+	echo " ${_TXTCOLOR_GREEN}✔${_TXTCOLOR_RESET} $@"
 }
 echo_info() {
-	echo "${_TXTCOLOR_BLUE}➜${_TXTCOLOR_RESET} $@"
+	echo " ${_TXTCOLOR_BLUE}➜${_TXTCOLOR_RESET} $@"
 }
 echo_warning() {
-	echo "${_TXTCOLOR_YELLOW}⚠${_TXTCOLOR_RESET} $@"
+	echo " ${_TXTCOLOR_YELLOW}⚠${_TXTCOLOR_RESET} $@"
 }
 echo_error() {
-	echo "${_TXTCOLOR_RED}✖${_TXTCOLOR_RESET} $@"
+	echo " ${_TXTCOLOR_RED}✖${_TXTCOLOR_RESET} $@"
 }
 
 # Function for backup a file and make a symlink

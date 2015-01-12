@@ -2,7 +2,7 @@
 
 # Variables
 # --------------------------------------------------------
-DOTFILES_DIR="$(readlink -e "$(dirname $0)/..")" # dotfiles directory
+DOTFILES_DIR="$(readlink -e "$(dirname $0)")" # dotfiles directory
 BASH_COMPLETION_DIR="/etc/bash_completion.d"
 BACKUP_DIR="$DOTFILES_DIR/backup"
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
@@ -11,7 +11,7 @@ SSHRC_CONFIG_FILE="$HOME/.sshrc"
 
 # Source functions
 # --------------------------------------------------------
-source "$DOTFILES_DIR/install/_functions.bash"
+source "$DOTFILES_DIR/utilities/_functions.bash"
 
 # Bash
 # --------------------------------------------------------

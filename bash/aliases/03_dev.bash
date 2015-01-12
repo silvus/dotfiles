@@ -1,7 +1,7 @@
 
 # Dotfiles
 alias dot="cd $DOTFILES_PATH"
-alias dot_up="git --git-dir=$DOTFILES_PATH/.git --work-tree=$DOTFILES_PATH pull origin master && make --no-print-directory -C $DOTFILES_PATH && source $HOME/.bashrc"
+alias dot_up="git --git-dir=$DOTFILES_PATH/.git --work-tree=$DOTFILES_PATH pull origin master && ${DOTFILES_PATH}/install && source $HOME/.bashrc"
 
 # Projects root folder (and for Virtualenvwrapper)
 export PROJECT_HOME="/data/dev"

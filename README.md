@@ -5,5 +5,5 @@ Installation
 
 ```shell
 git clone https://github.com/Silvus/dotfiles.git ~/.dotfiles
-make --no-print-directory -C ~/.dotfiles
+~/.dotfiles/install
 ```
