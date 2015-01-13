@@ -48,8 +48,8 @@ make_symlink() {
 
 		# File or directory already exist, make backup
 		if [[ -f "$file_path" ]] || [[ -d "$file_path" ]]; then
-			echo_warning "Backup current $file_name in $BACKUP_DIR/$file_name*.bak"
-			${with_sudo} mv "$file_path" "$BACKUP_DIR/$file_name*.bak"
+			echo_warning "Backup current $file_name in $BACKUP_DIR/$file_name.bak"
+			${with_sudo} mv "$file_path" "$BACKUP_DIR/$file_name.bak"
 		fi
 
 		# Make symlink
@@ -57,24 +57,6 @@ make_symlink() {
 		${with_sudo} ln -s "$dot_file_path" "$file_path"
 	else
 		echo_info "$file_name is already installed"
-	fi
-}
-
-# Clone if doesn't exist, else update
-# --------------------------------------------------------
-clone_or_update() {
-	local git_url="$1"
-	local install_path="$2"
-	local depot_name="$3"
-
-	if [[ -d "$install_path" ]]; then
-		# Update
-		echo_info "Update $depot_name"
-		( cd "$install_path" && git pull )
-	else
-		# Clone
-		echo_success "Install $depot_name"
-		git clone "$git_url" "$install_path"
 	fi
 }
 

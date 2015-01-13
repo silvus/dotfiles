@@ -46,16 +46,11 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	echo_success "Download Pathogen"
 	curl -LSso "$HOME/.vim/autoload/pathogen.vim" "https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
 
-	# Ctrl P
-	clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp" "Ctrl P"
-	# Vim Airline
-	clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline" "Vim Airline"
-	# Syntastic
-	clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic" "Syntastic"
-	# Vim Commentary
-	clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary" "Vim Commentary"
-	# Supertab
-	clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab" "Supertab"
+	make_symlink "vim_ctrlp" "$DOTFILES_DIR/vim/bundle/ctrlp" "$HOME/.vim/bundle/ctrlp"
+	make_symlink "vim_airline" "$DOTFILES_DIR/vim/bundle/vim-airline" "$HOME/.vim/bundle/vim-airline"
+	make_symlink "vim_syntastic" "$DOTFILES_DIR/vim/bundle/syntastic" "$HOME/.vim/bundle/syntastic"
+	make_symlink "vim_commentary" "$DOTFILES_DIR/vim/bundle/vim-commentary" "$HOME/.vim/bundle/vim-commentary"
+	make_symlink "vim_supertab" "$DOTFILES_DIR/vim/bundle/supertab" "$HOME/.vim/bundle/supertab"
 fi
 
 # Tmux
