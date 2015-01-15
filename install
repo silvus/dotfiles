@@ -43,8 +43,8 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	# Vim plugins
 	echo_header "Vim plugins"
 
-	echo_success "Download Pathogen"
-	curl -LSso "$HOME/.vim/autoload/pathogen.vim" "https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
+	# Pathogen
+	download_if_available "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim" "$HOME/.vim/autoload/pathogen.vim"
 
 	make_symlink "vim_ctrlp" "$DOTFILES_DIR/vim/bundle/ctrlp" "$HOME/.vim/bundle/ctrlp"
 	make_symlink "vim_airline" "$DOTFILES_DIR/vim/bundle/vim-airline" "$HOME/.vim/bundle/vim-airline"
@@ -65,8 +65,7 @@ fi
 if [[ -x "$(which php 2>/dev/null)" ]]; then
 	echo_header "PHP"
 	# Composer
-	echo_success "Download Composer"
-	curl -sS "https://getcomposer.org/composer.phar" -o "$DOTFILES_DIR/bin/composer"
+	download_if_available "https://getcomposer.org/composer.phar" "$DOTFILES_DIR/bin/composer"
 	chmod 770 "$DOTFILES_DIR/bin/composer"
 	make_symlink "completion_composer" "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
 fi
@@ -84,8 +83,7 @@ fi
 # SSHRC
 # --------------------------------------------------------
 echo_header "SSHRC"
-echo_success "Download sshrc"
-curl -sS "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" -o "$DOTFILES_DIR/bin/sshrc"
+download_if_available "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" "$DOTFILES_DIR/bin/sshrc"
 chmod 770 "$DOTFILES_DIR/bin/sshrc"
 
 # sshrc.d

@@ -68,3 +68,18 @@ dir_check() {
 		mkdir -p "$dir_path"
 	fi
 }
+
+# Check for 404 and download a ressource
+# --------------------------------------------------------
+download_if_available() {
+	local DOWNLOAD_URL="$1"
+	local DESTINATION="$2"
+
+	echo_info "Download $(basename $DOWNLOAD_URL)"
+	if [[ $(curl -o /dev/null --silent --head --write-out '%{http_code}' "${DOWNLOAD_URL}") == 200 ]]; then
+		curl -sS "$DOWNLOAD_URL" -o "$DESTINATION"
+		echo_success "$(basename $DOWNLOAD_URL) -> $DESTINATION"
+	else
+		echo_error "$DOWNLOAD_URL isn't available"
+	fi
+}
