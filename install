@@ -73,11 +73,9 @@ fi
 # Go
 # --------------------------------------------------------
 if [[ -x "$(which go 2>/dev/null)" ]]; then
-	if [[ -f "/usr/local/go/misc/bash/go" ]]; then
-		# Completion
-		echo_header "Go"
-		make_symlink "completion_go" "/usr/local/go/misc/bash/go" "$BASH_COMPLETION_DIR/go" "sudo"
-	fi
+	# Completion
+	echo_header "Go"
+	make_symlink "completion_go" "$DOTFILES_DIR/bash/completion/go" "$BASH_COMPLETION_DIR/go" "sudo"
 fi
 
 # SSHRC
