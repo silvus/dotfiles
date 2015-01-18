@@ -39,19 +39,23 @@ cpu_avg_samples 2
 # blue : 1e90ff
 # green : 00cd00
 # gray : cccccc
+# red : ff2929
 
-# -------------------------------------------------
-# ${if_running mocp} \
-# 	{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
-# 	{ "full_text" : "${moc_timeleft}" , "color" : "\#1e90ff", "separator":false, "separator_block_width":30 },
-# 	{ "full_text" : "${moc_title}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
-# ${endif} \
 # -------------------------------------------------
 TEXT
 [
 \
 { "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
-{ "full_text" : "${addr}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
+{ "full_text" : "${addr}" , "color" : "\#1e90ff", "separator":false, "separator_block_width":20 },
+${if_up wlan0}{ "full_text" : "${downspeed wlan0} / ${upspeed wlan0}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },$endif
+${if_up eth0}{ "full_text" : "${downspeed eth0} / ${upspeed eth0}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },$endif
+\
+${if_up tun0}
+	{ "full_text" : "🔒" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+	{ "full_text" : "${downspeed tun0} / ${upspeed tun0}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
+${else}
+	{ "full_text" : "🔓" , "color" : "\#ff2929", "separator":true, "separator_block_width":30 },
+$endif
 \
 ${if_mounted /data}
 	{ "full_text" : "data" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
