@@ -49,17 +49,17 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp" "ctrlp"
 	clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline" "vim-airline"
 	clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic" "syntastic"
-	clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary" "Vim Commentary"
+	clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary" "vim-commentary"
 	clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab" "supertab"
 	clone_or_update "https://github.com/fatih/vim-go.git" "$HOME/.vim/bundle/vim-go" "vim-go"
-	clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/supertab" "supertab"
+	clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree" "nerdtree"
 fi
 
 # Tmux
 # --------------------------------------------------------
 if [[ -x "$(which tmux 2>/dev/null)" ]]; then
 	echo_header "Tmux"
-	make_symlink "tmux" "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+	make_symlink "tmux.conf" "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 fi
 
 # PHP
