@@ -83,3 +83,21 @@ download_if_available() {
 		echo_error "$DOWNLOAD_URL isn't available"
 	fi
 }
+
+# Clone if doesn't exist, else update
+# --------------------------------------------------------
+clone_or_update() {
+	local git_url="$1"
+	local install_path="$2"
+	local depot_name="$3"
+
+	if [[ -d "$install_path" ]]; then
+		# Update
+		echo_info "Update $depot_name"
+		( cd "$install_path" && git pull )
+	else
+		# Clone
+		echo_success "Install $depot_name"
+		git clone "$git_url" "$install_path"
+	fi
+}

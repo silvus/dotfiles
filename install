@@ -46,13 +46,13 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	# Pathogen
 	download_if_available "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim" "$HOME/.vim/autoload/pathogen.vim"
 
-	make_symlink "vim_ctrlp" "$DOTFILES_DIR/vim/bundle/ctrlp" "$HOME/.vim/bundle/ctrlp"
-	make_symlink "vim_airline" "$DOTFILES_DIR/vim/bundle/vim-airline" "$HOME/.vim/bundle/vim-airline"
-	make_symlink "vim_syntastic" "$DOTFILES_DIR/vim/bundle/syntastic" "$HOME/.vim/bundle/syntastic"
-	make_symlink "vim_commentary" "$DOTFILES_DIR/vim/bundle/vim-commentary" "$HOME/.vim/bundle/vim-commentary"
-	make_symlink "vim_supertab" "$DOTFILES_DIR/vim/bundle/supertab" "$HOME/.vim/bundle/supertab"
-	make_symlink "vim_go" "$DOTFILES_DIR/vim/bundle/vim-go" "$HOME/.vim/bundle/vim-go"
-	make_symlink "vim_nerdtree" "$DOTFILES_DIR/vim/bundle/nerdtree" "$HOME/.vim/bundle/nerdtree"
+	clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp" "ctrlp"
+	clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline" "vim-airline"
+	clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic" "syntastic"
+	clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary" "Vim Commentary"
+	clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab" "supertab"
+	clone_or_update "https://github.com/fatih/vim-go.git" "$HOME/.vim/bundle/vim-go" "vim-go"
+	clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/supertab" "supertab"
 fi
 
 # Tmux

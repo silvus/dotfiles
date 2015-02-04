@@ -45,7 +45,7 @@ nnoremap <C-H> <C-W><C-H>
 
 " Cycling through buffers
 nnoremap <C-n> :bnext<CR>
-"nnoremap <C-p> :bprevious<CR>
+nnoremap <C-b> :bprevious<CR>
 nnoremap <C-c> :bd<CR>
 
 " Search
@@ -109,10 +109,10 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*,*/__pycache__/*
 " Open automatically when vim starts up
 " autocmd vimenter * NERDTree
 " Open a NERDTree automatically when vim starts up if no files were specified
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " Close vim if the only window left open is a NERDTree
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
 " ------------------------------------------------------------------------------------
