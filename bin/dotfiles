@@ -1,17 +1,149 @@
 #!/usr/bin/env bash
 
 # Variables
-# --------------------------------------------------------
-DOTFILES_DIR="$(readlink -e "$(dirname $0)")" # dotfiles directory
+# ========================================================
+
+# Dotfiles directory (With default value if first install)
+[[ -d "$DOTFILES_PATH"  ]] && DOTFILES_DIR="$(readlink -e "$(dirname "$0")/..")" || DOTFILES_DIR="$HOME/.dotfiles"
+
 BASH_COMPLETION_DIR="/etc/bash_completion.d"
 BACKUP_DIR="$DOTFILES_DIR/backup"
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
 I3_CONFIG_FILE="$HOME/.i3/config"
 SSHRC_CONFIG_FILE="$HOME/.sshrc"
 
-# Source functions
+# Colors
+_TXTCOLOR_RED=$(tput setaf 1)
+_TXTCOLOR_GREEN=$(tput setaf 2)
+_TXTCOLOR_YELLOW=$(tput setaf 3)
+_TXTCOLOR_BLUE=$(tput setaf 4)
+# _TXTCOLOR_MAGENTA=$(tput setaf 5)
+# _TXTCOLOR_CYAN=$(tput setaf 6)
+_TXTCOLOR_RESET=$(tput sgr0)
+
+# Functions
+# ========================================================
+
+# Echos
 # --------------------------------------------------------
-source "$DOTFILES_DIR/utilities/_functions.bash"
+echo_header() {   echo -e "\n ${_TXTCOLOR_BLUE}⇒ $@${_TXTCOLOR_RESET}"; }
+echo_success() {  echo " ${_TXTCOLOR_GREEN}✔${_TXTCOLOR_RESET} $@"; }
+echo_info() {     echo " ${_TXTCOLOR_BLUE}➜${_TXTCOLOR_RESET} $@"; }
+echo_warning() {  echo " ${_TXTCOLOR_YELLOW}⚠${_TXTCOLOR_RESET} $@"; }
+echo_error() {    echo " ${_TXTCOLOR_RED}✖${_TXTCOLOR_RESET} $@"; }
+
+# Make a symlink (backup if destination exist)
+# --------------------------------------------------------
+make_symlink() {
+	local file_name="$1"
+	local dot_file_path="$2"
+	local file_path="$3"
+
+	# With sudo ?
+	[[ "$4" == "sudo"  ]] && local with_sudo="sudo " || with_sudo=""
+
+	if [[ ! -d "$BACKUP_DIR" ]]; then
+		echo_error "Backup directory $BACKUP_DIR doesn\'t exist"
+		exit 2
+	fi
+
+	# If file_path is not already a symlink or doesn't exist
+	if [[ ! -L "$file_path" ]]; then
+
+		# File or directory already exist, make backup
+		if [[ -f "$file_path" ]] || [[ -d "$file_path" ]]; then
+			echo_warning "Backup current $file_name in $BACKUP_DIR/$file_name.bak"
+			${with_sudo} mv "$file_path" "$BACKUP_DIR/$file_name.bak"
+		fi
+
+		# Make symlink
+		echo_success "Make symlink $dot_file_path -> $file_path"
+		${with_sudo} ln -s --force "$dot_file_path" "$file_path"
+	else
+		echo_info "$file_name is already installed"
+	fi
+}
+
+# Create directory if necessary
+# --------------------------------------------------------
+dir_check() {
+	local dir_path="$1"
+	if [[ ! -d "$dir_path" ]]; then
+		mkdir -p "$dir_path"
+	fi
+}
+
+# Check for 404 and download a ressource (if file age > 7 days)
+# --------------------------------------------------------
+download_if_available() {
+	local DOWNLOAD_URL="$1"
+	local DESTINATION="$2"
+
+	# Check file age
+	if file_is_fresh "$DESTINATION" ; then
+		echo_info "$(basename "$DOWNLOAD_URL") has been downloaded recently"
+		return 0
+	else
+		echo_info "Download $(basename "$DOWNLOAD_URL")"
+		if [[ $(curl -o /dev/null --silent --head --write-out '%{http_code}' "${DOWNLOAD_URL}") == 200 ]]; then
+			curl -sS "$DOWNLOAD_URL" -o "$DESTINATION"
+			echo_success "$(basename "$DOWNLOAD_URL") -> $DESTINATION"
+			return 0
+		else
+			echo_error "$DOWNLOAD_URL isn't available"
+			return  1
+		fi
+	fi
+}
+
+# Clone if doesn't exist, else update
+# --------------------------------------------------------
+clone_or_update() {
+	local git_url="$1"
+	local install_path="$2"
+	local depot_name="$3"
+
+	if [[ -d "$install_path" ]]; then
+		# Update
+		echo_info "Update $depot_name"
+		( cd "$install_path" && git pull --quiet origin master )
+	else
+		# Clone
+		echo_success "Install $depot_name"
+		git clone --quiet "$git_url" "$install_path"
+	fi
+}
+
+# Check if file is older than 7 days
+# --------------------------------------------------------
+file_is_fresh() {
+	local file="$1"
+	local agemax=604800 # seconds in 7 days
+
+	if [[ -f "$file" ]]; then
+		local agefile=$(($(date +%s) - $(stat -c '%Y' "$file")))
+		if [[ "$agefile" -lt "$agemax" ]]; then
+			return 0
+		fi
+	fi
+
+	return 1
+}
+
+# Install
+# ========================================================
+
+# Requirements
+# --------------------------------------------------------
+if [[ ! -x "$(which git 2>/dev/null)" ]]; then
+	echo_error "Git is missing. Aborting."
+	exit 1
+fi
+
+# Clone or update dotfiles
+# --------------------------------------------------------
+echo_header "Dotfiles"
+clone_or_update "https://github.com/Silvus/dotfiles.git" "$DOTFILES_DIR" "dotfiles"
 
 # Bash
 # --------------------------------------------------------
@@ -22,10 +154,8 @@ make_symlink "completion_dev" "$DOTFILES_DIR/bash/completion/dev" "$BASH_COMPLET
 
 # Git
 # --------------------------------------------------------
-if [[ -x "$(which git 2>/dev/null)" ]]; then
-	echo_header "Git"
-	make_symlink "gitignore_global" "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
-fi
+echo_header "Git"
+make_symlink "gitignore_global" "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
 
 # Vim
 # --------------------------------------------------------
@@ -138,10 +268,9 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
     make_symlink "conky_statusbar" "$DOTFILES_DIR/i3/conky_statusbar" "$HOME/.i3/conky_statusbar"
 
 	SCREEN_COUNT=$(xrandr -q | grep ' connected' | wc -l)
-	echo_info "Number of screens connected : $SCREEN_COUNT"
 
 	# Generated i3 config
-	echo_success "Generate i3 config"
+	echo_success "Generate i3 config (screens : $SCREEN_COUNT)"
 
 	echo -e "# DO NOT EDIT THIS FILE BY HAND.\n# YOUR CHANGES WILL BE OVERWRITTEN !\n" > "$I3_CONFIG_FILE"
 	cat "$DOTFILES_DIR/i3/config_main" >> "$I3_CONFIG_FILE"
@@ -200,3 +329,4 @@ fi
 # End
 # --------------------------------------------------------
 echo_header "End"
+exit 0

@@ -119,4 +119,3 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 if &term =~ '256color'
   set t_ut=
 endif
-

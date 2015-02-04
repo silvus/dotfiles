@@ -40,7 +40,7 @@ _launch_tmux() {
 			tmux split-window -h -p "$_SPLIT_WIDTH"
 			# Got to dotfiles folder and update
 			tmux send-keys -t 2 'dot' Enter
-			tmux send-keys -t 2 'dot_up' Enter
+			tmux send-keys -t 2 'dotfiles' Enter
 			# Split horizontally
 			tmux split-window -v -p "$_SPLIT_HEIGHT"
 			# Show clock
