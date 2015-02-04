@@ -148,12 +148,12 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
 
 	if [[ "$SCREEN_COUNT" -gt 1 ]]; then
 		# Dual screen
-    	make_symlink "i3_status" "$DOTFILES_DIR/i3/i3status_dual.conf" "$HOME/.i3/i3status.conf"
-    	cat "$DOTFILES_DIR/i3/config_bar_dual" >> "$I3_CONFIG_FILE"
+		make_symlink "i3_status" "$DOTFILES_DIR/i3/i3status_dual.conf" "$HOME/.i3/i3status.conf"
+		cat "$DOTFILES_DIR/i3/config_bar_dual" >> "$I3_CONFIG_FILE"
 	else
 		# Simple screen
-    	make_symlink "i3_status" "$DOTFILES_DIR/i3/i3status.conf" "$HOME/.i3/i3status.conf"
-    	cat "$DOTFILES_DIR/i3/config_bar" >> "$I3_CONFIG_FILE"
+		make_symlink "i3_status" "$DOTFILES_DIR/i3/i3status.conf" "$HOME/.i3/i3status.conf"
+		cat "$DOTFILES_DIR/i3/config_bar" >> "$I3_CONFIG_FILE"
 	fi
 
 	cat "$DOTFILES_DIR/i3/config_apps" >> "$I3_CONFIG_FILE"
