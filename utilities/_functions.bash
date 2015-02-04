@@ -94,10 +94,10 @@ clone_or_update() {
 	if [[ -d "$install_path" ]]; then
 		# Update
 		echo_info "Update $depot_name"
-		( cd "$install_path" && git pull )
+		( cd "$install_path" && git pull --quiet origin master )
 	else
 		# Clone
 		echo_success "Install $depot_name"
-		git clone "$git_url" "$install_path"
+		git clone --quiet "$git_url" "$install_path"
 	fi
 }
