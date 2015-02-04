@@ -4,6 +4,6 @@ Installation
 ------------
 
 ```shell
-git clone https://github.com/Silvus/dotfiles.git ~/.dotfiles
+git clone --recursive https://github.com/Silvus/dotfiles.git ~/.dotfiles
 ~/.dotfiles/install
 ```

@@ -51,6 +51,8 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	make_symlink "vim_syntastic" "$DOTFILES_DIR/vim/bundle/syntastic" "$HOME/.vim/bundle/syntastic"
 	make_symlink "vim_commentary" "$DOTFILES_DIR/vim/bundle/vim-commentary" "$HOME/.vim/bundle/vim-commentary"
 	make_symlink "vim_supertab" "$DOTFILES_DIR/vim/bundle/supertab" "$HOME/.vim/bundle/supertab"
+	make_symlink "vim_go" "$DOTFILES_DIR/vim/bundle/vim-go" "$HOME/.vim/bundle/vim-go"
+	make_symlink "vim_nerdtree" "$DOTFILES_DIR/vim/bundle/nerdtree" "$HOME/.vim/bundle/nerdtree"
 fi
 
 # Tmux

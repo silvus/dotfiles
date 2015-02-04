@@ -13,6 +13,7 @@ set encoding=utf-8        " Encoding
 set cm=blowfish           " Cryptmethod
 set hidden                " Switch between buffers without saving
 set splitright            " Split windows
+set mouse=a               " Use mouse
 
 " Understand *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -42,7 +43,7 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" Cycling through buffers
+" Cycling through buffers
 nnoremap <C-n> :bnext<CR>
 "nnoremap <C-p> :bprevious<CR>
 nnoremap <C-c> :bd<CR>
@@ -104,8 +105,18 @@ let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit=0
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*,*/__pycache__/*
 
+" NerdTree
+" Open automatically when vim starts up
+" autocmd vimenter * NERDTree
+" Open a NERDTree automatically when vim starts up if no files were specified
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" Close vim if the only window left open is a NERDTree
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
 " Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
 " ------------------------------------------------------------------------------------
 if &term =~ '256color'
   set t_ut=
 endif
+
