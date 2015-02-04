@@ -69,18 +69,26 @@ dir_check() {
 	fi
 }
 
-# Check for 404 and download a ressource
+# Check for 404 and download a ressource (if file age > 7 days)
 # --------------------------------------------------------
 download_if_available() {
 	local DOWNLOAD_URL="$1"
 	local DESTINATION="$2"
 
-	echo_info "Download $(basename $DOWNLOAD_URL)"
-	if [[ $(curl -o /dev/null --silent --head --write-out '%{http_code}' "${DOWNLOAD_URL}") == 200 ]]; then
-		curl -sS "$DOWNLOAD_URL" -o "$DESTINATION"
-		echo_success "$(basename $DOWNLOAD_URL) -> $DESTINATION"
+	# Check file age
+	if file_is_fresh $DESTINATION ; then
+		echo_info "$(basename $DOWNLOAD_URL) has been downloaded recently"
+		return 0
 	else
-		echo_error "$DOWNLOAD_URL isn't available"
+		echo_info "Download $(basename $DOWNLOAD_URL)"
+		if [[ $(curl -o /dev/null --silent --head --write-out '%{http_code}' "${DOWNLOAD_URL}") == 200 ]]; then
+			curl -sS "$DOWNLOAD_URL" -o "$DESTINATION"
+			echo_success "$(basename $DOWNLOAD_URL) -> $DESTINATION"
+			return 0
+		else
+			echo_error "$DOWNLOAD_URL isn't available"
+			return  1
+		fi
 	fi
 }
 
@@ -101,3 +109,20 @@ clone_or_update() {
 		git clone --quiet "$git_url" "$install_path"
 	fi
 }
+
+# Check if file is older than 7 days
+# --------------------------------------------------------
+file_is_fresh() {
+	local file="$1"
+	local agemax=604800 # seconds in 7 days
+
+	if [[ -f "$file" ]]; then
+		local agefile=$(($(date +%s) - $(stat -c '%Y' "$file")))
+		if [[ "$agefile" -lt "$agemax" ]]; then
+			return 0
+		fi
+	fi
+
+	return 1
+}
+
