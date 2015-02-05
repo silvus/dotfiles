@@ -101,7 +101,7 @@ download_if_available() {
 clone_or_update() {
 	local git_url="$1"
 	local install_path="$2"
-	local depot_name="$3"
+	local depot_name=$(basename "$install_path")
 
 	if [[ -d "$install_path" ]]; then
 		# Update if folder older than 1 day
@@ -147,7 +147,7 @@ fi
 # Clone or update dotfiles
 # --------------------------------------------------------
 echo_header "Dotfiles"
-clone_or_update "https://github.com/Silvus/dotfiles.git" "$DOTFILES_DIR" "dotfiles"
+clone_or_update "https://github.com/Silvus/dotfiles.git" "$DOTFILES_DIR"
 
 # Bash
 # --------------------------------------------------------
@@ -180,13 +180,13 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	# Pathogen
 	download_if_available "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim" "$HOME/.vim/autoload/pathogen.vim"
 
-	clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp" "ctrlp"
-	clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline" "vim-airline"
-	clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic" "syntastic"
-	clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary" "vim-commentary"
-	clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab" "supertab"
-	clone_or_update "https://github.com/fatih/vim-go.git" "$HOME/.vim/bundle/vim-go" "vim-go"
-	clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree" "nerdtree"
+	clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp"
+	clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline"
+	clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic"
+	clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary"
+	clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab"
+	clone_or_update "https://github.com/fatih/vim-go.git" "$HOME/.vim/bundle/vim-go"
+	clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree"
 fi
 
 # Tmux
