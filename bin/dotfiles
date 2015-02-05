@@ -104,9 +104,13 @@ clone_or_update() {
 	local depot_name="$3"
 
 	if [[ -d "$install_path" ]]; then
-		# Update
-		echo_info "Update $depot_name"
-		( cd "$install_path" && git pull --quiet origin master )
+		# Update if folder older than 1 day
+		if file_is_fresh "$install_path" 1 ; then
+			echo_info "$depot_name has been updated recently"
+		else
+			echo_info "Update $depot_name"
+			( cd "$install_path" && git pull --quiet origin master )
+		fi
 	else
 		# Clone
 		echo_success "Install $depot_name"
@@ -114,13 +118,13 @@ clone_or_update() {
 	fi
 }
 
-# Check if file is older than 7 days
+# Check if file is older than x days (default 7)
 # --------------------------------------------------------
 file_is_fresh() {
 	local file="$1"
-	local agemax=604800 # seconds in 7 days
+	local agemax=$((${2:-7} * 60 * 60 * 24))
 
-	if [[ -f "$file" ]]; then
+	if [[ -e "$file" ]]; then
 		local agefile=$(($(date +%s) - $(stat -c '%Y' "$file")))
 		if [[ "$agefile" -lt "$agemax" ]]; then
 			return 0
