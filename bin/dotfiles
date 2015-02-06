@@ -175,10 +175,11 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	# Base config
 	make_symlink "vimrc" "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
 	make_symlink "vimrc_sec" "$DOTFILES_DIR/vim/vimrc_sec" "$HOME/.vim/.vimrc_sec"
-	# Conf part
-	make_symlink "vim_default" "$DOTFILES_DIR/vim/vim_default" "$HOME/.vim/vim_default"
+	# Conf parts
+	make_symlink "vim_base" "$DOTFILES_DIR/vim/vim_base" "$HOME/.vim/vim_base"
 	make_symlink "vim_keymaps" "$DOTFILES_DIR/vim/vim_keymaps" "$HOME/.vim/vim_keymaps"
 	make_symlink "vim_plugins" "$DOTFILES_DIR/vim/vim_plugins" "$HOME/.vim/vim_plugins"
+	make_symlink "vim_theme" "$DOTFILES_DIR/vim/vim_theme" "$HOME/.vim/vim_theme"
 
 	# Vim plugins
 	echo_header "Vim plugins"

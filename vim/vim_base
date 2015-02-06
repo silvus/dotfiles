@@ -1,3 +1,5 @@
+set nocompatible          " Get rid of Vi compatibility mode
+
 " Misc
 " ------------------------------------------------------------------------------------
 set wildmenu              " Show list instead of just completing

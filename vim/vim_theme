@@ -1,0 +1,22 @@
+" Theme
+" ------------------------------------------------------------------------------------
+set t_Co=256              " Enable 256-color mode.
+syntax enable             " Enable syntax highlighting (previously syntax on).
+colorscheme jellybeans    " Set colorscheme
+" set background=dark
+
+set ruler                 " Always show info along bottom.
+" set rulerformat=%=%h%m%r%w\ %(%c%V%),%l/%L\ %P
+set rulerformat=''
+set number                " Show line numbers
+set cursorline            " Highlights the current line
+set showmode              " Current mode in status line
+set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
+set scrolloff=10          " Places a line between the current line and the screen edge
+set sidescrolloff=5       " Places a couple columns between the current column and the screen edge
+set showmatch             " Show matching brackets when text indicator is over them
+
+" Status line
+" ------------------------------------------------------------------------------------
+set laststatus=2          " Last window always has a statusline
+set timeoutlen=50
