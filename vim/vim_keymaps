@@ -1,0 +1,20 @@
+" Keymaps
+" ------------------------------------------------------------------------------------
+let mapleader=","         " Change the mapleader from \ to ,
+
+" Copy
+" set clipboard=unnamedplus " use + buffer (the system clipboard) if +xterm_clipboard
+" In line copy and paste to system clipboard
+" vmap <C-c> y:call system("xclip -i -selection clipboard", getreg("\""))<CR>:call system("xclip -i", getreg("\""))<CR>
+" nmap <C-v> :call setreg("\"",system("xclip -o -selection clipboard"))<CR>p
+
+" Split with Ctrl + hjkl
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Cycling through buffers
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-b> :bprevious<CR>
+nnoremap <C-c> :bd<CR>

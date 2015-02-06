@@ -1,0 +1,41 @@
+" Misc
+" ------------------------------------------------------------------------------------
+set wildmenu              " Show list instead of just completing
+set nowrap                " Don't wrap text
+set backspace=2           " Backspace in insert mode works like normal editor
+set encoding=utf-8        " Encoding
+set cm=blowfish           " Cryptmethod
+set hidden                " Switch between buffers without saving
+set splitright            " Split windows
+set mouse=a               " Use mouse
+
+" Understand *.md as markdown
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" Spaces - Tabs - Indent
+" ------------------------------------------------------------------------------------
+set tabstop=4             " Number of visual spaces per TAB
+set softtabstop=4         " Number of spaces in tab when editing
+" set expandtab           " Tabs are spaces
+filetype on
+filetype plugin on
+filetype indent on        " Load filetype-specific indent files
+
+" Search
+" ------------------------------------------------------------------------------------
+set incsearch             " Find as you type search
+set hlsearch              " Highlight search terms
+set ignorecase            " Make searches case-insensitive.
+
+" Backups and undo
+" ------------------------------------------------------------------------------------
+" Swap files out of the project root
+set backup
+set backupdir=~/.vim/backup/
+set directory=~/.vim/swap/
+
+" Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
+" ------------------------------------------------------------------------------------
+if &term =~ '256color'
+    set t_ut=
+endif

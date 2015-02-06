@@ -1,65 +1,19 @@
 set nocompatible          " Get rid of Vi compatibility mode
 
-" Pathogen
-" ------------------------------------------------------------------------------------
-execute pathogen#infect()
+" Plugins
+if filereadable(expand("~/.vim/vim_plugins"))
+    source ~/.vim/vim_plugins
+endif
 
-" Misc
-" ------------------------------------------------------------------------------------
-set wildmenu              " Show list instead of just completing
-set nowrap                " Don't wrap text
-set backspace=2           " Backspace in insert mode works like normal editor
-set encoding=utf-8        " Encoding
-set cm=blowfish           " Cryptmethod
-set hidden                " Switch between buffers without saving
-set splitright            " Split windows
-set mouse=a               " Use mouse
+" Default conf
+if filereadable(expand("~/.vim/vim_default"))
+    source ~/.vim/vim_default
+endif
 
-" Understand *.md as markdown
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-" Spaces - Tabs - Indent
-" ------------------------------------------------------------------------------------
-set tabstop=4             " Number of visual spaces per TAB
-set softtabstop=4         " Number of spaces in tab when editing
-" set expandtab           " Tabs are spaces
-filetype on
-filetype plugin on
-filetype indent on        " Load filetype-specific indent files
-
-" Keymap
-" ------------------------------------------------------------------------------------
-let mapleader=","         " Change the mapleader from \ to ,
-
-" Copy
-" set clipboard=unnamedplus " use + buffer (the system clipboard) if +xterm_clipboard
-" In line copy and paste to system clipboard
-" vmap <C-c> y:call system("xclip -i -selection clipboard", getreg("\""))<CR>:call system("xclip -i", getreg("\""))<CR>
-" nmap <C-v> :call setreg("\"",system("xclip -o -selection clipboard"))<CR>p
-
-" Split with Ctrl + hjkl
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" Cycling through buffers
-nnoremap <C-n> :bnext<CR>
-nnoremap <C-b> :bprevious<CR>
-nnoremap <C-c> :bd<CR>
-
-" Search
-" ------------------------------------------------------------------------------------
-set incsearch             " Find as you type search
-set hlsearch              " Highlight search terms
-set ignorecase            " Make searches case-insensitive.
-
-" Backups and undo
-" ------------------------------------------------------------------------------------
-" Swap files out of the project root
-set backup
-set backupdir=~/.vim/backup/
-set directory=~/.vim/swap/
+" Keymaps
+if filereadable(expand("~/.vim/vim_keymaps"))
+    source ~/.vim/vim_keymaps
+endif
 
 " Theme
 " ------------------------------------------------------------------------------------
@@ -83,39 +37,3 @@ set showmatch             " Show matching brackets when text indicator is over t
 " ------------------------------------------------------------------------------------
 set laststatus=2          " Last window always has a statusline
 set timeoutlen=50
-
-" Plugins
-" ------------------------------------------------------------------------------------
-" vim-airline
-let g:airline_theme = 'jellybeans'
-let g:airline_enable_branch = 1
-let g:airline_enable_syntastic = 1
-let g:airline#extensions#tabline#enabled = 1
-
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_readonly_symbol = '[RO]'
-" let g:airline_branch_prefix = ''
-" let g:airline_linecolumn_prefix = ''
-
-" Ctrl P
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-let g:ctrlp_clear_cache_on_exit=0
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*,*/__pycache__/*
-
-" NerdTree
-" Open automatically when vim starts up
-" autocmd vimenter * NERDTree
-" Open a NERDTree automatically when vim starts up if no files were specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" Close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-" Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
-" ------------------------------------------------------------------------------------
-if &term =~ '256color'
-  set t_ut=
-endif

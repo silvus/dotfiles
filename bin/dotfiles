@@ -170,16 +170,20 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	dir_check "$HOME/.vim/colors"
 	dir_check "$HOME/.vim/autoload"
 	dir_check "$HOME/.vim/bundle"
+	# Colors
 	make_symlink "jellybeans.vim" "$DOTFILES_DIR/vim/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
+	# Base config
 	make_symlink "vimrc" "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
-	make_symlink "vimrc_secure" "$DOTFILES_DIR/vim/vimrc_secure" "$HOME/.vim/.vimrc_secure"
+	make_symlink "vimrc_sec" "$DOTFILES_DIR/vim/vimrc_sec" "$HOME/.vim/.vimrc_sec"
+	# Conf part
+	make_symlink "vim_default" "$DOTFILES_DIR/vim/vim_default" "$HOME/.vim/vim_default"
+	make_symlink "vim_keymaps" "$DOTFILES_DIR/vim/vim_keymaps" "$HOME/.vim/vim_keymaps"
+	make_symlink "vim_plugins" "$DOTFILES_DIR/vim/vim_plugins" "$HOME/.vim/vim_plugins"
 
 	# Vim plugins
 	echo_header "Vim plugins"
-
 	# Pathogen
 	download_if_available "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim" "$HOME/.vim/autoload/pathogen.vim"
-
 	clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp"
 	clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline"
 	clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic"
