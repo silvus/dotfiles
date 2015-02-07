@@ -8,8 +8,10 @@ set backspace=2           " Backspace in insert mode works like normal editor
 set encoding=utf-8        " Encoding
 set cm=blowfish           " Cryptmethod
 set hidden                " Switch between buffers without saving
-set splitright            " Split windows
+set splitright            " New vsplit windows to the right of the current
+set splitbelow            " New split windows to the bottom of the current
 set mouse=a               " Use mouse
+set pastetoggle=<F12>     " Active indentation on pastes
 
 " Understand *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown

@@ -1,8 +1,14 @@
 
 _dev() {
-	if [[ -d $PROJECT_HOME ]]; then
-		local files=("$PROJECT_HOME/$2"*)
-		[[ -e ${files[0]} ]] && COMPREPLY=( "${files[@]##*/}" )
+	# Search in PROJECT_HOME
+	if [[ -d "$PROJECT_HOME" ]]; then
+		local files_project=("$PROJECT_HOME/$2"*)
+		[[ -d ${files_project[0]} ]] && COMPREPLY+=( "${files_project[@]##*/}" )
+	fi
+	# Search in GOPATH
+	if [[ -d "$GOPATH/src" ]]; then
+		local files_go=("$GOPATH/src/$2"*)
+		[[ -d ${files_go[0]} ]] && COMPREPLY+=( "$COMPREPLY${files_go[@]##*/}" )
 	fi
 }
 
