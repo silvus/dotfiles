@@ -2,9 +2,8 @@
 " ------------------------------------------------------------------------------------
 execute pathogen#infect()
 
-" Plugins
-" ------------------------------------------------------------------------------------
 " vim-airline
+" ------------------------------------------------------------------------------------
 let g:airline_theme = 'jellybeans'
 let g:airline_enable_branch = 1
 let g:airline_enable_syntastic = 1
@@ -19,13 +18,13 @@ let g:airline_readonly_symbol = '[RO]'
 " let g:airline_linecolumn_prefix = ''
 
 " Ctrl P
+" ------------------------------------------------------------------------------------
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit=0
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*,*/__pycache__/*
 
 " NerdTree
-" Open automatically when vim starts up
-" autocmd vimenter * NERDTree
+" ------------------------------------------------------------------------------------
 " Open a NERDTree automatically when vim starts up if no files were specified
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -34,15 +33,15 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 
 " returns true iff is NERDTree open/active
 function! rc:isNTOpen()
-return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+	return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunction
 
 " calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
 function! rc:syncTree()
-if &modifiable && rc:isNTOpen() && strlen(expand('%')) > 0 && !&diff
- NERDTreeFind
- wincmd p
-endif
+	if &modifiable && rc:isNTOpen() && strlen(expand('%')) > 0 && !&diff
+		NERDTreeFind
+		wincmd p
+	endif
 endfunction
 
 autocmd BufEnter * call rc:syncTree()

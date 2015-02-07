@@ -1,5 +1,20 @@
-source ~/.vimrc
+" Base conf
+if filereadable(expand("~/.vim/vim_base"))
+    source ~/.vim/vim_base
+endif
 
+" Keymaps
+if filereadable(expand("~/.vim/vim_keymaps"))
+    source ~/.vim/vim_keymaps
+endif
+
+" Themes
+if filereadable(expand("~/.vim/vim_theme"))
+    source ~/.vim/vim_theme
+endif
+
+" Specific
+" ------------------------------------------------------------------------------------
 set nobackup
 set nowritebackup
 set noswapfile

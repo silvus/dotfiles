@@ -6,8 +6,8 @@ colorscheme jellybeans    " Set colorscheme
 " set background=dark
 
 set ruler                 " Always show info along bottom.
-" set rulerformat=%=%h%m%r%w\ %(%c%V%),%l/%L\ %P
 set rulerformat=''
+
 set number                " Show line numbers
 set cursorline            " Highlights the current line
 set showmode              " Current mode in status line
@@ -20,3 +20,12 @@ set showmatch             " Show matching brackets when text indicator is over t
 " ------------------------------------------------------------------------------------
 set laststatus=2          " Last window always has a statusline
 set timeoutlen=50
+
+set statusline=
+set statusline+=\ %<%f\                             " File name
+set statusline+=\ %y\                               " File type
+set statusline+=\ %h%m%r%w\                         " Modified? Readonly?
+set statusline+=%=                                  " Switch to the right side
+set statusline+=\ %c\                               " Colnr
+set statusline+=\ %l/%L\                            " Current line / Total lines
+set statusline+=\ %P\                               " Percent through file

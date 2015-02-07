@@ -16,12 +16,27 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Spaces - Tabs - Indent
 " ------------------------------------------------------------------------------------
-set tabstop=4             " Number of visual spaces per TAB
-set softtabstop=4         " Number of spaces in tab when editing
-" set expandtab           " Tabs are spaces
 filetype on
 filetype plugin on
 filetype indent on        " Load filetype-specific indent files
+
+set list                  " show special characters
+set listchars=tab:\ \ ,trail:•,extends:#,nbsp:.
+
+set tabstop=4             " Number of visual spaces per TAB
+set softtabstop=4         " Number of spaces in tab when editing
+set shiftwidth=4
+" set expandtab           " Tabs are spaces
+
+" Tabs (default)
+autocmd FileType * setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+
+" Spaces
+autocmd FileType python,xml setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+
+" Specific
+autocmd FileType make setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
+autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 " Search
 " ------------------------------------------------------------------------------------
