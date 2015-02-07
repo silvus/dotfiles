@@ -35,9 +35,9 @@ echo_error() {    echo " ${_TXTCOLOR_RED}✖${_TXTCOLOR_RESET} $@"; }
 # Make a symlink (backup if destination exist)
 # --------------------------------------------------------
 make_symlink() {
-	local file_name="$1"
-	local dot_file_path="$2"
-	local file_path="$3"
+	local dot_file_path="$1"
+	local file_path="$2"
+	local file_name=$(basename "$file_path")
 
 	# With sudo ?
 	[[ "$4" == "sudo"  ]] && local with_sudo="sudo " || with_sudo=""
@@ -152,14 +152,14 @@ clone_or_update "https://github.com/Silvus/dotfiles.git" "$DOTFILES_DIR"
 # Bash
 # --------------------------------------------------------
 echo_header "Bash"
-make_symlink "bash_aliases" "$DOTFILES_DIR/bash/bash_aliases" "$HOME/.bash_aliases"
-make_symlink "completion_sshrc" "$DOTFILES_DIR/bash/completion/sshrc" "$BASH_COMPLETION_DIR/sshrc" "sudo"
-make_symlink "completion_dev" "$DOTFILES_DIR/bash/completion/dev" "$BASH_COMPLETION_DIR/dev" "sudo"
+make_symlink "$DOTFILES_DIR/bash/bash_aliases" "$HOME/.bash_aliases"
+make_symlink "$DOTFILES_DIR/bash/completion/sshrc" "$BASH_COMPLETION_DIR/sshrc" "sudo"
+make_symlink "$DOTFILES_DIR/bash/completion/dev" "$BASH_COMPLETION_DIR/dev" "sudo"
 
 # Git
 # --------------------------------------------------------
 echo_header "Git"
-make_symlink "gitignore_global" "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
+make_symlink "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
 
 # Vim
 # --------------------------------------------------------
@@ -172,15 +172,15 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	dir_check "$HOME/.vim/autoload"
 	dir_check "$HOME/.vim/bundle"
 	# Colors
-	make_symlink "jellybeans.vim" "$DOTFILES_DIR/vim/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
+	make_symlink "$DOTFILES_DIR/vim/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
 	# Base config
-	make_symlink "vimrc" "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
-	make_symlink "vimrc_sec" "$DOTFILES_DIR/vim/vimrc_sec" "$HOME/.vim/.vimrc_sec"
+	make_symlink "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
+	make_symlink "$DOTFILES_DIR/vim/vimrc_sec" "$HOME/.vim/.vimrc_sec"
 	# Conf parts
-	make_symlink "vim_base" "$DOTFILES_DIR/vim/vim_base" "$HOME/.vim/vim_base"
-	make_symlink "vim_keymaps" "$DOTFILES_DIR/vim/vim_keymaps" "$HOME/.vim/vim_keymaps"
-	make_symlink "vim_plugins" "$DOTFILES_DIR/vim/vim_plugins" "$HOME/.vim/vim_plugins"
-	make_symlink "vim_theme" "$DOTFILES_DIR/vim/vim_theme" "$HOME/.vim/vim_theme"
+	make_symlink "$DOTFILES_DIR/vim/vim_base" "$HOME/.vim/vim_base"
+	make_symlink "$DOTFILES_DIR/vim/vim_keymaps" "$HOME/.vim/vim_keymaps"
+	make_symlink "$DOTFILES_DIR/vim/vim_plugins" "$HOME/.vim/vim_plugins"
+	make_symlink "$DOTFILES_DIR/vim/vim_theme" "$HOME/.vim/vim_theme"
 
 	# Vim plugins
 	echo_header "Vim plugins"
@@ -200,7 +200,7 @@ fi
 # --------------------------------------------------------
 if [[ -x "$(which tmux 2>/dev/null)" ]]; then
 	echo_header "Tmux"
-	make_symlink "tmux.conf" "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+	make_symlink "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 fi
 
 # PHP
@@ -210,7 +210,7 @@ if [[ -x "$(which php 2>/dev/null)" ]]; then
 	# Composer
 	download_if_available "https://getcomposer.org/composer.phar" "$DOTFILES_DIR/bin/composer"
 	chmod 770 "$DOTFILES_DIR/bin/composer"
-	make_symlink "completion_composer" "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
+	make_symlink "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
 fi
 
 # Go
@@ -218,7 +218,7 @@ fi
 if [[ -x "$(which go 2>/dev/null)" ]]; then
 	# Completion
 	echo_header "Go"
-	make_symlink "completion_go" "$DOTFILES_DIR/bash/completion/go" "$BASH_COMPLETION_DIR/go" "sudo"
+	make_symlink "$DOTFILES_DIR/bash/completion/go" "$BASH_COMPLETION_DIR/go" "sudo"
 fi
 
 # SSHRC
@@ -229,7 +229,7 @@ chmod 770 "$DOTFILES_DIR/bin/sshrc"
 
 # sshrc.d
 dir_check "$HOME/.sshrc.d"
-make_symlink "vimrc_sshrc" "$DOTFILES_DIR/vim/vimrc_sshrc" "$HOME/.sshrc.d/.vimrc"
+make_symlink "$DOTFILES_DIR/vim/vimrc_sshrc" "$HOME/.sshrc.d/.vimrc"
 
 # Generated sshrc config
 echo_success "Generate sshrc config"
@@ -244,9 +244,9 @@ cat "$DOTFILES_DIR/sshrc/sshrc_ascii" >> "$SSHRC_CONFIG_FILE"
 if [[ -x "$(which lynx 2>/dev/null)" ]]; then
     echo_header "Lynx"
     dir_check "$HOME/.lynx"
-    make_symlink "lynxrc" "$DOTFILES_DIR/lynx/lynxrc" "$HOME/.lynx/.lynxrc"
-    make_symlink "lynx.lss" "$DOTFILES_DIR/lynx/lynx.lss" "$HOME/.lynx/lynx.lss"
-    make_symlink "lynx_bookmarks.html" "$DOTFILES_DIR/lynx/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
+    make_symlink "$DOTFILES_DIR/lynx/lynxrc" "$HOME/.lynx/.lynxrc"
+    make_symlink "$DOTFILES_DIR/lynx/lynx.lss" "$HOME/.lynx/lynx.lss"
+    make_symlink "$DOTFILES_DIR/lynx/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
 fi
 
 # Ranger
@@ -254,8 +254,8 @@ fi
 if [[ -x "$(which ranger 2>/dev/null)" ]]; then
     echo_header "Ranger"
     dir_check "$HOME/.config/ranger"
-    make_symlink "rc.conf" "$DOTFILES_DIR/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
-    make_symlink "rifle.conf" "$DOTFILES_DIR/ranger/rifle.conf" "$HOME/.config/ranger/rifle.conf"
+    make_symlink "$DOTFILES_DIR/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
+    make_symlink "$DOTFILES_DIR/ranger/rifle.conf" "$HOME/.config/ranger/rifle.conf"
 fi
 
 # MOC
@@ -263,9 +263,9 @@ fi
 if [[ -x "$(which mocp 2>/dev/null)" ]]; then
     echo_header "MOC"
     dir_check "$HOME/.moc/themes"
-    make_symlink "moc_config" "$DOTFILES_DIR/moc/config" "$HOME/.moc/config"
+    make_symlink "$DOTFILES_DIR/moc/config" "$HOME/.moc/config"
     chmod 644 "$HOME/.moc/config" # Need to be not writable by other
-    make_symlink "moc_theme" "$DOTFILES_DIR/moc/dot_theme" "$HOME/.moc/themes/dot_theme"
+    make_symlink "$DOTFILES_DIR/moc/dot_theme" "$HOME/.moc/themes/dot_theme"
 fi
 
 # i3
@@ -274,9 +274,9 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
     echo_header "i3"
     dir_check "$HOME/.i3"
 
-    make_symlink "conky_launcher" "$DOTFILES_DIR/i3/conky_launcher" "$HOME/.i3/conky_launcher"
+    make_symlink "$DOTFILES_DIR/i3/conky_launcher" "$HOME/.i3/conky_launcher"
     chmod 770 "$HOME/.i3/conky_launcher"
-    make_symlink "conky_statusbar" "$DOTFILES_DIR/i3/conky_statusbar" "$HOME/.i3/conky_statusbar"
+    make_symlink "$DOTFILES_DIR/i3/conky_statusbar" "$HOME/.i3/conky_statusbar"
 
 	SCREEN_COUNT=$(xrandr -q | grep ' connected' | wc -l)
 
@@ -288,11 +288,11 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
 
 	if [[ "$SCREEN_COUNT" -gt 1 ]]; then
 		# Dual screen
-		make_symlink "i3_status" "$DOTFILES_DIR/i3/i3status_dual.conf" "$HOME/.i3/i3status.conf"
+		make_symlink "$DOTFILES_DIR/i3/i3status_dual.conf" "$HOME/.i3/i3status.conf"
 		cat "$DOTFILES_DIR/i3/config_bar_dual" >> "$I3_CONFIG_FILE"
 	else
 		# Simple screen
-		make_symlink "i3_status" "$DOTFILES_DIR/i3/i3status.conf" "$HOME/.i3/i3status.conf"
+		make_symlink "$DOTFILES_DIR/i3/i3status.conf" "$HOME/.i3/i3status.conf"
 		cat "$DOTFILES_DIR/i3/config_bar" >> "$I3_CONFIG_FILE"
 	fi
 
@@ -303,7 +303,7 @@ fi
 # --------------------------------------------------------
 if [[ -x "$(which conky 2>/dev/null)" ]]; then
 	echo_header "Conky"
-	make_symlink "conkyrc" "$DOTFILES_DIR/conky/conkyrc" "$HOME/.conkyrc"
+	make_symlink "$DOTFILES_DIR/conky/conkyrc" "$HOME/.conkyrc"
 fi
 
 # Newsbeuter
@@ -311,30 +311,30 @@ fi
 if [[ -x "$(which newsbeuter 2>/dev/null)" ]]; then
 	echo_header "Newsbeuter"
 	dir_check "$HOME/.newsbeuter"
-	make_symlink "newsbeuter_config" "$DOTFILES_DIR/newsbeuter/config" "$HOME/.newsbeuter/config"
-	make_symlink "newsbeuter_browse" "$DOTFILES_DIR/newsbeuter/browse" "$HOME/.newsbeuter/browse"
-	make_symlink "newsbeuter_urls" "$DOTFILES_DIR/newsbeuter/urls" "$HOME/.newsbeuter/urls"
+	make_symlink "$DOTFILES_DIR/newsbeuter/config" "$HOME/.newsbeuter/config"
+	make_symlink "$DOTFILES_DIR/newsbeuter/browse" "$HOME/.newsbeuter/browse"
+	make_symlink "$DOTFILES_DIR/newsbeuter/urls" "$HOME/.newsbeuter/urls"
 fi
 
 # Virtualenvwrapper
 # --------------------------------------------------------
 if [[ -d "/data/dev/.virtualenvs" ]]; then
     echo_header "Virtualenv Hooks"
-    make_symlink "postactivate" "$DOTFILES_DIR/virtualenvs/postactivate" "/data/dev/.virtualenvs/postactivate"
+    make_symlink "$DOTFILES_DIR/virtualenvs/postactivate" "/data/dev/.virtualenvs/postactivate"
 fi
 
 # Sublime Text 3
 # --------------------------------------------------------
 if [[ -d "/opt/sublime_text" ]]; then
 	echo_header "Sublime Text 3"
-	make_symlink "Sublime-keymap" "$DOTFILES_DIR/sublime_text_3/Default (Linux).sublime-keymap" "$SUBLIMETEXT_CONF_DIR/Default (Linux).sublime-keymap"
-	make_symlink "Preferences" "$DOTFILES_DIR/sublime_text_3/Preferences.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Preferences.sublime-settings"
-	make_symlink "Side Bar" "$DOTFILES_DIR/sublime_text_3/Side Bar.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Side Bar.sublime-settings"
-	make_symlink "Markdown" "$DOTFILES_DIR/sublime_text_3/Markdown.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Markdown.sublime-settings"
-	make_symlink "PHP" "$DOTFILES_DIR/sublime_text_3/PHP.sublime-settings" "$SUBLIMETEXT_CONF_DIR/PHP.sublime-settings"
-	make_symlink "Python" "$DOTFILES_DIR/sublime_text_3/Python.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Python.sublime-settings"
-	make_symlink "YAML" "$DOTFILES_DIR/sublime_text_3/YAML.sublime-settings" "$SUBLIMETEXT_CONF_DIR/YAML.sublime-settings"
-	make_symlink "LaTeXTools" "$DOTFILES_DIR/sublime_text_3/LaTeXTools.sublime-settings" "$SUBLIMETEXT_CONF_DIR/LaTeXTools.sublime-settings"
+	make_symlink "$DOTFILES_DIR/sublime_text_3/Default (Linux).sublime-keymap" "$SUBLIMETEXT_CONF_DIR/Default (Linux).sublime-keymap"
+	make_symlink "$DOTFILES_DIR/sublime_text_3/Preferences.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Preferences.sublime-settings"
+	make_symlink "$DOTFILES_DIR/sublime_text_3/Side Bar.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Side Bar.sublime-settings"
+	make_symlink "$DOTFILES_DIR/sublime_text_3/Markdown.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Markdown.sublime-settings"
+	make_symlink "$DOTFILES_DIR/sublime_text_3/PHP.sublime-settings" "$SUBLIMETEXT_CONF_DIR/PHP.sublime-settings"
+	make_symlink "$DOTFILES_DIR/sublime_text_3/Python.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Python.sublime-settings"
+	make_symlink "$DOTFILES_DIR/sublime_text_3/YAML.sublime-settings" "$SUBLIMETEXT_CONF_DIR/YAML.sublime-settings"
+	make_symlink "$DOTFILES_DIR/sublime_text_3/LaTeXTools.sublime-settings" "$SUBLIMETEXT_CONF_DIR/LaTeXTools.sublime-settings"
 fi
 
 # End
