@@ -35,4 +35,5 @@ alias tmux="tmux -2" # Getting 256 colors to work in tmux
 # Vim
 # -----------------------------------------------------------------------------
 alias vi='vim'
-alias vi_sec="vim -x -u $HOME/.vim/.vimrc_sec"
+alias vimsec="vim -x -u $HOME/.vim/.vimrc_sec"
+alias vimide="vim -u $HOME/.vim/.vimrc_ide"

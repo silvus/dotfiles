@@ -19,3 +19,4 @@ set nobackup
 set nowritebackup
 set noswapfile
 set viminfo=
+set noundofile

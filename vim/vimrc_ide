@@ -1,0 +1,46 @@
+" Plugins
+if filereadable(expand("~/.vim/vim_plugins"))
+    source ~/.vim/vim_plugins
+endif
+
+" Base conf
+if filereadable(expand("~/.vim/vim_base"))
+    source ~/.vim/vim_base
+endif
+
+" Keymaps
+if filereadable(expand("~/.vim/vim_keymaps"))
+    source ~/.vim/vim_keymaps
+endif
+
+" Themes
+if filereadable(expand("~/.vim/vim_theme"))
+    source ~/.vim/vim_theme
+endif
+
+" Specific
+" ------------------------------------------------------------------------------------
+set mouse=a               " Use mouse
+
+" NerdTree
+" ------------------------------------------------------------------------------------
+" Open a NERDTree automatically when vim starts up if no files were specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" Close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" returns true iff is NERDTree open/active
+function! rc:isNTOpen()
+	return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
+function! rc:syncTree()
+	if &modifiable && rc:isNTOpen() && strlen(expand('%')) > 0 && !&diff
+		NERDTreeFind
+		wincmd p
+	endif
+endfunction
+
+autocmd BufEnter * call rc:syncTree()
