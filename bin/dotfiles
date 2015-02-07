@@ -167,6 +167,7 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	echo_header "Vim"
 	dir_check "$HOME/.vim/backup"
 	dir_check "$HOME/.vim/swap"
+	dir_check "$HOME/.vim/undo"
 	dir_check "$HOME/.vim/colors"
 	dir_check "$HOME/.vim/autoload"
 	dir_check "$HOME/.vim/bundle"
@@ -192,6 +193,7 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab"
 	clone_or_update "https://github.com/fatih/vim-go.git" "$HOME/.vim/bundle/vim-go"
 	clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree"
+	clone_or_update "https://github.com/airblade/vim-gitgutter.git" "$HOME/.vim/bundle/vim-gitgutter"
 fi
 
 # Tmux

@@ -50,6 +50,9 @@ set ignorecase            " Make searches case-insensitive.
 set backup
 set backupdir=~/.vim/backup/
 set directory=~/.vim/swap/
+" Persistent undo history
+set undofile
+set undodir=~/.vim/undo/
 
 " Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
 " ------------------------------------------------------------------------------------
