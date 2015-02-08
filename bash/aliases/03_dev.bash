@@ -32,7 +32,7 @@ dev() {
 		if [[ -d ".git" ]]; then
 			git pull origin master
 		fi
-		vim -u $HOME/.vim/.vimrc_ide
+		vim -u "$HOME/.vim/.vimrc_ide"
 	# go to PROJECT_HOME
 	else
 		cd "$PROJECT_HOME"

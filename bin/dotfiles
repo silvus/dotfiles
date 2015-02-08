@@ -177,16 +177,20 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	dir_check "$HOME/.vim/colors"
 	dir_check "$HOME/.vim/autoload"
 	dir_check "$HOME/.vim/bundle"
+	dir_check "$HOME/.vim/conf"
 	# Colors
 	make_symlink "$DOTFILES_DIR/vim/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
-	# Base config
+
+	# Conf
 	make_symlink "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
 	make_symlink "$DOTFILES_DIR/vim/vimrc_sec" "$HOME/.vim/.vimrc_sec"
+	make_symlink "$DOTFILES_DIR/vim/vimrc_ide" "$HOME/.vim/.vimrc_ide"
+	make_symlink "$DOTFILES_DIR/vim/vimrc_sshrc" "$HOME/.sshrc.d/.vimrc"
 	# Conf parts
-	make_symlink "$DOTFILES_DIR/vim/vim_base" "$HOME/.vim/vim_base"
-	make_symlink "$DOTFILES_DIR/vim/vim_keymaps" "$HOME/.vim/vim_keymaps"
-	make_symlink "$DOTFILES_DIR/vim/vim_plugins" "$HOME/.vim/vim_plugins"
-	make_symlink "$DOTFILES_DIR/vim/vim_theme" "$HOME/.vim/vim_theme"
+	make_symlink "$DOTFILES_DIR/vim/conf/vim_base" "$HOME/.vim/conf/vim_base"
+	make_symlink "$DOTFILES_DIR/vim/conf/vim_keymaps" "$HOME/.vim/conf/vim_keymaps"
+	make_symlink "$DOTFILES_DIR/vim/conf/vim_plugins" "$HOME/.vim/conf/vim_plugins"
+	make_symlink "$DOTFILES_DIR/vim/conf/vim_theme" "$HOME/.vim/conf/vim_theme"
 
 	# Vim plugins
 	echo_header "Vim plugins"
@@ -235,7 +239,6 @@ chmod 770 "$DOTFILES_DIR/bin/sshrc"
 
 # sshrc.d
 dir_check "$HOME/.sshrc.d"
-make_symlink "$DOTFILES_DIR/vim/vimrc_sshrc" "$HOME/.sshrc.d/.vimrc"
 
 # Generated sshrc config
 print_success "sshrc config" "generated"
