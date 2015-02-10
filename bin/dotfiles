@@ -152,7 +152,12 @@ fi
 
 # Clone or update dotfiles
 # --------------------------------------------------------
-echo_header "Dotfiles"
+if [[ "$1" == "scriptrestart" ]]; then
+	echo_header "Dotfiles updated"
+else
+	echo_header "Dotfiles"
+fi
+
 if [[ ! -d "$DOTFILES_DIR" ]]; then
 	# $DOTFILES_DIR directory doesn't exist? Clone it!
 	print_success "Dotfiles" "install"
@@ -163,7 +168,8 @@ elif [[ "$1" != "scriptrestart" ]]; then
 	prev_head="$(cd "$DOTFILES_DIR" && git rev-parse HEAD)"
 	( cd "$DOTFILES_DIR" && git pull --quiet origin master )
 	if [[ "$(cd "$DOTFILES_DIR" && git rev-parse HEAD)" != "$prev_head" ]]; then
-		print_warning "Dotfiles" "updated, restarting script"
+		# Need a restart
+		print_success "Dotfiles" "updated, restarting script"
 		exec "$0" "scriptrestart"
 	fi
 fi
