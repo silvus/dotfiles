@@ -110,8 +110,8 @@ clone_or_update() {
 	local depot_name=$(basename "$install_path")
 
 	if [[ -d "$install_path" ]]; then
-		# Update if folder older than 1 day
-		if file_is_fresh "$install_path" 1 ; then
+		# Update if folder older than 7 day
+		if file_is_fresh "$install_path" ; then
 			print_info "$depot_name" "updated recently"
 		else
 			print_info "$depot_name" "update"
@@ -153,7 +153,20 @@ fi
 # Clone or update dotfiles
 # --------------------------------------------------------
 echo_header "Dotfiles"
-clone_or_update "https://github.com/Silvus/dotfiles.git" "$DOTFILES_DIR"
+if [[ ! -d "$DOTFILES_DIR" ]]; then
+	# $DOTFILES_DIR directory doesn't exist? Clone it!
+	print_success "Dotfiles" "install"
+	git clone --quiet "https://github.com/Silvus/dotfiles.git" $DOTFILES_DIR
+elif [[ "$1" != "scriptrestart" ]]; then
+	# Make sure we have the latest files
+	print_info "Dotfiles" "update"
+	prev_head="$(cd "$DOTFILES_DIR" && git rev-parse HEAD)"
+	( cd "$DOTFILES_DIR" && git pull --quiet origin master )
+	if [[ "$(cd "$DOTFILES_DIR" && git rev-parse HEAD)" != "$prev_head" ]]; then
+		print_warning "Dotfiles" "updated, restarting script"
+		exec "$0" "scriptrestart"
+	fi
+fi
 
 # Bash
 # --------------------------------------------------------
@@ -253,41 +266,41 @@ cat "$DOTFILES_DIR/sshrc/sshrc_ascii" >> "$SSHRC_CONFIG_FILE"
 # Lynx
 # --------------------------------------------------------
 if [[ -x "$(which lynx 2>/dev/null)" ]]; then
-    echo_header "Lynx"
-    dir_check "$HOME/.lynx"
-    make_symlink "$DOTFILES_DIR/lynx/lynxrc" "$HOME/.lynx/.lynxrc"
-    make_symlink "$DOTFILES_DIR/lynx/lynx.lss" "$HOME/.lynx/lynx.lss"
-    make_symlink "$DOTFILES_DIR/lynx/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
+	echo_header "Lynx"
+	dir_check "$HOME/.lynx"
+	make_symlink "$DOTFILES_DIR/lynx/lynxrc" "$HOME/.lynx/.lynxrc"
+	make_symlink "$DOTFILES_DIR/lynx/lynx.lss" "$HOME/.lynx/lynx.lss"
+	make_symlink "$DOTFILES_DIR/lynx/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
 fi
 
 # Ranger
 # --------------------------------------------------------
 if [[ -x "$(which ranger 2>/dev/null)" ]]; then
-    echo_header "Ranger"
-    dir_check "$HOME/.config/ranger"
-    make_symlink "$DOTFILES_DIR/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
-    make_symlink "$DOTFILES_DIR/ranger/rifle.conf" "$HOME/.config/ranger/rifle.conf"
+	echo_header "Ranger"
+	dir_check "$HOME/.config/ranger"
+	make_symlink "$DOTFILES_DIR/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
+	make_symlink "$DOTFILES_DIR/ranger/rifle.conf" "$HOME/.config/ranger/rifle.conf"
 fi
 
 # MOC
 # --------------------------------------------------------
 if [[ -x "$(which mocp 2>/dev/null)" ]]; then
-    echo_header "MOC"
-    dir_check "$HOME/.moc/themes"
-    make_symlink "$DOTFILES_DIR/moc/config" "$HOME/.moc/config"
-    chmod 644 "$HOME/.moc/config" # Need to be not writable by other
-    make_symlink "$DOTFILES_DIR/moc/dot_theme" "$HOME/.moc/themes/dot_theme"
+	echo_header "MOC"
+	dir_check "$HOME/.moc/themes"
+	make_symlink "$DOTFILES_DIR/moc/config" "$HOME/.moc/config"
+	chmod 644 "$HOME/.moc/config" # Need to be not writable by other
+	make_symlink "$DOTFILES_DIR/moc/dot_theme" "$HOME/.moc/themes/dot_theme"
 fi
 
 # i3
 # --------------------------------------------------------
 if [[ -x "$(which i3 2>/dev/null)" ]]; then
-    echo_header "i3"
-    dir_check "$HOME/.i3"
+	echo_header "i3"
+	dir_check "$HOME/.i3"
 
-    make_symlink "$DOTFILES_DIR/i3/conky_launcher" "$HOME/.i3/conky_launcher"
-    chmod 770 "$HOME/.i3/conky_launcher"
-    make_symlink "$DOTFILES_DIR/i3/conky_statusbar" "$HOME/.i3/conky_statusbar"
+	make_symlink "$DOTFILES_DIR/i3/conky_launcher" "$HOME/.i3/conky_launcher"
+	chmod 770 "$HOME/.i3/conky_launcher"
+	make_symlink "$DOTFILES_DIR/i3/conky_statusbar" "$HOME/.i3/conky_statusbar"
 
 	SCREEN_COUNT=$(xrandr -q | grep ' connected' | wc -l)
 
@@ -330,8 +343,8 @@ fi
 # Virtualenvwrapper
 # --------------------------------------------------------
 if [[ -d "/data/dev/.virtualenvs" ]]; then
-    echo_header "Virtualenv Hooks"
-    make_symlink "$DOTFILES_DIR/virtualenvs/postactivate" "/data/dev/.virtualenvs/postactivate"
+	echo_header "Virtualenv Hooks"
+	make_symlink "$DOTFILES_DIR/virtualenvs/postactivate" "/data/dev/.virtualenvs/postactivate"
 fi
 
 # Sublime Text 3
