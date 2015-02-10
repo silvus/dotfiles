@@ -220,7 +220,7 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic"
 	clone_or_update "https://github.com/Raimondi/delimitMate.git" "$HOME/.vim/bundle/delimitMate"
 	clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary"
-	clone_or_update "https://github.com/ervandew/supertab.git" "$HOME/.vim/bundle/supertab"
+	clone_or_update "https://github.com/Shougo/neocomplcache.vim.git" "$HOME/.vim/bundle/neocomplcache.vim"
 	clone_or_update "https://github.com/fatih/vim-go.git" "$HOME/.vim/bundle/vim-go"
 	clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree"
 	clone_or_update "https://github.com/tpope/vim-fugitive.git" "$HOME/.vim/bundle/vim-fugitive"

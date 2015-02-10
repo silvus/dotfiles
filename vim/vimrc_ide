@@ -41,3 +41,7 @@ function! rc:syncTree()
 	endif
 endfunction
 autocmd BufEnter * call rc:syncTree()
+
+" Neocomplcache
+" ------------------------------------------------------------------------------------
+let g:neocomplcache_enable_at_startup = 1
