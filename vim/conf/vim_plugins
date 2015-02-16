@@ -6,7 +6,7 @@ execute pathogen#infect()
 " ------------------------------------------------------------------------------------
 let g:airline_theme = 'jellybeans'
 let g:airline_enable_branch = 1
-let g:airline_enable_syntastic = 1
+let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 
 let g:airline_left_sep = ''
