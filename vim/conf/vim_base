@@ -4,7 +4,7 @@ set nocompatible          " Get rid of Vi compatibility mode
 " ------------------------------------------------------------------------------------
 set wildmenu              " Show list instead of just completing
 set nowrap                " Don't wrap text
-set backspace=2           " Backspace in insert mode works like normal editor
+set backspace=2           " Backspace in insert mode works like other editors
 set encoding=utf-8        " Encoding
 set cm=blowfish           " Cryptmethod
 set hidden                " Switch between buffers without saving
