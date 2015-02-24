@@ -21,7 +21,7 @@ _launch_tmux() {
 		# -------------
 
 		# Show clock
-		tmux clock-mode
+		# tmux clock-mode
 
 		# Select panel 1
 		tmux select-pane -t 1
