@@ -9,7 +9,6 @@ set ruler                 " Always show info along bottom.
 set rulerformat=''
 
 set number                " Show line numbers
-set relativenumber        " Line numbers relativeto current position
 set cursorline            " Highlights the current line
 set showmode              " Current mode in status line
 set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
