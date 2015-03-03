@@ -72,8 +72,7 @@ get_go_version() {
 	local OS="linux"
 
 	OPTION_GO_VERSION=$(whiptail --title "Go version" --menu "Go Version?" 10 60 4 \
-		"1.5.${OS}-${ARCH}" "Go 1.5" \
-		"1.4.${OS}-${ARCH}" "Go 1.4" \
+		"1.4.2.${OS}-${ARCH}" "Go 1.4.2" \
 		"1.3.3.${OS}-${ARCH}" "Go 1.3.3" 3>&1 1>&2 2>&3)
 	local exitstatus="$?"
 	if [[ "$exitstatus" != 0 ]]; then
