@@ -9,8 +9,19 @@ export PROJECT_HOME="/data/dev"
 export DOCUMENTATION_HOME="/data/doc"
 
 # Launch simple web server
-alias server_php="php -sS localhost:8000"
-alias server_python="python3 -m http.server 8000"
+alias server_php="php -sS localhost:5000"
+alias server_python="python3 -m http.server 5000"
+
+# Golang
+# ------------------------------------------------------
+export GOPATH="/data/go"
+
+if [[ -d "/usr/local/go/bin" ]]; then
+	export PATH="$PATH:/usr/local/go/bin"
+	if [[ -d "${GOPATH}/bin" ]]; then
+		export PATH="$PATH:$GOPATH/bin"
+	fi
+fi
 
 # Go to projects folder and git pull
 # Must be here due to "cd" subshell usage
