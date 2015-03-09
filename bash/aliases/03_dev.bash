@@ -18,23 +18,16 @@ alias server_python="python3 -m http.server 8000"
 dev() {
 	local projectname="$1"
 
-	# Check in PROJECT_HOME
-	if [[ -d "$PROJECT_HOME/${projectname}" ]]; then
-		cd "$PROJECT_HOME/${projectname}"
-		# Update project
-		if [[ -d ".git" ]]; then
-			git pull origin master
-		fi
 	# Check in GOPATH
-	elif [[ -d "$GOPATH/src/${projectname}" ]]; then
-		cd "$GOPATH/src/${projectname}"
+	if [[ -d "${GOPATH}/src/${projectname}" ]]; then
+		cd "${GOPATH}/src/${projectname}"
 		# Update project
 		if [[ -d ".git" ]]; then
 			git pull origin master
 		fi
-		vim -u "$HOME/.vim/.vimrc_ide"
-	# go to PROJECT_HOME
+	# go to GOPATH
 	else
-		cd "$PROJECT_HOME"
+		cd "${GOPATH}/src"
 	fi
+	vim -u "${HOME}/.vim/.vimrc_ide"
 }
