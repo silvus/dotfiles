@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/tmux new-window -t "${USER}_dev" -n "Edit" "/usr/bin/vim $@"
