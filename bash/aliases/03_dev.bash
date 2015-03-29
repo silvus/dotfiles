@@ -1,6 +1,7 @@
 
 # Dotfiles
 alias dot="cd $DOTFILES_PATH"
+alias data="cd /data"
 
 # Projects root folder (and for Virtualenvwrapper)
 export PROJECT_HOME="/data/dev"

@@ -18,7 +18,7 @@ for_window [title=".*\(Navigation privée\).*"] move to workspace "9"
 assign [class="Firefox"] 1:web
 assign [class="Google-chrome"] 2:media
 assign [class="Google-chrome-beta"] 2:media
-assign [class="Mplayer"] 2:media
+assign [class="mplayer2"] 2:media
 assign [class="Gnome-mplayer"] 2:media
 # assign [class="Sublime_text"] 2:media
 

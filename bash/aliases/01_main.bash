@@ -25,12 +25,13 @@ alias doublons='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | x
 alias process='ps aux | grep'
 alias ports='netstat -tulanp'
 alias tcpdump='tcpdump -i eth0'
-alias firewalllist='iptables -L -n -v --line-numbers'
+alias firewalllist='sudo iptables -L -n -v --line-numbers'
 alias mountshow='mount |column -t'
 alias calculator='bc -l'
 alias calendar='cal -3'
 alias lynx="lynx -cfg=$HOME/.lynx/.lynxrc -lss=$HOME/.lynx/lynx.lss"
 alias music="mocp"
+alias video="mplayer"
 alias tmux="tmux -2" # Getting 256 colors to work in tmux
 
 # Vim
