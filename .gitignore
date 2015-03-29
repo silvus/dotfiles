@@ -4,3 +4,4 @@ tmuxdev_env
 bin/sshrc
 bin/composer
 bin/bowerphp
+fzf/

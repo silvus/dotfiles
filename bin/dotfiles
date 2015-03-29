@@ -11,6 +11,7 @@ BACKUP_DIR="$DOTFILES_DIR/backup"
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
 I3_CONFIG_FILE="$HOME/.i3/config"
 SSHRC_CONFIG_FILE="$HOME/.sshrc"
+FZF_DIR="$DOTFILES_DIR/fzf"
 
 # Colors
 _TXTCOLOR_RED=$(tput setaf 1)
@@ -46,7 +47,7 @@ make_symlink() {
 	local file_name=$(basename "$file_path")
 
 	# With sudo ?
-	[[ "$4" == "sudo"  ]] && local with_sudo="sudo " || with_sudo=""
+	[[ "$3" == "sudo"  ]] && local with_sudo="sudo " || with_sudo=""
 
 	if [[ ! -d "$BACKUP_DIR" ]]; then
 		echo_error "Backup directory $BACKUP_DIR doesn\'t exist"
@@ -268,6 +269,16 @@ cat "$DOTFILES_DIR/sshrc/sshrc_main" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/bash/aliases/01_main.bash" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/bash/aliases/04_prompt.bash" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/sshrc/sshrc_ascii" >> "$SSHRC_CONFIG_FILE"
+
+# Fzf
+# --------------------------------------------------------
+echo_header "Fzf"
+if [[ ! -d "$FZF_DIR" ]]; then
+	clone_or_update "https://github.com/junegunn/fzf.git" "$FZF_DIR"
+	"${FZF_DIR}/install"
+else
+	clone_or_update "https://github.com/junegunn/fzf.git" "$FZF_DIR"
+fi
 
 # Lynx
 # --------------------------------------------------------
