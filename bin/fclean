@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Clean files names in current directory
+# - replaces spaces with underscores
+# - removes unwanted characters
+# - makes everything lowercase
+# - replaces hyphen after numbers with underscore
+#
+# Source : http://crunchbang.org/forums/viewtopic.php?id=17067
+# -----------------------------------------------
+
+ls | while read -r FILE
+do
+    mv -v -- "$FILE" `echo $FILE | tr ' ' '_' | tr -d '[{}(),\!]' | tr -d "\'" | tr '[A-Z]' '[a-z]' | sed 's/\([0-9][0-9]\)-/\1_/'`
+done
+exit 0
