@@ -253,6 +253,13 @@ if [[ -x "$(which go 2>/dev/null)" ]]; then
 	make_symlink "$DOTFILES_DIR/bash/completion/go" "$BASH_COMPLETION_DIR/go" "sudo"
 fi
 
+# PostgreSQL
+# --------------------------------------------------------
+if [[ -x "$(which psql 2>/dev/null)" ]]; then
+	echo_header "PostgreSQL"
+	make_symlink "$DOTFILES_DIR/psql/psqlrc" "$HOME/.psqlrc"
+fi
+
 # Sqlite
 # --------------------------------------------------------
 if [[ -x "$(which sqlite3 2>/dev/null)" ]]; then
