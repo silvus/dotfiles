@@ -323,10 +323,17 @@ if [[ -x "$(which mocp 2>/dev/null)" ]]; then
 	make_symlink "$DOTFILES_DIR/moc/dot_theme" "$HOME/.moc/themes/dot_theme"
 fi
 
+# Mpv
+# --------------------------------------------------------
+if [[ -x "$(which mpv 2>/dev/null)" ]]; then
+	echo_header "Mpv"
+	make_symlink "$DOTFILES_DIR/mpv/mpv.conf" "$HOME/.config/mpv/mpv.conf"
+	make_symlink "$DOTFILES_DIR/mpv/input.conf" "$HOME/.config/mpv/input.conf"
+fi
+
 # Mplayer
 # --------------------------------------------------------
 if [[ -x "$(which mplayer 2>/dev/null)" ]]; then
-	# Completion
 	echo_header "Mplayer"
 	make_symlink "$DOTFILES_DIR/mplayer/config" "$HOME/.mplayer/config"
 	make_symlink "$DOTFILES_DIR/mplayer/input.conf" "$HOME/.mplayer/input.conf"

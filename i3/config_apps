@@ -19,8 +19,8 @@ assign [class="Firefox"] 1:web
 assign [class="Google-chrome"] 2:media
 assign [class="Google-chrome-beta"] 2:media
 assign [class="mplayer2"] 2:media
+assign [class="mpv"] 2:media
 assign [class="Gnome-mplayer"] 2:media
-# assign [class="Sublime_text"] 2:media
 
 workspace 1:web output HDMI-0
 workspace 2:media output VGA-0
