@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+videos=(
+	"https://www.youtube.com/watch?v=GDL7g0VA448" # Let it go
+	"https://www.youtube.com/watch?v=4uMPkW4w4zM" # Let it go multilingue
+	"https://www.youtube.com/watch?v=wQP9XZc2Y_c" # Libérée, délivrée 
+	"https://www.youtube.com/watch?v=3QAXFudxqRM" # Je voudrais un bonhomme de neige
+	"https://www.youtube.com/watch?v=xsqptzTAO4A" # Le renouveau
+	"https://www.youtube.com/watch?v=itGKy_jLdEw" # Le coeur de glace
+	"https://www.youtube.com/watch?v=GDL7g0VA448" # Nul n est parfait
+	"https://www.youtube.com/watch?v=E-p6l9nioNI" # Comme un homme 
+	"https://www.youtube.com/watch?v=xBPay2i_emc" # En été
+)
+
+# Seed random generator
+RANDOM=$$$(date +%s)
+
+# Get random video...
+selectedvideo=${videos[$RANDOM % ${#videos[@]} ]}
+
+# Play video
+mpv "$selectedvideo"
