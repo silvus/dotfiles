@@ -181,6 +181,7 @@ echo_header "Bash"
 make_symlink "$DOTFILES_DIR/bash/bash_aliases" "$HOME/.bash_aliases"
 make_symlink "$DOTFILES_DIR/bash/completion/sshrc" "$BASH_COMPLETION_DIR/sshrc" "sudo"
 make_symlink "$DOTFILES_DIR/bash/completion/dev" "$BASH_COMPLETION_DIR/dev" "sudo"
+make_symlink "$DOTFILES_DIR/bash/completion/tmux" "$BASH_COMPLETION_DIR/tmux" "sudo"
 
 # Git
 # --------------------------------------------------------
