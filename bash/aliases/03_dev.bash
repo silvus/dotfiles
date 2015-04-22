@@ -1,6 +1,7 @@
 
 # Dotfiles
 alias dot="cd $DOTFILES_PATH"
+alias dot_reload="source ${HOME}/.bashrc"
 alias data="cd /data"
 
 # Projects root folder (and for Virtualenvwrapper)
