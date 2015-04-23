@@ -2,6 +2,10 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# Parameters (Overwritten in bash_env)
+# -------------------------------------------------------------------------------------------
+DOTFILES_PROMPT_SHOW_GIT_STATUT=1
+
 # Styles
 # -------------------------------------------------------------------------------------------
 
@@ -84,10 +88,14 @@ _vcs_prompt_git() {
 
 # Versioning ?
 _vcs_prompt() {
-	if [[ -d ".svn" ]]; then
+	if _has_parent_dir ".svn" ; then
 		_VCS_PROMPT="-[${TXTYELLOW}svn${TXTRESET}]"
 	elif _has_parent_dir ".git"; then
-		_vcs_prompt_git
+		if [[ "$DOTFILES_PROMPT_SHOW_GIT_STATUT" -eq 1 ]]; then
+			_vcs_prompt_git
+		else
+			_VCS_PROMPT="-[${TXTYELLOW}git${TXTRESET}]"
+		fi
 	else
 		_VCS_PROMPT=""
 	fi
@@ -104,7 +112,7 @@ _last_command() {
 }
 
 # Change color if the user hasn't write permissions on the current directory
-_right_to_write() {
+_is_writable() {
 	if [[ -w "${PWD}" ]]; then
 		_COLOR_END="$TXTRESET"
 	else
@@ -130,7 +138,7 @@ _prompt_pwd_length() {
 _prompt_command_function() {
 	_last_command # As this get the last returned code, it should be called first
 	_prompt_pwd_length
-	_right_to_write
+	_is_writable
 	_vcs_prompt
 }
 
