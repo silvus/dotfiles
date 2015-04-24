@@ -1,4 +1,6 @@
 *.bak
+*_draft
+*_draft.*
 bash_env
 tmuxdev_env
 bin/sshrc
