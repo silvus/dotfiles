@@ -31,7 +31,6 @@ alias calculator='bc -l'
 alias calendar='cal -3'
 alias lynx="lynx -cfg=$HOME/.lynx/.lynxrc -lss=$HOME/.lynx/lynx.lss"
 alias music="mocp"
-alias video="mpv"
 alias tmux="tmux -2" # Getting 256 colors to work in tmux
 
 # Vim
