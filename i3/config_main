@@ -34,6 +34,9 @@ bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+KP_Enter exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+Return exec --no-startup-id i3-dmenu-desktop
 
+# dmenu + password-store
+bindsym $mod+p exec --no-startup-id ~/.dotfiles/bin/passmenu
+
 # change focus
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
