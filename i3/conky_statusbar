@@ -45,7 +45,7 @@ cpu_avg_samples 2
 TEXT
 [
 \
-{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
 { "full_text" : "${addr}" , "color" : "\#1e90ff", "separator":false, "separator_block_width":20 },
 ${if_up wlan0}{ "full_text" : "${downspeed wlan0} / ${upspeed wlan0}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },$endif
 ${if_up eth0}{ "full_text" : "${downspeed eth0} / ${upspeed eth0}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },$endif
@@ -59,15 +59,15 @@ $endif
 \
 ${if_mounted /data}
 	{ "full_text" : "data" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
-	{ "full_text" : "${fs_used /data} \/${fs_size /data}" , "color" : "\#1e90ff", "separator":false, "separator_block_width":20 },
+	{ "full_text" : " ${fs_used_perc /data}%" , "color" : "\#1e90ff", "separator":false, "separator_block_width":20 },
 ${endif}
 { "full_text" : "root" , "color" : "\#cccccc", "separator":false, "separator_block_width":0 },
-{ "full_text" : "${fs_used /} \/${fs_size /}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
+{ "full_text" : " ${fs_used_perc /}%", "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
 \
 { "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
 { "full_text" : "${memperc}%" , "color" : "\#1e90ff", "separator":false, "separator_block_width":20 },
 { "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
-{ "full_text" : "${cpu}%" , "color" : "\#1e90ff" , "separator":true, "separator_block_width":30 },
+{ "full_text" : "[${cpubar}]" , "color" : "\#1e90ff" , "separator":true, "separator_block_width":30 },
 \
 { "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
 { "full_text" : "${time %a %d %b}" , "color" : "\#1e90ff" , "separator":false, "separator_block_width":10 },
