@@ -13,8 +13,8 @@ for_window [class="Google-chrome"] border none
 for_window [class="Google-chrome-beta"] border none
 
 # Assignments
-for_window [title=".*\(Private Browsing\).*"] move to workspace "9"
-for_window [title=".*\(Navigation privée\).*"] move to workspace "9"
+for_window [title=".*\(Private Browsing\).*"] move to workspace "$WS9"
+for_window [title=".*\(Navigation privée\).*"] move to workspace "$WS9"
 assign [class="Firefox"] 1:web
 assign [class="Google-chrome"] 2:media
 assign [class="Google-chrome-beta"] 2:media
@@ -22,8 +22,8 @@ assign [class="mplayer2"] 2:media
 assign [class="mpv"] 2:media
 assign [class="Gnome-mplayer"] 2:media
 
-workspace 1:web output HDMI-0
-workspace 2:media output VGA-0
+workspace $WS1 output HDMI-0
+workspace $WS2 output VGA-0
 
 # Startup
 exec --no-startup-id nm-applet
