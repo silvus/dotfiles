@@ -15,12 +15,12 @@ for_window [class="Google-chrome-beta"] border none
 # Assignments
 for_window [title=".*\(Private Browsing\).*"] move to workspace "$WS9"
 for_window [title=".*\(Navigation privée\).*"] move to workspace "$WS9"
-assign [class="Firefox"] 1:web
-assign [class="Google-chrome"] 2:media
-assign [class="Google-chrome-beta"] 2:media
-assign [class="mplayer2"] 2:media
-assign [class="mpv"] 2:media
-assign [class="Gnome-mplayer"] 2:media
+assign [class="Firefox"] $WS1
+assign [class="Google-chrome"] $WS2
+assign [class="Google-chrome-beta"] $WS2
+assign [class="mplayer2"] $WS2
+assign [class="mpv"] $WS2
+assign [class="Gnome-mplayer"] $WS2
 
 workspace $WS1 output HDMI-0
 workspace $WS2 output VGA-0
