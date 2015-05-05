@@ -1,7 +1,5 @@
 
 # Config apps
-# for_window [class="Conky"] floating enable
-# for_window [class="Conky"] border none
 for_window [class="Xfce4-notifyd"] floating enable
 for_window [class="Xfce4-notifyd"] border none
 for_window [class="Guake"] floating enable
@@ -18,9 +16,8 @@ for_window [title=".*\(Navigation privée\).*"] move to workspace "$WS9"
 assign [class="Firefox"] $WS1
 assign [class="Google-chrome"] $WS2
 assign [class="Google-chrome-beta"] $WS2
-assign [class="mplayer2"] $WS2
 assign [class="mpv"] $WS2
-assign [class="Gnome-mplayer"] $WS2
+assign [class="mplayer"] $WS2
 
 workspace $WS1 output HDMI-0
 workspace $WS2 output VGA-0

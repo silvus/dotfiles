@@ -1,8 +1,0 @@
-# Hide errors
-# really-quiet=1
-
-# Stop screensaver
-stop-xscreensaver=yes
-
-# Default subtitles language
-slang=fr,fra,en,eng
