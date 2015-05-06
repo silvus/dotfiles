@@ -5,23 +5,21 @@
 _launch_tmux() {
 	local _TMUX_SESSION_NAME="${USER}_dev"
 	local _SPLIT_WIDTH=35
-	local _SPLIT_HEIGHT=25
+	local _WINDOWS_DEV='▶ Dev'
+	local _WINDOWS_SYSOPS=' SysOps'
 
 	# make sure tmux server is running
 	tmux start-server
 
 	# Determine if session is running
-	tmux has-session -t ${_TMUX_SESSION_NAME}
+	tmux has-session -t "${_TMUX_SESSION_NAME}"
 	if [[ "$?" != 0 ]]; then
 
 		#  Launch session
-		tmux -2 new-session -s ${_TMUX_SESSION_NAME} -d -n 'Dev'
+		tmux -2 new-session -s "${_TMUX_SESSION_NAME}" -d -n "$_WINDOWS_DEV"
 
 		# First window
 		# -------------
-
-		# Show clock
-		# tmux clock-mode
 
 		# Select panel 1
 		tmux select-pane -t 1
@@ -30,30 +28,20 @@ _launch_tmux() {
 		# -------------
 
 		# Setup a window
-		tmux new-window -t ${_TMUX_SESSION_NAME} -n 'SysOps'
+		tmux new-window -t "${_TMUX_SESSION_NAME}" -n "$_WINDOWS_SYSOPS"
 
 		# Split verticaly
 		tmux split-window -h -p "$_SPLIT_WIDTH"
-		# Split horizontally
-		tmux split-window -v -p "$_SPLIT_HEIGHT"
-		# Show clock
-		tmux clock-mode
 
 		# Select panel 1
 		tmux select-pane -t 1
 
 		# Focus on first window
-		tmux select-window -t "Dev"
+		tmux select-window -t "$_WINDOWS_DEV"
 	fi
 
 	# Attach to session
-	tmux -2 attach -t ${_TMUX_SESSION_NAME}
+	tmux -2 attach -t "${_TMUX_SESSION_NAME}"
 }
 
-# Check if tmux is installed
-if [[ -x "$(which tmux 2>/dev/null)" ]]; then
-	_launch_tmux
-else
-	echo "Tmux is not installed"
-	exit 1
-fi
+_launch_tmux
