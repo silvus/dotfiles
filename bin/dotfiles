@@ -7,11 +7,14 @@
 [[ -d "$DOTFILES_PATH"  ]] && DOTFILES_DIR="$(readlink -e "$(dirname "$0")/..")" || DOTFILES_DIR="$HOME/.dotfiles"
 
 BASH_COMPLETION_DIR="/etc/bash_completion.d"
+FONTS_DIR="$HOME/.fonts"
 BACKUP_DIR="$DOTFILES_DIR/backup"
 SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
 I3_CONFIG_FILE="$HOME/.i3/config"
 SSHRC_CONFIG_FILE="$HOME/.sshrc"
 FZF_DIR="$DOTFILES_DIR/fzf"
+
+SCREEN_COUNT=$(xrandr -q | grep ' connected' | wc -l)
 
 # Colors
 _TXTCOLOR_RED=$(tput setaf 1)
@@ -339,8 +342,6 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
 	chmod 770 "$HOME/.i3/conky_launcher"
 	make_symlink "$DOTFILES_DIR/i3/conky_statusbar" "$HOME/.i3/conky_statusbar"
 
-	SCREEN_COUNT=$(xrandr -q | grep ' connected' | wc -l)
-
 	# Generated i3 config
 	print_success "i3 config" "generated (screens : $SCREEN_COUNT)"
 
@@ -358,6 +359,16 @@ if [[ -x "$(which i3 2>/dev/null)" ]]; then
 	fi
 
 	cat "$DOTFILES_DIR/i3/config_apps" >> "$I3_CONFIG_FILE"
+fi
+
+# Fonts
+# --------------------------------------------------------
+if [[ "$SCREEN_COUNT" -gt 1 ]]; then # Desktop only
+	echo_header "Fonts"
+	dir_check "$FONTS_DIR"
+	make_symlink "$DOTFILES_DIR/fonts/FontAwesome.otf" "$FONTS_DIR/FontAwesome.otf"
+	make_symlink "$DOTFILES_DIR/fonts/DejaVuSansMono.ttf" "$FONTS_DIR/DejaVuSansMono.ttf"
+	# sudo fc-cache -f -v
 fi
 
 # Conky

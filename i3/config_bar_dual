@@ -8,7 +8,7 @@ bar {
     output HDMI-0
 
     # Font
-    font pango:DejaVu Sans Mono 7
+    font pango:DejaVu Sans Mono, FontAwesome 7
 
     colors {
         # Whole color settings
@@ -45,7 +45,7 @@ bar {
     output VGA-0
 
 	# Font
-    font pango:DejaVu Sans Mono 7
+    font pango:DejaVu Sans Mono, FontAwesome 7
 
     colors {
         # Whole color settings

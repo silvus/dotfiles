@@ -27,7 +27,7 @@ if_up_strictness address
 use_spacer left
 
 # Force UTF8? note that UTF8 support required XFT
-override_utf8_locale no
+override_utf8_locale yes
 
 # number of cpu samples to average
 # set to 1 to disable averaging
@@ -51,10 +51,10 @@ ${if_up wlan0}{ "full_text" : "${downspeed wlan0} / ${upspeed wlan0}" , "color" 
 ${if_up eth0}{ "full_text" : "${downspeed eth0} / ${upspeed eth0}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },$endif
 \
 ${if_up tun0}
-	{ "full_text" : "🔒" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+	{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
 	{ "full_text" : "${downspeed tun0} / ${upspeed tun0}" , "color" : "\#1e90ff", "separator":true, "separator_block_width":30 },
 ${else}
-	{ "full_text" : "🔓" , "color" : "\#ff2929", "separator":true, "separator_block_width":30 },
+	{ "full_text" : "" , "color" : "\#ff2929", "separator":true, "separator_block_width":30 },
 $endif
 \
 ${if_mounted /data}
@@ -71,11 +71,11 @@ ${endif}
 \
 { "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
 { "full_text" : "${time %a %d %b}" , "color" : "\#1e90ff" , "separator":false, "separator_block_width":10 },
-{ "full_text" : "⌚" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
 { "full_text" : "${time %H:%M:%S}" , "color" : "\#00cd00" , "separator":true, "separator_block_width":30 },
 \
-{ "full_text" : "♪" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
-{"full_text":"${exec amixer get Master | awk -F'[]%[]' '/%/ {if ($7 == "off") { print "Mute" } else { print $2"%" }}'}","color":"\#eeeeee", "separator":false, "separator_block_width":10},
+{ "full_text" : "" , "color" : "\#cccccc", "separator":false, "separator_block_width":5 },
+{"full_text":"${exec amixer get Master | awk -F'[]%[]' '/%/ {if ($7 == "off") { print "Mute" } else { print $2"%" }}'}","color":"\#1e90ff", "separator":false, "separator_block_width":10},
 \
 { "full_text" : " " , "color" : "\#ffffff" , "separator":true, "separator_block_width":40 }
 \
