@@ -285,6 +285,12 @@ cat "$DOTFILES_DIR/bash/aliases/01_main.bash" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/bash/aliases/04_prompt.bash" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/sshrc/sshrc_ascii" >> "$SSHRC_CONFIG_FILE"
 
+# Youtube-dl
+# --------------------------------------------------------
+echo_header "Youtube-dl"
+download_if_available "https://yt-dl.org/latest/youtube-dl" "$DOTFILES_DIR/bin/youtube-dl"
+chmod 770 "$DOTFILES_DIR/bin/youtube-dl"
+
 # Fzf
 # --------------------------------------------------------
 echo_header "Fzf"
