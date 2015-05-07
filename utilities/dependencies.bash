@@ -14,6 +14,7 @@ _install_server() {
 		ack-grep `# Search` \
 		vim `# Text editor` \
 		tmux `# Split terminal` \
+		urlview `# Extract urls` \
 		lynx `# Web browser`
 }
 
