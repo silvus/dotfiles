@@ -24,10 +24,11 @@ _install_desktop() {
 		scrot `# Make screenshot` \
 		pass `# Passwords manager` \
 		feh `# Image viewer` \
-		newsbeuter `# Rss reader`\
+		newsbeuter `# Rss reader` \
 		moc `# Music player` \
 		i3 `# WM` \
-		ranger highlight caca-utils `# File manager and dependencies`
+		ranger highlight caca-utils `# File manager and dependencies` \
+		libnotify-bin  `# Notifications`
 }
 
 _install_all() {

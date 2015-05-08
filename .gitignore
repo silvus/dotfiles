@@ -1,10 +1,5 @@
 *.bak
+*_env
+*_env.*
 *_draft
 *_draft.*
-bash_env
-tmuxdev_env
-bin/sshrc
-bin/youtube-dl
-bin/composer
-bin/bowerphp
-fzf/

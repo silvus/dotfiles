@@ -7,12 +7,9 @@
 [[ -d "$DOTFILES_PATH"  ]] && DOTFILES_DIR="$(readlink -e "$(dirname "$0")/..")" || DOTFILES_DIR="$HOME/.dotfiles"
 
 BASH_COMPLETION_DIR="/etc/bash_completion.d"
-FONTS_DIR="$HOME/.fonts"
 BACKUP_DIR="$DOTFILES_DIR/backup"
-SUBLIMETEXT_CONF_DIR="$HOME/.config/sublime-text-3/Packages/User"
 I3_CONFIG_FILE="$HOME/.i3/config"
 SSHRC_CONFIG_FILE="$HOME/.sshrc"
-FZF_DIR="$DOTFILES_DIR/fzf"
 
 SCREEN_COUNT=$(xrandr -q | grep ' connected' | wc -l)
 
@@ -63,12 +60,13 @@ make_symlink() {
 			${with_sudo} mv "$file_path" "$BACKUP_DIR/$file_name.bak"
 		fi
 
-		# Make symlink
 		print_success "$file_name" "symlink ➜ $file_path"
-		${with_sudo} ln -s --force "$dot_file_path" "$file_path"
 	else
 		print_info "$file_name" "already installed"
 	fi
+
+	# Make or reset symlink
+	${with_sudo} ln -s --force "$dot_file_path" "$file_path"
 }
 
 # Create directory if necessary
@@ -178,15 +176,14 @@ fi
 # Bash
 # --------------------------------------------------------
 echo_header "Bash"
+dir_check "$HOME/bin"
 make_symlink "$DOTFILES_DIR/bash/bash_aliases" "$HOME/.bash_aliases"
-make_symlink "$DOTFILES_DIR/bash/completion/sshrc" "$BASH_COMPLETION_DIR/sshrc" "sudo"
 make_symlink "$DOTFILES_DIR/bash/completion/dev" "$BASH_COMPLETION_DIR/dev" "sudo"
-make_symlink "$DOTFILES_DIR/bash/completion/tmux" "$BASH_COMPLETION_DIR/tmux" "sudo"
 
 # Git
 # --------------------------------------------------------
 echo_header "Git"
-make_symlink "$DOTFILES_DIR/git/gitignore_global" "$HOME/.gitignore_global"
+make_symlink "$DOTFILES_DIR/app/.gitignore_global" "$HOME/.gitignore_global"
 
 # Vim
 # --------------------------------------------------------
@@ -200,18 +197,18 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	dir_check "$HOME/.vim/bundle"
 	dir_check "$HOME/.vim/conf"
 	# Colors
-	make_symlink "$DOTFILES_DIR/vim/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
+	make_symlink "$DOTFILES_DIR/app/.vim/colors/jellybeans.vim" "$HOME/.vim/colors/jellybeans.vim"
 
 	# Conf
-	make_symlink "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
-	make_symlink "$DOTFILES_DIR/vim/vimrc_sec" "$HOME/.vim/.vimrc_sec"
-	make_symlink "$DOTFILES_DIR/vim/vimrc_ide" "$HOME/.vim/.vimrc_ide"
-	make_symlink "$DOTFILES_DIR/vim/vimrc_sshrc" "$HOME/.sshrc.d/.vimrc"
+	make_symlink "$DOTFILES_DIR/app/.vim/vimrc" "$HOME/.vimrc"
+	make_symlink "$DOTFILES_DIR/app/.vim/vimrc_sec" "$HOME/.vim/.vimrc_sec"
+	make_symlink "$DOTFILES_DIR/app/.vim/vimrc_ide" "$HOME/.vim/.vimrc_ide"
+	make_symlink "$DOTFILES_DIR/app/.vim/vimrc_sshrc" "$HOME/.sshrc.d/.vimrc"
 	# Conf parts
-	make_symlink "$DOTFILES_DIR/vim/conf/vim_base" "$HOME/.vim/conf/vim_base"
-	make_symlink "$DOTFILES_DIR/vim/conf/vim_keymaps" "$HOME/.vim/conf/vim_keymaps"
-	make_symlink "$DOTFILES_DIR/vim/conf/vim_plugins" "$HOME/.vim/conf/vim_plugins"
-	make_symlink "$DOTFILES_DIR/vim/conf/vim_theme" "$HOME/.vim/conf/vim_theme"
+	make_symlink "$DOTFILES_DIR/app/.vim/conf/vim_base" "$HOME/.vim/conf/vim_base"
+	make_symlink "$DOTFILES_DIR/app/.vim/conf/vim_keymaps" "$HOME/.vim/conf/vim_keymaps"
+	make_symlink "$DOTFILES_DIR/app/.vim/conf/vim_plugins" "$HOME/.vim/conf/vim_plugins"
+	make_symlink "$DOTFILES_DIR/app/.vim/conf/vim_theme" "$HOME/.vim/conf/vim_theme"
 
 	# Vim plugins
 	echo_header "Vim plugins"
@@ -233,7 +230,9 @@ fi
 # --------------------------------------------------------
 if [[ -x "$(which tmux 2>/dev/null)" ]]; then
 	echo_header "Tmux"
-	make_symlink "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+	make_symlink "$DOTFILES_DIR/app/.tmux.conf" "$HOME/.tmux.conf"
+	# Autocomplete
+	make_symlink "$DOTFILES_DIR/bash/completion/tmux" "$BASH_COMPLETION_DIR/tmux" "sudo"
 fi
 
 # PHP
@@ -241,8 +240,8 @@ fi
 if [[ -x "$(which php 2>/dev/null)" ]]; then
 	echo_header "PHP"
 	# Composer
-	download_if_available "https://getcomposer.org/composer.phar" "$DOTFILES_DIR/bin/composer"
-	chmod 770 "$DOTFILES_DIR/bin/composer"
+	download_if_available "https://getcomposer.org/composer.phar" "$HOME/bin/composer"
+	chmod 770 "$HOME/bin/composer"
 	make_symlink "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
 fi
 
@@ -258,21 +257,21 @@ fi
 # --------------------------------------------------------
 if [[ -x "$(which psql 2>/dev/null)" ]]; then
 	echo_header "PostgreSQL"
-	make_symlink "$DOTFILES_DIR/psql/psqlrc" "$HOME/.psqlrc"
+	make_symlink "$DOTFILES_DIR/app/.psqlrc" "$HOME/.psqlrc"
 fi
 
 # Sqlite
 # --------------------------------------------------------
 if [[ -x "$(which sqlite3 2>/dev/null)" ]]; then
 	echo_header "Sqlite"
-	make_symlink "$DOTFILES_DIR/sqlite/sqliterc" "$HOME/.sqliterc"
+	make_symlink "$DOTFILES_DIR/app/.sqliterc" "$HOME/.sqliterc"
 fi
 
 # SSHRC
 # --------------------------------------------------------
 echo_header "SSHRC"
-download_if_available "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" "$DOTFILES_DIR/bin/sshrc"
-chmod 770 "$DOTFILES_DIR/bin/sshrc"
+download_if_available "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" "$HOME/bin/sshrc"
+chmod 770 "$HOME/bin/sshrc"
 
 # sshrc.d
 dir_check "$HOME/.sshrc.d"
@@ -285,20 +284,23 @@ cat "$DOTFILES_DIR/bash/aliases/01_main.bash" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/bash/aliases/04_prompt.bash" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/sshrc/sshrc_ascii" >> "$SSHRC_CONFIG_FILE"
 
+# Autocomplete
+make_symlink "$DOTFILES_DIR/bash/completion/sshrc" "$BASH_COMPLETION_DIR/sshrc" "sudo"
+
 # Youtube-dl
 # --------------------------------------------------------
 echo_header "Youtube-dl"
-download_if_available "https://yt-dl.org/latest/youtube-dl" "$DOTFILES_DIR/bin/youtube-dl"
-chmod 770 "$DOTFILES_DIR/bin/youtube-dl"
+download_if_available "https://yt-dl.org/latest/youtube-dl" "$HOME/bin/youtube-dl"
+chmod 770 "$HOME/bin/youtube-dl"
 
 # Fzf
 # --------------------------------------------------------
 echo_header "Fzf"
-if [[ ! -d "$FZF_DIR" ]]; then
-	clone_or_update "https://github.com/junegunn/fzf.git" "$FZF_DIR"
-	"${FZF_DIR}/install"
+if [[ ! -d "$HOME/.fzf" ]]; then
+	clone_or_update "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
+	"$HOME/.fzf/install"
 else
-	clone_or_update "https://github.com/junegunn/fzf.git" "$FZF_DIR"
+	clone_or_update "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
 fi
 
 # Lynx
@@ -306,9 +308,9 @@ fi
 if [[ -x "$(which lynx 2>/dev/null)" ]]; then
 	echo_header "Lynx"
 	dir_check "$HOME/.lynx"
-	make_symlink "$DOTFILES_DIR/lynx/lynxrc" "$HOME/.lynx/.lynxrc"
-	make_symlink "$DOTFILES_DIR/lynx/lynx.lss" "$HOME/.lynx/lynx.lss"
-	make_symlink "$DOTFILES_DIR/lynx/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
+	make_symlink "$DOTFILES_DIR/app/.lynx/lynxrc" "$HOME/.lynx/.lynxrc"
+	make_symlink "$DOTFILES_DIR/app/.lynx/lynx.lss" "$HOME/.lynx/lynx.lss"
+	make_symlink "$DOTFILES_DIR/app/.lynx/lynx_bookmarks.html" "$HOME/.lynx/lynx_bookmarks.html"
 fi
 
 # Ranger
@@ -316,8 +318,8 @@ fi
 if [[ -x "$(which ranger 2>/dev/null)" ]]; then
 	echo_header "Ranger"
 	dir_check "$HOME/.config/ranger"
-	make_symlink "$DOTFILES_DIR/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
-	make_symlink "$DOTFILES_DIR/ranger/rifle.conf" "$HOME/.config/ranger/rifle.conf"
+	make_symlink "$DOTFILES_DIR/app/.config/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
+	make_symlink "$DOTFILES_DIR/app/.config/ranger/rifle.conf" "$HOME/.config/ranger/rifle.conf"
 fi
 
 # MOC
@@ -325,17 +327,17 @@ fi
 if [[ -x "$(which mocp 2>/dev/null)" ]]; then
 	echo_header "MOC"
 	dir_check "$HOME/.moc/themes"
-	make_symlink "$DOTFILES_DIR/moc/config" "$HOME/.moc/config"
+	make_symlink "$DOTFILES_DIR/app/.moc/config" "$HOME/.moc/config"
 	chmod 644 "$HOME/.moc/config" # Need to be not writable by other
-	make_symlink "$DOTFILES_DIR/moc/dot_theme" "$HOME/.moc/themes/dot_theme"
+	make_symlink "$DOTFILES_DIR/app/.moc/themes/dot_theme" "$HOME/.moc/themes/dot_theme"
 fi
 
 # Mpv
 # --------------------------------------------------------
 if [[ -x "$(which mpv 2>/dev/null)" ]]; then
 	echo_header "Mpv"
-	make_symlink "$DOTFILES_DIR/mpv/mpv.conf" "$HOME/.config/mpv/mpv.conf"
-	make_symlink "$DOTFILES_DIR/mpv/input.conf" "$HOME/.config/mpv/input.conf"
+	make_symlink "$DOTFILES_DIR/app/.config/mpv/mpv.conf" "$HOME/.config/mpv/mpv.conf"
+	make_symlink "$DOTFILES_DIR/app/.config/mpv/input.conf" "$HOME/.config/mpv/input.conf"
 fi
 
 # i3
@@ -371,9 +373,9 @@ fi
 # --------------------------------------------------------
 if [[ "$SCREEN_COUNT" -gt 1 ]]; then # Desktop only
 	echo_header "Fonts"
-	dir_check "$FONTS_DIR"
-	make_symlink "$DOTFILES_DIR/fonts/FontAwesome.otf" "$FONTS_DIR/FontAwesome.otf"
-	make_symlink "$DOTFILES_DIR/fonts/DejaVuSansMono.ttf" "$FONTS_DIR/DejaVuSansMono.ttf"
+	dir_check "$HOME/.fonts"
+	make_symlink "$DOTFILES_DIR/app/.fonts/FontAwesome.otf" "$HOME/.fonts/FontAwesome.otf"
+	make_symlink "$DOTFILES_DIR/app/.fonts/DejaVuSansMono.ttf" "$HOME/.fonts/DejaVuSansMono.ttf"
 	# sudo fc-cache -f -v
 fi
 
@@ -381,7 +383,7 @@ fi
 # --------------------------------------------------------
 if [[ -x "$(which conky 2>/dev/null)" ]]; then
 	echo_header "Conky"
-	make_symlink "$DOTFILES_DIR/conky/conkyrc" "$HOME/.conkyrc"
+	make_symlink "$DOTFILES_DIR/app/.conkyrc" "$HOME/.conkyrc"
 fi
 
 # Newsbeuter
@@ -389,9 +391,9 @@ fi
 if [[ -x "$(which newsbeuter 2>/dev/null)" ]]; then
 	echo_header "Newsbeuter"
 	dir_check "$HOME/.newsbeuter"
-	make_symlink "$DOTFILES_DIR/newsbeuter/config" "$HOME/.newsbeuter/config"
-	make_symlink "$DOTFILES_DIR/newsbeuter/browse" "$HOME/.newsbeuter/browse"
-	make_symlink "$DOTFILES_DIR/newsbeuter/urls" "$HOME/.newsbeuter/urls"
+	make_symlink "$DOTFILES_DIR/.newsbeuter/config" "$HOME/.newsbeuter/config"
+	make_symlink "$DOTFILES_DIR/.newsbeuter/browse" "$HOME/.newsbeuter/browse"
+	make_symlink "$DOTFILES_DIR/.newsbeuter/urls" "$HOME/.newsbeuter/urls"
 fi
 
 # Virtualenvwrapper
@@ -405,14 +407,14 @@ fi
 # --------------------------------------------------------
 if [[ -d "/opt/sublime_text" ]]; then
 	echo_header "Sublime Text 3"
-	make_symlink "$DOTFILES_DIR/sublime_text_3/Default (Linux).sublime-keymap" "$SUBLIMETEXT_CONF_DIR/Default (Linux).sublime-keymap"
-	make_symlink "$DOTFILES_DIR/sublime_text_3/Preferences.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Preferences.sublime-settings"
-	make_symlink "$DOTFILES_DIR/sublime_text_3/Side Bar.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Side Bar.sublime-settings"
-	make_symlink "$DOTFILES_DIR/sublime_text_3/Markdown.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Markdown.sublime-settings"
-	make_symlink "$DOTFILES_DIR/sublime_text_3/PHP.sublime-settings" "$SUBLIMETEXT_CONF_DIR/PHP.sublime-settings"
-	make_symlink "$DOTFILES_DIR/sublime_text_3/Python.sublime-settings" "$SUBLIMETEXT_CONF_DIR/Python.sublime-settings"
-	make_symlink "$DOTFILES_DIR/sublime_text_3/YAML.sublime-settings" "$SUBLIMETEXT_CONF_DIR/YAML.sublime-settings"
-	make_symlink "$DOTFILES_DIR/sublime_text_3/LaTeXTools.sublime-settings" "$SUBLIMETEXT_CONF_DIR/LaTeXTools.sublime-settings"
+	make_symlink "$DOTFILES_DIR/app/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap" "$HOME/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap"
+	make_symlink "$DOTFILES_DIR/app/.config/sublime-text-3/Packages/User/Preferences.sublime-settings" "$HOME/.config/sublime-text-3/Packages/User/Preferences.sublime-settings"
+	make_symlink "$DOTFILES_DIR/app/.config/sublime-text-3/Packages/User/Side Bar.sublime-settings" "$HOME/.config/sublime-text-3/Packages/User/Side Bar.sublime-settings"
+	make_symlink "$DOTFILES_DIR/app/.config/sublime-text-3/Packages/User/Markdown.sublime-settings" "$HOME/.config/sublime-text-3/Packages/User/Markdown.sublime-settings"
+	make_symlink "$DOTFILES_DIR/app/.config/sublime-text-3/Packages/User/PHP.sublime-settings" "$HOME/.config/sublime-text-3/Packages/User/PHP.sublime-settings"
+	make_symlink "$DOTFILES_DIR/app/.config/sublime-text-3/Packages/User/Python.sublime-settings" "$HOME/.config/sublime-text-3/Packages/User/Python.sublime-settings"
+	make_symlink "$DOTFILES_DIR/app/.config/sublime-text-3/Packages/User/YAML.sublime-settings" "$HOME/.config/sublime-text-3/Packages/User/YAML.sublime-settings"
+	make_symlink "$DOTFILES_DIR/app/.config/sublime-text-3/Packages/User/LaTeXTools.sublime-settings" "$HOME/.config/sublime-text-3/Packages/User/LaTeXTools.sublime-settings"
 fi
 
 # End
