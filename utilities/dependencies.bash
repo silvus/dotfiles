@@ -3,7 +3,7 @@
 sudo apt-get update
 
 _install_server() {
-	sudo apt-get install -s \
+	sudo apt-get install \
 		curl `# Play with HTTP` \
 		wget `# Downloader` \
 		rsync `# Synchronisation` \
@@ -15,25 +15,25 @@ _install_server() {
 		vim `# Text editor` \
 		tmux `# Split terminal` \
 		urlview `# Extract urls` \
+		ranger highlight caca-utils `# File manager and dependencies` \
+		newsbeuter `# Rss reader` \
 		lynx `# Web browser`
 }
 
 _install_desktop() {
-	sudo apt-get install -s \
+	# Mpv PPA
+	sudo add-apt-repository ppa:mc3man/mpv-tests
+
+	sudo apt-get install \
+		mpv `# [PPA] video player` \
 		xclip `# Add to clipboard` \
 		scrot `# Make screenshot` \
 		pass `# Passwords manager` \
 		feh `# Image viewer` \
-		newsbeuter `# Rss reader` \
 		moc `# Music player` \
 		i3 `# WM` \
-		ranger highlight caca-utils `# File manager and dependencies` \
+		conky `# i3 bar` \
 		libnotify-bin  `# Notifications`
-}
-
-_install_all() {
-	_install_server
-	_install_desktop
 }
 
 OPTION=$(whiptail --title "Dotfiles" --menu "Choose your configuration" 10 50 3 \
@@ -51,7 +51,8 @@ if [[ "$exitstatus" == 0 ]]; then
             _install_desktop
             ;;
         3)
-            _install_all
+            _install_server
+			_install_desktop
             ;;
     esac
 else
