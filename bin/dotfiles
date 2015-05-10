@@ -77,29 +77,6 @@ dir_check() {
 	fi
 }
 
-# Check for 404 and download a ressource (if file age > 7 days)
-# --------------------------------------------------------
-download_if_available() {
-	local DOWNLOAD_URL="$1"
-	local DESTINATION="$2"
-
-	# Check file age
-	if file_is_fresh "$DESTINATION" ; then
-		print_info "$(basename "$DOWNLOAD_URL")" "downloaded recently"
-		return 0
-	else
-		print_info $(basename "$DOWNLOAD_URL") "download"
-		if [[ $(curl -o /dev/null --silent --head --write-out '%{http_code}' "${DOWNLOAD_URL}") == 200 ]]; then
-			curl -sS "$DOWNLOAD_URL" -o "$DESTINATION"
-			print_success "$(basename "$DOWNLOAD_URL")" "$DESTINATION"
-			return 0
-		else
-			echo_error "$DOWNLOAD_URL isn't available"
-			return  1
-		fi
-	fi
-}
-
 # Clone if doesn't exist, else update
 # --------------------------------------------------------
 clone_or_update() {
@@ -177,6 +154,11 @@ fi
 echo_header "Symlinks apps"
 "${DOTFILES_DIR}/bin/dotfiles_symlink"
 
+# Download files from dotconf
+# --------------------------------------------------------
+echo_header "Download apps"
+"${DOTFILES_DIR}/bin/dotfiles_download"
+
 # Bash
 # --------------------------------------------------------
 echo_header "Bash"
@@ -189,6 +171,7 @@ make_symlink "$DOTFILES_DIR/bash/completion/tmux" "$BASH_COMPLETION_DIR/tmux" "s
 make_symlink "$DOTFILES_DIR/bash/completion/dev" "$BASH_COMPLETION_DIR/dev" "sudo"
 make_symlink "$DOTFILES_DIR/bash/completion/go" "$BASH_COMPLETION_DIR/go" "sudo"
 make_symlink "$DOTFILES_DIR/bash/completion/sshrc" "$BASH_COMPLETION_DIR/sshrc" "sudo"
+make_symlink "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
 
 # Vim
 # --------------------------------------------------------
@@ -200,8 +183,6 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	dir_check "$HOME/.vim/autoload"
 	dir_check "$HOME/.vim/bundle"
 
-	# Pathogen
-	download_if_available "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim" "$HOME/.vim/autoload/pathogen.vim"
 	# Vim plugins
 	clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp"
 	clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline"
@@ -215,21 +196,10 @@ if [[ -x "$(which vim 2>/dev/null)" ]]; then
 	clone_or_update "https://github.com/airblade/vim-gitgutter.git" "$HOME/.vim/bundle/vim-gitgutter"
 fi
 
-# PHP
-# --------------------------------------------------------
-if [[ -x "$(which php 2>/dev/null)" ]]; then
-	echo_header "PHP"
-	# Composer
-	download_if_available "https://getcomposer.org/composer.phar" "$HOME/bin/composer"
-	chmod 770 "$HOME/bin/composer"
-	make_symlink "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/composer" "sudo"
-fi
 
 # SSHRC
 # --------------------------------------------------------
 echo_header "SSHRC"
-download_if_available "https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc" "$HOME/bin/sshrc"
-chmod 770 "$HOME/bin/sshrc"
 
 # sshrc.d
 dir_check "$HOME/.sshrc.d"
@@ -241,12 +211,6 @@ cat "$DOTFILES_DIR/sshrc/sshrc_main" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/bash/aliases/01_main.bash" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/bash/aliases/04_prompt.bash" >> "$SSHRC_CONFIG_FILE"
 cat "$DOTFILES_DIR/sshrc/sshrc_ascii" >> "$SSHRC_CONFIG_FILE"
-
-# Youtube-dl
-# --------------------------------------------------------
-echo_header "Youtube-dl"
-download_if_available "https://yt-dl.org/latest/youtube-dl" "$HOME/bin/youtube-dl"
-chmod 770 "$HOME/bin/youtube-dl"
 
 # Fzf
 # --------------------------------------------------------
