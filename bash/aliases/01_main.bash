@@ -29,14 +29,14 @@ alias firewalllist='sudo iptables -L -n -v --line-numbers'
 alias mountshow='mount |column -t'
 alias calculator='bc -l'
 alias calendar='cal -3'
-alias lynx="lynx -cfg=$HOME/.lynx/.lynxrc -lss=$HOME/.lynx/lynx.lss"
+alias lynx="lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
 alias music="mocp"
 alias tmux="tmux -2" # Getting 256 colors to work in tmux
 
 # Vim
 # -----------------------------------------------------------------------------
 alias vi='vim'
-alias vim.sec="vim -x -u $HOME/.vim/.vimrc_sec"
-alias vim.ide="vim -u $HOME/.vim/.vimrc_ide"
+alias vim.sec="vim -x -u $HOME/.vim/vimrc_sec"
+alias vim.ide="vim -u $HOME/.vim/vimrc_ide"
 
 stty -ixon # Disable flow control (bind Ctrl+s in vim)
