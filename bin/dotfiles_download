@@ -83,9 +83,6 @@ def download(url, destination):
             # everything is fine
             os.chmod(destination, 0o755)
             sys.stdout.flush()
-
-            print( + message)
-
             sys.stdout.write("\r" + COLOR_GREEN + "    ✔ " + COLOR_RESET + "Download complete: %s" % os.path.basename(destination) + '\n')
     else:
         print_success('Already present: ' + os.path.basename(destination))
