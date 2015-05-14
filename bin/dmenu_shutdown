@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+action="$(echo -e "shutdown\nrestart\nlogout" | dmenu)"
+
+case "$action" in
+	"shutdown")
+		sudo poweroff
+		;;
+	"restart")
+		sudo reboot
+		;;
+	"logout")
+		i3-msg exit
+		;;
+	*)
+		echo "What?"
+		;;
+esac
+
+exit 0
