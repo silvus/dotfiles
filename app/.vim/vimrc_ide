@@ -65,3 +65,6 @@ if !exists('g:neocomplcache_force_omni_patterns')
 endif
 let g:neocomplcache_force_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplcache_force_omni_patterns.go = '\h\w*\.\?'
+
+" For cursor moving in insert mode
+let g:neocomplcache_enable_cursor_hold_i = 1
