@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-action="$(echo -e "shutdown\nrestart\nlogout" | dmenu)"
+action="$(echo -e "Shutdown\nRestart\nLogout" | dmenu -i)"
 
 case "$action" in
 	"shutdown")

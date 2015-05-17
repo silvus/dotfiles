@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Check if vpn is up
+vpnisup=$(ifconfig tun0 2>/dev/null | grep "UP" | wc -l)
+if [[ "$vpnisup" == 1 ]]; then
+	actionstop="Stop\n"
+else
+	actionstop=""
+fi
+
+vpnconfs=$(find "/etc/openvpn" -type f -name "*.ovpn" -printf "%f\n" | cut -f1 -d'.')
+action="$(echo -e "${actionstop}${vpnconfs}" | dmenu -i)"
+
+case "$action" in
+	"Stop")
+		gksudo -- bash -c 'service openvpn stop; killall openvpn'
+		;;
+	*)
+		if [[ -f "/etc/openvpn/${action}.ovpn" ]]; then
+			sudo openvpn --config "/etc/openvpn/${action}.ovpn"
+		fi
+		;;
+esac
+
+exit 0
