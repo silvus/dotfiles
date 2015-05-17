@@ -42,6 +42,9 @@ function! rc:syncTree()
 endfunction
 autocmd BufEnter * call rc:syncTree()
 
+" Show hidden files
+let NERDTreeShowHidden=1
+
 " Neocomplcache
 " ------------------------------------------------------------------------------------
 let g:neocomplcache_enable_at_startup = 1
