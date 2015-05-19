@@ -10,12 +10,16 @@ set rulerformat=''
 
 set number                " Show line numbers
 set relativenumber        " Show relative line numbers
-set cursorline            " Highlights the current line
+" set cursorline            " Highlights the current line
 set showmode              " Current mode in status line
 set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
 set scrolloff=10          " Places a line between the current line and the screen edge
 set sidescrolloff=5       " Places a couple columns between the current column and the screen edge
 set showmatch             " Show matching brackets when text indicator is over them
+
+" Highlights the current line on insert
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
 
 " Status line
 " ------------------------------------------------------------------------------------

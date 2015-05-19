@@ -173,34 +173,15 @@ make_symlink "$DOTFILES_DIR/bash/completion/composer" "$BASH_COMPLETION_DIR/comp
 
 # Vim
 # --------------------------------------------------------
-if [[ -x "$(which vim 2>/dev/null)" ]]; then
-	echo_header "Vim"
-	dir_check "$HOME/.vim/backup"
-	dir_check "$HOME/.vim/swap"
-	dir_check "$HOME/.vim/undo"
-	dir_check "$HOME/.vim/autoload"
-	dir_check "$HOME/.vim/bundle"
-
-	# Vim plugins
-	clone_or_update "https://github.com/kien/ctrlp.vim.git" "$HOME/.vim/bundle/ctrlp"
-	clone_or_update "https://github.com/bling/vim-airline.git" "$HOME/.vim/bundle/vim-airline"
-	clone_or_update "https://github.com/scrooloose/syntastic.git" "$HOME/.vim/bundle/syntastic"
-	clone_or_update "https://github.com/Raimondi/delimitMate.git" "$HOME/.vim/bundle/delimitMate"
-	clone_or_update "https://github.com/tpope/vim-commentary.git" "$HOME/.vim/bundle/vim-commentary"
-	clone_or_update "https://github.com/Shougo/neocomplcache.vim.git" "$HOME/.vim/bundle/neocomplcache.vim"
-	clone_or_update "https://github.com/fatih/vim-go.git" "$HOME/.vim/bundle/vim-go"
-	clone_or_update "https://github.com/scrooloose/nerdtree.git" "$HOME/.vim/bundle/nerdtree"
-	clone_or_update "https://github.com/tpope/vim-fugitive.git" "$HOME/.vim/bundle/vim-fugitive"
-	clone_or_update "https://github.com/airblade/vim-gitgutter.git" "$HOME/.vim/bundle/vim-gitgutter"
-fi
-
+dir_check "$HOME/.vim/backup"
+dir_check "$HOME/.vim/swap"
+dir_check "$HOME/.vim/undo"
+dir_check "$HOME/.vim/autoload"
+dir_check "$HOME/.vim/bundle"
 
 # SSHRC
 # --------------------------------------------------------
 echo_header "SSHRC"
-
-# sshrc.d
-dir_check "$HOME/.sshrc.d"
 
 # Generated sshrc config
 print_success "sshrc config" "generated"
