@@ -3,17 +3,17 @@
 action="$(echo -e "Shutdown\nRestart\nLogout" | dmenu -i)"
 
 case "$action" in
-	"shutdown")
+	"Shutdown")
 		sudo poweroff
 		;;
-	"restart")
+	"Restart")
 		sudo reboot
 		;;
-	"logout")
+	"Logout")
 		i3-msg exit
 		;;
 	*)
-		echo "What?"
+		i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'
 		;;
 esac
 
