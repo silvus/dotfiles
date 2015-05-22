@@ -44,3 +44,16 @@ set statusline+=%=                                  " Switch to the right side
 set statusline+=\ %c\                               " Colnr
 set statusline+=\ %l/%L\                            " Current line / Total lines
 set statusline+=\ %P\                               " Percent through file
+
+" Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
+" ------------------------------------------------------------------------------------
+if &term =~ '256color'
+    set t_ut=
+endif
+
+if &term =~ '^screen'
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
