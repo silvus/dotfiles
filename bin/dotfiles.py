@@ -11,7 +11,6 @@ import configparser
 from urllib.request import Request, urlretrieve
 from urllib.error import URLError, HTTPError
 from subprocess import Popen, PIPE
-from shutil import which
 
 """
 Prints (with colors)
@@ -63,7 +62,13 @@ def exec_command(command, show_errors = True):
     return p.returncode == 0
 
 def is_installed(prog):
-    return which(prog) is not None
+    p = Popen(['which', prog], stdout = PIPE, stderr = PIPE)
+    command_path, errors = p.communicate()
+
+    if p.returncode != 0:
+        print_error(errors.decode('UTF-8'))
+
+    return len(command_path) > 0
 
 def X_is_running():
     return exec_command(["xset", "-q"], False)
