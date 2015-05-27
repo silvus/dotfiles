@@ -1,5 +1,16 @@
+[directories]
+bash = ~/bin
+vim = ~/.vim/backup
+	~/.vim/swap
+	~/.vim/undo
+	~/.vim/autoload
+	~/.vim/bundle
+
 [download]
 ~/.vim/autoload/plug.vim = https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ~/bin/composer = https://getcomposer.org/composer.phar
 ~/bin/sshrc = https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc
 ~/bin/youtube-dl = https://yt-dl.org/latest/youtube-dl
+
+[clone]
+~/.fzf = https://github.com/junegunn/fzf.git
