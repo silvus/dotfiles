@@ -148,6 +148,8 @@ bindsym $mod+Shift+l exec "i3lock --color 00141a"
 bindsym $mod+Shift+s exec "~/.dotfiles/bin/dmenu_shutdown"
 # manage VPN
 bindsym $mod+Shift+v exec "~/.dotfiles/bin/dmenu_vpn"
+# screenshot
+bindsym --release Print exec "~/.dotfiles/bin/screenshot"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
