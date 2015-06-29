@@ -23,6 +23,9 @@ nnoremap <C-c> :bd<CR>
 :nmap <c-s> :w<CR>
 :imap <c-s> <Esc>:w<CR>a
 
+" Toggle line numbers
+:nmap <C-l> :set invnumber<bar>:set invrelativenumber<CR>
+
 " Insert current time
 :nnoremap <F5> "=strftime("%T")<CR>P
 :inoremap <F5> <C-R>=strftime("%T")<CR>
