@@ -2,7 +2,7 @@
 
 vim_sec="$HOME/.vim/vimrc_sec"
 jnal_folder="${DOCUMENTATION_HOME}/jnal"
-jnal_current_file="${jnal_folder}/jnal_$(date +'%Y%m%d').md"
+jnal_current_file="${jnal_folder}/jnal_$(date +'%Y%m').md"
 
 # Go to jnal folder if exist
 if [[ -d "$jnal_folder" ]]; then
@@ -28,4 +28,3 @@ else
 	"$jnal_folder doesn't exist"
 	exit 1
 fi
-
