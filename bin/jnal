@@ -2,23 +2,27 @@
 
 vim_sec="$HOME/.vim/vimrc_sec"
 jnal_folder="${DOCUMENTATION_HOME}/jnal"
-jnal_current_file="${jnal_folder}/jnal_$(date +'%Y%m').md"
+jnal_current_file="${jnal_folder}/jnal_$(date +'%Y%m%d').md"
 
 # Go to jnal folder if exist
 if [[ -d "$jnal_folder" ]]; then
 	cd "$jnal_folder"
 
-	# Autocommit
+	# Update
 	git pull origin master
-	git add .
-	git commit -m "Autocommit $(date +'%d/%m/%Y %T')"
 
 	# Open
-	if [[ -f "jnal_current_file" ]]; then
+	if [[ -f "$jnal_current_file" ]]; then
 		vim -u "$vim_sec" "$jnal_current_file"
 	else
 		vim -x -u "$vim_sec" "$jnal_current_file"
 	fi
+
+	# Autocommit
+	git add .
+	git commit -m "Autocommit $(date +'%d/%m/%Y %T')"
+
+	exit 0
 
 else
 	"$jnal_folder doesn't exist"
