@@ -22,3 +22,10 @@ nnoremap <C-c> :bd<CR>
 " Save with Ctrl + s
 :nmap <c-s> :w<CR>
 :imap <c-s> <Esc>:w<CR>a
+
+" Insert current time
+:nnoremap <F5> "=strftime("%T")<CR>P
+:inoremap <F5> <C-R>=strftime("%T")<CR>
+" Insert current date
+:nnoremap <F6> "=strftime("%A %d %b %Y")<CR>P
+:inoremap <F6> <C-R>=strftime("%A %d %b %Y")<CR>
