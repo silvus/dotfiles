@@ -28,7 +28,7 @@ _doc_goto_folder() {
         cd "$DOCUMENTATION_HOME"
     else
         echo "$DOCUMENTATION_HOME is not a folder"
-        exit 0
+        exit 1
     fi
 }
 
@@ -36,9 +36,13 @@ _doc_goto_folder() {
 # ------------------------------------------------------------
 _doc_autocommit() {
     if [[ "$DOC_AUTOCOMMIT" -eq 1 ]]; then
-        git pull origin master
         git add .
         git commit -m "Autocommit $(date +'%d/%m/%Y %T')"
+    fi
+}
+_doc_update() {
+    if [[ "$DOC_AUTOCOMMIT" -eq 1 ]]; then
+        git pull origin master
     fi
 }
 
@@ -77,5 +81,6 @@ done
 # Main
 # ------------------------------------------------------------
 _doc_goto_folder
-_doc_autocommit
+_doc_update
 _doc_open_folder
+_doc_autocommit
