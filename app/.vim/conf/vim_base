@@ -55,6 +55,17 @@ set directory=~/.vim/swap/
 set undofile
 set undodir=~/.vim/undo/
 
+" Clipboard
+" ------------------------------------------------------------------------------------
+" In line copy and paste to system clipboard
+" vmap <C-c> y:call system("xclip -i -selection clipboard", getreg("\""))<CR>:call system("xclip -i", getreg("\""))<CR>
+" nmap <C-v> :call setreg("\"",system("xclip -o -selection clipboard"))<CR>p
+
+" use + buffer (the system clipboard) if +xterm_clipboard
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus
+endif
+
 " Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
 " ------------------------------------------------------------------------------------
 if &term =~ '256color'

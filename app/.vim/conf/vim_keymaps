@@ -1,12 +1,6 @@
 " Keymaps
 " ------------------------------------------------------------------------------------
-let mapleader=","         " Change the mapleader from \ to ,
-
-" Copy
-" set clipboard=unnamedplus " use + buffer (the system clipboard) if +xterm_clipboard
-" In line copy and paste to system clipboard
-" vmap <C-c> y:call system("xclip -i -selection clipboard", getreg("\""))<CR>:call system("xclip -i", getreg("\""))<CR>
-" nmap <C-v> :call setreg("\"",system("xclip -o -selection clipboard"))<CR>p
+let mapleader="!"
 
 " Split with Ctrl + hjkl
 nnoremap <C-J> <C-W><C-J>
@@ -17,18 +11,21 @@ nnoremap <C-H> <C-W><C-H>
 " Cycling through buffers
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
-nnoremap <C-c> :bd<CR>
+nnoremap <C-d> :bd<CR>
 
 " Save with Ctrl + s
-:nmap <c-s> :w<CR>
-:imap <c-s> <Esc>:w<CR>a
+nmap <c-s> :w<CR>
+imap <c-s> <Esc>:w<CR>a
 
 " Toggle line numbers
-:nmap <C-l> :set invnumber<bar>:set invrelativenumber<CR>
+nmap <C-l> :set invnumber<bar>:set invrelativenumber<CR>
 
 " Insert current time
-:nnoremap <F5> "=strftime("%T")<CR>P
-:inoremap <F5> <C-R>=strftime("%T")<CR>
+nnoremap <F5> "=strftime("%T")<CR>P
+inoremap <F5> <C-R>=strftime("%T")<CR>
 " Insert current date
-:nnoremap <F6> "=strftime("%A %d %b %Y")<CR>P
-:inoremap <F6> <C-R>=strftime("%A %d %b %Y")<CR>
+nnoremap <F6> "=strftime("%A %d %b %Y")<CR>P
+inoremap <F6> <C-R>=strftime("%A %d %b %Y")<CR>
+
+" Spellchecking
+nnoremap <F12> :setlocal spell! spell?<CR>

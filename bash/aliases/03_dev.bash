@@ -25,6 +25,11 @@ if [[ -d "/usr/local/go/bin" ]]; then
 	fi
 fi
 
+# Python
+# ------------------------------------------------------
+export PIP_DOWNLOAD_CACHE="$HOME/.pip/cache"
+export PYTHONPATH="./.pip:$PYTHONPATH"
+
 # Go to projects folder and git pull
 # Must be here due to "cd" subshell usage
 # ------------------------------------------------------------
@@ -38,7 +43,11 @@ dev() {
 		if [[ -d ".git" ]]; then
 			git pull origin master
 		fi
-		vim -u "${HOME}/.vim/.vimrc_ide"
+		if [[ -n "$DISPLAY" ]]; then
+			gvim.ide
+		else
+			vim.ide
+		fi
 	# go to GOPATH
 	else
 		cd "${GOPATH}/src"

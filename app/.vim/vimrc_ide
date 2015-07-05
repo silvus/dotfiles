@@ -28,7 +28,7 @@ set mouse=a               " Use mouse
 autocmd vimenter * NERDTree
 
 " Close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " Synchronise NerdTree with current open file
 function! rc:isNTOpen()
@@ -44,6 +44,9 @@ autocmd BufEnter * call rc:syncTree()
 
 " Show hidden files
 let NERDTreeShowHidden=1
+
+" Toogle NerdTree
+nmap <silent> <F2> :NERDTreeToggle<CR>
 
 " Neocomplcache
 " ------------------------------------------------------------------------------------
@@ -68,3 +71,7 @@ let g:neocomplcache_force_omni_patterns.go = '\h\w*\.\?'
 
 " For cursor moving in insert mode
 let g:neocomplcache_enable_cursor_hold_i = 1
+
+" Tagbar
+" ------------------------------------------------------------------------------------
+nmap <silent> <F3> :TagbarToggle<CR>
