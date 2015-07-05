@@ -5,10 +5,10 @@ if echo "$1" | grep -e jpg$ -e jpeg$ -e gif$ -e png$; then
 	firefox "$1"
 else
 	# Flash
-        if echo "$1" | grep -e swf$ -e flv$; then
-	        firefox "$1"
+	if echo "$1" | grep -e swf$ -e flv$; then
+		firefox "$1"
 	# Text
-        else
+	else
 		lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss "$1"
 	fi
 fi
