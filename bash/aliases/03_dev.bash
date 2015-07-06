@@ -42,10 +42,6 @@ dev() {
 		# Update project
 		if [[ -d ".git" ]]; then
 			git pull origin master
-		fi
-		if [[ -n "$DISPLAY" ]]; then
-			gvim.ide
-		else
 			vim.ide
 		fi
 	# go to GOPATH
