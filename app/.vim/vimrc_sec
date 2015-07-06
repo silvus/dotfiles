@@ -10,3 +10,5 @@ set nowritebackup
 set noswapfile
 set viminfo=
 set noundofile
+
+hi StatusLine ctermbg=DarkBlue ctermfg=black
