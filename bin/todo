@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+todo_file="${DOCUMENTATION_HOME}/todo.md"
+todo_dir=
+
+# Go to todo folder
+cd "$(dirname "${todo_file}")"
+
+# Update
+git pull origin master
+
+# Open
+vim "$todo_file"
+
+# Autocommit
+git add .
+git commit -m "Autocommit Todo $(date +'%d/%m/%Y %T')"
+
+exit 0
