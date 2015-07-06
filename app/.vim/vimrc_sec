@@ -1,16 +1,6 @@
 " Base conf
-if filereadable(expand("~/.vim/conf/vim_base"))
-    source ~/.vim/conf/vim_base
-endif
-
-" Keymaps
-if filereadable(expand("~/.vim/conf/vim_keymaps"))
-    source ~/.vim/conf/vim_keymaps
-endif
-
-" Themes
-if filereadable(expand("~/.vim/conf/vim_theme"))
-    source ~/.vim/conf/vim_theme
+if filereadable(expand("~/.vim/conf/vimrc_base"))
+    source ~/.vim/conf/vimrc_base
 endif
 
 " Specific

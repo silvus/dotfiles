@@ -15,6 +15,7 @@ set pastetoggle=<F12>     " Active indentation on pastes
 " Understand *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown wrap linebreak nolist textwidth=0 wrapmargin=0
 
+
 " Spaces - Tabs - Indent
 " ------------------------------------------------------------------------------------
 filetype on
@@ -39,11 +40,13 @@ autocmd FileType python,xml setlocal tabstop=4 shiftwidth=4 softtabstop=4 expand
 autocmd FileType make setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
 autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
+
 " Search
 " ------------------------------------------------------------------------------------
 set incsearch             " Find as you type search
 set hlsearch              " Highlight search terms
 set ignorecase            " Make searches case-insensitive.
+
 
 " Backups and undo
 " ------------------------------------------------------------------------------------
@@ -55,6 +58,7 @@ set directory=~/.vim/swap/
 set undofile
 set undodir=~/.vim/undo/
 
+
 " Clipboard
 " ------------------------------------------------------------------------------------
 " In line copy and paste to system clipboard
@@ -65,6 +69,7 @@ set undodir=~/.vim/undo/
 if has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 endif
+
 
 " Tmux Fix : http://sunaku.github.io/vim-256color-bce.html
 " ------------------------------------------------------------------------------------
@@ -79,3 +84,75 @@ if &term =~ '^screen'
     execute "set <xRight>=\e[1;*C"
     execute "set <xLeft>=\e[1;*D"
 endif
+
+
+" Keymaps
+" ------------------------------------------------------------------------------------
+let mapleader="!"
+
+" Split with Ctrl + hjkl
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Cycling through buffers
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-b> :bprevious<CR>
+nnoremap <C-d> :bd<CR>
+
+" Save with Ctrl + s
+nmap <c-s> :w<CR>
+imap <c-s> <Esc>:w<CR>a
+
+" Toggle line numbers
+nmap <C-l> :set invnumber<bar>:set invrelativenumber<CR>
+
+" Insert current time
+nnoremap <F5> "=strftime("%T")<CR>P
+inoremap <F5> <C-R>=strftime("%T")<CR>
+" Insert current date
+nnoremap <F6> "=strftime("%A %d %b %Y")<CR>P
+inoremap <F6> <C-R>=strftime("%A %d %b %Y")<CR>
+
+" Spellchecking
+nnoremap <F12> :setlocal spell! spell?<CR>
+
+
+" Theme
+" ------------------------------------------------------------------------------------
+set t_Co=256              " Enable 256-color mode.
+syntax enable             " Enable syntax highlighting (previously syntax on).
+colorscheme jellybeans    " Set colorscheme
+" set background=dark
+
+set ruler                 " Always show info along bottom.
+set rulerformat=''
+
+set number                " Show line numbers
+set relativenumber        " Show relative line numbers
+" set cursorline            " Highlights the current line
+set showmode              " Current mode in status line
+set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
+set scrolloff=10          " Places a line between the current line and the screen edge
+set sidescrolloff=5       " Places a couple columns between the current column and the screen edge
+set showmatch             " Show matching brackets when text indicator is over them
+
+" Highlights the current line on insert
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
+
+
+" Status line
+" ------------------------------------------------------------------------------------
+set laststatus=2          " Last window always has a statusline
+set timeoutlen=50
+
+set statusline=
+set statusline+=\ %<%f\                             " File name
+set statusline+=\ %y\                               " File type
+set statusline+=\ %h%m%r%w\                         " Modified? Readonly?
+set statusline+=%=                                  " Switch to the right side
+set statusline+=\ %c\                               " Colnr
+set statusline+=\ %l/%L\                            " Current line / Total lines
+set statusline+=\ %P\                               " Percent through file
