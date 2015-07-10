@@ -42,8 +42,9 @@ dev() {
 		# Update project
 		if [[ -d ".git" ]]; then
 			git pull origin master
-			vim.ide
 		fi
+		# Open in vim
+		vim.ide
 	# go to GOPATH
 	else
 		cd "${GOPATH}/src"
