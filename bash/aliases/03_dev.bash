@@ -2,21 +2,22 @@
 # Dotfiles
 alias dot="cd $DOTFILES_PATH"
 alias dot_reload="source ${HOME}/.bashrc"
+alias s="cd /data/silvus"
 alias data="cd /data"
 
-# Projects root folder (and for Virtualenvwrapper)
+# Projects root folder (for Virtualenvwrapper, go, etc...)
 export PROJECT_HOME="/data/dev"
 
 # Doc folder
 export DOCUMENTATION_HOME="/data/doc"
 
 # Launch simple web server
+alias server="python3 -m http.server 5000"
 alias server_php="php -sS localhost:5000"
-alias server_python="python3 -m http.server 5000"
 
 # Golang
 # ------------------------------------------------------
-export GOPATH="/data/go"
+export GOPATH="$PROJECT_HOME"
 
 if [[ -d "/usr/local/go/bin" ]]; then
 	export PATH="$PATH:/usr/local/go/bin"
