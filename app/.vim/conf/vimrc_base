@@ -99,7 +99,7 @@ nnoremap <C-H> <C-W><C-H>
 " Cycling through buffers
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
-nnoremap <C-d> :bd<CR>
+nnoremap <C-q> :bd<CR>
 
 " Save with Ctrl + s
 nmap <c-s> :w<CR>
