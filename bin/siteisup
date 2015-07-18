@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+usage() {
+cat << EOF
+$0 host [OPTIONS]
+
+Get notified when a website is reachable
+
+ARGUMENTS:
+    host      Website to check
+
+OPTIONS:
+    -h       Show this message
+EOF
+}
+
+# Parse arguments
+# ------------------------------------------------------------
+if [[ "$#" -ne 1 ]]; then
+	usage
+	exit 1
+fi
+
+host="$1"
+
+while getopts hvg OPTIONS; do
+    case "$OPTIONS" in
+        h)
+            usage
+            exit 0 ;;
+    esac
+done ;
+
+# Loop
+# ------------------------------------------------------------
+until ping -q -W1 -c 1 "$host"; do
+	echo "Ping Fail - $host - $(date)"
+	sleep 15
+done ;
+
+# Notify
+# ------------------------------------------------------------
+message_success="Host Found - $host - $(date)"
+echo -e "\n$message_success"
+
+if [ -n "$DISPLAY" ]; then
+	zenity --title="Site is UP" --info --text="$message_success"
+else
+	whiptail --title "Site is UP" --msgbox "$message_success" 10 80
+fi
