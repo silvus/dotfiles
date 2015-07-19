@@ -310,16 +310,15 @@ if __name__ == '__main__':
     config_file = os.path.expanduser('~/.dotfiles/dotconf')
 
     # Make symlinks
-    rootSource = os.path.expanduser('~/.dotfiles/app')
-    rootDesktopSource = os.path.expanduser('~/.dotfiles/appdesktop')
-    rootDestination = os.path.expanduser('~')
     print_header('Symlinks apps')
-    if scan_arbo(rootSource, rootDestination):
+    if scan_arbo(os.path.expanduser('~/.dotfiles/app'), os.path.expanduser('~')):
+
         print_header('Symlinks root apps')
-        if scan_arbo(os.path.expanduser('~/.dotfiles/approot'), '/', True):
-            if X_is_running():
-                print_header('Symlinks desktop apps')
-                scan_arbo(rootDesktopSource, rootDestination)
+        scan_arbo(os.path.expanduser('~/.dotfiles/approot'), '/', True)
+
+        if X_is_running():
+            print_header('Symlinks desktop apps')
+            scan_arbo(os.path.expanduser('~/.dotfiles/appdesktop'), os.path.expanduser('~'))
 
     # Dowload Apps
     print_header('Download apps')
