@@ -16,7 +16,7 @@ alias l='ls -lhaF --color=auto --group-directories-first'
 alias rm='rm -I' # prompt if deleting more than 3 files at a time
 alias o='xdg-open'
 alias diskfree='df -H'
-alias diskusage='du -ch'
+alias diskusage='ncdu'
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
 alias distro='cat /etc/issue'
 alias shortcuts='bind -P'
