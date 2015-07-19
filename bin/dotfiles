@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
 """
 Setup dotfiles
@@ -71,7 +71,7 @@ def is_installed(prog):
 def X_is_running():
     return exec_command(["xset", "-q"], False)
 
-def display_count():
+def screen_count():
     p = Popen(['xrandr', '-q'], stdout=PIPE, stderr=PIPE)
     xrandr_output, errors = p.communicate()
 
@@ -86,7 +86,7 @@ in home for each file.
 If X is running, scan also "appdesktop"
 """
 
-def scan_arbo(rootSource, rootDestination):
+def scan_arbo(rootSource, rootDestination, sudo=False):
     for dirName, subdirList, fileList in os.walk(rootSource):
         for fileName in fileList:
             # Get relative dir from dotfiles root
@@ -98,8 +98,12 @@ def scan_arbo(rootSource, rootDestination):
             source = os.path.join(rootSource, relativeFile)
             destination = os.path.join(rootDestination, relativeFile)
 
-            if not symlink(source, destination):
-                return False
+            if sudo:
+                if not symlink_root(source, destination):
+                    return False
+            else:
+                if not symlink(source, destination):
+                    return False
 
     return True
 
@@ -109,7 +113,7 @@ def symlink(src, dest):
     """
     # Remove existing symlink
     if os.path.lexists(dest):
-            os.remove(dest)
+        os.remove(dest)
     # Check if source exist
     if os.path.exists(src):
         # Create directories if necessary
@@ -311,21 +315,15 @@ if __name__ == '__main__':
     rootDestination = os.path.expanduser('~')
     print_header('Symlinks apps')
     if scan_arbo(rootSource, rootDestination):
-        if X_is_running():
-            print_header('Symlinks desktop apps')
-            scan_arbo(rootDesktopSource, rootDestination)
+        print_header('Symlinks root apps')
+        if scan_arbo(os.path.expanduser('~/.dotfiles/approot'), '/', True):
+            if X_is_running():
+                print_header('Symlinks desktop apps')
+                scan_arbo(rootDesktopSource, rootDestination)
 
     # Dowload Apps
     print_header('Download apps')
     read_config(config_file)
-
-    # Bash Completions
-    print_header('Bash')
-    symlink_root(os.path.expanduser('~/.dotfiles/bash/completion/tmux'), '/etc/bash_completion.d/tmux')
-    symlink_root(os.path.expanduser('~/.dotfiles/bash/completion/dev'), '/etc/bash_completion.d/dev')
-    symlink_root(os.path.expanduser('~/.dotfiles/bash/completion/go'), '/etc/bash_completion.d/go')
-    symlink_root(os.path.expanduser('~/.dotfiles/bash/completion/sshrc'), '/etc/bash_completion.d/sshrc')
-    symlink_root(os.path.expanduser('~/.dotfiles/bash/completion/composer'), '/etc/bash_completion.d/composer')
 
     # Generated sshrc config
     print_header('Sshrc')
@@ -341,7 +339,7 @@ if __name__ == '__main__':
         print_header('i3')
 
         i3_config_files = [os.path.expanduser("~/.dotfiles/i3/config_main")]
-        if display_count() > 1:
+        if screen_count() > 1:
             # Dual screen
             i3_config_files.extend([os.path.expanduser("~/.dotfiles/i3/config_bar_dual")])
         else:
