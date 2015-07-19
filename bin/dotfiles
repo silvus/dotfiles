@@ -170,9 +170,9 @@ def download(url, destination):
         try:
             urlretrieve(url, destination, reporthook=report_download)
         except HTTPError as e:
-            print_warning(url, 'unavailable.', 'Error code:', e.code)
+            print_warning(url + ' unavailable. Error code: ' + e.code)
         except URLError as e:
-            print_warning(url, 'unavailable.', 'Reason:', e.reason)
+            print_warning(url + ' unavailable. Reason: ' + e.reason)
         else:
             # everything is fine
             os.chmod(destination, 0o755)
