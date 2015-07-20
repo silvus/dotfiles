@@ -10,5 +10,8 @@ set nowritebackup
 set noswapfile
 set viminfo=
 set noundofile
+set noshelltemp
+set history=0
+set secure
 
 hi StatusLine ctermbg=DarkBlue ctermfg=black
