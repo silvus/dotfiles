@@ -22,11 +22,14 @@ bar {
         urgent_workspace   #aa0000 #990000 #ffffff
     }
 
-    # Using custom i3status.conf
+    # Using i3status
     # status_command i3status -c ~/.i3/i3status.conf
 
     # Using Conky
-    status_command ~/.i3/conky_launcher
+    # status_command ~/.i3/conky_launcher
+
+	# Using i3pystatus
+	status_command ~/.i3/i3pystatus/launcher.sh
 
 }
 
