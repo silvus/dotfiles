@@ -1,0 +1,9 @@
+
+_p() {
+	if [[ -d "$DOCUMENTATION_HOME/.p" ]]; then
+		local files_p=("$DOCUMENTATION_HOME/.p/$2"*)
+		[[ -f ${files_p[0]} ]] && COMPREPLY+=( "$COMPREPLY${files_p[@]##*/}" )
+	fi
+}
+
+complete -F _p p
