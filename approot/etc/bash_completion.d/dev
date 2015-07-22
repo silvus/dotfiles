@@ -1,9 +1,9 @@
 
 _dev() {
-	# Search in GOPATH
-	if [[ -d "$GOPATH/src" ]]; then
-		local files_go=("$GOPATH/src/$2"*)
-		[[ -d ${files_go[0]} ]] && COMPREPLY+=( "$COMPREPLY${files_go[@]##*/}" )
+	# Search in PROJECT_HOME
+	if [[ -d "$PROJECT_HOME/src" ]]; then
+		local files_dev=("$PROJECT_HOME/src/$2"*)
+		[[ -d ${files_dev[0]} ]] && COMPREPLY+=( "$COMPREPLY${files_dev[@]##*/}" )
 	fi
 }
 
