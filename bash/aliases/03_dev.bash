@@ -31,6 +31,10 @@ fi
 export PIP_DOWNLOAD_CACHE="$HOME/.pip/cache"
 export PYTHONPATH="./.pip:$PYTHONPATH"
 
+if [[ -d "${HOME}/.local/bin" ]]; then
+	export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # Go to projects folder and git pull
 # Must be here due to "cd" subshell usage
 # ------------------------------------------------------------
