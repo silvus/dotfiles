@@ -2,3 +2,5 @@
 *_env
 *_draft
 *_draft.*
+
+__pycache__
