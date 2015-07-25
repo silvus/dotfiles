@@ -11,7 +11,7 @@ status = Status(standalone=True)
 
 # Note: requires libasound2-dev and pyalsaaudiaaudio from PyPI
 status.register("alsa",
-    format="♪ {volume}%",
+    format="  {volume}%",
     format_muted="♪ Mute",
     color_muted=color_gray,
     color=color_blue,
@@ -19,13 +19,13 @@ status.register("alsa",
 
 # Displays clock
 status.register("clock",
-    format="%X",
+    format="  %X",
     color=color_green,
     hints={"min_width": 60, "align" : "left"},)
 
 # Displays date
 status.register("clock",
-    format="%a %-d %b",
+    format="  %a %-d %b",
     hints={"separator": False, "min_width": 100, "align" : "right"},)
 
 # Shows the average load of the last minute and the last 5 minutes
@@ -37,14 +37,15 @@ status.register("mem_bar",
     hints={"align" : "center"},)
 status.register("mem",
     color=color_blue,
-    format="RAM {percent_used_mem:.0f}%",
+    format="  {percent_used_mem:.0f}%",
     hints={"separator": False, "min_width": 70, "align" : "center"},)
 
 status.register("cpu_usage_bar",
     start_color=color_blue,
+    end_color=color_blue,
     hints={"align" : "center"},)
 status.register("cpu_usage",
-    format="CPU {usage:02}%",
+    format="  {usage:02}%",
     hints={"separator": False, "min_width": 60, "align" : "center"},)
 
 # Shows disk usage of /data
@@ -65,15 +66,21 @@ status.register("disk",
 # Note: the network module requires PyPI package netifaces
 status.register("network",
     color_up=color_blue,
+    start_color=color_blue,
     interface="eth0",
-    format_up="{v4} {network_graph}{kbs}KB/s",
-    hints={"min_width": 100, "align" : "center"},)
+    dynamic_color=False,
+    upper_limit=1300,
+    format_up=" {v4} {network_graph}{kbs}KB/s",
+    hints={"min_width": 30, "align" : "center"},)
 
-# status.register("network",
-#     color_up=color_blue,
-#     interface="tun0",
-#     format_up="{v4} {network_graph}{kbs}KB/s",
-#     hints={"min_width": 100, "align" : "center"},)
+status.register("network",
+    color_up=color_blue,
+    color_down=color_red,
+    interface="tun0",
+    format_down='',
+    unknown_up=True,
+    format_up=" {v4} {kbs}KB/s",
+    hints={"min_width": 30, "align" : "center"},)
 
 # status.register("aptget",
 #     backends = [aptget.AptGet()])

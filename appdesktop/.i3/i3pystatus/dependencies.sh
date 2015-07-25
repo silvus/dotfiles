@@ -2,4 +2,4 @@
 
 cd ~/.i3/i3pystatus
 
-pip3 install -t .pip py3status
+pip3 install i3pystatus netifaces colour psutil pyalsaaudio --upgrade -t .pip/
