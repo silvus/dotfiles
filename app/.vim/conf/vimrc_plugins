@@ -22,7 +22,8 @@ Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }"
 Plug 'fatih/vim-go', { 'for': 'go' }
 
 " YouCompleteMe
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh', 'for': ['python', 'php', 'go', 'sh', 'js', 'css', 'html'] }
+autocmd! User YouCompleteMe call youcompleteme#Enable()
 
 call plug#end()
 

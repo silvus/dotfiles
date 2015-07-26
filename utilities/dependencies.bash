@@ -11,6 +11,8 @@ _install_server() {
 		dfc `# Disk space` \
 		iftop `# Traffic htop-like` \
 		build-essential `# Compiling things` \
+		cmake `# YouCompleteMe dependency` \
+		python-dev `# Python headers` \
 		ack-grep `# Search` \
 		vim `# Text editor` \
 		tmux `# Split terminal` \
