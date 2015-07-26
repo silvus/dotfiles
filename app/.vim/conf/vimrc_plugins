@@ -2,6 +2,16 @@
 " ------------------------------------------------------------------------------------
 call plug#begin('~/.vim/bundle')
 
+Plug 'kien/ctrlp.vim'
+Plug 'bling/vim-airline'
+Plug 'scrooloose/syntastic'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-commentary'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
 " Nerdtree (On demand)
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
 
@@ -11,16 +21,8 @@ Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }"
 " Vim go (for Go)
 Plug 'fatih/vim-go', { 'for': 'go' }
 
-Plug 'kien/ctrlp.vim'
-Plug 'bling/vim-airline'
-Plug 'scrooloose/syntastic'
-Plug 'Raimondi/delimitMate'
-Plug 'tpope/vim-commentary'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'Shougo/neocomplcache.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+" YouCompleteMe
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
 call plug#end()
 
@@ -52,3 +54,26 @@ let g:ctrlp_show_hidden = 1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*,*/__pycache__/*
 " Switch buffers
 nnoremap <C-e> :CtrlPBuffer<CR>
+
+" NerdTree
+" ------------------------------------------------------------------------------------
+" Toogle NerdTree
+nmap <silent> <F2> :NERDTreeToggle<CR>
+
+" Show hidden files
+let NERDTreeShowHidden=1
+
+" Tagbar
+" ------------------------------------------------------------------------------------
+nmap <silent> <F3> :TagbarToggle<CR>
+
+" UltiSnips
+" ------------------------------------------------------------------------------------
+let g:UltiSnipsExpandTrigger="<Tab>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+
+" YouCompleteMe
+" ------------------------------------------------------------------------------------
+let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']

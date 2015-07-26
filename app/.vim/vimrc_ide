@@ -31,37 +31,3 @@ function! rc:syncTree()
 	endif
 endfunction
 autocmd BufEnter * call rc:syncTree()
-
-" Show hidden files
-let NERDTreeShowHidden=1
-
-" Toogle NerdTree
-nmap <silent> <F2> :NERDTreeToggle<CR>
-
-" Neocomplcache
-" ------------------------------------------------------------------------------------
-let g:neocomplcache_enable_at_startup = 1
-" <TAB>: completion
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" Close popup by <Space>
-inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion
-if !exists('g:neocomplcache_force_omni_patterns')
-  let g:neocomplcache_force_omni_patterns = {}
-endif
-let g:neocomplcache_force_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplcache_force_omni_patterns.go = '\h\w*\.\?'
-
-" For cursor moving in insert mode
-let g:neocomplcache_enable_cursor_hold_i = 1
-
-" Tagbar
-" ------------------------------------------------------------------------------------
-nmap <silent> <F3> :TagbarToggle<CR>
