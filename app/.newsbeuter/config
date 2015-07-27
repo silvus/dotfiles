@@ -1,5 +1,5 @@
-
 # Newsbeuter configuration
+# http://www.newsbeuter.org/doc/newsbeuter.html
 #----------------------------------------------------------
 
 ## configuration option: always-display-description
@@ -98,11 +98,13 @@ keep-articles-days 30
 ## description: If yes, then all query feeds are prepopulated with articles on startup.
 ## parameter syntax: [yes/no]
 # prepopulate-query-feeds no
+prepopulate-query-feeds yes
 
 ## configuration option: reload-time
 ## description: The number of minutes between automatic reloads.
 ## parameter syntax: <number>
 # reload-time 60
+reload-time 30
 
 ## configuration option: reload-threads
 ## description: The number of parallel reload threads that shall be started when all feeds are reloaded.
@@ -139,12 +141,15 @@ color listnormal        green   default
 color listnormal_unread blue    default
 color listfocus         white   default reverse
 color listfocus_unread  white   default reverse
-color info              blue    default reverse
+color info              white   black
 color background        green   default
 color article           default default
 
-# highlights
-highlight article "^(Feed|Link):.*$" green default bold
-highlight article "^(Title|Date|Author):.*$" green default bold
+# Highlights
+highlight article "^(Feed|Fil|Link|Lien|Title|Titre|Date|Author|Auteur):.*$" blue default
+highlight article "^(Links|Liens):.*$" blue default bold
 highlight article "https?://[^ ]+" green default underline
 
+# Bindings
+# <key> <operation> [<dialog>]
+bind-key ENTER quit article

@@ -1,3 +1,7 @@
+# Query Feeds
+"query:Unread Articles:unread = \"yes\""
+
+# Feeds
 https://news.ycombinator.com/rss tech "~Hacker News"
 https://lobste.rs/rss tech "~Lobsters"
 http://rss.slashdot.org/Slashdot/slashdot tech "~Slashdot"
@@ -35,6 +39,7 @@ https://igor.io/index.atom blog "~Igor"
 http://feeds.feedburner.com/Ircmaxell blog "~Ircmaxell"
 http://williamdurand.fr/atom.xml blog "~William Durand"
 http://paulrouget.com/index.xml blog "~Paul Rouget"
+http://zedshaw.com/feed/ blog "~Zed A. Shaw"
 http://notch.net/feed/ blog "~Notch"
 http://blog.z3bra.org/rss/feed.xml blog "~Monochromatic"
 http://www.maitre-eolas.fr/feed/atom blog "~Journal d'un avocat"
