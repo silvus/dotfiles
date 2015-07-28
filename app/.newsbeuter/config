@@ -11,11 +11,13 @@
 ## description: The sortfield specifies which article property shall be used for sorting (currently available: date, title, flags, author, link, guid). The optional direction specifies the sort direction ("asc" specifies ascending sorting, "desc" specifies descending sorting. for date, "desc" is default, for all others, "asc" is default).
 ## parameter syntax: <sortfield>[-<direction>]
 # article-sort-order date
+article-sort-order date desc
 
 ## configuration option: articlelist-format
 ## description: This variable defines the format of entries in the article list. See the respective section in the documentation for more information on format strings.
 ## parameter syntax: <format>
 # articlelist-format "%4i %f %D %6L %?T?|%-17T| ?%t"
+articlelist-format "%D %6-L %?T?|%-17T| ?%t"
 
 ## configuration option: auto-reload
 ## description: If enabled, all feeds will be automatically reloaded at start up and then continuously after a certain time has passed (see reload-time).
@@ -32,7 +34,7 @@ browser ~/.newsbeuter/browse
 ## description: This format specifies the date/time format in the article list. For a detailed documentation on the allowed formats, consult the manpage of strftime(3).
 ## parameter syntax: <date/time format>
 # datetime-format %b %d
-# datetime-format %R
+datetime-format "%d %b %R"
 
 ## configuration option: feed-sort-order
 ## description: If set to "firsttag", the feeds in the feed list will be sorted by their first tag in the urls file.
@@ -109,7 +111,7 @@ reload-time 30
 ## configuration option: reload-threads
 ## description: The number of parallel reload threads that shall be started when all feeds are reloaded.
 ## parameter syntax: <number>
-# reload-threads 1
+reload-threads 4
 
 ## configuration option: save-path
 ## description: The default path where articles shall be saved to. If an invalid path is specified, the current directory is used.
@@ -125,6 +127,7 @@ reload-time 30
 ## description: If no, then the keymap hints on the bottom of screen will not be displayed.
 ## parameter syntax: [yes/no]
 # show-keymap-hint yes
+show-keymap-hint no
 
 ## configuration option: show-read-feeds
 ## description: If yes, then all feeds, including those without unread articles, are listed. If no, then only feeds with one or more unread articles are list.
