@@ -133,6 +133,15 @@ _prompt_pwd_length() {
 	fi
 }
 
+# Check if python virtualenv is active
+_is_virtualenv() {
+	if [ ! -z "$VIRTUAL_ENV" ]; then
+		_PYTHON_VENV="[${TXTPURPLE}$(basename "$(dirname "${VIRTUAL_ENV}")")${TXTRESET}]"
+	else
+		_PYTHON_VENV=""
+	fi
+}
+
 # Prompt
 # --------------------------------------------------------------------------------------
 _prompt_command_function() {
@@ -140,6 +149,7 @@ _prompt_command_function() {
 	_prompt_pwd_length
 	_is_writable
 	_vcs_prompt
+	_is_virtualenv
 }
 
 PROMPT_COMMAND=_prompt_command_function
@@ -147,7 +157,7 @@ PROMPT_COMMAND=_prompt_command_function
 _is_ssh
 _is_root
 
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
 
 # -n : unexport PS1 so sub-processes will not inherit it (Fix for /bin/sh)
 export -n PS1

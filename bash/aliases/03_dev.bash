@@ -28,12 +28,23 @@ fi
 
 # Python
 # ------------------------------------------------------
-export PIP_DOWNLOAD_CACHE="$HOME/.pip/cache"
 export PYTHONPATH="./.pip:$PYTHONPATH"
 
 if [[ -d "${HOME}/.local/bin" ]]; then
 	export PATH="$HOME/.local/bin:$PATH"
 fi
+
+# Pip
+export PIP_DOWNLOAD_CACHE="$HOME/.pip/cache"
+export PIP_REQUIRE_VIRTUALENV=true
+pipglobal() {
+   PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+
+# Virtualenv
+export VIRTUAL_ENV_DISABLE_PROMPT=true # Don't touch my PS1
+alias pythonvenvcreate="python3 -m venv --without-pip .venv; source .venv/bin/activate; curl https://bootstrap.pypa.io/get-pip.py | python; deactivate; source .venv/bin/activate"
+alias activate="source .venv/bin/activate"
 
 # Go to projects folder and git pull
 # Must be here due to "cd" subshell usage
@@ -41,17 +52,21 @@ fi
 dev() {
 	local projectname="$1"
 
-	# Check in GOPATH
-	if [[ ! -z "$projectname" ]] && [[ -d "${GOPATH}/src/${projectname}" ]]; then
-		cd "${GOPATH}/src/${projectname}"
+	# Search in projects
+	if [[ ! -z "$projectname" ]] && [[ -d "${PROJECT_HOME}/src/${projectname}" ]]; then
+		cd "${PROJECT_HOME}/src/${projectname}"
 		# Update project
 		if [[ -d ".git" ]]; then
 			git pull origin master
 		fi
+		# Active virtualenv
+		if [[ -f ".venv/bin/activate" ]]; then
+			source ".venv/bin/activate"
+		fi
 		# Open in vim
 		vim.ide
-	# go to GOPATH
+	# go to PROJECT_HOME
 	else
-		cd "${GOPATH}/src"
+		cd "${PROJECT_HOME}/src"
 	fi
 }
