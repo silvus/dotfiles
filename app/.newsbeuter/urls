@@ -1,5 +1,7 @@
 # Query Feeds
+# query:<name of feed>:<filter expression> [<tag> ...]
 "query:Unread Articles:unread = \"yes\""
+"query:News Articles:tags # \"news\""
 
 # Feeds
 https://news.ycombinator.com/rss tech "~Hacker News"
@@ -44,7 +46,6 @@ http://notch.net/feed/ blog "~Notch"
 http://blog.z3bra.org/rss/feed.xml blog "~Monochromatic"
 http://www.maitre-eolas.fr/feed/atom blog "~Journal d'un avocat"
 http://ploum.net/feed/ blog "~Ploum"
-http://odieuxconnard.wordpress.com/feed/ blog "~Odieux Connard"
 http://what-if.xkcd.com/feed.atom blog "~What if"
 http://www.dadall.info/blog/feed.php?rss blog "~Blog de dada"
 http://www.cdetc.fr/feed/ blog "~cd /etc/etera"
@@ -55,6 +56,8 @@ http://korben.info/feed blog "~Korben"
 http://rss.lemonde.fr/c/205/f/3050/index.rss news "~Le Monde"
 http://reflets.info/feed/ news "~Reflets"
 
-http://feeds.feedburner.com/RockPaperShotgun fun "~Rock Paper Shotgun"
-https://bridge.suumitsu.eu/?action=display&bridge=DansTonChatBridge&format=AtomFormat fun "~DansTonChat"
+http://feeds.feedburner.com/RockPaperShotgun games "~Rock Paper Shotgun"
+
+http://odieuxconnard.wordpress.com/feed/ fun "~Odieux Connard"
+http://feeds.feedburner.com/bashfr fun "~DansTonChat"
 http://www.webagencyfail.com/?feed=rss2 fun "~Web Agency FAIL"
