@@ -21,7 +21,12 @@ articlelist-format "%D %6-L %?T?|%-17T| ?%t"
 ## configuration option: auto-reload
 ## description: If enabled, all feeds will be automatically reloaded at start up and then continuously after a certain time has passed (see reload-time).
 ## parameter syntax: [yes/no]
-# auto-reload no
+auto-reload yes
+
+## configuration option: suppress-first-reload
+## description: If yes, then the first automatic reload will be suppressed if auto-reload is set to yes
+## parameter syntax: [yes/no]
+suppress-first-reload yes
 
 ## configuration option: browser
 ## description: Set the browser command to use when opening an article in the browser. If <browser-command> contains %u, it will be used as complete commandline and %u will be replaced with the URL that shall be opened.
@@ -95,11 +100,57 @@ keep-articles-days 30
 ## parameter syntax: <url> ...
 # opml-url ""
 
+## configuration option: bookmark-cmd
+## description: If set, then <bookmark-command> will be used as bookmarking plugin. See the documentation on bookmarking for further information.
+## parameter syntax: <bookmark-command>
+# bookmark-cmd ""
+
+## configuration option: bookmark-interactive
+## description: If set to yes, then the configured bookmark command is an interactive program.
+## parameter syntax: [yes/no]
+# bookmark-interactive no
+
+## configuration option: bookmark-autopilot
+## description: If set to yes, the configured bookmark command is executed without any further input asked from user, uless the url or the title cannot be found/guessed.
+## parameter syntax: [yes/no]
+# bookmark-autopilot no
+
 ## configuration option: prepopulate-query-feeds
 ## description: If yes, then all query feeds are prepopulated with articles on startup.
 ## parameter syntax: [yes/no]
 # prepopulate-query-feeds no
 prepopulate-query-feeds yes
+
+## configuration option: goto-next-feed
+## description: If set to yes, then the next-unread and prev-unread keys will search in other feeds for unread articles if all articles in the current feed are read. If set to no, then the next-unread and prev-unread keys will stop in the current feed.
+## parameter syntax: [yes/no]
+# goto-next-feed yes
+goto-next-feed no
+
+## configuration option: history-limit
+## description: Defines the maximum number of entries of commandline resp. search history to be saved. To disable history saving, set history-limit to 0.
+## parameter syntax: <number>
+# history-limit 100
+
+## configuration option: max-items
+## description: Set the number of articles to maximally keep per feed. If the number is set to 0, then all articles are kept.
+## parameter syntax: <number>
+# max-items 0
+
+## configuration option: html-renderer
+## description: If set to "internal", then the internal HTML renderer will be used. Otherwise, the specified command will be executed, the HTML to be rendered will be written to the command's stdin, and the program's output will be displayed. This makes it possible to use other, external programs, such as w3m, links or lynx, to render HTML.
+## parameter syntax: <path>
+# html-renderer internal
+
+## configuration option: pager
+## description: If set to "internal", then the internal pager will be used. Otherwise, the article to be displayed will be rendered to be a temporary file and then displayed with the configured pager. If the pager path is set to an empty string, the content of the "PAGER" environment variable will be used. If the pager path contains a placeholder "%f", it will be replaced with the temporary filename.
+## parameter syntax: [<path>/internal]
+# pager internal
+
+## configuration option: text-width
+## description: If set to a number greater than 0, then all HTML will be rendered to this maximum line length. If set to 0, the terminal width will be used.
+## parameter syntax: <number>
+# text-width 0
 
 ## configuration option: reload-time
 ## description: The number of minutes between automatic reloads.
