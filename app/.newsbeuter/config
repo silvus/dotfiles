@@ -11,7 +11,6 @@
 ## description: The sortfield specifies which article property shall be used for sorting (currently available: date, title, flags, author, link, guid). The optional direction specifies the sort direction ("asc" specifies ascending sorting, "desc" specifies descending sorting. for date, "desc" is default, for all others, "asc" is default).
 ## parameter syntax: <sortfield>[-<direction>]
 # article-sort-order date
-article-sort-order date desc
 
 ## configuration option: articlelist-format
 ## description: This variable defines the format of entries in the article list. See the respective section in the documentation for more information on format strings.
@@ -44,7 +43,7 @@ datetime-format "%d %b %R"
 ## configuration option: feedlist-format
 ## description: This variable defines the format of entries in the feed list. See the respective section in the documentation for more information on format strings.
 ## parameter syntax: <format>
-# feedlist-format "%4i %n %11u %t"
+feedlist-format "%S %n %10u %-60t %> %T"
 
 ## configuration option: goto-first-unread
 ## description: If set to yes (the default), then the first unread article will be selected whenever a feed is entered.
@@ -155,4 +154,5 @@ highlight article "https?://[^ ]+" green default underline
 
 # Bindings
 # <key> <operation> [<dialog>]
-bind-key ENTER quit article
+bind-key ENTER quit article # On article, back to list
+bind-key x toggle-article-read # Toggle read flag
