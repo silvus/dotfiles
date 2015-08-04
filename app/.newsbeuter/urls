@@ -1,7 +1,8 @@
 # Query Feeds
 # query:<name of feed>:<filter expression> [<tag> ...]
-"query:Unread Articles:unread = \"yes\""
-"query:News Articles:tags # \"news\""
+"query:Articles Unread:unread == \"yes\" and tags !# \"comic\""
+"query:Articles News:unread == \"yes\" and tags # \"news\""
+"query:Articles Comics:unread == \"yes\" and tags # \"comic\""
 
 # Feeds
 https://news.ycombinator.com/rss tech "~Hacker News"
@@ -57,7 +58,25 @@ http://rss.lemonde.fr/c/205/f/3050/index.rss news "~Le Monde"
 http://reflets.info/feed/ news "~Reflets"
 
 http://feeds.feedburner.com/RockPaperShotgun games "~Rock Paper Shotgun"
+http://www.factornews.com/rss.xml games "~Factornews"
+http://feeds.feedburner.com/nofrag_com games "NoFrag"
 
 http://odieuxconnard.wordpress.com/feed/ fun "~Odieux Connard"
 http://feeds.feedburner.com/bashfr fun "~DansTonChat"
 http://www.webagencyfail.com/?feed=rss2 fun "~Web Agency FAIL"
+
+http://xkcd.com/atom.xml comic "!xkcd"
+http://www.commitstrip.com/fr/feed/ comic "!CommitStrip"
+http://dilbert.com/feed comic "!Dilbert"
+http://feeds.feedburner.com/oatmealfeed comic "!The Oatmeal"
+http://programmers.life/feed/ comic "!Programmer's Life"
+http://feeds.feedburner.com/lucdamas/humeurs comic "!Humeurs illustrées"
+http://kinglongburns.blogspot.com/feeds/posts/default comic "!King Longburns"
+http://feeds.feedburner.com/InvisibleBread comic "!Invisible Bread"
+http://twistedspeedo.com/?feed=rss2 comic "!Twistedspeedo"
+http://maximumble.thebookofbiff.com/ comic "!Maximumble"
+http://www.depressedalien.com/rss comic "!Depressed Alien"
+http://legacy-control.com/feed/ comic "!Legacy Control"
+http://lycracacolle.canalblog.com/rss.xml comic "!Sticky Pants"
+http://oglaf.com/feeds/rss/ comic "!Oglaf"
+http://piratesourcil.blogspot.com/feeds/posts/default comic "!PirateSourcil"
