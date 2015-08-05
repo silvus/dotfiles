@@ -206,3 +206,5 @@ highlight article "https?://[^ ]+" green default underline
 # <key> <operation> [<dialog>]
 bind-key ENTER quit article # On article, back to list
 bind-key x toggle-article-read # Toggle read flag
+bind-key ESC hard-quit # Exit
+bind-key b bookmark # Bookmark
