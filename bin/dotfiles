@@ -9,6 +9,7 @@ import sys
 import time
 import configparser
 import fileinput
+import argparse
 from urllib.request import Request, urlretrieve
 from urllib.error import URLError, HTTPError
 from subprocess import Popen, PIPE
@@ -234,31 +235,30 @@ def clone_or_update(url, destination):
     else:
         git_clone(url, destination)
 
-def clone_or_update_dotfiles():
+def clone_or_update_dotfiles(dotfilesurl, dotfilespath):
     """
     Clone or update dotfiles
     """
-    dotfiles_path = os.path.expanduser('~/.dotfiles')
 
     if len(sys.argv) > 1 and sys.argv[1] == 'restarted':
         print_header('Dotfiles updated')
     else:
         print_header('Dotfiles')
 
-    if not os.path.exists(dotfiles_path):
+    if not os.path.exists(dotfilespath):
         # dotfiles directory doesn't exist? Clone it
-        git_clone('https://github.com/Silvus/dotfiles.git', os.path.expanduser('~/.dotfiles'))
+        git_clone(dotfilesurl, dotfilespath)
 
     # Without argument or argument is "restarted"
     elif len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1] != 'restarted'):
         # Get current commit
-        dot_version_prev = git_version(dotfiles_path)
+        dot_version_prev = git_version(dotfilespath)
 
         # Update
-        git_pull(dotfiles_path)
+        git_pull(dotfilespath)
 
         # Get current commit
-        dot_version_next = git_version(dotfiles_path)
+        dot_version_next = git_version(dotfilespath)
 
         if dot_version_prev != dot_version_next:
             # Restart current script if version change
@@ -300,25 +300,32 @@ def check_requirements():
 
 if __name__ == '__main__':
 
+    # Read arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path", help="Dotfiles base path. Default ~/.dotfiles", nargs='?', default=os.path.expanduser('~/.dotfiles'))
+    args = parser.parse_args()
+
+    dotfilespath = args.path
+
     # Requirements
     check_requirements()
 
     # Self update
-    clone_or_update_dotfiles()
+    clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git', dotfilespath)
 
     # Config file
-    config_file = os.path.expanduser('~/.dotfiles/dotconf')
+    config_file = dotfilespath + '/dotconf'
 
     # Make symlinks
     print_header('Symlinks apps')
-    if scan_arbo(os.path.expanduser('~/.dotfiles/app'), os.path.expanduser('~')):
+    if scan_arbo(dotfilespath + '/app', os.path.expanduser('~')):
 
         print_header('Symlinks root apps')
-        scan_arbo(os.path.expanduser('~/.dotfiles/approot'), '/', True)
+        scan_arbo(dotfilespath + '/approot', '/', True)
 
         if X_is_running():
             print_header('Symlinks desktop apps')
-            scan_arbo(os.path.expanduser('~/.dotfiles/appdesktop'), os.path.expanduser('~'))
+            scan_arbo(dotfilespath + '/appdesktop', os.path.expanduser('~'))
 
     # Dowload Apps
     print_header('Download apps')
@@ -327,23 +334,23 @@ if __name__ == '__main__':
     # Generated sshrc config
     print_header('Sshrc')
     generate_config(os.path.expanduser("~/.sshrc"), [
-        os.path.expanduser("~/.dotfiles/sshrc/sshrc_main"),
-        os.path.expanduser("~/.dotfiles/bash/aliases/01_main.bash"),
-        os.path.expanduser("~/.dotfiles/bash/aliases/04_prompt.bash"),
-        os.path.expanduser("~/.dotfiles/sshrc/sshrc_ascii"),
+        dotfilespath + '/sshrc/sshrc_main',
+        dotfilespath + '/bash/aliases/01_main.bash',
+        dotfilespath + '/bash/aliases/04_prompt.bash',
+        dotfilespath + '/sshrc/sshrc_ascii',
     ])
 
     # Generated i3 config
     if is_installed('i3'):
         print_header('i3')
 
-        i3_config_files = [os.path.expanduser("~/.dotfiles/i3/config_main")]
+        i3_config_files = [dotfilespath + '/i3/config_main']
         if screen_count() > 1:
             # Dual screen
-            i3_config_files.extend([os.path.expanduser("~/.dotfiles/i3/config_bar_dual")])
+            i3_config_files.extend([dotfiles + '/i3/config_bar_dual'])
         else:
-            i3_config_files.extend([os.path.expanduser("~/.dotfiles/i3/config_bar")])
-        i3_config_files.extend([os.path.expanduser("~/.dotfiles/i3/config_apps")])
+            i3_config_files.extend([dotfilespath + '/i3/config_bar'])
+        i3_config_files.extend([dotfilespath + '/i3/config_apps'])
 
         generate_config(os.path.expanduser("~/.i3/config"), i3_config_files)
 
