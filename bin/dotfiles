@@ -235,12 +235,12 @@ def clone_or_update(url, destination):
     else:
         git_clone(url, destination)
 
-def clone_or_update_dotfiles(dotfilesurl, dotfilespath):
+def clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
     """
     Clone or update dotfiles
     """
 
-    if len(sys.argv) > 1 and sys.argv[1] == 'restarted':
+    if restarted:
         print_header('Dotfiles updated')
     else:
         print_header('Dotfiles')
@@ -249,8 +249,7 @@ def clone_or_update_dotfiles(dotfilesurl, dotfilespath):
         # dotfiles directory doesn't exist? Clone it
         git_clone(dotfilesurl, dotfilespath)
 
-    # Without argument or argument is "restarted"
-    elif len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1] != 'restarted'):
+    elif restarted:
         # Get current commit
         dot_version_prev = git_version(dotfilespath)
 
@@ -262,7 +261,7 @@ def clone_or_update_dotfiles(dotfilesurl, dotfilespath):
 
         if dot_version_prev != dot_version_next:
             # Restart current script if version change
-            os.execl(sys.executable, sys.executable, sys.argv[0], 'restarted', * sys.argv[2:])
+            os.execl(sys.executable, sys.executable, sys.argv[0], '--restart', * sys.argv[2:])
 
 """
 Main
@@ -301,17 +300,19 @@ def check_requirements():
 if __name__ == '__main__':
 
     # Read arguments
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(prog='dotfiles')
     parser.add_argument("-p","--path", help="Dotfiles base path. Default ~/.dotfiles", default=os.path.expanduser('~/.dotfiles'))
+    parser.add_argument("-r", "--restart", help=argparse.SUPPRESS, action="store_true")
     args = parser.parse_args()
 
     dotfilespath = args.path
+    restarted = args.restart
 
     # Requirements
     check_requirements()
 
     # Self update
-    clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git', dotfilespath)
+    clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git', dotfilespath, restarted)
 
     # Config file
     config_file = dotfilespath + '/dotconf'
