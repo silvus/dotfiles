@@ -302,7 +302,7 @@ if __name__ == '__main__':
 
     # Read arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("path", help="Dotfiles base path. Default ~/.dotfiles", nargs='?', default=os.path.expanduser('~/.dotfiles'))
+    parser.add_argument("-p","--path", help="Dotfiles base path. Default ~/.dotfiles", default=os.path.expanduser('~/.dotfiles'))
     args = parser.parse_args()
 
     dotfilespath = args.path
@@ -347,7 +347,7 @@ if __name__ == '__main__':
         i3_config_files = [dotfilespath + '/i3/config_main']
         if screen_count() > 1:
             # Dual screen
-            i3_config_files.extend([dotfiles + '/i3/config_bar_dual'])
+            i3_config_files.extend([dotfilespath + '/i3/config_bar_dual'])
         else:
             i3_config_files.extend([dotfilespath + '/i3/config_bar'])
         i3_config_files.extend([dotfilespath + '/i3/config_apps'])
