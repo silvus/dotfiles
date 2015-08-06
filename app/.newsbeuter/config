@@ -11,12 +11,13 @@
 ## description: The sortfield specifies which article property shall be used for sorting (currently available: date, title, flags, author, link, guid). The optional direction specifies the sort direction ("asc" specifies ascending sorting, "desc" specifies descending sorting. for date, "desc" is default, for all others, "asc" is default).
 ## parameter syntax: <sortfield>[-<direction>]
 # article-sort-order date
+article-sort-order date desc
 
 ## configuration option: articlelist-format
 ## description: This variable defines the format of entries in the article list. See the respective section in the documentation for more information on format strings.
 ## parameter syntax: <format>
 # articlelist-format "%4i %f %D %6L %?T?|%-17T| ?%t"
-articlelist-format "%D %6-L %?T?|%-17T| ?%t"
+articlelist-format "%D %?T?| %-16T | &| ?%t"
 
 ## configuration option: feedlist-format
 ## description: This variable defines the format of entries in the feed list. See the respective section in the documentation for more information on format strings.
