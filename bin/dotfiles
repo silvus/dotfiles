@@ -10,6 +10,7 @@ import time
 import configparser
 import fileinput
 import argparse
+import pip
 from urllib.request import Request, urlretrieve
 from urllib.error import URLError, HTTPError
 from subprocess import Popen, PIPE
@@ -43,7 +44,7 @@ def print_error(message):
 Helpers
 """
 
-def assure_path_exist(path):
+def assure_dir_exist(path):
     """
     Create parents folders
     """
@@ -87,7 +88,7 @@ in home for each file.
 If X is running, scan also "appdesktop"
 """
 
-def scan_arbo(rootSource, rootDestination, sudo=False):
+def symlink_arbo(rootSource, rootDestination, with_sudo=False):
     for dirName, subdirList, fileList in os.walk(rootSource):
         for fileName in fileList:
             # Get relative dir from dotfiles root
@@ -99,7 +100,7 @@ def scan_arbo(rootSource, rootDestination, sudo=False):
             source = os.path.join(rootSource, relativeFile)
             destination = os.path.join(rootDestination, relativeFile)
 
-            if sudo:
+            if with_sudo:
                 if not symlink_root(source, destination):
                     return False
             else:
@@ -118,7 +119,7 @@ def symlink(src, dest):
     # Check if source exist
     if os.path.exists(src):
         # Create directories if necessary
-        assure_path_exist(dest)
+        assure_dir_exist(dest)
         # Make symlink
         os.symlink(src, dest)
         print_success('➜ ' + os.path.relpath(dest, os.path.expanduser('~')))
@@ -138,7 +139,7 @@ def symlink_root(src, dest):
             print_info('Symlink (sudo) exist: ' + os.path.basename(dest))
             return True
         # Create directories if necessary
-        assure_path_exist(dest)
+        assure_dir_exist(dest)
         # Make symlink
         print_success('➜ ' + dest)
         return exec_command(['sudo', 'ln', '-s', src, dest])
@@ -164,7 +165,7 @@ def download(url, destination):
     Check url status and download file
     """
     # Create parents folders
-    assure_path_exist(destination)
+    assure_dir_exist(destination)
 
     if need_to_download(destination):
         req = Request(url)
@@ -271,21 +272,32 @@ def read_config(config_file):
     # Check for config file
     if os.path.isfile(config_file):
         # Read conf
-        config = configparser.ConfigParser()
+        config = configparser.ConfigParser(allow_no_value=True)
         config.read(config_file)
+
         # Assure each directory in "directories" section exist
         if config.has_section('directories'):
-            for _, path_list in config.items('directories'):
-                for path in path_list.split('\n'):
-                    assure_path_exist(path)
+            for dir_path, _ in config.items('directories'):
+                dir_path = os.path.expanduser(dir_path)
+                if not os.path.exists(dir_path):
+                    os.makedirs(dir_path)
+
         # Download each item in "download" section
         if config.has_section('download'):
             for destination, url in config.items('download'):
                 download(url, os.path.expanduser(destination))
+
         # Clone each item in "clone" section
         if config.has_section('clone'):
             for destination, url in config.items('clone'):
                 clone_or_update(url, os.path.expanduser(destination))
+
+        # Install from pip
+        if config.has_section('pip'):
+            os.environ['PIP_REQUIRE_VIRTUALENV'] = ''
+            for package, _ in config.items('pip'):
+                print_info('pip: ' + package)
+                pip.main(['install', '--user', '--upgrade', '--quiet', package])
     else:
         # Config not found
         print_error("Config file " + config_file + " doesn't exist")
@@ -319,20 +331,20 @@ if __name__ == '__main__':
 
     # Make symlinks
     print_header('Symlinks apps')
-    if scan_arbo(dotfilespath + '/app', os.path.expanduser('~')):
+    if symlink_arbo(dotfilespath + '/app', os.path.expanduser('~')):
 
         print_header('Symlinks root apps')
-        scan_arbo(dotfilespath + '/approot', '/', True)
+        symlink_arbo(dotfilespath + '/approot', '/', True)
 
         if X_is_running():
             print_header('Symlinks desktop apps')
-            scan_arbo(dotfilespath + '/appdesktop', os.path.expanduser('~'))
+            symlink_arbo(dotfilespath + '/appdesktop', os.path.expanduser('~'))
 
-    # Dowload Apps
+    # Install from config file
     print_header('Download apps')
     read_config(config_file)
 
-    # Generated sshrc config
+    # Compile sshrc config
     print_header('Sshrc')
     generate_config(os.path.expanduser("~/.sshrc"), [
         dotfilespath + '/sshrc/sshrc_main',
@@ -341,7 +353,7 @@ if __name__ == '__main__':
         dotfilespath + '/sshrc/sshrc_ascii',
     ])
 
-    # Generated i3 config
+    # Compile i3 config
     if is_installed('i3'):
         print_header('i3')
 

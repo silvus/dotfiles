@@ -38,7 +38,7 @@ fi
 export PIP_DOWNLOAD_CACHE="$HOME/.pip/cache"
 export PIP_REQUIRE_VIRTUALENV=true
 pipglobal() {
-   PIP_REQUIRE_VIRTUALENV="" pip "$@"
+   PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
 
 # Virtualenv
