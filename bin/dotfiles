@@ -280,7 +280,7 @@ def clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
         # dotfiles directory doesn't exist? Clone it
         git_clone(dotfilesurl, dotfilespath)
 
-    elif restarted:
+    else:
         # Get current commit
         dot_version_prev = git_version(dotfilespath)
 
@@ -330,8 +330,8 @@ def read_config(config_file):
             os.environ['PIP_REQUIRE_VIRTUALENV'] = ''
             for package, _ in config.items('pip'):
                 print_info('pip: ' + package)
-                pip.main(['install', '--user', '--upgrade', '--quiet', package
-                          ])
+                pip.main(['install', '--user', '--upgrade', '--quiet',
+                                                            package])
     else:
         # Config not found
         print_error("Config file " + config_file + " doesn't exist")

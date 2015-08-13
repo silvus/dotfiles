@@ -11,6 +11,7 @@ _install_server() {
 		dfc `# Disk space` \
 		iftop `# Traffic htop-like` \
 		build-essential `# Compiling things` \
+		software-properties-common `# Add PPA` \
 		cmake `# YouCompleteMe dependency` \
 		python-dev `# Python headers` \
 		ack-grep `# Search` \
@@ -19,7 +20,7 @@ _install_server() {
 		urlview `# Extract urls` \
 		ranger highlight caca-utils `# File manager and dependencies` \
 		newsbeuter `# Rss reader` \
-		lynx `# Web browser`
+		w3m w3m-img `# Web browser`
 }
 
 _install_desktop() {
@@ -30,12 +31,9 @@ _install_desktop() {
 		mpv `# [PPA] video player` \
 		xclip `# Add to clipboard` \
 		scrot `# Make screenshot` \
-		pass `# Passwords manager` \
 		feh `# Image viewer` \
 		moc `# Music player` \
-		i3 `# WM` \
-		conky `# i3 bar` \
-		libnotify-bin  `# Notifications`
+		i3 `# WM`
 }
 
 OPTION=$(whiptail --title "Dotfiles" --menu "Choose your configuration" 10 50 3 \
