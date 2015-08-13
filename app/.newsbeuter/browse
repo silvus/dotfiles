@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
-# browser_text="/usr/bin/lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
-browser_text="w3m"
-browser_media="firefox"
-
 if [[ -n "$DISPLAY" ]]; then
 	# Desktop
-	if echo "$1" | grep -e jpg$ -e jpeg$ -e gif$ -e png$; then
+
+	if echo "$1" | cut -d'/' -f3 | grep -q -e youtube.com$ -e dailymotion.com -e vimeo.com$ -e spi0n.com$; then
+		mpv "$1"
+	elif echo "$1" | grep -q -e jpg$ -e jpeg$ -e gif$ -e png$; then
 		# Picture
-		$browser_media "$1"
+		feh --auto-zoom -q "$1"
 	else
-		$browser_text "$1"
+		firefox "$1"
 	fi
 else
 	# Server
-	$browser_text "$1"
+
+	w3m "$1"
 fi

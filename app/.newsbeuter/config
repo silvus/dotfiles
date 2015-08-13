@@ -189,6 +189,20 @@ show-keymap-hint no
 ## parameter syntax: [yes/no]
 # show-read-articles yes
 
+
+# Podbeuter
+
+## Specifies the directory where podbeuter shall download the files to. Optionally, the placeholders "%n" (for the podcast feed’s name) and "%h" (for the podcast feed’s hostname) can be used to place downloads in a directory structure. 
+# download-path ~/
+download-path "~/Downloads/podcasts"
+
+# Specifies the maximum number of parallel downloads when automatic download is enabled.
+max-downloads 4
+
+# Specifies the player that shall be used for playback of downloaded files.
+player mpv
+
+
 # Colorschemes
 color listnormal        green   default
 color listnormal_unread blue    default
@@ -200,6 +214,7 @@ color article           default default
 
 # Highlights
 highlight article "^(Feed|Fil|Link|Lien|Title|Titre|Date|Author|Auteur):.*$" blue default
+highlight article "^Podcast Download URL:.*" yellow default
 highlight article "^(Links|Liens):.*$" blue default bold
 highlight article "https?://[^ ]+" green default underline
 
