@@ -28,11 +28,17 @@ feedlist-format "%S %n %10u %t %> %T"
 ## description: If enabled, all feeds will be automatically reloaded at start up and then continuously after a certain time has passed (see reload-time).
 ## parameter syntax: [yes/no]
 # auto-reload no
+auto-reload yes
+
+## configuration option: reload-time
+## description: The number of minutes between automatic reloads.
+## parameter syntax: <number>
+reload-time 30
 
 ## configuration option: suppress-first-reload
 ## description: If yes, then the first automatic reload will be suppressed if auto-reload is set to yes
 ## parameter syntax: [yes/no]
-suppress-first-reload yes
+# suppress-first-reload no
 
 ## configuration option: browser
 ## description: Set the browser command to use when opening an article in the browser. If <browser-command> contains %u, it will be used as complete commandline and %u will be replaced with the URL that shall be opened.
@@ -153,11 +159,6 @@ max-items 999
 ## parameter syntax: <number>
 # text-width 0
 
-## configuration option: reload-time
-## description: The number of minutes between automatic reloads.
-## parameter syntax: <number>
-# reload-time 60
-
 ## configuration option: reload-threads
 ## description: The number of parallel reload threads that shall be started when all feeds are reloaded.
 ## parameter syntax: <number>
@@ -189,10 +190,13 @@ show-keymap-hint no
 ## parameter syntax: [yes/no]
 # show-read-articles yes
 
+## If set to yes, then newsbeuter will ask for confirmation whether the user really wants to quit newsbeuter.
+# confirm-exit no
+confirm-exit yes
 
 # Podbeuter
 
-## Specifies the directory where podbeuter shall download the files to. Optionally, the placeholders "%n" (for the podcast feed’s name) and "%h" (for the podcast feed’s hostname) can be used to place downloads in a directory structure. 
+## Specifies the directory where podbeuter shall download the files to. Optionally, the placeholders "%n" (for the podcast feed’s name) and "%h" (for the podcast feed’s hostname) can be used to place downloads in a directory structure.
 # download-path ~/
 download-path "~/Downloads/podcasts"
 

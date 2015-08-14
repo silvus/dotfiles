@@ -7,6 +7,7 @@ _launch_tmux() {
 	local _SPLIT_WIDTH=35
 	local _WINDOWS_DEV='Dev'
 	local _WINDOWS_SYSOPS='SysOps'
+	local _WINDOWS_RSS='Rss'
 
 	# make sure tmux server is running
 	tmux start-server
@@ -18,26 +19,30 @@ _launch_tmux() {
 		#  Launch session
 		tmux -2 new-session -s "${_TMUX_SESSION_NAME}" -d -n "$_WINDOWS_DEV"
 
-		# First window
-		# -------------
-
-		# Select panel 1
-		tmux select-pane -t 1
-
 		# Second window
 		# -------------
+		tmux new-window -t "${_TMUX_SESSION_NAME}" -n "$_WINDOWS_RSS"
 
-		# Setup a window
+		# Open RSS
+		tmux send-keys -t "${_TMUX_SESSION_NAME}" 'rss' Enter
+
+		# Third window
+		# -------------
 		tmux new-window -t "${_TMUX_SESSION_NAME}" -n "$_WINDOWS_SYSOPS"
 
 		# Split verticaly
 		tmux split-window -h -p "$_SPLIT_WIDTH"
 
+		# Go to dotfiles folder and update
+		tmux send-keys -t "${_TMUX_SESSION_NAME}":3.2 'dot' Enter
+		tmux send-keys -t "${_TMUX_SESSION_NAME}":3.2 'dotfiles' Enter
+
 		# Select panel 1
-		tmux select-pane -t 1
+		tmux select-pane -t "${_TMUX_SESSION_NAME}":3.1
+
 
 		# Focus on first window
-		tmux select-window -t "$_WINDOWS_DEV"
+		tmux select-window -t "${_WINDOWS_DEV}"
 	fi
 
 	# Attach to session
