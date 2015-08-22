@@ -10,7 +10,6 @@ set cm=blowfish           " Cryptmethod
 set hidden                " Switch between buffers without saving
 set splitright            " New vsplit windows to the right of the current
 set splitbelow            " New split windows to the bottom of the current
-set pastetoggle=<F9>      " Active indentation on pastes
 
 " Understand *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown wrap linebreak nolist textwidth=0 wrapmargin=0
@@ -106,7 +105,10 @@ nmap <c-s> :w<CR>
 imap <c-s> <Esc>:w<CR>a
 
 " Toggle line numbers
-nmap <C-l> :set invnumber<bar>:set invrelativenumber<CR>
+nmap <silent> <F10> :set invnumber<bar>:set invrelativenumber<CR>
+
+" Redraws the screen and removes any search highlighting.
+nnoremap <silent> <C-l> :nohl<CR><C-l>
 
 " Insert current time
 nnoremap <F5> "=strftime("%T")<CR>P
@@ -114,6 +116,9 @@ inoremap <F5> <C-R>=strftime("%T")<CR>
 " Insert current date
 nnoremap <F6> "=strftime("%A %d %b %Y")<CR>P
 inoremap <F6> <C-R>=strftime("%A %d %b %Y")<CR>
+
+" Indentation on paste
+set pastetoggle=<F9>
 
 " Spellchecking
 nnoremap <F12> :setlocal spell! spell?<CR>
