@@ -10,6 +10,7 @@ set cm=blowfish           " Cryptmethod
 set hidden                " Switch between buffers without saving
 set splitright            " New vsplit windows to the right of the current
 set splitbelow            " New split windows to the bottom of the current
+set spelllang=en,fr
 
 " Understand *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown wrap linebreak nolist textwidth=0 wrapmargin=0
