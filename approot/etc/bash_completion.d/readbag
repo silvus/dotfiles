@@ -1,0 +1,9 @@
+
+_readbag() {
+	if [[ -d "$DOCUMENTATION_HOME/.readbag" ]]; then
+		local files_readbag=("$DOCUMENTATION_HOME/.readbag/$2"*)
+		[[ -f ${files_readbag[0]} ]] && COMPREPLY+=( "$COMPREPLY${files_readbag[@]##*/}" )
+	fi
+}
+
+complete -F _readbag readbag

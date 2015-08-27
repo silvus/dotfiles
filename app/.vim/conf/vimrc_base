@@ -4,6 +4,7 @@ set nocompatible          " Get rid of Vi compatibility mode
 " ------------------------------------------------------------------------------------
 set wildmenu              " Show list instead of just completing
 set nowrap                " Don't wrap text
+set display=lastline      " Show as much as possible of a wrapped last line, not just "@"
 set backspace=2           " Backspace in insert mode works like other editors
 set encoding=utf-8        " Encoding
 set cm=blowfish           " Cryptmethod
@@ -16,7 +17,7 @@ set spelllang=en,fr
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown wrap linebreak nolist textwidth=0 wrapmargin=0
 
 " Jump to the last position when reopening a file
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " Spaces - Tabs - Indent
 " ------------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ filetype on
 filetype plugin on
 filetype indent on        " Load filetype-specific indent files
 
-set list                  " show special characters
+set list                  " Show special characters
 set listchars=tab:\ \ ,trail:•,extends:#,nbsp:.
 
 set tabstop=4             " Number of visual spaces per TAB
