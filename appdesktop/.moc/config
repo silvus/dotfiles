@@ -87,8 +87,8 @@ StartInMusicDir = yes
 #MP3IgnoreCRCErrors = yes
 
 # Set playback toggles.
-Repeat = yes
-Shuffle = yes
+Repeat = no
+Shuffle = no
 AutoNext = yes
 
 # Default FormatString:
