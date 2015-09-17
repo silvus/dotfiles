@@ -28,7 +28,7 @@ workspace $WS2 output VGA-0
 # Startup
 exec --no-startup-id nm-applet
 exec --no-startup-id feh --bg-fill --no-xinerama ~/.dotfiles/wallpaper/wallpaper_8.jpg
-exec --no-startup-id guake -r tmux -e tmuxstart
+exec --no-startup-id guake -r tmux -e tmuxdev
 exec --no-startup-id redshift-gtk
 exec firefox
 exec thunderbird
