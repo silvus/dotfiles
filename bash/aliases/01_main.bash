@@ -41,9 +41,6 @@ alias download_mp3='youtube-dl --ignore-errors --extract-audio --audio-format mp
 # Vim
 # -----------------------------------------------------------------------------
 alias vi='vim'
-alias vig='gvim'
 alias vim.sec="vim -x -u $HOME/.vim/vimrc_sec"
-alias vim.ide="vim -u $HOME/.vim/vimrc_ide"
-alias gvim.ide="gvim -u $HOME/.vim/vimrc_ide"
 
 stty -ixon # Disable flow control (bind Ctrl+s in vim)
