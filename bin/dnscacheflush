@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Flush DNS caches
+# http://askubuntu.com/questions/414826/how-to-flush-dns-in-ubuntu-12-04
+
+if [[ -x "/etc/init.d/dns-clean" ]]; then
+	echo "Dns-clean restart"
+	sudo "/etc/init.d/dns-clean" restart
+fi
+
+if [[ -x "/etc/init.d/networking" ]]; then
+	echo "Networking force-reload"
+	sudo "/etc/init.d/networking" force-reload
+fi
+
+# nscd cache
+if [[ -x "/etc/init.d/nscd" ]]; then
+	echo "Nscd restart"
+	sudo "/etc/init.d/nscd" restart
+fi
+
+# dnsmasq DNS cache
+if [[ -x "/etc/init.d/dnsmasq" ]]; then
+	echo "Dnsmasq restart"
+	sudo "/etc/init.d/dnsmasq" restart
+fi
+
+# Bind
+if [[ -x "/etc/init.d/named" ]]; then
+	echo "Bind restart"
+	sudo "/etc/init.d/named" restart
+fi
+
+# Unbound
+if [[ -x "/etc/init.d/unbound" ]]; then
+	echo "Unbound restart"
+	sudo "/etc/init.d/unbound" restart
+fi
