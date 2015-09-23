@@ -1,5 +1,6 @@
 from i3pystatus import Status
-# from i3pystatus.updates import aptget
+from i3pystatus.updates import aptget
+from i3pystatus.mail import maildir
 
 # Colors
 color_blue = "#1e90ff"
@@ -82,10 +83,24 @@ status.register("network",
     format_up=" {v4} {kbs}KB/s",
     hints={"min_width": 30, "align" : "center"},)
 
-# status.register("aptget",
-#     backends = [aptget.AptGet()])
+status.register("mail",
+    color=color_blue,
+    color_unread=color_red,
+    hints={"min_width": 30, "align" : "center"},
+    backends=[
+        maildir.MaildirMail(
+            directory="/data/silvus/mail/INBOX",
+        )
+    ],
+    hide_if_null=False)
 
-# status.register("openvpn")
+status.register("updates",
+    format="Updates: {count}",
+    format_no_updates="No updates",
+    color=color_red,
+    color_no_updates=color_blue,
+    hints={"min_width": 30, "align" : "center"},
+    backends=[aptget.AptGet()])
 
 # status.register("now_playing",
 #     player="mpv")
