@@ -1,13 +1,24 @@
 # Account Settings --------------------------------------------------------------------
 
-source ~/.mutt/accounts_muttrc
+# Folder hooks
+# folder-hook 'account_1_muttrc' 'source ~/.mutt/account_1.muttrc'
+# folder-hook 'account_2_muttrc' 'source ~/.mutt/account_2.muttrc'
+
+# Default account
+source ~/.mutt/account_1_muttrc
+# set realname
+# set from
 # set folder
+# set spoolfile
 # set imap_user
 # set imap_pass
 # set smtp_url
 # set smtp_pass
-# set realname
-# set from
+
+# Macros for switching accounts
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account_1_muttrc<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account_2_muttrc<enter><change-folder>!<enter>'
+macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account_3_muttrc<enter><change-folder>!<enter>'
 
 mailboxes     = +INBOX
 
