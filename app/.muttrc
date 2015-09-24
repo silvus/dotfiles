@@ -14,11 +14,13 @@ source ~/.mutt/account_1_muttrc
 # set imap_pass
 # set smtp_url
 # set smtp_pass
+# set signature
 
 # Macros for switching accounts
-macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account_1_muttrc<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account_2_muttrc<enter><change-folder>!<enter>'
-macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account_3_muttrc<enter><change-folder>!<enter>'
+macro index <f1> '<sync-mailbox><enter-command>source ~/.mutt/account_1_muttrc<enter><change-folder>!<enter>'
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account_2_muttrc<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account_3_muttrc<enter><change-folder>!<enter>'
+macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account_4_muttrc<enter><change-folder>!<enter>'
 
 mailboxes     = +INBOX
 
@@ -46,7 +48,6 @@ set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
 set certificate_file = ~/.mutt/certificates  # where to store certs
 set mailcap_path     = ~/.mutt/mailcap       # entries for filetypes
 set tmpdir           = ~/.mutt/temp          # where to keep temp files
-set signature        = ~/.mutt/sig           # my signature file
 
 
 # Basic Options -----------------------------------------------------------------------
@@ -62,6 +63,9 @@ unset mark_old           # read/new is good enough
 # set beep_new           # bell on new mails
 # set pipe_decode        # strip headers and eval mimes when piping
 # set thorough_search    # strip headers and eval mimes before searching
+
+# set metoo              # add me to the list of recipients when replying to a message (ignore $record)
+# fcc-hook .* !
 
 
 # Header Options ----------------------------------------------------------------------
@@ -168,6 +172,13 @@ set edit_headers                     # show headers when composing
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
 set editor = "vim"                   # Use Vim to compose email
+
+
+# Alias ------------------------------------------------------------------------------
+
+set sort_alias = alias               # Which field to use to sort the alias list. values: alias, address
+set reverse_alias = yes              # Sorts in reverse order if set to yes
+source $alias_file                   # Read aliases on startup. Needed for auto-completion.
 
 
 # Colors ------------------------------------------------------------------------------
