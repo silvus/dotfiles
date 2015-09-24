@@ -32,6 +32,31 @@ status.register("clock",
 # Shows the average load of the last minute and the last 5 minutes
 #status.register("load")
 
+# Unread mail
+status.register("mail",
+    color=color_blue,
+    color_unread=color_green,
+    hide_if_null=False,
+    format=" {unread}",
+    format_plural=" {{current_unread}/{unread}",
+    interval=60,
+    hints={"min_width": 30, "align" : "center"},
+    backends=[
+        maildir.MaildirMail(
+            directory="/data/silvus/mail/INBOX",
+            # account="",
+        )
+    ])
+
+# Updates
+status.register("updates",
+    format=" {count}",
+    format_no_updates="",
+    color=color_blue,
+    color_no_updates=color_blue,
+    hints={"min_width": 30, "align" : "center"},
+    backends=[aptget.AptGet()])
+
 # Requires psutil
 status.register("mem_bar",
     color=color_blue,
@@ -53,14 +78,14 @@ status.register("cpu_usage",
 status.register("disk",
     path="/data",
     interval=60,
-    format="/data {used:.0f} / {total:.0f} G",
+    format=" {used:.0f}/{total:.0f} G",
     hints={"min_width": 120, "align" : "center"},)
 
 # Shows disk usage of /
 status.register("disk",
     path="/",
     interval=60,
-    format="/ {used:.0f} / {total:.0f} G",
+    format=" {used:.0f}/{total:.0f} G",
     hints={"min_width": 120, "align" : "center"},)
 
 # Shows the address and up/down state of eth0.
@@ -82,25 +107,6 @@ status.register("network",
     unknown_up=True,
     format_up=" {v4} {kbs}KB/s",
     hints={"min_width": 30, "align" : "center"},)
-
-status.register("mail",
-    color=color_blue,
-    color_unread=color_red,
-    hints={"min_width": 30, "align" : "center"},
-    backends=[
-        maildir.MaildirMail(
-            directory="/data/silvus/mail/INBOX",
-        )
-    ],
-    hide_if_null=False)
-
-status.register("updates",
-    format="Updates: {count}",
-    format_no_updates="No updates",
-    color=color_red,
-    color_no_updates=color_blue,
-    hints={"min_width": 30, "align" : "center"},
-    backends=[aptget.AptGet()])
 
 # status.register("now_playing",
 #     player="mpv")
