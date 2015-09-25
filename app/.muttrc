@@ -1,11 +1,7 @@
 # Account Settings --------------------------------------------------------------------
 
-# Folder hooks
-# folder-hook 'account_1_muttrc' 'source ~/.mutt/account_1.muttrc'
-# folder-hook 'account_2_muttrc' 'source ~/.mutt/account_2.muttrc'
-
 # Default account
-source ~/.mutt/account_1_muttrc
+source ~/.mutt/dev.muttrc
 # set realname
 # set from
 # set folder
@@ -17,10 +13,10 @@ source ~/.mutt/account_1_muttrc
 # set signature
 
 # Macros for switching accounts
-macro index <f1> '<sync-mailbox><enter-command>source ~/.mutt/account_1_muttrc<enter><change-folder>!<enter>'
-macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account_2_muttrc<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account_3_muttrc<enter><change-folder>!<enter>'
-macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account_4_muttrc<enter><change-folder>!<enter>'
+macro index <f1> '<sync-mailbox><enter-command>source ~/.mutt/dev.muttrc<enter><change-folder>!<enter>'
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/perso.muttrc<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/online.muttrc<enter><change-folder>!<enter>'
+macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/work.muttrc<enter><change-folder>!<enter>'
 
 mailboxes     = +INBOX
 
@@ -110,7 +106,7 @@ set pager_context = 3      # number of context lines to show
 set pager_stop             # don't go to next message automatically
 set menu_scroll            # scroll in menus
 set tilde                  # show tildes like in vim
-# unset markers              # no ugly plus signs
+# unset markers            # no ugly plus signs
 
 # set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 alternative_order text/plain text/enriched text/html
@@ -118,36 +114,33 @@ alternative_order text/plain text/enriched text/html
 
 # Key Bindings ------------------------------------------------------------------
 
+# Move
 bind index gg          first-entry
 bind index G           last-entry
 bind pager gg          top
 bind pager G           bottom
-
-bind pager <return>     exit                 # return to the main-menu
-
-bind index,pager <F5>  sync-mailbox
-# bind index R         group-reply
-# bind index <tab>     imap-fetch-mail
+bind pager <return>    exit                 # return to the main-menu
 bind index <space>     collapse-thread
 
+# Sync email
+# bind index,pager <F5>  sync-mailbox
+bind index,pager <F5>  imap-fetch-mail
+macro index,pager <F6> "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
+
+# Reply
 bind index,pager r     group-reply          # to all recipients by default
 bind index,pager R     reply                # to sender only
 
 # Saner copy/move dialogs
-macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
-macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+macro index C          "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M          "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
 # Ctrl-R to mark all as read
-macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
-
-# Sync email
-macro index <F6> "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
-# macro index o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
-
-macro pager \Cu "|urlview<enter>" "call urlview to open links"
+macro index \Cr        "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 
 # View attachments properly.
-bind attach <return> view-mailcap
+bind attach            <return> view-mailcap
+macro pager \Cu        "|urlview<enter>" "call urlview to open links"
 
 # Sidebar
 bind index,pager \Cn   sidebar-next
