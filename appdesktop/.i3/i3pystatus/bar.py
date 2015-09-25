@@ -37,14 +37,28 @@ status.register("mail",
     color=color_blue,
     color_unread=color_green,
     hide_if_null=True,
-    format=" {unread}",
-    format_plural=" {unread}",
+    format="[{account}]  {unread}",
+    format_plural="[{account}]  {unread}",
     interval=60,
-    hints={"min_width": 30, "align" : "center"},
+    hints={"min_width": 60, "align" : "center"},
     backends=[
         maildir.MaildirMail(
-            directory="/data/silvus/mail/INBOX",
-            # account="",
+            directory="/data/silvus/mail/perso/INBOX",
+            account="perso",
+        )
+    ])
+status.register("mail",
+    color=color_blue,
+    color_unread=color_green,
+    hide_if_null=True,
+    format="[{account}]  {unread}",
+    format_plural="[{account}]  {unread}",
+    interval=60,
+    hints={"min_width": 60, "align" : "center"},
+    backends=[
+        maildir.MaildirMail(
+            directory="/data/silvus/mail/dev/INBOX",
+            account="dev",
         )
     ])
 
