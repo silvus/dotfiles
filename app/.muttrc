@@ -1,5 +1,8 @@
 # Account Settings --------------------------------------------------------------------
 
+# Mailboxes
+source ~/.mutt/mailboxes
+
 # Default account
 source ~/.mutt/dev.muttrc
 # set realname
