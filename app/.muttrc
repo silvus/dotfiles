@@ -1,7 +1,10 @@
 # Account Settings --------------------------------------------------------------------
 
-# Mailboxes
-source ~/.mutt/mailboxes
+# Folder hooks
+folder-hook 'dev.muttrc' 'source ~/.mutt/dev.muttrc'
+folder-hook 'perso.muttrc' 'source ~/.mutt/perso.muttrc'
+folder-hook 'online.muttrc' 'source ~/.mutt/online.muttrc'
+folder-hook 'work.muttrc' 'source ~/.mutt/work.muttrc'
 
 # Default account
 source ~/.mutt/dev.muttrc
@@ -21,6 +24,8 @@ macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/perso.muttrc<enter
 macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/online.muttrc<enter><change-folder>!<enter>'
 macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/work.muttrc<enter><change-folder>!<enter>'
 
+# Mailboxes
+# source ~/.mutt/mailboxes
 mailboxes     = +INBOX
 
 # Other special folders.
@@ -95,7 +100,7 @@ color sidebar_new blue default 			  # color of folders with new mail
 set date_format = "%d/%m/%y"
 set index_format = "[%Z]  %D  %-20.20F  %s"
 set sort = threads				             # Sort messages into threads
-set sort_aux = date-received                 # Order threads by most recent message
+set sort_aux = reverse-last-date-received    # Order threads
 set strict_threads                           # Don’t thread messages by Subject
 # set uncollapse_jump                        # don't collapse on an unread message
 # set sort_re                                # thread based on regex
@@ -167,7 +172,7 @@ set edit_headers                     # show headers when composing
 # set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
-set editor = "vim"                   # Use Vim to compose email
+set editor = "vim +/^$"              # Use Vim to compose email (cursor at the first blank line)
 
 
 # Alias ------------------------------------------------------------------------------
