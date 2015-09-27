@@ -19,10 +19,14 @@ git config --global alias.pulom "pull origin master"
 git config --global alias.dif "diff --stat=160,120"
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
 
-git config --global web.browser "lynx"
+git config --global web.browser "w3m"
 
 git config --global diff.tool "vimdiff"
 git config --global difftool.prompt false
+
+git config --global merge.tool "vimdiff"
+git config --global mergetool.prompt false
+git config --global merge.conflictstyle "diff3"
 
 git config --global github.user "Silvus"
 git config --global credential.helper "cache --timeout=3600"
