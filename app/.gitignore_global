@@ -1,4 +1,11 @@
 .idea/
 *.sublime-project
 *.sublime-workspace
-.sass-cache
+
+# Sass
+.sass-cache/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
