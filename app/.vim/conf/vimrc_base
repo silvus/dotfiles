@@ -32,7 +32,7 @@ if ! has('gui_running')
 	augroup END
 endif
 
-" Spaces - Tabs - Indent
+" Spaces - Tabs - Indent - Fold
 " ------------------------------------------------------------------------------------
 filetype on
 filetype plugin on
@@ -56,6 +56,13 @@ autocmd FileType python,xml setlocal tabstop=4 shiftwidth=4 softtabstop=4 expand
 autocmd FileType make setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
 autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
+" Fold
+set foldmethod=indent     " Fold based on indent
+set foldlevel=1
+set foldlevelstart=1
+set foldnestmax=1         " Deepest fold level
+" set foldcolumn=1        " See the folds
+set nofoldenable          " Don't fold by default
 
 " Search
 " ------------------------------------------------------------------------------------
@@ -120,6 +127,9 @@ nnoremap <C-q> :bd<CR>
 " Save with Ctrl + s
 nmap <c-s> :w<CR>
 imap <c-s> <Esc>:w<CR>a
+
+" Toggle folds
+nnoremap <space> za
 
 " Toggle line numbers
 nmap <silent> <F10> :set invnumber<bar>:set invrelativenumber<CR>
