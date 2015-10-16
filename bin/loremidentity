@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+import random
+
+
+class Identity():
+    def __init__(self, name, address, city):
+        self.name = name
+        self.address = address
+        self.city = city
+
+
+identities = [
+    Identity("Cthulhu", "47°9′S 126°43′W", "R'lyeh"),
+    Identity("Doctor Who", "Tardis", "London"),
+    Identity("Malcolm Reynolds", "Serenity", "Shadow"),
+    Identity("Jayne Cobb", "Serenity", "Higgins' Moon"),
+    Identity("Kara Thrace", "Colonial Fleet", "Caprica"),
+    Identity("Tony Stark", "10880 Malibu Point", "Malibu"),
+    Identity("Captain Ahab", "Pequod", "Sea"),
+    Identity("Gregory House", "221B Baker Street", "New Jersey"),
+    Identity("Ellen Ripley", "Nostromo", "Thedus"),
+    Identity("Dexter Morgan", "8420 Palm Terrace", "Miami"),
+    Identity("Eric Cartman", "28201 E. Bonanza St.", "South Park"),
+    Identity("Barney Stinson", "84st Street", "New York"),
+    Identity("Jeffrey Lebowski", "10231 Charing Cross Road", "Los Angeles"),
+    Identity("Patrick Bateman", "358 Exchange Place", "New York"),
+]
+
+if __name__ == '__main__':
+    identity_random = random.choice(identities)
+    print(identity_random.name)
+    print(identity_random.address)
+    print(identity_random.city)
