@@ -18,7 +18,7 @@ assign [class="Google-chrome"] $WS2
 assign [class="Google-chrome-beta"] $WS2
 assign [class="mpv"] $WS2
 assign [class="mplayer"] $WS2
-assign [class="feh"] $WS2
+# assign [class="feh"] $WS2
 assign [class="Steam"] $WS4
 
 workspace $WS1 output HDMI-0

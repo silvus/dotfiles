@@ -91,15 +91,15 @@ status.register("cpu_usage",
 # Shows disk usage of /data
 status.register("disk",
     path="/data",
-    interval=60,
-    format=" {used:.0f}/{total:.0f} G",
+    interval=65,
+    format="  {percentage_used}%",
     hints={"min_width": 120, "align" : "center"},)
 
 # Shows disk usage of /
 status.register("disk",
     path="/",
     interval=60,
-    format=" {used:.0f}/{total:.0f} G",
+    format="  {percentage_used}%",
     hints={"min_width": 120, "align" : "center"},)
 
 # Shows the address and up/down state of eth0.
