@@ -36,7 +36,6 @@ alias lynx="lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
 alias music="mocp"
 alias irc="weechat"
 alias tmux="tmux -2" # Getting 256 colors to work in tmux
-alias download_mp3='youtube-dl --ignore-errors --extract-audio --audio-format mp3 --restrict-filenames'
 
 # Vim
 # -----------------------------------------------------------------------------
