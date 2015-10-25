@@ -84,16 +84,6 @@ def check_requirements():
 def X_is_running():
     return exec_command(["xset", "-q"], False)
 
-
-def screen_count():
-    p = Popen(['xrandr', '-q'], stdout=PIPE, stderr=PIPE)
-    xrandr_output, errors = p.communicate()
-
-    if p.returncode != 0:
-        print_error(errors.decode('UTF-8'))
-
-    return xrandr_output.count(b' connected')
-
 #####################################################################
 # Symlinks
 #####################################################################
@@ -192,9 +182,9 @@ def download(url, destination):
             # everything is fine
             os.chmod(destination, 0o755)
             sys.stdout.flush()
-            sys.stdout.write(
-                "\r" + COLOR_GREEN + "    ✔ " + COLOR_RESET +
-                "Download complete: %s" % os.path.basename(destination) + '\n')
+            sys.stdout.write("\r" + COLOR_GREEN + "    ✔ " + COLOR_RESET +
+                             "Download complete: %s" % os.path.basename(
+                                 destination) + '\n')
     else:
         print_info('Already present: ' + os.path.basename(destination))
 
@@ -243,17 +233,17 @@ def git_clone(url, destination):
 
 def git_pull(destination):
     print_info('Update ' + destination)
-    return exec_command(['git', '--work-tree=' + destination,
-                         '--git-dir=' + destination + '/.git', 'pull',
-                         'origin', 'master'])
+    return exec_command(['git', '--work-tree=' + destination, '--git-dir=' +
+                         destination + '/.git', 'pull', 'origin', 'master'])
 
 
 def git_version(destination):
     """ Get current commit """
-    p = Popen(['git', '--work-tree=' + destination,
-               '--git-dir=' + destination + '/.git', 'rev-parse', 'HEAD'],
-              stdout=PIPE,
-              stderr=PIPE)
+    p = Popen(
+        ['git', '--work-tree=' + destination,
+         '--git-dir=' + destination + '/.git', 'rev-parse', 'HEAD'],
+        stdout=PIPE,
+        stderr=PIPE)
     version, errors = p.communicate()
     if p.returncode != 0:
         print_error(errors.decode('UTF-8'))
@@ -330,8 +320,8 @@ def read_config(config_file):
             os.environ['PIP_REQUIRE_VIRTUALENV'] = ''
             for package, _ in config.items('pip'):
                 print_info('pip: ' + package)
-                pip.main(['install', '--user', '--upgrade', '--quiet',
-                                                            package])
+                pip.main(['install', '--user', '--upgrade', '--quiet', package
+                          ])
     else:
         # Config not found
         print_error("Config file " + config_file + " doesn't exist")
@@ -345,10 +335,12 @@ if __name__ == '__main__':
 
     # Read arguments
     parser = argparse.ArgumentParser(prog='dotfiles')
-    parser.add_argument("-p", "--path",
+    parser.add_argument("-p",
+                        "--path",
                         help="Dotfiles base path. Default ~/.dotfiles",
                         default=os.path.expanduser('~/.dotfiles'))
-    parser.add_argument("-r", "--restart",
+    parser.add_argument("-r",
+                        "--restart",
                         help=argparse.SUPPRESS,
                         action="store_true")
     args = parser.parse_args()
@@ -383,25 +375,12 @@ if __name__ == '__main__':
 
     # Compile sshrc config
     print_header('Sshrc')
-    generate_config(os.path.expanduser("~/.sshrc"), [
-        dotfilespath + '/sshrc/sshrc_main',
-        dotfilespath + '/bash/aliases/01_main.bash',
-        dotfilespath + '/bash/aliases/04_prompt.bash',
-        dotfilespath + '/sshrc/sshrc_ascii',
-    ])
-
-    # Compile i3 config
-    if is_installed('i3'):
-        print_header('i3')
-
-        i3_config_files = [dotfilespath + '/i3/config_main']
-        if screen_count() > 1:
-            # Dual screen
-            i3_config_files.extend([dotfilespath + '/i3/config_bar_dual'])
-        else:
-            i3_config_files.extend([dotfilespath + '/i3/config_bar'])
-        i3_config_files.extend([dotfilespath + '/i3/config_apps'])
-
-        generate_config(os.path.expanduser("~/.i3/config"), i3_config_files)
+    generate_config(
+        os.path.expanduser("~/.sshrc"), [
+            dotfilespath + '/sshrc/sshrc_main',
+            dotfilespath + '/bash/aliases/01_main.bash',
+            dotfilespath + '/bash/aliases/04_prompt.bash',
+            dotfilespath + '/sshrc/sshrc_ascii',
+        ])
 
     sys.exit(0)

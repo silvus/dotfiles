@@ -23,6 +23,9 @@ floating_modifier $mod
 # no focus on mouse over
 focus_follows_mouse no
 
+# don't mouve mouse on workspace change
+# mouse_warping none
+
 # start a terminal
 bindsym $mod+t exec i3-sensible-terminal
 
@@ -180,3 +183,124 @@ client.focused          #3F8AC2 #096BAA #ffffff #00DA8E
 client.focused_inactive #333333 #5F676A #ffffff #484e50
 client.unfocused        #333333 #424242 #888888 #292d2e
 client.urgent           #C10004 #900000 #ffffff #900000
+
+
+# Main bar
+bar {
+    position top
+    mode dock
+
+    # The display is connected via HDM
+    output HDMI-0
+
+    # Font
+    font pango:DejaVu Sans Mono, FontAwesome 8
+
+    colors {
+        # Whole color settings
+        background #00141a
+        statusline #00A5FF
+        separator  #666666
+        # Type             border  background font
+        focused_workspace  #008fff #007fff #ffffff
+        active_workspace   #333333 #5f676a #ffffff
+        inactive_workspace #333333 #222222 #888888
+        urgent_workspace   #aa0000 #990000 #ffffff
+    }
+
+    # Using i3status
+    # status_command i3status -c ~/.i3/i3status.conf
+
+    # Using Conky
+    # status_command ~/.i3/conky_launcher
+
+	# Using i3pystatus
+	status_command ~/.i3/i3pystatus/launcher.sh
+
+}
+
+# Small bar
+bar {
+	# i3bar position
+    position top
+    mode dock
+
+    # show tray icons on the primary monitor
+	tray_output primary
+    # disable system tray
+    tray_output none
+
+    # The display is connected via VGA
+    output VGA-0
+
+	# Font
+    font pango:DejaVu Sans Mono, FontAwesome 8
+
+    colors {
+        # Whole color settings
+        background #00141a
+        statusline #ffffff
+        separator  #666666
+        # Type             border  background font
+        focused_workspace  #008fff #007fff #ffffff
+        active_workspace   #333333 #5f676a #ffffff
+        inactive_workspace #333333 #222222 #888888
+        urgent_workspace   #aa0000 #990000 #ffffff
+    }
+}
+
+# Bar on Netbook
+# bar {
+# 	# i3bar position
+#     position top
+#     mode dock
+#     output LVDS-0
+#     font pango:DejaVu Sans Mono 7
+#     colors {
+#         # Whole color settings
+#         background #000000
+#         statusline #00A5FF
+#         separator  #666666
+#         # Type             border  background font
+#         focused_workspace  #008fff #007fff #ffffff
+#         active_workspace   #333333 #5f676a #ffffff
+#         inactive_workspace #333333 #222222 #888888
+#         urgent_workspace   #aa0000 #990000 #ffffff
+#     }
+#     status_command i3status -c ~/.i3/i3status.conf
+# }
+
+# Config apps
+for_window [class="Xfce4-notifyd"] floating enable
+for_window [class="Xfce4-notifyd"] border none
+for_window [class="Guake"] floating enable
+for_window [class="Guake"] border none
+for_window [class="Gcolor2"] floating enable
+for_window [class="Lxappearance"] floating enable
+for_window [class="Firefox"] border none
+for_window [class="Google-chrome"] border none
+for_window [class="Google-chrome-beta"] border none
+
+# Assignments
+for_window [title=".*\(Private Browsing\).*"] move to workspace "$WS9"
+for_window [title=".*\(Navigation privée\).*"] move to workspace "$WS9"
+assign [class="Firefox"] $WS1
+assign [class="Google-chrome"] $WS2
+assign [class="Google-chrome-beta"] $WS2
+assign [class="mpv"] $WS2
+assign [class="mplayer"] $WS2
+# assign [class="feh"] $WS2
+assign [class="Steam"] $WS4
+
+workspace $WS1 output HDMI-0
+workspace $WS4 output HDMI-0
+workspace $WS2 output VGA-0
+
+# Startup
+exec --no-startup-id nm-applet
+exec --no-startup-id feh --bg-fill --no-xinerama ~/.dotfiles/wallpaper/wallpaper_8.jpg
+exec --no-startup-id guake -r tmux -e tmuxdev
+exec --no-startup-id redshift-gtk
+exec firefox
+exec thunderbird
+exec --no-startup-id dropbox start
