@@ -9,10 +9,16 @@ import time
 import configparser
 import fileinput
 import argparse
-import pip
 from urllib.request import Request, urlretrieve
 from urllib.error import URLError, HTTPError
 from subprocess import Popen, PIPE
+
+try:
+    import pip
+except ImportError:
+    pip_is_installed = False
+else:
+    pip_is_installed = True
 
 #####################################################################
 # Prints (with colors)
@@ -43,6 +49,10 @@ def print_warning(message):
 
 def print_error(message):
     print(COLOR_RED + '    ✖ ' + COLOR_RESET + message)
+
+
+def print_question(question):
+    return input('\n' + COLOR_YELLOW + '➜ ' + COLOR_RESET + question + ' ')
 
 #####################################################################
 # Helpers
@@ -369,10 +379,6 @@ if __name__ == '__main__':
             print_header('Symlinks desktop apps')
             symlink_arbo(dotfilespath + '/appdesktop', os.path.expanduser('~'))
 
-    # Install from config file
-    print_header('Download apps')
-    read_config(config_file)
-
     # Compile sshrc config
     print_header('Sshrc')
     generate_config(
@@ -382,5 +388,12 @@ if __name__ == '__main__':
             dotfilespath + '/bash/aliases/04_prompt.bash',
             dotfilespath + '/sshrc/sshrc_ascii',
         ])
+
+    # Ask to install apps, if pip is installed
+    if pip_is_installed:
+        if print_question("Install/update applications ? [y/N]") == "y":
+            # Install from config file
+            print_header('Download apps')
+            read_config(config_file)
 
     sys.exit(0)
