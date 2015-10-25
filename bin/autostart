@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+nm-applet &
+feh --bg-fill --no-xinerama ~/.dotfiles/wallpaper/wallpaper_8.jpg &
+guake -r tmux -e tmuxdev &
+redshift-gtk &
+firefox &
+thunderbird &
+dropbox start &

@@ -188,10 +188,12 @@ client.urgent           #C10004 #900000 #ffffff #900000
 # Main bar
 bar {
     position top
-    mode dock
 
     # The display is connected via HDM
     output HDMI-0
+
+    # show tray icons on the primary monitor
+	tray_output primary
 
     # Font
     font pango:DejaVu Sans Mono, FontAwesome 8
@@ -223,10 +225,7 @@ bar {
 bar {
 	# i3bar position
     position top
-    mode dock
 
-    # show tray icons on the primary monitor
-	tray_output primary
     # disable system tray
     tray_output none
 
@@ -250,25 +249,23 @@ bar {
 }
 
 # Bar on Netbook
-# bar {
-# 	# i3bar position
-#     position top
-#     mode dock
-#     output LVDS-0
-#     font pango:DejaVu Sans Mono 7
-#     colors {
-#         # Whole color settings
-#         background #000000
-#         statusline #00A5FF
-#         separator  #666666
-#         # Type             border  background font
-#         focused_workspace  #008fff #007fff #ffffff
-#         active_workspace   #333333 #5f676a #ffffff
-#         inactive_workspace #333333 #222222 #888888
-#         urgent_workspace   #aa0000 #990000 #ffffff
-#     }
-#     status_command i3status -c ~/.i3/i3status.conf
-# }
+bar {
+    position top
+    output LVDS-0
+    font pango:DejaVu Sans Mono 7
+    colors {
+        # Whole color settings
+        background #000000
+        statusline #00A5FF
+        separator  #666666
+        # Type             border  background font
+        focused_workspace  #008fff #007fff #ffffff
+        active_workspace   #333333 #5f676a #ffffff
+        inactive_workspace #333333 #222222 #888888
+        urgent_workspace   #aa0000 #990000 #ffffff
+     }
+     status_command i3status -c ~/.i3/i3status.conf
+}
 
 # Config apps
 for_window [class="Xfce4-notifyd"] floating enable
@@ -296,11 +293,5 @@ workspace $WS1 output HDMI-0
 workspace $WS4 output HDMI-0
 workspace $WS2 output VGA-0
 
-# Startup
-exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill --no-xinerama ~/.dotfiles/wallpaper/wallpaper_8.jpg
-exec --no-startup-id guake -r tmux -e tmuxdev
-exec --no-startup-id redshift-gtk
-exec firefox
-exec thunderbird
-exec --no-startup-id dropbox start
+# Autostart
+exec --no-startup-id ~/.dotfiles/bin/autostart
