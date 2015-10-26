@@ -349,14 +349,22 @@ if __name__ == '__main__':
                         "--path",
                         help="Dotfiles base path. Default ~/.dotfiles",
                         default=os.path.expanduser('~/.dotfiles'))
+    parser.add_argument("-d",
+                        "--dependencies",
+                        help="Install or upgrade dependencies",
+                        action="store_true",
+                        default=False)
     parser.add_argument("-r",
                         "--restart",
                         help=argparse.SUPPRESS,
-                        action="store_true")
+                        action="store_true",
+                        default=False)
+
     args = parser.parse_args()
 
     dotfilespath = args.path
     restarted = args.restart
+    install_dependencies = args.dependencies
 
     # Requirements
     check_requirements()
@@ -365,8 +373,15 @@ if __name__ == '__main__':
     clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git',
                              dotfilespath, restarted)
 
-    # Config file
-    config_file = dotfilespath + '/dotconf'
+    # Install apps if argument and pip is installed
+    if install_dependencies:
+        if not pip_is_installed:
+            print_error('pip is not installed')
+        else:
+            # Install from config file
+            print_header('Download apps')
+            config_file = dotfilespath + '/dotconf'
+            read_config(config_file)
 
     # Make symlinks
     print_header('Symlinks apps')
@@ -388,12 +403,5 @@ if __name__ == '__main__':
             dotfilespath + '/bash/aliases/04_prompt.bash',
             dotfilespath + '/sshrc/sshrc_ascii',
         ])
-
-    # Ask to install apps, if pip is installed
-    if pip_is_installed:
-        if print_question("Install/update applications ? [y/N]") == "y":
-            # Install from config file
-            print_header('Download apps')
-            read_config(config_file)
 
     sys.exit(0)
