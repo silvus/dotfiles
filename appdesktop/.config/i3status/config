@@ -10,22 +10,23 @@
 
 general {
 	interval = 1
+	output_format = "i3bar"
 	colors = true
 	color_bad = "#D64937"
 	color_good = "#8bdd58"
 	color_degraded = "#D69937"
+	# color_separator = ""
+	# separator = "  "
 }
 
 order += "battery 0"
+order += "ethernet tun0"
 order += "wireless wlan0"
 order += "ethernet eth0"
-order += "ethernet tun0"
-# order += "run_watch VPN"
-# order += "run_watch DHCP"
-# order += "disk /"
-# order += "disk /data"
 order += "cpu_usage"
-# order += "load"
+order += "load"
+order += "disk /"
+order += "disk /data"
 order += "tztime date"
 order += "tztime time"
 order += "volume master"
@@ -33,25 +34,19 @@ order += "tztime blank" # Hack to show a seperator between time and tray icons
 
 # Network
 # -------------
-# run_watch VPN {
-#         pidfile = "/proc/sys/net/ipv4/conf/tun0"
-#         # pidfile = "/var/run/vpnc/pid"
-# }
 ethernet eth0 {
 	format_up = "   %ip "
 	format_down = " ⚏  "
 }
 ethernet tun0 {
-	format_up = "  🔒 [%speed]  "
+	format_up = "  🔒 %ip  "
 	format_down = "  🔓  "
 }
 wireless wlan0 {
 	format_up = "   %essid [%quality]  "
 	format_down = ""
+	# (%quality at %essid, %bitrate / %frequency) %ip
 }
-# run_watch DHCP {
-#         pidfile = "/var/run/dhclient*.pid"
-# }
 
 # Time
 # -------------
@@ -59,26 +54,26 @@ tztime date {
 	format = "    %a %d %b  "
 }
 tztime time {
-	format = "  ⌚  %H:%M:%S  "
+	format = "    %H:%M:%S  "
 }
 
 # Monitoring
 # -------------
 cpu_usage {
-	format = "    %usage  "
+	format = "    %usage  "
 }
-# load {
-# 	format = "%5min"
-# }
-# disk "/" {
-# 	format = "  / %percentage_used  "
-# }
-# disk "/data" {
-# 	format = "  /data %percentage_used  "
-# }
+load {
+	format = "    %1min  %5min  "
+}
+disk "/" {
+	format = "    %percentage_used  "
+}
+disk "/data" {
+	format = "    %percentage_used  "
+}
 battery 0 {
 	format = "⚡ %status %percentage %remaining "
-	format_down = "No battery"
+	format_down = ""
 	# status_chr = "⚇ CHR""
 	# status_bat = "⚡ BAT"
 	# status_full = "☻ FULL"
@@ -89,8 +84,8 @@ battery 0 {
 # Volume
 # -------------
 volume master {
-	format = "  ♪ %volume  "
-	format_muted = "  Mute %volume  "
+	format = "    %volume  "
+	format_muted = "       %volume  "
 	device = "default"
 	mixer = "Master"
 	mixer_idx = 0

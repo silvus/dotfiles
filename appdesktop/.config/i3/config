@@ -193,7 +193,7 @@ bar {
     output HDMI-0
 
     # show tray icons on the primary monitor
-	tray_output primary
+    tray_output primary
 
     # Font
     font pango:DejaVu Sans Mono, FontAwesome 8
@@ -210,20 +210,13 @@ bar {
         urgent_workspace   #aa0000 #990000 #ffffff
     }
 
-    # Using i3status
-    # status_command i3status -c ~/.i3/i3status.conf
-
-    # Using Conky
-    # status_command ~/.i3/conky_launcher
-
-	# Using i3pystatus
-	status_command ~/.i3/i3pystatus/launcher.sh
-
+    # i3status
+    status_command i3status
 }
 
 # Small bar
 bar {
-	# i3bar position
+    # i3bar position
     position top
 
     # disable system tray
@@ -232,7 +225,7 @@ bar {
     # The display is connected via VGA
     output VGA-0
 
-	# Font
+    # Font
     font pango:DejaVu Sans Mono, FontAwesome 8
 
     colors {
@@ -264,7 +257,7 @@ bar {
         inactive_workspace #333333 #222222 #888888
         urgent_workspace   #aa0000 #990000 #ffffff
      }
-     status_command i3status -c ~/.i3/i3status.conf
+     status_command i3status
 }
 
 # Config apps
