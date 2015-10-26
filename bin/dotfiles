@@ -325,13 +325,16 @@ def read_config(config_file):
             for destination, url in config.items('clone'):
                 clone_or_update(url, os.path.expanduser(destination))
 
-        # Install from pip
+        # Install from pip if it's present
         if config.has_section('pip'):
-            os.environ['PIP_REQUIRE_VIRTUALENV'] = ''
-            for package, _ in config.items('pip'):
-                print_info('pip: ' + package)
-                pip.main(['install', '--user', '--upgrade', '--quiet', package
-                          ])
+            if pip_is_installed:
+                os.environ['PIP_REQUIRE_VIRTUALENV'] = ''
+                for package, _ in config.items('pip'):
+                    print_info('pip: ' + package)
+                    pip.main(['install', '--user', '--upgrade', '--quiet',
+                              package])
+            else:
+                print_error('pip is not installed')
     else:
         # Config not found
         print_error("Config file " + config_file + " doesn't exist")
@@ -373,15 +376,12 @@ if __name__ == '__main__':
     clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git',
                              dotfilespath, restarted)
 
-    # Install apps if argument and pip is installed
+    # Install apps if argument
     if install_dependencies:
-        if not pip_is_installed:
-            print_error('pip is not installed')
-        else:
-            # Install from config file
-            print_header('Download apps')
-            config_file = dotfilespath + '/dotconf'
-            read_config(config_file)
+        # Install from config file
+        print_header('Download apps')
+        config_file = dotfilespath + '/dotconf'
+        read_config(config_file)
 
     # Make symlinks
     print_header('Symlinks apps')
