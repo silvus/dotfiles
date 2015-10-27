@@ -20,3 +20,38 @@
 yapf
 httpie
 # ansible
+
+[apt_server]
+curl
+wget
+rsync
+# Better top command
+htop
+# Disk space
+dfc
+# Traffic htop-like
+iftop
+# Compiling things
+build-essential
+# PPA management
+software-properties-common
+# YouCompleteMe dependency
+cmake
+# Python headers
+python-dev
+# Search
+ack-grep
+vim
+tmux
+# Extract urls
+urlview
+# File manager and dependencies
+ranger
+highlight
+caca-utils
+# Rss reader
+newsbeuter
+# Web browser
+w3m
+w3m-img
+
