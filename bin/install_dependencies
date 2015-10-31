@@ -33,6 +33,7 @@ _install_desktop() {
 		scrot `# Make screenshot` \
 		feh `# Image viewer` \
 		moc `# Music player` \
+		redshift-gtk `# Change screen brightness` \
 		i3 `# WM`
 }
 
