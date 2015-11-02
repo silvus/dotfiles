@@ -351,6 +351,9 @@ def read_config(config_file):
             # Update
             print_info('Update')
             exec_command(['sudo', 'apt-get', 'update'], True)
+            # Upgrade
+            print_info('Upgrade')
+            exec_command(['sudo', 'apt-get', 'dist-upgrade'], True)
             # Install
             print_info('Install ' + ', '.join(apt_package_list))
             apt_package_command = ['sudo', 'apt-get', 'install'] + apt_package_list
