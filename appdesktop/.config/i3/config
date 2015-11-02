@@ -20,7 +20,7 @@ font pango:DejaVu Sans Mono 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 # floating_minimum_size 75 x 50
-floating_maximum_size 350 x 190
+# floating_maximum_size 350 x 190
 
 # no focus on mouse over
 focus_follows_mouse no
