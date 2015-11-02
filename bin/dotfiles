@@ -337,21 +337,24 @@ def read_config(config_file):
                 print_error('pip is not installed')
 
         # Install with apt
+        apt_package_list = []
         if config.has_section('apt_server'):
-            # List packages
-            apt_package_list = []
             for apt_package, _ in config.items('apt_server'):
                 apt_package_list.append(apt_package)
 
-            if len(apt_package_list) > 0:
-                print_header('Apt')
-                # Update
-                print_info('Update')
-                exec_command(['sudo', 'apt-get', 'update'], True)
-                # Install
-                print_info('Install ' + ', '.join(apt_package_list))
-                apt_package_command = ['sudo', 'apt-get', 'install'] + apt_package_list
-                exec_command(apt_package_command, True)
+        if config.has_section('apt_desktop') and X_is_running():
+            for apt_package, _ in config.items('apt_desktop'):
+                apt_package_list.append(apt_package)
+
+        if len(apt_package_list) > 0:
+            print_header('Apt')
+            # Update
+            print_info('Update')
+            exec_command(['sudo', 'apt-get', 'update'], True)
+            # Install
+            print_info('Install ' + ', '.join(apt_package_list))
+            apt_package_command = ['sudo', 'apt-get', 'install'] + apt_package_list
+            exec_command(apt_package_command, True)
 
     else:
         # Config not found
