@@ -267,7 +267,8 @@ for_window [class="Lxappearance"] floating enable
 for_window [class="(?i)firefox"] border none
 for_window [class="(?i)google-chrome"] border none
 for_window [class="(?i)google-chrome-beta"] border none
-for_window [class="mpv" workspace="$WS1"] floating enable, border none, sticky enable, move absolute position 1016 578
+for_window [class="mpv"] border none
+# for_window [class="mpv" workspace="$WS1"] floating enable, border none, sticky enable, move absolute position 1016 578
 
 # Assignments
 for_window [title=".*\(Private Browsing\).*"] move to workspace "$WS9"
@@ -275,7 +276,7 @@ for_window [title=".*\(Navigation privée\).*"] move to workspace "$WS9"
 assign [class="Firefox"] $WS1
 assign [class="Google-chrome"] $WS2
 assign [class="Google-chrome-beta"] $WS2
-# assign [class="mpv"] $WS2
+assign [class="mpv"] $WS2
 assign [class="mplayer"] $WS2
 # assign [class="feh"] $WS2
 assign [class="Steam"] $WS4
