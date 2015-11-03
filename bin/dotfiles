@@ -11,7 +11,7 @@ import fileinput
 import argparse
 from urllib.request import Request, urlretrieve
 from urllib.error import URLError, HTTPError
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 
 try:
     import pip
@@ -350,14 +350,13 @@ def read_config(config_file):
             print_header('Apt')
             # Update
             print_info('Update')
-            exec_command(['sudo', 'apt-get', 'update'], True)
+            call(['sudo', 'apt-get', 'update'])
             # Upgrade
             print_info('Upgrade')
-            exec_command(['sudo', 'apt-get', 'dist-upgrade'], True)
+            call(['sudo', 'apt-get', 'dist-upgrade'])
             # Install
             print_info('Install ' + ', '.join(apt_package_list))
-            apt_package_command = ['sudo', 'apt-get', 'install'] + apt_package_list
-            exec_command(apt_package_command, True)
+            call(['sudo', 'apt-get', 'install'] + apt_package_list)
 
     else:
         # Config not found
