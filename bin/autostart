@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
 nm-applet &
-feh --bg-fill --no-xinerama ~/.dotfiles/wallpaper/wallpaper_8.jpg &
 guake -r tmux -e tmuxdev &
 redshift-gtk &
 firefox &
 thunderbird &
 dropbox start &
+
+if [[ $(xrandr -q | grep ' connected' | wc -l) -gt 1 ]]; then
+	feh --bg-fill --no-xinerama ~/.dotfiles/wallpaper/wallpaper_8.jpg &
+else
+	feh --bg-max --randomize ~/.dotfiles/wallpaper/wallpaper_1.jpg &
+fi
