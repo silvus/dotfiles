@@ -1,0 +1,33 @@
+[include]
+	path = ~/.gitconfiguser
+[color]
+	ui = auto
+[core]
+	editor = vim
+	autocrlf = input
+	excludesfile = ~/.gitignore_global
+	quotepath = false
+[alias]
+	st = status
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	gr = grep -p
+	aa = add --all
+	co = commit -av
+	pusom = push origin master
+	pulom = pull origin master
+	dif = diff --stat=160,120
+[web]
+	browser = w3m
+[github]
+	user = Silvus
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[credential]
+	helper = cache --timeout=3600
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false
