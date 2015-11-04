@@ -8,7 +8,7 @@ thunderbird &
 dropbox start &
 
 if [[ $(xrandr -q | grep ' connected' | wc -l) -gt 1 ]]; then
-	feh --bg-fill --no-xinerama ~/.dotfiles/wallpaper/wallpaper_8.jpg &
+	feh --bg-fill --no-xinerama --randomize ~/.dotfiles/wallpaper/2/* &
 else
-	feh --bg-max --randomize ~/.dotfiles/wallpaper/wallpaper_1.jpg &
+	feh --bg-max --randomize ~/.dotfiles/wallpaper/1/* &
 fi
