@@ -281,6 +281,10 @@ assign [class="mplayer"] $WS2
 # assign [class="feh"] $WS2
 assign [class="Steam"] $WS4
 
+# exec urxvt -name dropterm
+for_window [instance="dropterm"] move scratchpad
+bindsym $mod+Shift+p [instance="dropterm"] fullscreen enable, scratchpad show
+
 workspace $WS1 output HDMI-0
 workspace $WS4 output HDMI-0
 workspace $WS2 output VGA-0

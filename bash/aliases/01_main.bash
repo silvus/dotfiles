@@ -35,6 +35,7 @@ alias lynx="lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
 alias music="mocp"
 alias irc="weechat"
 alias tmux="tmux -2" # Getting 256 colors to work in tmux
+alias xresourcesreload="xrdb -merge ~/.Xresources"
 
 # Vim
 # -----------------------------------------------------------------------------
