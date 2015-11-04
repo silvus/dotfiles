@@ -293,7 +293,7 @@ def clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
         if dot_version_prev != dot_version_next:
             # Restart current script if version change
             os.execl(sys.executable, sys.executable, sys.argv[0], '--restart',
-                     *sys.argv[2:])
+                     *sys.argv[1:])
 
 #####################################################################
 # Config
