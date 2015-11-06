@@ -1,24 +1,8 @@
 #!/usr/bin/env bash
 
-worklog_folder="${DOCUMENTATION_HOME}/worklog/$(date +'%Y%m')"
-worklog_current_file="${worklog_folder}/worklog_$(date +'%Y%m%d').md"
-
-# Create monthly folder
-if [[ ! -d "$worklog_folder" ]]; then
-	mkdir -p "$worklog_folder"
-fi
-
-# Go to worklog folder if exist
-cd "$worklog_folder"
-
-# Update
-git pull origin master
+worklog_file="${DOCUMENTATION_HOME}/worklog/utt.log"
 
 # Open
-vim "$worklog_current_file"
-
-# Autocommit
-git add .
-git commit -m "Autocommit Worklog $(date +'%d/%m/%Y %T')"
+utt --data "$worklog_file" "$@"
 
 exit 0

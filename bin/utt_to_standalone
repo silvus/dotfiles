@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Make a standalone python zip from utt
+# https://github.com/larose/utt
+
+current_dir=$(pwd)
+
+git clone https://github.com/larose/utt.git /tmp/larose_utt
+cd /tmp/larose_utt
+
+cat > utt/__main__.py <<EOL
+#!/usr/bin/env python3
+
+from utt import main
+
+if __name__ == '__main__':
+    main()
+EOL
+
+zip --quiet ../utt utt/*.py
+zip --quiet --junk-paths ../utt utt/__main__.py
+echo '#!/usr/bin/env python3' > ../utt
+cat ../utt.zip >> ../utt
+chmod a+x ../utt
+
+rm ../utt.zip
+mv ../utt "${current_dir}"
