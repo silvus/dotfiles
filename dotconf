@@ -43,6 +43,7 @@ supervisor
 newsbeuter
 w3m
 w3m-img
+calcurse
 
 [apt_desktop]
 mpv

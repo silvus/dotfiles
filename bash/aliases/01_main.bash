@@ -30,7 +30,7 @@ alias netusage='lsof -P -i -n'
 alias firewalllist='sudo iptables -L -n -v --line-numbers'
 alias mountshow='mount |column -t'
 alias calculator='bc -l'
-alias calendar='cal -3'
+alias calendar='calcurse --calendar /data/doc/.calendar/apts'
 alias lynx="lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
 alias music="mocp"
 alias irc="weechat"
