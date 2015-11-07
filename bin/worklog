@@ -2,7 +2,11 @@
 
 worklog_file="${DOCUMENTATION_HOME}/worklog/utt.log"
 
-# Open
-utt --data "$worklog_file" "$@"
+# If --data is set, utt doesn't print help
+if [[ -z "$@" ]]; then
+	utt
+else
+	utt --data "$worklog_file" "$@"
+fi
 
 exit 0
