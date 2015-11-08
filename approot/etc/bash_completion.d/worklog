@@ -4,7 +4,7 @@ _worklog()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="add edit hello stretch report --help --now"
+    opts="add edit hello stretch report --help --now --current-activity --no-current-activity"
 
     COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
 }
