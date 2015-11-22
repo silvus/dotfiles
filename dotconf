@@ -48,6 +48,7 @@ calcurse
 [apt_desktop]
 mpv
 xclip
+clipit
 scrot
 feh
 moc
