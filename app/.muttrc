@@ -1,11 +1,5 @@
 # Account Settings --------------------------------------------------------------------
 
-# Folder hooks
-folder-hook 'dev.muttrc' 'source ~/.mutt/dev.muttrc'
-folder-hook 'perso.muttrc' 'source ~/.mutt/perso.muttrc'
-folder-hook 'online.muttrc' 'source ~/.mutt/online.muttrc'
-folder-hook 'work.muttrc' 'source ~/.mutt/work.muttrc'
-
 # Default account
 source ~/.mutt/dev.muttrc
 # set realname
@@ -25,8 +19,7 @@ macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/online.muttrc<ente
 macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/work.muttrc<enter><change-folder>!<enter>'
 
 # Mailboxes
-# source ~/.mutt/mailboxes
-mailboxes     = +INBOX
+source ~/.mutt/mailboxes
 
 # Other special folders.
 set mbox      = +Archives
@@ -38,10 +31,10 @@ folder-hook . set trash="=Trash"
 folder-hook trash$ unset trash
 
 # Imap conf
-set imap_check_subscribed                     # Check for all subscribed IMAP folders (as if all were added with a mailboxes line)
-set imap_list_subscribed
+# set imap_check_subscribed                   # Check for all subscribed IMAP folders (as if all were added with a mailboxes line)
+# set imap_list_subscribed
 # unset imap_passive                          # Allow Mutt to open new imap connection automatically.
-set imap_keepalive = 300                      # Keep IMAP connection alive by polling intermittently (time in seconds).
+set imap_keepalive = 60                       # Keep IMAP connection alive by polling intermittently (time in seconds).
 
 
 # Paths -------------------------------------------------------------------------------
@@ -58,13 +51,13 @@ set tmpdir           = ~/.mutt/temp          # where to keep temp files
 
 # set wait_key = no      # shut up, mutt
 # set mbox_type = Maildir  # mailbox type
-# set timeout = 3        # idle time before scanning
-# set mail_check = 0     # minimum time between scans (time in seconds)
+set timeout = 350        # time to wait for idle mutt (no key pressed) before the status is updated again
+set mail_check = 180     # minimum time between scans (time in seconds)
 # set delete             # don't ask, just do
 unset confirmappend      # don't ask to move
 set quit = ask-yes       # ask to quit
 unset mark_old           # read/new is good enough
-# set beep_new           # bell on new mails
+set beep_new             # bell on new mails
 # set pipe_decode        # strip headers and eval mimes when piping
 # set thorough_search    # strip headers and eval mimes before searching
 set sleep_time = 0       # Speed up folders switch
@@ -86,6 +79,7 @@ set sleep_time = 0       # Speed up folders switch
 set status_chars  = " *%A"
 set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 
+set status_on_top                            # put status bar on top instead of bottom
 
 # Sidebar -----------------------------------------------------------------------------
 
@@ -94,6 +88,11 @@ set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)
 # set sidebar_width   = 24
 
 # color sidebar_new blue default             # color of folders with new mail
+
+
+# Browser View Options ----------------------------------------------------------------
+
+set sort_browser = unsorted                  # Specifies how to sort entries in the file browser (mailboxes list)
 
 
 # Index View Options ------------------------------------------------------------------
@@ -130,12 +129,14 @@ bind pager gg          top
 bind pager G           bottom
 bind pager <return>    exit                 # return to the main-menu
 bind index <space>     collapse-thread
-bind index <up>        previous-entry       # previous message, even if deleted
-bind index <down>      next-entry           # next message, even if deleted
 bind index,pager 'p'   previous-entry       # previous message, even if deleted
 bind index,pager 'n'   next-entry           # next message, even if deleted
+bind index <up>        previous-entry       # previous message, even if deleted
+bind index <down>      next-entry           # next message, even if deleted
 bind pager <up>        previous-line        # scroll inside the message rather than the index
 bind pager <down>      next-line
+bind index <left>      previous-undeleted   # previous message
+bind index <right>     next-undeleted       # next message
 
 # Sync email
 # bind index,pager <F5>  sync-mailbox
@@ -146,6 +147,9 @@ macro index,pager <F6> "<shell-escape>offlineimap<enter>"           "run offline
 bind index,pager r     group-reply          # to all recipients by default
 bind index,pager R     reply                # to sender only
 
+# Open folders list
+macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
+
 # Saner copy/move dialogs
 macro index C          "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M          "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
@@ -155,7 +159,7 @@ macro index \Cr        "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<ente
 
 # View attachments properly.
 bind attach            <return> view-mailcap
-macro pager u        "|urlview<enter>" "call urlview to open links"
+macro pager \Cu        "|urlview<enter>" "call urlview to open links"
 
 # Sidebar
 # bind index,pager \Cn   sidebar-next
@@ -166,9 +170,10 @@ macro pager u        "|urlview<enter>" "call urlview to open links"
 # Compose View Options ----------------------------------------------------------------
 
 set envelope_from                    # which from?
+set use_from                         # generate the 'From:' header
 set sig_dashes                       # dashes before sig
 set edit_headers                     # show headers when composing
-# set fast_reply                     # skip to compose when replying
+set fast_reply                       # Skip questions (To, Subject) when reply
 # set askcc                          # ask for CC:
 # set fcc_attach                     # save attachments with the body
 # unset mime_forward                 # forward attachments as part of body
@@ -208,7 +213,8 @@ color   status      black green                 # status line
 color   tree        brightblack default         # thread tree
 color   tilde       blue default                # blank line padding
 
-color   hdrdefault  black green                 # default headers
+color   hdrdefault  green default               # default headers
+# color   hdrdefault  black green               # default headers
 # color   header      brightwhite blue "^From:"
 # color   header      brightwhite blue "^Subject:"
 
