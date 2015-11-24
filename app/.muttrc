@@ -38,10 +38,10 @@ folder-hook . set trash="=Trash"
 folder-hook trash$ unset trash
 
 # Imap conf
-set imap_check_subscribed
+set imap_check_subscribed                     # Check for all subscribed IMAP folders (as if all were added with a mailboxes line)
 set imap_list_subscribed
-unset imap_passive                            # Allow Mutt to open new imap connection automatically.
-set imap_keepalive                            # Keep IMAP connection alive by polling intermittently (time in seconds).
+# unset imap_passive                          # Allow Mutt to open new imap connection automatically.
+set imap_keepalive = 300                      # Keep IMAP connection alive by polling intermittently (time in seconds).
 
 
 # Paths -------------------------------------------------------------------------------
@@ -67,6 +67,7 @@ unset mark_old           # read/new is good enough
 # set beep_new           # bell on new mails
 # set pipe_decode        # strip headers and eval mimes when piping
 # set thorough_search    # strip headers and eval mimes before searching
+set sleep_time = 0       # Speed up folders switch
 
 # set metoo              # add me to the list of recipients when replying to a message (ignore $record)
 # fcc-hook .* !
@@ -89,17 +90,17 @@ set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)
 # Sidebar -----------------------------------------------------------------------------
 
 # set sidebar_delim   = '|'
-set sidebar_visible = yes
+# set sidebar_visible = yes
 # set sidebar_width   = 24
 
-color sidebar_new blue default 			  # color of folders with new mail
+# color sidebar_new blue default             # color of folders with new mail
 
 
 # Index View Options ------------------------------------------------------------------
 
 set date_format = "%d/%m/%y"
 set index_format = "[%Z]  %D  %-20.20F  %s"
-set sort = threads				             # Sort messages into threads
+set sort = threads                           # Sort messages into threads
 set sort_aux = reverse-last-date-received    # Order threads
 set strict_threads                           # Don’t thread messages by Subject
 # set uncollapse_jump                        # don't collapse on an unread message
@@ -129,6 +130,12 @@ bind pager gg          top
 bind pager G           bottom
 bind pager <return>    exit                 # return to the main-menu
 bind index <space>     collapse-thread
+bind index <up>        previous-entry       # previous message, even if deleted
+bind index <down>      next-entry           # next message, even if deleted
+bind index,pager 'p'   previous-entry       # previous message, even if deleted
+bind index,pager 'n'   next-entry           # next message, even if deleted
+bind pager <up>        previous-line        # scroll inside the message rather than the index
+bind pager <down>      next-line
 
 # Sync email
 # bind index,pager <F5>  sync-mailbox
@@ -148,12 +155,12 @@ macro index \Cr        "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<ente
 
 # View attachments properly.
 bind attach            <return> view-mailcap
-macro pager \Cu        "|urlview<enter>" "call urlview to open links"
+macro pager u        "|urlview<enter>" "call urlview to open links"
 
 # Sidebar
-bind index,pager \Cn   sidebar-next
-bind index,pager \Cp   sidebar-prev
-bind index,pager \Co   sidebar-open
+# bind index,pager \Cn   sidebar-next
+# bind index,pager \Cp   sidebar-prev
+# bind index,pager \Co   sidebar-open
 
 
 # Compose View Options ----------------------------------------------------------------
@@ -172,7 +179,7 @@ set edit_headers                     # show headers when composing
 # set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
-set editor = "vim +/^$"              # Use Vim to compose email (cursor at the first blank line)
+set editor = "vim +star +/^$"        # Use Vim to compose email (Inset mode + cursor at the first blank line)
 
 
 # Alias ------------------------------------------------------------------------------
