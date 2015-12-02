@@ -146,6 +146,8 @@ inoremap <F6> <C-R>=strftime("%A %d %b %Y")<CR>
 
 " Indentation on paste
 set pastetoggle=<F9>
+nnoremap p ]p
+nnoremap P p
 
 " Spellchecking
 nnoremap <F12> :setlocal spell! spell?<CR>
