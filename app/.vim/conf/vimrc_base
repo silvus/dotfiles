@@ -113,6 +113,16 @@ endif
 " ------------------------------------------------------------------------------------
 let mapleader="!"
 
+" Move through wrapped lines
+nnoremap <silent> <Up> gk
+inoremap <silent> <Up> <C-o>gk
+nnoremap <silent> <Down> gj
+inoremap <silent> <Down> <C-o>gj
+nnoremap <silent> <home> g<home>
+inoremap <silent> <home> <C-o>g<home>
+nnoremap <silent> <End> g<End>
+inoremap <silent> <End> <C-o>g<End>
+
 " Split with Ctrl + hjkl
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
