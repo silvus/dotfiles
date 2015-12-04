@@ -13,7 +13,7 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'plasticboy/vim-markdown'
 
 " Nerdtree (On demand)
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
