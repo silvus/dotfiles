@@ -11,9 +11,14 @@ Plug 'godlygeek/tabular'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
+Plug 'mbbill/undotree'
 Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
+Plug 'klen/python-mode'
 Plug 'plasticboy/vim-markdown'
+" Plug 'othree/html5.vim'
+" Plug 'hail2u/vim-css3-syntax'
+Plug 'ap/vim-css-color'
 
 " Nerdtree (On demand)
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
@@ -69,7 +74,11 @@ let NERDTreeShowHidden=1
 
 " Tagbar
 " ------------------------------------------------------------------------------------
-nmap <silent> <F3> :TagbarToggle<CR>
+nnoremap <silent> <F3> :TagbarToggle<CR>
+
+" Undotree
+" ------------------------------------------------------------------------------------
+nnoremap <silent> <leader>u :UndotreeToggle<CR>
 
 " UltiSnips
 " ------------------------------------------------------------------------------------
