@@ -31,3 +31,7 @@
 	conflictstyle = diff3
 [mergetool]
 	prompt = false
+[push]
+	default = current
+[pull]
+	default = current
