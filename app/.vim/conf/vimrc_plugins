@@ -80,6 +80,10 @@ nnoremap <silent> <F3> :TagbarToggle<CR>
 " ------------------------------------------------------------------------------------
 nnoremap <silent> <leader>u :UndotreeToggle<CR>
 
+" Python-mode
+" ------------------------------------------------------------------------------------
+let g:pymode_lint_ignore="E501"
+
 " UltiSnips
 " ------------------------------------------------------------------------------------
 let g:UltiSnipsExpandTrigger="<Tab>"
