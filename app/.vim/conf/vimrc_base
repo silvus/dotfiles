@@ -40,6 +40,7 @@ filetype indent on        " Load filetype-specific indent files
 
 set list                  " Show special characters
 set listchars=tab:\ \ ,trail:•,extends:#,nbsp:.
+set showbreak=↪           " Line wraps character
 
 set tabstop=4             " Number of visual spaces per TAB
 set softtabstop=4         " Number of spaces in tab when editing
@@ -140,6 +141,9 @@ imap <c-s> <Esc>:w<CR>a
 
 " Toggle folds
 nnoremap <space> za
+
+" Reload .vimrc
+nnoremap <Leader>r :source $MYVIMRC<CR>
 
 " Toggle line numbers
 nmap <silent> <F10> :set invnumber<bar>:set invrelativenumber<CR>
