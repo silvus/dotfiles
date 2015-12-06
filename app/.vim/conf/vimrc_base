@@ -182,7 +182,9 @@ function! StripTrailingWhitespaces()
 endfunction
 command! StripTrailingWhitespaces call StripTrailingWhitespaces()
 
+" Yapf
 command! Yapf :0,$!yapf
+autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 
 
 " Theme
