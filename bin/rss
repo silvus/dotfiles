@@ -1,18 +1,8 @@
 #!/usr/bin/env bash
 
-rss_folder="${DOCUMENTATION_HOME}/.rss"
+rss_url="${DOCUMENTATION_HOME}/.rss/urls"
+rss_cache="/data/tools/rss/cache.db"
 
-# Go to rss folder
-cd "$rss_folder"
-
-# Update
-git pull origin master --quiet
-
-# Open
-newsbeuter -q -u "${rss_folder}/urls" -c "${rss_folder}/cache.db"
-
-# Autocommit
-git add "$rss_folder"
-git commit -m "Autocommit rss $(date +'%d/%m/%Y %T')" --quiet
+newsbeuter -q -u "${rss_url}" -c "${rss_cache}"
 
 exit 0
