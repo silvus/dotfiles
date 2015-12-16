@@ -176,6 +176,12 @@ bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
 bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB-
 bindsym XF86AudioMute exec amixer -q set Master toggle
 
+# Moc controls
+bindsym XF86AudioNext exec mocp --next
+bindsym XF86AudioPrev exec mocp --previous
+bindsym XF86AudioPlay exec mocp --toggle-pause
+bindsym XF86Tools exec mocp --play
+
 # Style
 # border colors:        border: bg:     text:   indicator:
 client.focused          #3F8AC2 #096BAA #ffffff #00DA8E
