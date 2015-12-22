@@ -64,7 +64,7 @@ dev() {
 			source ".venv/bin/activate"
 		fi
 		# Open in vim
-		vim.ide
+		vim
 	# go to PROJECT_HOME
 	else
 		cd "${PROJECT_HOME}/src"
