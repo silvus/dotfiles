@@ -83,6 +83,7 @@ nnoremap <silent> <leader>u :UndotreeToggle<CR>
 " Python-mode
 " ------------------------------------------------------------------------------------
 let g:pymode_lint_ignore="E501"
+let g:pymode_doc=0
 
 " UltiSnips
 " ------------------------------------------------------------------------------------
