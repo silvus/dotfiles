@@ -29,6 +29,7 @@ fi
 
 # Python
 # ------------------------------------------------------
+export PYTHONSTARTUP="$HOME/.pythonrc"
 export PYTHONPATH="./.pip:$PYTHONPATH"
 
 if [[ -d "${HOME}/.local/bin" ]]; then
