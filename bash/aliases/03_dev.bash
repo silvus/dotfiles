@@ -1,6 +1,7 @@
 
 # Dotfiles
 alias dot="cd $DOTFILES_PATH"
+alias dotbin="cd $DOTFILES_PATH/bin"
 alias dot_reload="source ${HOME}/.bashrc"
 alias s="cd /data/silvus"
 alias data="cd /data"
