@@ -48,6 +48,9 @@ export VIRTUAL_ENV_DISABLE_PROMPT=true # Don't touch my PS1
 alias pythonvenvcreate="python3 -m venv --without-pip .venv; source .venv/bin/activate; curl https://bootstrap.pypa.io/get-pip.py | python; deactivate; source .venv/bin/activate"
 alias activate="source .venv/bin/activate"
 
+# Pipsi
+export PIPSI_BIN_DIR="$HOME/bin"
+
 # Go to projects folder and git pull
 # Must be here due to "cd" subshell usage
 # ------------------------------------------------------------
