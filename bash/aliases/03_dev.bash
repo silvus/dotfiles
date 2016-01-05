@@ -30,7 +30,7 @@ fi
 # Python
 # ------------------------------------------------------
 export PYTHONSTARTUP="$HOME/.pythonrc"
-export PYTHONPATH="./.pip:$PYTHONPATH"
+export PYTHONPATH="./.venv:$PYTHONPATH"
 
 if [[ -d "${HOME}/.local/bin" ]]; then
 	export PATH="$HOME/.local/bin:$PATH"
@@ -42,11 +42,16 @@ export PIP_REQUIRE_VIRTUALENV=true
 pipglobal() {
    PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
+pipvendor() {
+   PIP_REQUIRE_VIRTUALENV="" pip3 "$@" -t ".venv"
+}
 
 # Virtualenv
 export VIRTUAL_ENV_DISABLE_PROMPT=true # Don't touch my PS1
-alias pythonvenvcreate="python3 -m venv --without-pip .venv; source .venv/bin/activate; curl https://bootstrap.pypa.io/get-pip.py | python; deactivate; source .venv/bin/activate"
 alias activate="source .venv/bin/activate"
+alias pythonvenv=".venv/bin/python3"
+alias pythonvenvcreate="python3 -m venv --without-pip .venv; source .venv/bin/activate; curl https://bootstrap.pypa.io/get-pip.py | python3; deactivate; source .venv/bin/activate"
+alias pythonvenvpip=".venv/bin/pip3"
 
 # Pipsi
 export PIPSI_BIN_DIR="$HOME/bin"
