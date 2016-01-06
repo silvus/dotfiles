@@ -2,7 +2,7 @@
 " ------------------------------------------------------------------------------------
 call plug#begin('~/.vim/bundle')
 
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'bling/vim-airline'
 Plug 'scrooloose/syntastic'
 Plug 'Raimondi/delimitMate'
