@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Launch tmux
+# -----------------------------------------------------------------------------
+_launch_tmux() {
+	local _TMUX_SESSION_NAME="${USER}_pi"
+	local _WINDOWS_MAIN='Main'
+
+	# make sure tmux server is running
+	tmux start-server
+
+	# Determine if session is running
+	tmux has-session -t "${_TMUX_SESSION_NAME}"
+	if [[ "$?" != 0 ]]; then
+		#  Launch session
+		tmux -2 new-session -s "${_TMUX_SESSION_NAME}" -d -n "$_WINDOWS_MAIN"
+	fi
+
+	# Attach to session
+	tmux -2 attach -t "${_TMUX_SESSION_NAME}"
+
+	# Hide status bar
+	tmux set -g status off
+}
+
+# Check if tmux is installed
+if [[ -x "$(which tmux 2>/dev/null)" ]]; then
+	_launch_tmux
+else
+	echo "Tmux is not installed"
+	exit 1
+fi
