@@ -44,7 +44,7 @@ set showbreak=↪           " Line wraps character
 
 set tabstop=4             " Number of visual spaces per TAB
 set softtabstop=4         " Number of spaces in tab when editing
-set shiftwidth=4
+set shiftwidth=4          " When indenting with '>', use x spaces width
 " set expandtab           " Tabs are spaces
 
 " Tabs (default)
@@ -160,8 +160,8 @@ inoremap <F6> <C-R>=strftime("%A %d %b %Y")<CR>
 
 " Indentation on paste
 set pastetoggle=<F9>
-nnoremap p ]p
-nnoremap P p
+" nnoremap p ]p
+" nnoremap P p
 
 " Spellchecking
 nnoremap <F12> :setlocal spell! spell?<CR>
