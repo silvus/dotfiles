@@ -4,10 +4,20 @@ action="$(echo -e "Shutdown\nRestart\nLogout" | dmenu -i)"
 
 case "$action" in
 	"Shutdown")
-		sudo poweroff
+		# dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager \
+		#	org.freedesktop.ConsoleKit.Manager.Stop
+
+		# 14.04
+		dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 \
+				"org.freedesktop.login1.Manager.PowerOff" boolean:true
 		;;
 	"Restart")
-		sudo reboot
+		# dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager \
+        #	org.freedesktop.ConsoleKit.Manager.Restart
+
+		# 14.04
+		dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 \
+			"org.freedesktop.login1.Manager.Reboot" boolean:true
 		;;
 	"Logout")
 		i3-msg exit
