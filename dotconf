@@ -12,6 +12,7 @@
 ~/bin/sshrc = https://raw.githubusercontent.com/Russell91/sshrc/master/sshrc
 ~/.z.sh = https://raw.githubusercontent.com/rupa/z/master/z.sh
 ~/bin/youtube-dl = https://yt-dl.org/latest/youtube-dl
+~/bin/2048 = https://raw.githubusercontent.com/mydzor/bash2048/master/bash2048.sh
 
 [clone]
 ~/.fzf = https://github.com/junegunn/fzf.git
