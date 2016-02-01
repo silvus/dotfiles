@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-mpv "$@"
+# If run under Tmux, open in new split
+if [[ -n "$TMUX" ]]; then
+	tmux split-window -d -l 10 -v "mpv \"$@\""
+else
+	mpv "$@"
+fi

@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-weechat "$@"
+# If run under Tmux, open in new window
+if [[ -n "$TMUX" ]]; then
+	tmux new-window -n "irc" "weechat \"$@\""
+else
+	weechat "$@"
+fi

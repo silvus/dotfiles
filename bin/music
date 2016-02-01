@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-mocp "$@"
+# If run under Tmux, open in new window
+if [[ -n "$TMUX" ]]; then
+	tmux new-window -n "music" 'mocp "$@"'
+else
+	mocp "$@"
+fi
+

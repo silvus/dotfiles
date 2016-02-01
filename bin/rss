@@ -3,6 +3,11 @@
 rss_url="${DOCUMENTATION_HOME}/.rss/urls"
 rss_cache="/data/tools/rss/cache.db"
 
-newsbeuter -q -u "${rss_url}" -c "${rss_cache}"
+# If run under Tmux, open in new window
+if [[ -n "$TMUX" ]]; then
+	tmux new-window -n "rss" "newsbeuter -q -u \"${rss_url}\" -c \"${rss_cache}\""
+else
+	newsbeuter -q -u "${rss_url}" -c "${rss_cache}"
+fi
 
 exit 0
