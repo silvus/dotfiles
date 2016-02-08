@@ -16,15 +16,16 @@ export DOCUMENTATION_HOME="/data/doc"
 alias server="python3 -m http.server 5000"
 alias server_php="php -sS localhost:5000"
 
+if [[ -d "${PROJECT_HOME}/bin" ]]; then
+	export PATH="$PATH:$PROJECT_HOME/bin"
+fi
+
 # Golang
 # ------------------------------------------------------
 export GOPATH="$PROJECT_HOME"
 
 if [[ -d "/usr/local/go/bin" ]]; then
 	export PATH="$PATH:/usr/local/go/bin"
-	if [[ -d "${GOPATH}/bin" ]]; then
-		export PATH="$PATH:$GOPATH/bin"
-	fi
 fi
 
 # Python
@@ -63,8 +64,8 @@ dev() {
 	local projectname="$1"
 
 	# Search in projects
-	if [[ ! -z "$projectname" ]] && [[ -d "${PROJECT_HOME}/src/${projectname}" ]]; then
-		cd "${PROJECT_HOME}/src/${projectname}"
+	if [[ ! -z "$projectname" ]] && [[ -d "${PROJECT_HOME}/${projectname}" ]]; then
+		cd "${PROJECT_HOME}/${projectname}"
 		# Update project
 		if [[ -d ".git" ]]; then
 			git pull origin master
@@ -77,6 +78,6 @@ dev() {
 		vim
 	# go to PROJECT_HOME
 	else
-		cd "${PROJECT_HOME}/src"
+		cd "${PROJECT_HOME}"
 	fi
 }
