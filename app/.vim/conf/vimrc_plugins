@@ -5,6 +5,7 @@ call plug#begin('~/.vim/bundle')
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/syntastic'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
@@ -39,9 +40,7 @@ call plug#end()
 
 " vim-airline
 " ------------------------------------------------------------------------------------
-let g:airline_theme = 'jellybeans'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
+let g:airline_theme = 'powerlineish'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 0
 
@@ -105,14 +104,6 @@ autocmd User Startified setlocal buftype=
 
 " Automatically update sessions
 let g:startify_session_persistence = 1
-
-" Bookmarks
-let g:startify_bookmarks = [
-                \ '/etc/hosts',
-                \ '~/.dotfiles/app/.vim/conf/vimrc_base',
-                \ '~/.dotfiles/app/.vim/conf/vimrc_plugins',
-                \ ]
-
 let g:startify_custom_header = [
 \ ' ____   ____.__         ',
 \ ' \   \ /   /|__| _____  ',
