@@ -18,7 +18,7 @@ _launch_tmux() {
 		tmux -2 new-session -s "${_TMUX_SESSION_NAME}" -d -n "$_WINDOWS_DEV"
 
 		# Second window
-		tmux new-window -t "${_TMUX_SESSION_NAME}" -n "$_WINDOWS_SYSOPS"
+		# tmux new-window -t "${_TMUX_SESSION_NAME}" -n "$_WINDOWS_SYSOPS"
 
 		# Source env script
 		if [[ -f "${DOTFILES_PATH}/tmux/tmuxdev_env" ]]; then
