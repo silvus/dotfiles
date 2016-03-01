@@ -29,7 +29,6 @@ alias netusage='lsof -P -i -n'
 alias firewalllist='sudo iptables -L -n -v --line-numbers'
 alias mountshow='mount |column -t'
 alias calculator='bc -l'
-alias calendar='calcurse --calendar /data/doc/.calendar/apts'
 alias lynx="lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
 alias tmux="tmux -2" # Getting 256 colors to work in tmux
 

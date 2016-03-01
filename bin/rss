@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-rss_url="${DOCUMENTATION_HOME}/.rss/urls"
+rss_url="${DOCUMENTATION_HOME}/.data/rss/urls"
 rss_cache="/data/tools/rss/cache.db"
 
 # If run under Tmux, open in new window

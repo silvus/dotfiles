@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-todo_file="${DOCUMENTATION_HOME}/todo.md"
+todo_file="${DOCUMENTATION_HOME}/.data/todo.md"
 todo_dir=
 
 # Go to todo folder

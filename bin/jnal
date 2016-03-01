@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 vim_sec="$HOME/.vim/vimrc_sec"
-jnal_folder="${DOCUMENTATION_HOME}/jnal"
+jnal_folder="${DOCUMENTATION_HOME}/.data/jnal"
 jnal_current_file="${jnal_folder}/jnal_$(date +'%Y%m').md"
 
 # Go to jnal folder if exist
