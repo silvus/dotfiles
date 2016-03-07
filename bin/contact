@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+addressbook="/data/doc/.data/contact/addressbook"
+
+# If run under Tmux, open in new window
+if [[ -n "$TMUX" ]]; then
+	tmux new-window -n "contacts" "abook --datafile \"${addressbook}\""
+else
+	abook --datafile "${addressbook}"
+fi
+
+exit 0

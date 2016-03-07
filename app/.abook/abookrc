@@ -1,0 +1,47 @@
+# Custom fields
+field firstname = "First name", string
+
+# Define how fields should be displayed in tabs
+view CONTACT = nick, firstname, name, mobile, phone, email
+view ADDRESS = address, address2, zip, city
+view OTHER = anniversary, url, notes
+
+# Format of entries lines in list
+# set index_format=" {name:22} {email:40} {phone:12|workphone|mobile}"
+set index_format="{nick:22|firstname|name} {email:40} {mobile:20|phone}"
+
+# Field to be used with "sort by field" command
+set sort_field=nick, firstname, name
+
+# Preserve any unknown field while loading an abook database
+set preserve_fields=all
+
+# Automatically save database on exit
+set autosave=true
+
+# Address style [eu|us|uk]
+set address_style=eu
+
+# Prevent double entry
+set add_email_prevent_duplicates=true
+
+# Show all email addresses in list
+set show_all_emails=false
+
+# Command used to start mutt
+# set mutt_command=mutt
+
+# Return all email addresses to a mutt query
+# set mutt_return_all_emails=true
+
+# Command used to print
+# set print_command=lpr
+
+# Command used to start the web browser
+# set www_command=lynx
+
+# Use ASCII characters only
+set use_ascii_only=false
+
+# Show cursor in main display
+set show_cursor=false
