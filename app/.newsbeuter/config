@@ -39,6 +39,7 @@ reload-time 30
 ## description: If yes, then the first automatic reload will be suppressed if auto-reload is set to yes
 ## parameter syntax: [yes/no]
 # suppress-first-reload no
+suppress-first-reload yes
 
 ## configuration option: browser
 ## description: Set the browser command to use when opening an article in the browser. If <browser-command> contains %u, it will be used as complete commandline and %u will be replaced with the URL that shall be opened.
@@ -110,17 +111,17 @@ goto-first-unread yes
 ## configuration option: bookmark-cmd
 ## description: If set, then <bookmark-command> will be used as bookmarking plugin. See the documentation on bookmarking for further information.
 ## parameter syntax: <bookmark-command>
-# bookmark-cmd ""
+bookmark-cmd "~/.dotfiles/app/.newsbeuter/bookmark"
 
 ## configuration option: bookmark-interactive
 ## description: If set to yes, then the configured bookmark command is an interactive program.
 ## parameter syntax: [yes/no]
-# bookmark-interactive no
+bookmark-interactive no
 
 ## configuration option: bookmark-autopilot
 ## description: If set to yes, the configured bookmark command is executed without any further input asked from user, uless the url or the title cannot be found/guessed.
 ## parameter syntax: [yes/no]
-# bookmark-autopilot no
+bookmark-autopilot yes
 
 ## configuration option: prepopulate-query-feeds
 ## description: If yes, then all query feeds are prepopulated with articles on startup.

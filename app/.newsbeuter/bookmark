@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# https://github.com/akrennmair/newsbeuter/blob/master/doc/example-bookmark-plugin.sh
+
+url="$1"
+title="$2"
+description="$3"
+
+bk add "$url" "$title" "Rss"
