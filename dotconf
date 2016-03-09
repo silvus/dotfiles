@@ -20,7 +20,6 @@
 [pip]
 yapf
 httpie
-# ansible
 
 [apt_server]
 curl
@@ -44,12 +43,11 @@ supervisor
 newsbeuter
 w3m
 w3m-img
-calcurse
+abook
 
 [apt_desktop]
 mpv
 xclip
-clipit
 scrot
 feh
 moc
