@@ -70,6 +70,7 @@ set nofoldenable          " Don't fold by default
 set incsearch             " Find as you type search
 set hlsearch              " Highlight search terms
 set ignorecase            " Make searches case-insensitive.
+" set gdefault              " The substitute flag g is on
 
 
 " Backups and undo
@@ -130,14 +131,28 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" Ctrl + arrow : move quickly
+" Ctrl + arrow: move quickly
 nnoremap <silent> <C-Up> 5k
 nnoremap <silent> <C-Down> 5j
+
+" Shift + arrow: select text
+nmap <S-Up> v<Up>
+nmap <S-Down> v<Down>
+nmap <S-Left> v<Left>
+nmap <S-Right> v<Right>
+vmap <S-Up> <Up>
+vmap <S-Down> <Down>
+vmap <S-Left> <Left>
+vmap <S-Right> <Right>
 
 " Cycling through buffers
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
 nnoremap <C-q> :bd<CR>
+
+" Shortcuts to enter insert mode
+nnoremap <silent> <Enter> i<Enter>
+nnoremap <silent> <Backspace> i<Backspace>
 
 " Save with Ctrl + s
 nmap <c-s> :w<CR>
@@ -155,12 +170,12 @@ nmap <silent> <F10> :set invnumber<bar>:set invrelativenumber<CR>
 " Redraws the screen and removes any search highlighting.
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 
-" Insert current time
-nnoremap <F5> "=strftime("%T")<CR>P
-inoremap <F5> <C-R>=strftime("%T")<CR>
+" Panic button
+map <F4> mzggg?G`z
+
 " Insert current date
-nnoremap <F6> "=strftime("%A %d %b %Y")<CR>P
-inoremap <F6> <C-R>=strftime("%A %d %b %Y")<CR>
+nnoremap <F5> "=strftime("%Y-%m-%d %T")<CR>P
+inoremap <F5> <C-R>=strftime("%Y-%m-%d %T")<CR>
 
 " Indentation on paste
 set pastetoggle=<F9>
@@ -194,6 +209,8 @@ command! StripTrailingWhitespaces call StripTrailingWhitespaces()
 command! Yapf :0,$!yapf
 autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 
+" :W - To write with root rights
+command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
 " Theme
 " ------------------------------------------------------------------------------------

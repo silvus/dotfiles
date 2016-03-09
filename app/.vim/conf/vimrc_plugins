@@ -97,7 +97,7 @@ let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
 " Startify
 " ------------------------------------------------------------------------------------
-nmap <silent> <F4> :Startify<CR>
+" nmap <silent> <F4> :Startify<CR>
 
 " CtrlP and Nerdtree compatibility
 autocmd User Startified setlocal buftype=
