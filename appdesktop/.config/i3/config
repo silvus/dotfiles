@@ -17,6 +17,9 @@ set $mod Mod4
 # chose a FreeType font, such as:
 font pango:DejaVu Sans Mono 8
 
+# Border style for new windows
+new_window pixel 1
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 # floating_minimum_size 75 x 50
@@ -26,7 +29,7 @@ floating_modifier $mod
 focus_follows_mouse no
 
 # don't mouve mouse on workspace change
-# mouse_warping none
+mouse_warping none
 
 # start a terminal
 bindsym $mod+KP_Enter exec i3-sensible-terminal
@@ -39,17 +42,13 @@ bindsym $mod+Shift+q kill
 # bindsym $mod+d exec dmenu_run
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
-# dmenu + password-store
-bindsym $mod+p exec --no-startup-id ~/.dotfiles/bin/passmenu
-
 # change focus
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# change focus with tab keys
-bindsym $mod+Tab workspace back_and_forth
+# Automatic back-and-forth when switching to the current workspace
 workspace_auto_back_and_forth yes
 
 # move windows
@@ -71,6 +70,9 @@ bindsym $mod+f fullscreen
 bindsym $mod+b border toggle
 # Disable borders while having titlebars
 bindsym $mod+Shift+b border normal 0
+
+# Default orientation for new workspaces
+# default_orientation vertical
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -121,27 +123,27 @@ bindsym Control+Mod1+Right workspace next
 bindsym Control+Mod1+Left workspace prev
 
 # move focused container to workspace
-bindsym $mod+Shift+ampersand move container to workspace $WS1
-bindsym $mod+Shift+eacute move container to workspace $WS2
-bindsym $mod+Shift+quotedbl move container to workspace $WS3
-bindsym $mod+Shift+apostrophe move container to workspace $WS4
-bindsym $mod+Shift+5 move container to workspace $WS5
-bindsym $mod+Shift+minus move container to workspace $WS6
-bindsym $mod+Shift+egrave move container to workspace $WS7
-bindsym $mod+Shift+underscore move container to workspace $WS8
-bindsym $mod+Shift+ccedilla move container to workspace $WS9
-bindsym $mod+Shift+agrave move container to workspace $WS10
+bindsym $mod+Shift+ampersand move container to workspace $WS1; workspace $WS1
+bindsym $mod+Shift+eacute move container to workspace $WS2; workspace $WS2
+bindsym $mod+Shift+quotedbl move container to workspace $WS3; workspace $WS3
+bindsym $mod+Shift+apostrophe move container to workspace $WS4; workspace $WS4
+bindsym $mod+Shift+5 move container to workspace $WS5; workspace $WS5
+bindsym $mod+Shift+minus move container to workspace $WS6; workspace $WS6
+bindsym $mod+Shift+egrave move container to workspace $WS7; workspace $WS7
+bindsym $mod+Shift+underscore move container to workspace $WS8; workspace $WS8
+bindsym $mod+Shift+ccedilla move container to workspace $WS9; workspace $WS9
+bindsym $mod+Shift+agrave move container to workspace $WS10; workspace $WS10
 
 # move focused container to workspace with numeric pad
-bindsym $mod+Shift+KP_1 move container to workspace $WS1
-bindsym $mod+Shift+KP_2 move container to workspace $WS2
-bindsym $mod+Shift+KP_3 move container to workspace $WS3
-bindsym $mod+Shift+KP_4 move container to workspace $WS4
-bindsym $mod+Shift+KP_5 move container to workspace $WS5
-bindsym $mod+Shift+KP_6 move container to workspace $WS6
-bindsym $mod+Shift+KP_7 move container to workspace $WS7
-bindsym $mod+Shift+KP_8 move container to workspace $WS8
-bindsym $mod+Shift+KP_9 move container to workspace $WS9
+bindsym $mod+Shift+KP_1 move container to workspace $WS1; workspace $WS1
+bindsym $mod+Shift+KP_2 move container to workspace $WS2; workspace $WS2
+bindsym $mod+Shift+KP_3 move container to workspace $WS3; workspace $WS3
+bindsym $mod+Shift+KP_4 move container to workspace $WS4; workspace $WS4
+bindsym $mod+Shift+KP_5 move container to workspace $WS5; workspace $WS5
+bindsym $mod+Shift+KP_6 move container to workspace $WS6; workspace $WS6
+bindsym $mod+Shift+KP_7 move container to workspace $WS7; workspace $WS7
+bindsym $mod+Shift+KP_8 move container to workspace $WS8; workspace $WS8
+bindsym $mod+Shift+KP_9 move container to workspace $WS9; workspace $WS9
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -169,7 +171,6 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-
 bindsym $mod+r mode "resize"
 
 # Sreen brightness controls
@@ -276,20 +277,19 @@ for_window [class="Gcolor2"] floating enable
 for_window [class="Lxappearance"] floating enable
 for_window [title="PyLNP"] floating enable
 for_window [class="(?i)spotify"] floating enable
-for_window [class="(?i)firefox"] border none
-for_window [class="(?i)google-chrome"] border none
-for_window [class="(?i)google-chrome-beta"] border none
-for_window [class="mpv"] border none
+for_window [class="(?i)firefox"] border pixel 1
+for_window [class="(?i)google-chrome?"] border pixel 1
+for_window [class="mpv"] border pixel 1
 # for_window [class="mpv" workspace="$WS1"] floating enable, border none, sticky enable, move absolute position 1016 578
 
 # Assignments
 for_window [title=".*\(Private Browsing\).*"] move to workspace "$WS9"
 for_window [title=".*\(Navigation privée\).*"] move to workspace "$WS9"
 assign [class="Firefox"] $WS1
-assign [class="Google-chrome"] $WS2
-assign [class="Google-chrome-beta"] $WS2
-assign [class="mpv"] $WS2
-assign [class="mplayer"] $WS2
+# assign [class="Google-chrome"] $WS2
+# assign [class="Google-chrome-beta"] $WS2
+# assign [class="mpv"] $WS2
+# assign [class="mplayer"] $WS2
 # assign [class="feh"] $WS2
 assign [class="Steam"] $WS4
 
@@ -300,6 +300,7 @@ bindsym $mod+t [title="dropterm"] scratchpad show, fullscreen enable
 
 workspace $WS1 output HDMI-0
 workspace $WS4 output HDMI-0
+workspace $WS9 output HDMI-0
 workspace $WS2 output VGA-0
 
 # Autostart
