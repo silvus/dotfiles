@@ -5,7 +5,6 @@
 _launch_tmux() {
 	local _TMUX_SESSION_NAME="${USER}_dev"
 	local _WINDOWS_DEV='Dev'
-	local _WINDOWS_SYSOPS='SysOps'
 
 	# make sure tmux server is running
 	tmux start-server
@@ -17,24 +16,21 @@ _launch_tmux() {
 		#  Launch session
 		tmux -2 new-session -s "${_TMUX_SESSION_NAME}" -d -n "$_WINDOWS_DEV"
 
-		# Second window
-		# tmux new-window -t "${_TMUX_SESSION_NAME}" -n "$_WINDOWS_SYSOPS"
-
 		# Source env script
 		if [[ -f "${DOTFILES_PATH}/tmux/tmuxdev_env" ]]; then
 			source "${DOTFILES_PATH}/tmux/tmuxdev_env"
 		fi
 
-		# Setup a Postgres window
-		# tmux new-window -t ${_TMUX_SESSION_NAME} -n 'Postgres' 'psql -U postgres'
-
 		# Focus on first window
 		tmux select-window -t "$_WINDOWS_DEV"
 
-	fi
+		# Attach to session
+		tmux -2 attach -t "${_TMUX_SESSION_NAME}"
 
-	# Attach to session
-	tmux -2 attach -t "${_TMUX_SESSION_NAME}"
+	else
+		# Attach to session without disturbing the others clients
+		tmux -2 new-session -t "${_TMUX_SESSION_NAME}"
+	fi
 }
 
 # Check if tmux is installed

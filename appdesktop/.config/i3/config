@@ -32,8 +32,8 @@ focus_follows_mouse no
 mouse_warping none
 
 # start a terminal
-bindsym $mod+KP_Enter exec i3-sensible-terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+KP_Enter exec "i3-sensible-terminal -e ~/.dotfiles/bin/tmuxdev"
+bindsym $mod+Return exec "i3-sensible-terminal -e ~/.dotfiles/bin/tmuxdev"
 
 # kill focused window
 bindsym $mod+Shift+q kill
