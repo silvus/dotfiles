@@ -31,6 +31,8 @@ alias mountshow='mount |column -t'
 alias calculator='bc -l'
 alias lynx="lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
 alias tmux="tmux -2" # Getting 256 colors to work in tmux
+alias screendual="xrandr --output HDMI-0 --auto --primary --output VGA-0 --auto --above HDMI-0"
+alias screensimple="xrandr --output VGA-0 --off --output HDMI-0 --auto --primary"
 
 # Vim
 # -----------------------------------------------------------------------------
