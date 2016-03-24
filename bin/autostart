@@ -7,8 +7,4 @@ firefox &
 thunderbird &
 dropbox start &
 
-if [[ $(xrandr -q | grep ' connected' | wc -l) -gt 1 ]]; then
-	feh --bg-fill --no-xinerama --randomize ~/.dotfiles/wallpaper/2/* &
-else
-	feh --bg-scale --randomize ~/.dotfiles/wallpaper/1/* &
-fi
+feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
