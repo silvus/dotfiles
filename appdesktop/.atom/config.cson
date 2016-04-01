@@ -1,0 +1,30 @@
+"*":
+  core:
+    autoHideMenuBar: true
+    destroyEmptyPanes: false
+    disabledPackages: [
+      "background-tips"
+      "exception-reporting"
+      "language-java"
+      "metrics"
+      "package-generator"
+      "timecop"
+      "welcome"
+    ]
+    projectHome: "/data/silvus/dev"
+    themes: [
+      "one-dark-ui"
+      "monokai-seti"
+    ]
+  editor:
+    fontSize: 12
+    invisibles: {}
+    lineHeight: 1.4
+    preferredLineLength: 100
+    showIndentGuide: true
+    showInvisibles: true
+    tabLength: 4
+    zoomFontWhenCtrlScrolling: false
+  linter: {}
+  "one-dark-ui":
+    layoutMode: "Compact"
