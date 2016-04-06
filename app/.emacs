@@ -18,9 +18,9 @@
     elpy
     auto-complete
     undo-tree
-    flycheck
+    ;; flycheck
     ;; magit ;; https://magit.vc/
-    git-gutter
+    ;; git-gutter
     neotree)
   "List of packages needs to be installed at launch")
 
@@ -58,9 +58,9 @@
 ;; (ido-mode 1)
 ;; (ido-vertical-mode 1)
 
-(require 'git-gutter)
-;; Enable global minor mode
-(global-git-gutter-mode t)
+; (require 'git-gutter)
+; ;; Enable global minor mode
+; (global-git-gutter-mode t)
 ;; Use git-gutter.el and linum-mode
 ;; (git-gutter:linum-setup)
 
@@ -71,7 +71,7 @@
 
 (require 'php-mode)
 (require 'web-mode)
-(require 'flycheck)
+;; (require 'flycheck)
 
 ;; Keep emacs Custom-settings in separate file
 (setq custom-file "~/.emacs.d/custom.el")
@@ -88,7 +88,13 @@
 
 ;; Lines numbers
 (global-linum-mode t)
-;;(setq linum-format "%d ")
+;; (setq linum-format "%d ")
+(setq linum-format "%4d \u2502")
+;; (unless (display-graphic-p)
+;;   (setq linum-format (concat linum-format " ")))
+;; (setq-default left-fringe-width  10)
+;; (setq-default right-fringe-width  0)
+;; (set-face-attribute 'fringe nil :background "black")
 
 ;; Highlight Current Line
 ;;(global-hl-line-mode 1)
@@ -149,7 +155,7 @@
 
 ;; Changing the default folder
 ;(setq default-directory (getenv "PROJECT_HOME"))
-(setq default-directory "/data/dev")
+;;(setq default-directory "/data/dev")
 
 ;; Enable backup files.
 (setq make-backup-files t)
@@ -191,7 +197,7 @@
 (global-set-key (kbd "C-e") 'buffer-menu)
 
 (global-set-key (kbd "C-o") 'find-file)
-(global-set-key (kbd "C-S-o") 'recentf-open-files)
+(global-set-key (kbd "M-o") 'recentf-open-files)
 
 (global-set-key (kbd "C-f") 'isearch-forward)
 (global-set-key (kbd "C-S-f") 'isearch-backward)
