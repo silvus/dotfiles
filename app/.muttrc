@@ -173,6 +173,7 @@ set use_from                         # generate the 'From:' header
 set sig_dashes                       # dashes before sig
 set edit_headers                     # show headers when composing
 set fast_reply                       # Skip questions (To, Subject) when reply
+set copy = yes                       # enable storing sent mail
 # set askcc                          # ask for CC:
 # set fcc_attach                     # save attachments with the body
 # unset mime_forward                 # forward attachments as part of body
