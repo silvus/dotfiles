@@ -15,11 +15,10 @@ source ~/.mutt/dev.muttrc
 # Macros for switching accounts
 macro index <f1> '<sync-mailbox><enter-command>source ~/.mutt/dev.muttrc<enter><change-folder>!<enter>'
 macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/perso.muttrc<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/online.muttrc<enter><change-folder>!<enter>'
-macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/work.muttrc<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/work.muttrc<enter><change-folder>!<enter>'
 
 # Mailboxes
-source ~/.mutt/mailboxes
+# source ~/.mutt/mailboxes
 
 # Other special folders.
 set mbox      = +Archives
