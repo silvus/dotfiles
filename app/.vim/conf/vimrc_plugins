@@ -89,6 +89,10 @@ let g:pymode_doc=0
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
+" Syntastic
+" ------------------------------------------------------------------------------------
+let g:syntastic_python_flake8_args = "--ignore=E501"
+
 " UltiSnips
 " ------------------------------------------------------------------------------------
 let g:UltiSnipsExpandTrigger="<Tab>"
