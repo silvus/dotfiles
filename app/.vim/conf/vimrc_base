@@ -173,9 +173,12 @@ nnoremap <silent> <C-l> :nohl<CR><C-l>
 " Panic button
 map <F4> mzggg?G`z
 
+" Execute current file
+nnoremap <F5> :!%:p<CR>
+
 " Insert current date
-nnoremap <F5> "=strftime("%Y-%m-%d %T")<CR>P
-inoremap <F5> <C-R>=strftime("%Y-%m-%d %T")<CR>
+nnoremap <F6> "=strftime("%Y-%m-%d %T")<CR>P
+inoremap <F6> <C-R>=strftime("%Y-%m-%d %T")<CR>
 
 " Indentation on paste
 set pastetoggle=<F9>
