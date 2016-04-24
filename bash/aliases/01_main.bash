@@ -21,7 +21,11 @@ alias distro='cat /etc/issue'
 alias shortcuts='bind -P'
 alias sudosu="sudo -Es"
 # Searches for duplicates files (size and md5)
-alias duplicate='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
+alias findduplicate='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate'
+# Delete all empty directories
+alias findanddeleteemptydirectories="find . -type d -empty -delete"
+# Move all files from subfolders to current folder
+alias findandmovehereallfiles="find . -mindepth 2 -type f -print -exec mv {} . \;"
 alias process='ps aux | grep'
 alias ports='netstat -tulanp'
 alias tcpdump='tcpdump -i eth0'
