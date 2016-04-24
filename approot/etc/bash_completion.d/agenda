@@ -5,7 +5,7 @@ _agenda()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="add autocomplete edit event --date --version --help"
+    opts="add autocomplete count edit event --date --version --help"
 
     COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
 }
