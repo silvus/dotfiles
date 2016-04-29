@@ -3,11 +3,16 @@
 rss_url="${DOCUMENTATION_HOME}/.data/rss/urls"
 rss_cache="/data/tools/rss/cache.db"
 
-# If run under Tmux, open in new window
+# If run under Tmux, set title
 if [[ -n "$TMUX" ]]; then
-	tmux new-window -n "rss" "newsbeuter -q -u \"${rss_url}\" -c \"${rss_cache}\""
-else
-	newsbeuter -q -u "${rss_url}" -c "${rss_cache}"
+	tmux rename-window "rss"
+fi
+
+newsbeuter -q -u "${rss_url}" -c "${rss_cache}"
+
+# If run under Tmux, unset title
+if [[ -n "$TMUX" ]]; then
+	tmux set-window-option -q automatic-rename
 fi
 
 exit 0

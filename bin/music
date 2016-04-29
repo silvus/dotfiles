@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
-# If run under Tmux, open in new window
+# If run under Tmux, set title
 if [[ -n "$TMUX" ]]; then
-	tmux new-window -n "music" 'mocp "$@"'
-else
-	mocp "$@"
+	tmux rename-window "music"
 fi
+
+mocp "$@"
+
+# If run under Tmux, unset title
+if [[ -n "$TMUX" ]]; then
+	tmux set-window-option -q automatic-rename
+fi
+
+exit 0
 

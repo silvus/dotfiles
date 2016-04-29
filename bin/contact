@@ -2,11 +2,17 @@
 
 addressbook="/data/doc/.data/contact/addressbook"
 
-# If run under Tmux, open in new window
+# If run under Tmux, set title
 if [[ -n "$TMUX" ]]; then
-	tmux new-window -n "contacts" "abook --datafile \"${addressbook}\""
-else
-	abook --datafile "${addressbook}"
+	tmux rename-window "contacts"
 fi
+
+abook --datafile "${addressbook}"
+
+# If run under Tmux, unset title
+if [[ -n "$TMUX" ]]; then
+	tmux set-window-option -q automatic-rename
+fi
+
 
 exit 0
