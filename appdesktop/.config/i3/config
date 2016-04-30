@@ -201,7 +201,7 @@ bar {
     position top
 
     output HDMI-0
-    output eDP1
+    output eDP-1
 
     # show tray icons on the primary monitor
     # tray_output primary
