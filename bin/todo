@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 todo_file="${DOCUMENTATION_HOME}/.data/todo.md"
-todo_dir=
+
+# If run under Tmux, set title
+if [[ -n "$TMUX" ]]; then
+	tmux rename-window "todo"
+fi
 
 # Go to todo folder
 cd "$(dirname "${todo_file}")"
@@ -15,5 +19,11 @@ vim "$todo_file"
 # Autocommit
 git add .
 git commit -m "Autocommit Todo $(date +'%d/%m/%Y %T')"
+
+# If run under Tmux, unset title
+if [[ -n "$TMUX" ]]; then
+	tmux set-window-option -q automatic-rename
+fi
+
 
 exit 0
