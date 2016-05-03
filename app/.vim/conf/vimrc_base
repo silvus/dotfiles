@@ -148,11 +148,7 @@ vmap <S-Right> <Right>
 " Cycling through buffers
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
-nnoremap <C-q> :bd<CR>
-
-" Shortcuts to enter insert mode
-nnoremap <silent> <Enter> i<Enter>
-nnoremap <silent> <Backspace> i<Backspace>
+nnoremap <C-w> :bd<CR>
 
 " Save with Ctrl + s
 nmap <c-s> :w<CR>
