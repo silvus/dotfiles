@@ -4,8 +4,6 @@ set nocompatible          " Get rid of Vi compatibility mode
 " Misc
 " ------------------------------------------------------------------------------------
 set wildmenu              " Show list instead of just completing
-set nowrap                " Don't wrap text
-set display=lastline      " Show as much as possible of a wrapped last line, not just "@"
 set backspace=2           " Backspace in insert mode works like other editors
 set encoding=utf-8        " Encoding
 set cm=blowfish           " Cryptmethod
@@ -13,6 +11,11 @@ set hidden                " Switch between buffers without saving
 set splitright            " New vsplit windows to the right of the current
 set splitbelow            " New split windows to the bottom of the current
 set spelllang=en,fr
+
+" Wrap
+set nowrap                " Don't wrap text
+set showbreak=↪           " Line wraps character
+set display=lastline      " Show as much as possible of a wrapped last line, not just "@"
 
 " Understand *.md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown wrap linebreak nolist textwidth=0 wrapmargin=0
@@ -32,6 +35,7 @@ if ! has('gui_running')
 	augroup END
 endif
 
+
 " Spaces - Tabs - Indent - Fold
 " ------------------------------------------------------------------------------------
 filetype on
@@ -40,7 +44,6 @@ filetype indent on        " Load filetype-specific indent files
 
 set list                  " Show special characters
 set listchars=tab:\ \ ,trail:•,extends:#,nbsp:.
-set showbreak=↪           " Line wraps character
 
 set tabstop=4             " Number of visual spaces per TAB
 set softtabstop=4         " Number of spaces in tab when editing
@@ -64,6 +67,14 @@ set foldlevelstart=1
 set foldnestmax=1         " Deepest fold level
 " set foldcolumn=1        " See the folds
 set nofoldenable          " Don't fold by default
+
+
+" Scroll
+" ------------------------------------------------------------------------------------
+set sidescroll=1          " Scroll one character at a time to reveal more text
+set scrolloff=10          " Places a line between the current line and the screen edge
+set sidescrolloff=10      " Places a couple columns between the current column and the screen edge
+
 
 " Search
 " ------------------------------------------------------------------------------------
@@ -211,6 +222,7 @@ autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 " :W - To write with root rights
 command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
+
 " Theme
 " ------------------------------------------------------------------------------------
 set t_Co=256              " Enable 256-color mode.
@@ -226,8 +238,6 @@ set relativenumber        " Show relative line numbers
 " set cursorline            " Highlights the current line
 set showmode              " Current mode in status line
 set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
-set scrolloff=10          " Places a line between the current line and the screen edge
-set sidescrolloff=5       " Places a couple columns between the current column and the screen edge
 set showmatch             " Show matching brackets when text indicator is over them
 
 " Highlights the current line on insert
