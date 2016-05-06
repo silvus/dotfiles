@@ -159,7 +159,7 @@ vmap <S-Right> <Right>
 " Cycling through buffers
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
-nnoremap <C-w> :bd<CR>
+nnoremap <C-q> :bd<CR>
 
 " Save with Ctrl + s
 nmap <c-s> :w<CR>
