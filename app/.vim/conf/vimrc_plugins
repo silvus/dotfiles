@@ -11,8 +11,6 @@ Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
 Plug 'mbbill/undotree'
 Plug 'airblade/vim-gitgutter'
@@ -93,12 +91,6 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " Syntastic
 " ------------------------------------------------------------------------------------
 let g:syntastic_python_flake8_args = "--ignore=E501"
-
-" UltiSnips
-" ------------------------------------------------------------------------------------
-let g:UltiSnipsExpandTrigger="<Tab>"
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
 " Startify
 " ------------------------------------------------------------------------------------
