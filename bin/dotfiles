@@ -63,9 +63,12 @@ def print_question(question):
 
 def assure_dir_exist(path):
     """ Create parents folders """
-    dir = os.path.dirname(os.path.expanduser(path))
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+    dir_path = os.path.dirname(os.path.expanduser(path))
+    if not os.path.exists(dir_path):
+        try:
+            os.makedirs(dir_path)
+        except OSError as exc:
+            print_error("{}".format(exc))
 
 
 def exec_command(command, show_errors=True):
@@ -94,7 +97,7 @@ def check_requirements():
     # Need git
     if not is_installed('git'):
         print_error('Git is missing. Aborting.')
-        sys.exit(1)
+        sys.exit(2)
 
     # Github access
     try:
@@ -104,11 +107,18 @@ def check_requirements():
         socket.create_connection((host, 80), 2)
     except:
         print_error('Github can\'t be reach')
-        sys.exit(2)
+        sys.exit(3)
 
 
 def X_is_running():
-    return exec_command(["xset", "-q"], False)
+    """
+    Try to guess if x is running
+    """
+    try:
+        return exec_command(["xset", "-q"], False)
+    except OSError:
+        # If xset (user preference utility for X) doesn't exist, there is a FileNotFoundError
+        return False
 
 #####################################################################
 # Symlinks
@@ -451,7 +461,7 @@ def install_dependencies(config_file):
     else:
         # Config not found
         print_error("Config file " + config_file + " doesn't exist")
-        sys.exit(1)
+        sys.exit(4)
 
 #####################################################################
 # Main
@@ -482,39 +492,44 @@ if __name__ == '__main__':
     restarted = args.restart
     with_dependencies = args.dependencies
 
-    # Requirements
-    check_requirements()
+    try:
+        # Requirements
+        check_requirements()
 
-    # Self update
-    git_clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git',
-                                 dotfilespath, restarted)
+        # Self update
+        git_clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git',
+                                     dotfilespath, restarted)
 
-    # Install apps if argument
-    if with_dependencies:
-        # Install from config file
-        print_header('Download apps')
-        config_file = dotfilespath + '/dotconf'
-        install_dependencies(config_file)
+        # Install apps if argument
+        if with_dependencies:
+            # Install from config file
+            print_header('Download apps')
+            config_file = dotfilespath + '/dotconf'
+            install_dependencies(config_file)
 
-    # Make symlinks
-    print_header('Symlinks apps')
-    if symlink_arbo(dotfilespath + '/app', os.path.expanduser('~')):
+        # Make symlinks
+        print_header('Symlinks apps')
+        if symlink_arbo(dotfilespath + '/app', os.path.expanduser('~')):
 
-        print_header('Symlinks root apps')
-        symlink_arbo(dotfilespath + '/approot', '/', True)
+            print_header('Symlinks root apps')
+            symlink_arbo(dotfilespath + '/approot', '/', True)
 
-        if X_is_running():
-            print_header('Symlinks desktop apps')
-            symlink_arbo(dotfilespath + '/appdesktop', os.path.expanduser('~'))
+            if X_is_running():
+                print_header('Symlinks desktop apps')
+                symlink_arbo(dotfilespath + '/appdesktop',
+                             os.path.expanduser('~'))
 
-    # Compile sshrc config
-    print_header('Sshrc')
-    generate_config(
-        os.path.expanduser("~/.sshrc"), [
-            dotfilespath + '/sshrc/sshrc_main',
-            dotfilespath + '/bash/aliases/01_main.bash',
-            dotfilespath + '/bash/aliases/04_prompt.bash',
-            dotfilespath + '/sshrc/sshrc_ascii',
-        ])
+        # Compile sshrc config
+        print_header('Sshrc')
+        generate_config(
+            os.path.expanduser("~/.sshrc"), [
+                dotfilespath + '/sshrc/sshrc_main',
+                dotfilespath + '/bash/aliases/01_main.bash',
+                dotfilespath + '/bash/aliases/04_prompt.bash',
+                dotfilespath + '/sshrc/sshrc_ascii',
+            ])
+    except KeyboardInterrupt:
+        print_error('Aborting...')
+        sys.exit(1)
 
     sys.exit(0)
