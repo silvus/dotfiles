@@ -5,22 +5,10 @@ Setup dotfiles
 
 import os
 import sys
-import time
-import errno
 import socket
-import configparser
 import fileinput
 import argparse
-from urllib.request import Request, urlretrieve
-from urllib.error import URLError, HTTPError
-from subprocess import Popen, PIPE, call
-
-try:
-    import pip
-except ImportError:
-    pip_is_installed = False
-else:
-    pip_is_installed = True
+from subprocess import Popen, PIPE
 
 #####################################################################
 # Prints (with colors)
@@ -136,8 +124,7 @@ def symlink_arbo(rootSource, rootDestination, with_sudo=False):
             # Get relative dir from dotfiles root
             relativeDir = os.path.relpath(dirName, rootSource)
             # Add file name and handle "." (with normpath)
-            relativeFile = os.path.normpath(os.path.join(relativeDir,
-                                                         fileName))
+            relativeFile = os.path.normpath(os.path.join(relativeDir, fileName))
 
             # Create absolutes paths
             source = os.path.join(rootSource, relativeFile)
@@ -193,153 +180,6 @@ def symlink_root(src, dest):
         return False
 
 #####################################################################
-# Directories
-#####################################################################
-
-
-def directories_create(directories):
-    for dir_path, _ in directories:
-        try:
-            os.makedirs(os.path.expanduser(dir_path))
-        except OSError as exc:
-            if exc.errno != errno.EEXIST:
-                raise exc
-            pass
-
-#####################################################################
-# Downloads
-#####################################################################
-
-
-def download_install(apps):
-    """
-    Download each app in config file
-    """
-    for destination, url in apps:
-        download(url, os.path.expanduser(destination))
-
-
-def download(url, destination):
-    """
-    Check url status and download file
-    Download file and set executable permission
-    Only if file is older than 7 days and url HTTP code is ok
-    """
-    # Create parents folders
-    assure_dir_exist(destination)
-
-    if download_needed(destination):
-        Request(url)
-        try:
-            urlretrieve(url, destination, reporthook=download_report)
-        except HTTPError as e:
-            print_warning(url + ' unavailable. Error code: ' + e.code)
-        except URLError as e:
-            print_warning(url + ' unavailable. Reason: ' + e.reason)
-        else:
-            # everything is fine
-            os.chmod(destination, 0o755)
-            sys.stdout.flush()
-            sys.stdout.write("\r" + COLOR_GREEN + "    ✔ " + COLOR_RESET +
-                             "Download complete: %s" % os.path.basename(
-                                 destination) + '\n')
-    else:
-        print_info('Already present: ' + os.path.basename(destination))
-
-
-def download_needed(path):
-    """ Check if destination exist and is older than 7 days """
-    if os.path.isfile(path):
-        # File exist, check his age
-        now = time.time()
-        limit = 60 * 60 * 24 * 7  # Number of seconds in 7 days
-        return os.stat(path).st_mtime < now - limit
-    else:
-        # File doesn't exist
-        return True
-
-
-def download_report(count, blockSize, totalSize):
-    """ Report download status in percentage """
-    percent = int(count * blockSize * 100 / totalSize)
-    sys.stdout.write("\r%d%%" % percent + ' complete')
-    sys.stdout.flush()
-
-#####################################################################
-# Pip
-#####################################################################
-
-
-def pip_install(packages):
-    """
-    Check if pip and pipsi are installed and call the corresponding function
-    """
-    if pip_is_installed:
-        if is_installed('pipsi'):
-            pip_install_packages_pipsi(packages)
-        else:
-            pip_install_packages(packages)
-    else:
-        print_error('pip is not installed')
-
-
-def pip_install_packages(packages):
-    """
-    Download packages list with pip
-    """
-    os.environ['PIP_REQUIRE_VIRTUALENV'] = ''
-    for package, _ in packages:
-        print_info('pip: ' + package)
-        pip.main(['install', '--user', '--upgrade', '--quiet', package])
-
-
-def pip_install_packages_pipsi(packages):
-    """
-    Use pipsi (pip in virtualenv) instead of pip
-    """
-    for package, _ in packages:
-        print_info('pipsi: ' + package)
-
-        pipsi_venv_path = os.path.join(
-            os.path.expanduser(os.getenv('PIPSI_HOME', '~/.local/venvs')),
-            package)
-        if os.path.isdir(pipsi_venv_path):
-            # Package already present, upgrade
-            call(['pipsi', 'upgrade', package])
-        else:
-            # Install
-            call(['pipsi', 'install', package])
-
-#####################################################################
-# Apt
-#####################################################################
-
-
-def apt_install_packages(packages_server=None, packages_desktop=None):
-    """
-    Merge server et desktop packages lists and install them
-    """
-    apt_package_list = []
-    if packages_server:
-        for apt_package, _ in packages_server:
-            apt_package_list.append(apt_package)
-
-    if packages_desktop and X_is_running():
-        for apt_package, _ in packages_desktop:
-            apt_package_list.append(apt_package)
-
-    if len(apt_package_list) > 0:
-        # Update
-        print_info('Update')
-        call(['sudo', 'apt-get', '-qq', 'update'])
-        # Upgrade
-        print_info('Upgrade')
-        call(['sudo', 'apt-get', 'dist-upgrade'])
-        # Install
-        print_info('Install ' + ', '.join(apt_package_list))
-        call(['sudo', 'apt-get', 'install'] + apt_package_list)
-
-#####################################################################
 # Compile
 #####################################################################
 
@@ -347,8 +187,7 @@ def apt_install_packages(packages_server=None, packages_desktop=None):
 def generate_config(outfilename, filenames):
     """ Generate config from multiple files """
     with open(outfilename, 'w') as fout:
-        fout.write(
-            '# DO NOT EDIT THIS FILE BY HAND.\n# YOUR CHANGES WILL BE OVERWRITTEN !\n\n')
+        fout.write('# DO NOT EDIT THIS FILE BY HAND.\n# YOUR CHANGES WILL BE OVERWRITTEN !\n\n')
         for line in fileinput.input(filenames):
             fout.write(line)
     print_success('Generated: ' + outfilename)
@@ -365,15 +204,15 @@ def git_clone(url, destination):
 
 def git_pull(destination):
     print_info('Update ' + destination)
-    return exec_command(['git', '--work-tree=' + destination, '--git-dir=' +
-                         destination + '/.git', 'pull', 'origin', 'master'])
+    return exec_command(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git',
+                         'pull', 'origin', 'master'])
 
 
 def git_version(destination):
     """ Get current commit """
     p = Popen(
-        ['git', '--work-tree=' + destination,
-         '--git-dir=' + destination + '/.git', 'rev-parse', 'HEAD'],
+        ['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'rev-parse',
+         'HEAD'],
         stdout=PIPE,
         stderr=PIPE)
     version, errors = p.communicate()
@@ -382,18 +221,6 @@ def git_version(destination):
         return False
     else:
         return version
-
-
-def git_clone_or_update(items):
-    """
-    Update if destination exist, else clone with git
-    """
-    for destination, url in items:
-        destination = os.path.expanduser(destination)
-        if os.path.exists(destination):
-            git_pull(destination)
-        else:
-            git_clone(url, destination)
 
 
 def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
@@ -416,52 +243,7 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
 
         if dot_version_prev != dot_version_next:
             # Restart current script if version change
-            os.execl(sys.executable, sys.executable, sys.argv[0], '--restart',
-                     *sys.argv[1:])
-
-#####################################################################
-# Dependencies
-#####################################################################
-
-
-def install_dependencies(config_file):
-    """ Read the config file and execute each section """
-    # Check for config file
-    if os.path.isfile(config_file):
-        # Read conf
-        config = configparser.ConfigParser(allow_no_value=True)
-        config.read(config_file)
-
-        # Assure each directory in "directories" section exist
-        if config.has_section('directories'):
-            directories_create(config.items('directories'))
-
-        # Download each item in "download" section
-        if config.has_section('download'):
-            download_install(config.items('download'))
-
-        # Clone each item in "clone" section
-        if config.has_section('clone'):
-            git_clone_or_update(config.items('clone'))
-
-        # Install from pip if it's present
-        if config.has_section('pip'):
-            pip_install(config.items('pip'))
-
-        # Install with apt
-        if config.has_section('apt_server') or config.has_section(
-                'apt_desktop'):
-            print_header('Apt')
-            apt_install_packages(
-                packages_server=config.items('apt_server')
-                if config.has_section('apt_server') else None,
-                packages_desktop=config.items('apt_desktop') if
-                config.has_section('apt_desktop') else None)
-
-    else:
-        # Config not found
-        print_error("Config file " + config_file + " doesn't exist")
-        sys.exit(4)
+            os.execl(sys.executable, sys.executable, sys.argv[0], '--restart', *sys.argv[1:])
 
 #####################################################################
 # Main
@@ -475,11 +257,6 @@ if __name__ == '__main__':
                         "--path",
                         help="Dotfiles base path. Default ~/.dotfiles",
                         default=os.path.expanduser('~/.dotfiles'))
-    parser.add_argument("-d",
-                        "--dependencies",
-                        help="Install or upgrade dependencies",
-                        action="store_true",
-                        default=False)
     parser.add_argument("-r",
                         "--restart",
                         help=argparse.SUPPRESS,
@@ -490,22 +267,14 @@ if __name__ == '__main__':
 
     dotfilespath = args.path
     restarted = args.restart
-    with_dependencies = args.dependencies
 
     try:
         # Requirements
         check_requirements()
 
         # Self update
-        git_clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git',
-                                     dotfilespath, restarted)
-
-        # Install apps if argument
-        if with_dependencies:
-            # Install from config file
-            print_header('Download apps')
-            config_file = dotfilespath + '/dotconf'
-            install_dependencies(config_file)
+        git_clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git', dotfilespath,
+                                     restarted)
 
         # Make symlinks
         print_header('Symlinks apps')
@@ -516,8 +285,7 @@ if __name__ == '__main__':
 
             if X_is_running():
                 print_header('Symlinks desktop apps')
-                symlink_arbo(dotfilespath + '/appdesktop',
-                             os.path.expanduser('~'))
+                symlink_arbo(dotfilespath + '/appdesktop', os.path.expanduser('~'))
 
         # Compile sshrc config
         print_header('Sshrc')
