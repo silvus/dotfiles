@@ -16,8 +16,8 @@ fi
 # Update
 git pull origin master
 
-# Open vim with Nerdtree
-vim -c "NERDTree"
+# Open vim explorer
+vim -c "Explore"
 
 # Autocommit
 git add .
