@@ -1,86 +1,31 @@
 #!/usr/bin/env bash
 
-usage() {
-cat << EOF
-$0 [OPTIONS]
+# If run under Tmux, set title
+if [[ -n "$TMUX" ]]; then
+	tmux rename-window "Doc"
+fi
 
-Commit/update and open doc folder with ranger or vim.
+# Go to doc folder
+if [[ -d "$DOCUMENTATION_HOME" ]]; then
+	cd "$DOCUMENTATION_HOME"
+else
+	echo "$DOCUMENTATION_HOME is not a folder"
+	exit 1
+fi
 
-OPTIONS:
-    -h       Show this message
-    -g       Do not update/commit
-    -v       Open with vim
-EOF
-}
+# Update
+git pull origin master
 
-# Variables - Default values
-# ------------------------------------------------------------
-# Open with ranger
-DOC_OPEN_WITH="ranger"
+# Open vim with Nerdtree
+vim -c "NERDTree"
 
-# Update/Commit by default
-DOC_AUTOCOMMIT=1
+# Autocommit
+git add .
+git commit -m "Autocommit Doc $(date +'%d/%m/%Y %T')"
 
-# Go to docs folder if exist
-# ------------------------------------------------------------
-_doc_goto_folder() {
-    if [[ -d "$DOCUMENTATION_HOME" ]]; then
-        cd "$DOCUMENTATION_HOME"
-    else
-        echo "$DOCUMENTATION_HOME is not a folder"
-        exit 1
-    fi
-}
+# If run under Tmux, unset title
+if [[ -n "$TMUX" ]]; then
+	tmux set-window-option -q automatic-rename
+fi
 
-# Update and commit
-# ------------------------------------------------------------
-_doc_autocommit() {
-    if [[ "$DOC_AUTOCOMMIT" -eq 1 ]]; then
-        git add .
-        git commit -m "Autocommit $(date +'%d/%m/%Y %T')"
-    fi
-}
-_doc_update() {
-    if [[ "$DOC_AUTOCOMMIT" -eq 1 ]]; then
-        git pull origin master
-    fi
-}
-
-# Open doc folder
-# ------------------------------------------------------------
-_doc_open_folder() {
-    # Open with vi
-    if [[ "$DOC_OPEN_WITH" == "vim" ]]; then
-        vim
-
-    # Check if ranger is installed
-    elif [[ -x "/usr/bin/ranger" ]]; then
-        ranger
-
-    # No Ranger ? Try vim...
-    else
-        echo "Ranger is not installed"
-        vim
-    fi
-}
-
-# Parse arguments
-# ------------------------------------------------------------
-while getopts hvg OPTIONS; do
-    case "$OPTIONS" in
-        h)
-            usage
-            exit 0 ;;
-        v)
-            DOC_OPEN_WITH="vim" ;;
-        g)
-            DOC_AUTOCOMMIT=0 ;;
-    esac
-done
-
-# Main
-# ------------------------------------------------------------
-_doc_goto_folder
-_doc_update
-_doc_open_folder
-_doc_autocommit
+exit 0
