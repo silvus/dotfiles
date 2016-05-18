@@ -25,7 +25,7 @@ TXTRESET=$(tput sgr0)
 # -------------------------------------------------------------------------------------------
 # Change host color if connect by ssh
 _is_ssh() {
-	if [[ $(who am i) =~ \([-a-zA-Z0-9\.]+\)$ ]] ; then
+	if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
 		_COLOR_HOST="$TXTRED"
 	else
 		_COLOR_HOST="$TXTGREEN"
