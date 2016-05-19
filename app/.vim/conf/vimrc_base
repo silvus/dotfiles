@@ -161,6 +161,9 @@ nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
 nnoremap <C-q> :bd<CR>
 
+" Cycling through splits
+noremap <TAB> <C-W>w
+
 " Save with Ctrl + s
 nmap <c-s> :w<CR>
 imap <c-s> <Esc>:w<CR>a
