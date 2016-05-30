@@ -25,6 +25,9 @@ Plug 'ryanss/vim-hackernews'
 " Nerdtree (On demand)
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
 
+" Fzf
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
 " Tagbar (On demand)
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }"
 
