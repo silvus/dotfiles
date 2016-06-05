@@ -22,7 +22,7 @@ general {
 order += "battery 0"
 order += "ethernet tun0"
 order += "wireless wlan0"
-order += "ethernet eth0"
+order += "ethernet _first_"
 order += "cpu_usage"
 order += "load"
 order += "disk /"
@@ -34,7 +34,7 @@ order += "tztime blank" # Hack to show a seperator between time and tray icons
 
 # Network
 # -------------
-ethernet eth0 {
+ethernet _first_ {
 	format_up = "   %ip "
 	format_down = " ⚏  "
 }
