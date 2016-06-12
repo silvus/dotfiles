@@ -32,7 +32,7 @@ focus_follows_mouse no
 mouse_warping none
 
 # start a terminal
-set $terminal "rxvt-unicode -title terminal -e ~/.dotfiles/bin/tmuxdev"
+set $terminal rxvt-unicode -title terminal -e ~/.dotfiles/bin/tmuxdev
 
 bindsym $mod+KP_Enter exec $terminal
 bindsym $mod+Return exec $terminal
@@ -296,10 +296,11 @@ assign [class="Firefox"] $WS1
 # assign [class="feh"] $WS2
 assign [class="Steam"] $WS8
 
-# exec --no-startup-id lxterminal --title dropterm --command tmuxdev
-# for_window [title="dropterm"] floating enable;
-# for_window [title="dropterm"] move scratchpad; [title="dropterm"] scratchpad show; fullscreen enable; move scratchpad
-# bindsym $mod+t [title="dropterm"] scratchpad show, fullscreen enable
+exec --no-startup-id "rxvt-unicode -name dropterm -title terminal -e ~/.dotfiles/bin/tmuxdev"
+for_window [instance="dropterm"] floating enable;
+for_window [instance="dropterm"] move scratchpad; [instance="dropterm"] scratchpad show; fullscreen enable; move scratchpad
+# Bind to $mod + small "2"
+bindcode $mod+49 [instance="dropterm"] scratchpad show, fullscreen enable
 
 workspace $WS1 output HDMI-0
 workspace $WS4 output HDMI-0
