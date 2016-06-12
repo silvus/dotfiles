@@ -40,7 +40,7 @@ URxvt*color8:             #6e706b
 URxvt*color1:             #cc0000
 URxvt*color9:             #ef2929
 ! green dark/light
-URxvt*color2:             #4e9a06
+URxvt*color2:             #00AA00
 URxvt*color10:            #8ae234
 ! yellow dark/light
 URxvt*color3:             #edd400
