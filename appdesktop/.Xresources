@@ -4,7 +4,6 @@ URxvt.scrollBar: off
 
 ! Font
 URxvt.font: xft:DejaVuSansMono:pixelsize=12,xft:Symbola:pixelsize=10
-URxvt.boldFont: xft:DejaVuSansMono:pixelsize=12:bold,xft:Symbola:pixelsize=10:bold
 URxvt.letterSpace: -1
 ! URxvt.font: xft:Dejavu Sans Mono Book:size=10,\
 !            xft:Dejavu Sans Mono:size=12,\
@@ -32,7 +31,7 @@ URxvt*cursorColor:        #8ae234
 ! foreground color for underline
 URxvt*colorUL:            #8ae234
 ! line color for underline
-URxvt*underlineColor:     #92659a
+URxvt*underlineColor:     #00aa00
 ! black dark/light
 URxvt*color0:             #2e3436
 URxvt*color8:             #6e706b
@@ -40,17 +39,17 @@ URxvt*color8:             #6e706b
 URxvt*color1:             #cc0000
 URxvt*color9:             #ef2929
 ! green dark/light
-URxvt*color2:             #00AA00
+URxvt*color2:             #00aa00
 URxvt*color10:            #8ae234
 ! yellow dark/light
 URxvt*color3:             #edd400
 URxvt*color11:            #fce94f
 ! blue dark/light
-URxvt*color4:             #3465a4
-URxvt*color12:            #729fcf
+URxvt*color4:             #2b5c9c
+URxvt*color12:            #8abaed
 ! magenta dark/light
-URxvt*color5:             #92659a
-URxvt*color13:            #c19fbe
+URxvt*color5:             #7a4383
+URxvt*color13:            #de35de
 ! cyan dark/light
 URxvt*color6:             #07c7ca
 URxvt*color14:            #63e9e9
