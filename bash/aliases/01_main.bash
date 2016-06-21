@@ -44,4 +44,7 @@ alias screensimple="xrandr --output VGA-0 --off --output HDMI-0 --auto --primary
 alias vi='vim'
 alias vim.sec="vim -x -u $HOME/.vim/vimrc_sec"
 
-stty -ixon # Disable flow control (bind Ctrl+s in vim)
+# Disable flow control (bind Ctrl+s in vim)
+stty -ixon
+# Disable nbsp character (AltGr + Space: non-breakable space)
+setxkbmap -option "nbsp:none"
