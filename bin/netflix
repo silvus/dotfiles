@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+nohup google-chrome --app=https://www.netflix.com/browse >/dev/null 2>&1 &
