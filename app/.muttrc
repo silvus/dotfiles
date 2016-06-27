@@ -11,25 +11,15 @@ source ~/.mutt/dev.muttrc
 # set smtp_url
 # set smtp_pass
 # set signature
+# and source ~/.mutt/folders.muttrc
 
 # Macros for switching accounts
 macro index <f1> '<sync-mailbox><enter-command>source ~/.mutt/dev.muttrc<enter><change-folder>!<enter>'
 macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/perso.muttrc<enter><change-folder>!<enter>'
 macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/work.muttrc<enter><change-folder>!<enter>'
 
-# Mailboxes
-# source ~/.mutt/mailboxes
-
-# Other special folders.
-set mbox      = +Archives
-set postponed = +Drafts
-set record    = +Sent
-# Trash
-set maildir_trash
-folder-hook . set trash="=Trash"
-folder-hook trash$ unset trash
-
 # Imap conf
+# set imap_idle="yes"                         # Use IMAP IDLE for pushing mail
 # set imap_check_subscribed                   # Check for all subscribed IMAP folders (as if all were added with a mailboxes line)
 # set imap_list_subscribed
 # unset imap_passive                          # Allow Mutt to open new imap connection automatically.
@@ -48,9 +38,9 @@ set tmpdir           = ~/.mutt/temp          # where to keep temp files
 
 # Basic Options -----------------------------------------------------------------------
 
-# set wait_key = no      # shut up, mutt
+set wait_key = no        # ask you to press a key after shell-escape
 # set mbox_type = Maildir  # mailbox type
-set timeout = 350        # time to wait for idle mutt (no key pressed) before the status is updated again
+set timeout = 30         # time to wait for idle mutt (no key pressed) before the status is updated again
 set mail_check = 180     # minimum time between scans (time in seconds)
 # set delete             # don't ask, just do
 unset confirmappend      # don't ask to move
@@ -92,11 +82,12 @@ set status_on_top                            # put status bar on top instead of 
 # Browser View Options ----------------------------------------------------------------
 
 set sort_browser = unsorted                  # Specifies how to sort entries in the file browser (mailboxes list)
+set folder_format="%2C %6s %D %N %f"         # Format of the list of mailboxes/ folders
 
 
 # Index View Options ------------------------------------------------------------------
 
-set date_format = "%d/%m/%y"
+set date_format = "%d/%m/%y %H:%M"
 set index_format = "[%Z]  %D  %-20.20F  %s"
 set sort = threads                           # Sort messages into threads
 set sort_aux = reverse-last-date-received    # Order threads
@@ -137,21 +128,25 @@ bind pager <down>      next-line
 bind index <left>      previous-undeleted   # previous message
 bind index <right>     next-undeleted       # next message
 
+# macro index,pager Q "<enter-command>set quit<enter><exit>"               "Quit without saving or confirm"
+# macro index,pager \Cq "<enter-command>set quit<enter><sync-mailbox><quit>"          "Quit without confirm"
+
 # Sync email
 # bind index,pager <F5>  sync-mailbox
-bind index,pager <F5>  imap-fetch-mail
-macro index,pager <F6> "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
+macro index,pager <F5> "<sync-mailbox><shell-escape>mbsync -a<enter>"               "Sync all mails"
+# bind index,pager <F5>  imap-fetch-mail
+# macro index,pager <F6> "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
 
 # Reply
 bind index,pager r     group-reply          # to all recipients by default
 bind index,pager R     reply                # to sender only
 
 # Open folders list
-macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
+macro index,pager c    "<change-folder>?<change-dir><home>^K=<enter>"
 
 # Saner copy/move dialogs
-macro index C          "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
-macro index M          "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+macro index,pager C    "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index,pager M    "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
 # Ctrl-R to mark all as read
 macro index \Cr        "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
@@ -192,6 +187,7 @@ set editor = "vim +star +/^$"        # Use Vim to compose email (Inset mode + cu
 set sort_alias = alias               # Which field to use to sort the alias list. values: alias, address
 set reverse_alias = yes              # Sorts in reverse order if set to yes
 source $alias_file                   # Read aliases on startup. Needed for auto-completion.
+# set query_command="abook --mutt-query '%s'"  # address book
 
 
 # Colors ------------------------------------------------------------------------------
