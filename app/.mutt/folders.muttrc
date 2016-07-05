@@ -1,0 +1,10 @@
+# Folders
+set spoolfile = +INBOX
+set mbox      = +Archives
+set postponed = +Drafts
+set record    = +Sent
+
+# Trash
+set maildir_trash
+folder-hook . set trash="=Trash"
+folder-hook trash$ unset trash
