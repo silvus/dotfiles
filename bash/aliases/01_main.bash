@@ -46,5 +46,7 @@ alias vim.sec="vim -x -u $HOME/.vim/vimrc_sec"
 
 # Disable flow control (bind Ctrl+s in vim)
 stty -ixon
-# Disable nbsp character (AltGr + Space: non-breakable space)
-setxkbmap -option "nbsp:none"
+if [[ -x "$(which setxkbmap)" ]]; then
+	# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
+	setxkbmap -option "nbsp:none"
+fi
