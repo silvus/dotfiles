@@ -50,3 +50,9 @@ if [[ -x "$(which setxkbmap)" ]]; then
 	# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
 	setxkbmap -option "nbsp:none"
 fi
+if [[ -x "$(which xset)" ]]; then
+	# Set keyboard repeat delay and rate
+	# Default: xset r rate 660 25
+	xset r rate 300 30
+fi
+
