@@ -144,7 +144,15 @@ nnoremap <C-H> <C-W><C-H>
 
 " Ctrl + arrow: move quickly
 nnoremap <silent> <C-Up> 5k
+inoremap <silent> <C-Up> <Esc>5ki
 nnoremap <silent> <C-Down> 5j
+inoremap <silent> <C-Down> <Esc>5ji
+
+" Delete in insert mode
+inoremap <silent> <C-d> <Esc>ddi
+
+" Paste in insert mode
+inoremap <silent> <C-p> <Esc>pi
 
 " Shift + arrow: select text
 nmap <S-Up> v<Up>
