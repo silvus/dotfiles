@@ -6,7 +6,7 @@ export EDITOR=vim
 if [[ -n "$DISPLAY" ]]; then
     export BROWSER=firefox
 else
-    export BROWSER=w3m
+    export BROWSER=elinks
 fi
 
 # History
