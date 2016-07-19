@@ -13,5 +13,5 @@ if [[ -n "$DISPLAY" ]]; then
 else
 	# Server
 
-	w3m "$1"
+	elinks "$1"
 fi
