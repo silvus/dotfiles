@@ -18,13 +18,17 @@ URxvt.letterSpace: -1
 URxvt.iso14755: False
 
 ! Copy / Paste
-URxvt.perl-ext-common: default,clipboard
+URxvt.perl-ext-common: default,clipboard,matcher
 URxvt.keysym.Shift-Control-V: perl:clipboard:paste
 URxvt.keysym.Shift-Control-C: perl:clipboard:copy
 URxvt.clipboard.copycmd:  xclip -i -selection clipboard
 URxvt.clipboard.pastecmd: xclip -o -selection clipboard
 ! if set to true, the clipboard is automatically updated whenever the PRIMARY selection changes
 URxvt.clipboard.autocopy: True
+
+! Open urls in browser with Control-Click
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: C1
 
 ! Tango color palette
 URxvt*background:         #00141a
