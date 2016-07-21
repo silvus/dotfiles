@@ -129,6 +129,14 @@ endif
 " ------------------------------------------------------------------------------------
 let mapleader="!"
 
+" Edit vimrc
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Navigate in autocomplete (before wrapped line remap)
+inoremap <expr> <Down> ((pumvisible())?("\<C-n>"):("\<Down>"))
+inoremap <expr> <Up> ((pumvisible())?("\<C-p>"):("\<Up>"))
+
 " Move through wrapped lines
 nnoremap <silent> <Up> gk
 inoremap <silent> <Up> <C-o>gk
@@ -139,11 +147,9 @@ inoremap <silent> <home> <C-o>g<home>
 nnoremap <silent> <End> g<End>
 inoremap <silent> <End> <C-o>g<End>
 
-" Split with Ctrl + hjkl
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" Splits
+nnoremap <C-w>h :new<CR>
+" nnoremap <C-w>v :vnew<CR>
 
 " Ctrl + arrow: move quickly
 nnoremap <silent> <C-Up> 5k
@@ -156,6 +162,10 @@ inoremap <silent> <C-d> <Esc>ddi
 
 " Paste in insert mode
 inoremap <silent> <C-p> <Esc>pi
+
+" Paste from yank register
+noremap <Leader>p "0p
+noremap <Leader>P "0P
 
 " Shift + arrow: select text
 nmap <S-Up> v<Up>
@@ -173,8 +183,8 @@ nnoremap <C-b> :bprevious<CR>
 nnoremap <C-q> :bd<CR>
 
 " Save with Ctrl + s
-nmap <c-s> :w<CR>
-imap <c-s> <Esc>:w<CR>a
+nmap <C-s> :w<CR>
+imap <C-s> <Esc>:w<CR>a
 
 " Toggle folds
 nnoremap <space> za
@@ -208,6 +218,16 @@ nnoremap <F12> :setlocal spell! spell?<CR>
 
 " GoTo
 nnoremap <leader>g :YcmCompleter GoTo<CR>
+
+" Autocomplete with C-Space
+if has("gui_running")
+    " C-Space seems to work under gVim on both Linux and win32
+    inoremap <C-Space> <C-n>
+else " no gui
+  if has("unix")
+    inoremap <Nul> <C-n>
+  endif
+endif
 
 
 " Commands
@@ -244,16 +264,26 @@ colorscheme jellybeans    " Set colorscheme
 set ruler                 " Always show info along bottom.
 set rulerformat=''
 
+" Vertical separator
+set fillchars+=vert:│
+
 set number                " Show line numbers
 set relativenumber        " Show relative line numbers
-" set cursorline            " Highlights the current line
 set showmode              " Current mode in status line
 set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
 set showmatch             " Show matching brackets when text indicator is over them
+set cursorline            " Highlights the current line
 
 " Highlights the current line on insert
-autocmd InsertEnter * set cul
-autocmd InsertLeave * set nocul
+" autocmd InsertEnter * set cul
+" autocmd InsertLeave * set nocul
+
+" Highlights the current line on insert only on current split
+augroup CursorLine
+    au!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+augroup END
 
 
 " Status line
