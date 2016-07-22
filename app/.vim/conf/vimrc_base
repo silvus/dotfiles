@@ -15,6 +15,12 @@ set spelllang=en,fr
 " Use whole words when opening URLs. This avoids cutting off parameters (after '?') and anchors (after '#')
 let g:netrw_gx="<cWORD>"
 
+" File explorer
+let g:netrw_banner=0
+let g:netrw_liststyle=3
+" let g:netrw_special_syntax=1
+" let g:netrw_browse_split=4
+
 " Wrap
 set nowrap                " Don't wrap text
 set showbreak=↪           " Line wraps character
@@ -97,6 +103,19 @@ set directory=~/.vim/swap/
 set undofile
 set undodir=~/.vim/undo/
 
+function! EnsureDirExists (dir)
+	if !isdirectory(a:dir)
+		call mkdir(a:dir,'p')
+	endif
+endfunction
+
+let myVimDir = expand("$HOME/.vim")
+let myBackupDir = myVimDir . '/backup'
+let mySwapDir = myVimDir . '/swap'
+call EnsureDirExists(myVimDir)
+call EnsureDirExists(myBackupDir)
+call EnsureDirExists(mySwapDir)
+
 
 " Clipboard
 " ------------------------------------------------------------------------------------
@@ -130,8 +149,10 @@ endif
 let mapleader="!"
 
 " Edit vimrc
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+" Reload .vimrc
+nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>r :source $MYVIMRC<CR>
 
 " Navigate in autocomplete (before wrapped line remap)
 inoremap <expr> <Down> ((pumvisible())?("\<C-n>"):("\<Down>"))
@@ -164,8 +185,8 @@ inoremap <silent> <C-d> <Esc>ddi
 inoremap <silent> <C-p> <Esc>pi
 
 " Paste from yank register
-noremap <Leader>p "0p
-noremap <Leader>P "0P
+noremap <leader>p "0p
+noremap <leader>P "0P
 
 " Shift + arrow: select text
 nmap <S-Up> v<Up>
@@ -189,17 +210,11 @@ imap <C-s> <Esc>:w<CR>a
 " Toggle folds
 nnoremap <space> za
 
-" Reload .vimrc
-nnoremap <Leader>r :source $MYVIMRC<CR>
-
 " Toggle line numbers
 nmap <silent> <F10> :set invnumber<bar>:set invrelativenumber<CR>
 
 " Redraws the screen and removes any search highlighting.
 nnoremap <silent> <C-l> :nohl<CR><C-l>
-
-" Panic button
-map <F4> mzggg?G`z
 
 " Execute current file
 nnoremap <F5> :!%:p<CR>
@@ -207,6 +222,9 @@ nnoremap <F5> :!%:p<CR>
 " Insert current date
 nnoremap <F6> "=strftime("%Y-%m-%d %T")<CR>P
 inoremap <F6> <C-R>=strftime("%Y-%m-%d %T")<CR>
+
+" Insert lorem ipsum
+nnoremap <leader>lo :read !lorem --words 50 --cols 2000<CR>
 
 " Indentation on paste
 set pastetoggle=<F9>
@@ -216,17 +234,31 @@ set pastetoggle=<F9>
 " Spellchecking
 nnoremap <F12> :setlocal spell! spell?<CR>
 
+" Open shell
+nnoremap <leader>s :shell<CR>
+
+" Open file explorer
+nnoremap <leader>e :Explore<CR>
+map <F4> :Explore<CR>
+
+" Change paste motion cp{motion}
+nmap <silent> cp :set opfunc=ChangePaste<CR>g@
+function! ChangePaste(type, ...)
+    silent exe "normal! `[v`]\"_c"
+    silent exe "normal! p"
+endfunction
+
 " GoTo
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 
 " Autocomplete with C-Space
 if has("gui_running")
-    " C-Space seems to work under gVim on both Linux and win32
-    inoremap <C-Space> <C-n>
+	" C-Space seems to work under gVim on both Linux and win32
+	inoremap <C-Space> <C-n>
 else " no gui
-  if has("unix")
-    inoremap <Nul> <C-n>
-  endif
+	if has("unix")
+		inoremap <Nul> <C-n>
+	endif
 endif
 
 
@@ -280,9 +312,9 @@ set cursorline            " Highlights the current line
 
 " Highlights the current line on insert only on current split
 augroup CursorLine
-    au!
-    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-    au WinLeave * setlocal nocursorline
+	au!
+	au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+	au WinLeave * setlocal nocursorline
 augroup END
 
 
