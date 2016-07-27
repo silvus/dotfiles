@@ -223,9 +223,6 @@ nnoremap <F5> :!%:p<CR>
 nnoremap <F6> "=strftime("%Y-%m-%d %T")<CR>P
 inoremap <F6> <C-R>=strftime("%Y-%m-%d %T")<CR>
 
-" Insert lorem ipsum
-nnoremap <leader>lo :read !lorem --words 50 --cols 2000<CR>
-
 " Indentation on paste
 set pastetoggle=<F9>
 " nnoremap p ]p
@@ -284,6 +281,10 @@ autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 
 " :W - To write with root rights
 command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+
+" Insert lorem ipsum
+command! Lorem :read !lorem --words 50 --cols 2000<CR>
+nnoremap <leader>lo :read !lorem --words 50 --cols 2000<CR>
 
 
 " Theme
