@@ -204,7 +204,6 @@ bar {
 
     output HDMI-0
     output eDP-1
-    output HDMI1 # work
 
     # show tray icons on the primary monitor
     # tray_output primary
@@ -238,6 +237,8 @@ bar {
     tray_output none
 
     output VGA-0
+	# Work
+    output VGA1
 
     # Font
     font pango:DejaVu Sans Mono, FontAwesome 8
@@ -259,6 +260,8 @@ bar {
 bar {
     position top
     output LVDS-0
+	# Work
+    output HDMI1
     font pango:DejaVu Sans Mono 7
     colors {
         # Whole color settings
