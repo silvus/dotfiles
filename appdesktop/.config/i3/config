@@ -300,7 +300,7 @@ assign [class="Firefox"] $WS1
 # assign [class="feh"] $WS2
 assign [class="Steam"] $WS8
 
-exec --no-startup-id "rxvt-unicode -name dropterm -title terminal -e ~/.dotfiles/bin/tmuxdev"
+# exec --no-startup-id "rxvt-unicode -name dropterm -title terminal -e ~/.dotfiles/bin/tmuxdev"
 for_window [instance="dropterm"] floating enable;
 for_window [instance="dropterm"] move scratchpad; [instance="dropterm"] scratchpad show; fullscreen enable; move scratchpad
 # Bind to $mod + small "2"
