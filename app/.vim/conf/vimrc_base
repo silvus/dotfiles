@@ -173,10 +173,10 @@ nnoremap <C-w>h :new<CR>
 " nnoremap <C-w>v :vnew<CR>
 
 " Ctrl + arrow: move quickly
-nnoremap <silent> <C-Up> 5k
-inoremap <silent> <C-Up> <Esc>5ki
-nnoremap <silent> <C-Down> 5j
-inoremap <silent> <C-Down> <Esc>5ji
+nnoremap <silent> <C-Up> {
+inoremap <silent> <C-Up> <Esc>{i
+nnoremap <silent> <C-Down> }
+inoremap <silent> <C-Down> <Esc>}i
 
 " Delete in insert mode
 inoremap <silent> <C-d> <Esc>ddi
