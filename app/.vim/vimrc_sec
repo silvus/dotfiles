@@ -1,6 +1,8 @@
+let g:load_plugins = 0
+
 " Base conf
-if filereadable(expand("~/.vim/conf/vimrc_base"))
-    source ~/.vim/conf/vimrc_base
+if filereadable(expand("~/.vimrc"))
+    source ~/.vimrc
 endif
 
 " Specific
