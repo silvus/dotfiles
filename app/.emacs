@@ -80,8 +80,11 @@
 ;; Interface
 ;; -------------------------------------------------------------------------------
 (menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; Prevent the warning "Symbol's function definition is void" when running emacs in the console
+(if (display-graphic-p)
+    (progn
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)
 
 ;; Show bell
 (setq visible-bell t)
