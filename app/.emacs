@@ -100,7 +100,7 @@
 ;; (set-face-attribute 'fringe nil :background "black")
 
 ;; Highlight Current Line
-;;(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 
 ;; Theme
 (load-theme 'wombat t)
@@ -140,6 +140,9 @@
 ;; yes or no becomes y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; Follow symlinks without asking
+(setq vc-follow-symlinks t)
+
 ;; Show empty lines
 (setq-default indicate-empty-lines t)
 (when (not indicate-empty-lines)
@@ -157,7 +160,7 @@
 (setq recentf-max-menu-items 25)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-;; Changing the default folder
+;; Change default folder
 ;(setq default-directory (getenv "PROJECT_HOME"))
 ;;(setq default-directory "/data/dev")
 
@@ -170,15 +173,18 @@
   kept-new-versions 6 ;; Number of newest versions to keep.
   kept-old-versions 2 ;; Number of oldest versions to keep.
   version-control t) ;; Use version numbers for backups.
-;; Backup directories
+;; Backup / autosave directories
 (defvar backup-dir (expand-file-name "~/.emacs.d/backup/"))
 (defvar autosave-dir (expand-file-name "~/.emacs.d/autosave/"))
 (setq backup-directory-alist (list (cons ".*" backup-dir)))
 (setq auto-save-list-file-prefix autosave-dir)
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
+;; (setq backup-directory-alist `((".*" . "~/.emacs.d/backup")))
+;; (setq auto-save-file-name-transforms `((".*" "~/.emacs.d/autosave" t)))
 
 ;; Scratch mode
 ;; (setq initial-major-mode 'python-mode)
+
 
 ;; Bindings
 ;; -------------------------------------------------------------------------------
@@ -188,7 +194,7 @@
 ;; CUA mode and ISearch
 (define-key isearch-mode-map (kbd "C-v") 'isearch-yank-kill)
 
-;; Shift + Arrows keys
+;; Shift + Arrows keys (default in Emacs 24)
 ;; (setq shift-select-mode t)
 
 ;; Getting PgDn to End of BufferDC
@@ -209,129 +215,24 @@
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-y") 'redo)
 
-;; Ctrl + Arrows keys
-(global-set-key "\M-[1;5C"    'forward-word)  ; Ctrl+right   => forward word
-(global-set-key "\M-[1;5D"    'backward-word) ; Ctrl+left    => backward wordy
-(define-key input-decode-map "\e[1;5A" [C-up])
-(define-key input-decode-map "\e[1;5B" [C-down])
-
-;; handle tmux's xterm-keys
-;; put the following line in your ~/.tmux.conf:
-;;   setw -g xterm-keys on
-;; (if (getenv "TMUX")
-;;     (progn
-;;       (let ((x 2) (tkey ""))
-;; 	(while (<= x 8)
-;; 	  ;; shift
-;; 	  (if (= x 2)
-;; 	      (setq tkey "S-"))
-;; 	  ;; alt
-;; 	  (if (= x 3)
-;; 	      (setq tkey "M-"))
-;; 	  ;; alt + shift
-;; 	  (if (= x 4)
-;; 	      (setq tkey "M-S-"))
-;; 	  ;; ctrl
-;; 	  (if (= x 5)
-;; 	      (setq tkey "C-"))
-;; 	  ;; ctrl + shift
-;; 	  (if (= x 6)
-;; 	      (setq tkey "C-S-"))
-;; 	  ;; ctrl + alt
-;; 	  (if (= x 7)
-;; 	      (setq tkey "C-M-"))
-;; 	  ;; ctrl + alt + shift
-;; 	  (if (= x 8)
-;; 	      (setq tkey "C-M-S-"))
-
-;; 	  ;; arrows
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d A" x)) (kbd (format "%s<up>" tkey)))
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d B" x)) (kbd (format "%s<down>" tkey)))
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d C" x)) (kbd (format "%s<right>" tkey)))
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d D" x)) (kbd (format "%s<left>" tkey)))
-;; 	  ;; home
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d H" x)) (kbd (format "%s<home>" tkey)))
-;; 	  ;; end
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d F" x)) (kbd (format "%s<end>" tkey)))
-;; 	  ;; page up
-;; 	  (define-key key-translation-map (kbd (format "M-[ 5 ; %d ~" x)) (kbd (format "%s<prior>" tkey)))
-;; 	  ;; page down
-;; 	  (define-key key-translation-map (kbd (format "M-[ 6 ; %d ~" x)) (kbd (format "%s<next>" tkey)))
-;; 	  ;; insert
-;; 	  (define-key key-translation-map (kbd (format "M-[ 2 ; %d ~" x)) (kbd (format "%s<delete>" tkey)))
-;; 	  ;; delete
-;; 	  (define-key key-translation-map (kbd (format "M-[ 3 ; %d ~" x)) (kbd (format "%s<delete>" tkey)))
-;; 	  ;; f1
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d P" x)) (kbd (format "%s<f1>" tkey)))
-;; 	  ;; f2
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d Q" x)) (kbd (format "%s<f2>" tkey)))
-;; 	  ;; f3
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d R" x)) (kbd (format "%s<f3>" tkey)))
-;; 	  ;; f4
-;; 	  (define-key key-translation-map (kbd (format "M-[ 1 ; %d S" x)) (kbd (format "%s<f4>" tkey)))
-;; 	  ;; f5
-;; 	  (define-key key-translation-map (kbd (format "M-[ 15 ; %d ~" x)) (kbd (format "%s<f5>" tkey)))
-;; 	  ;; f6
-;; 	  (define-key key-translation-map (kbd (format "M-[ 17 ; %d ~" x)) (kbd (format "%s<f6>" tkey)))
-;; 	  ;; f7
-;; 	  (define-key key-translation-map (kbd (format "M-[ 18 ; %d ~" x)) (kbd (format "%s<f7>" tkey)))
-;; 	  ;; f8
-;; 	  (define-key key-translation-map (kbd (format "M-[ 19 ; %d ~" x)) (kbd (format "%s<f8>" tkey)))
-;; 	  ;; f9
-;; 	  (define-key key-translation-map (kbd (format "M-[ 20 ; %d ~" x)) (kbd (format "%s<f9>" tkey)))
-;; 	  ;; f10
-;; 	  (define-key key-translation-map (kbd (format "M-[ 21 ; %d ~" x)) (kbd (format "%s<f10>" tkey)))
-;; 	  ;; f11
-;; 	  (define-key key-translation-map (kbd (format "M-[ 23 ; %d ~" x)) (kbd (format "%s<f11>" tkey)))
-;; 	  ;; f12
-;; 	  (define-key key-translation-map (kbd (format "M-[ 24 ; %d ~" x)) (kbd (format "%s<f12>" tkey)))
-;; 	  ;; f13
-;; 	  (define-key key-translation-map (kbd (format "M-[ 25 ; %d ~" x)) (kbd (format "%s<f13>" tkey)))
-;; 	  ;; f14
-;; 	  (define-key key-translation-map (kbd (format "M-[ 26 ; %d ~" x)) (kbd (format "%s<f14>" tkey)))
-;; 	  ;; f15
-;; 	  (define-key key-translation-map (kbd (format "M-[ 28 ; %d ~" x)) (kbd (format "%s<f15>" tkey)))
-;; 	  ;; f16
-;; 	  (define-key key-translation-map (kbd (format "M-[ 29 ; %d ~" x)) (kbd (format "%s<f16>" tkey)))
-;; 	  ;; f17
-;; 	  (define-key key-translation-map (kbd (format "M-[ 31 ; %d ~" x)) (kbd (format "%s<f17>" tkey)))
-;; 	  ;; f18
-;; 	  (define-key key-translation-map (kbd (format "M-[ 32 ; %d ~" x)) (kbd (format "%s<f18>" tkey)))
-;; 	  ;; f19
-;; 	  (define-key key-translation-map (kbd (format "M-[ 33 ; %d ~" x)) (kbd (format "%s<f19>" tkey)))
-;; 	  ;; f20
-;; 	  (define-key key-translation-map (kbd (format "M-[ 34 ; %d ~" x)) (kbd (format "%s<f20>" tkey)))
-
-;; 	  (setq x (+ x 1))
-;; 	  ))
-;;       )
-;;   )
-
-(defadvice terminal-init-screen
-    ;; The advice is named `tmux', and is run before `terminal-init-screen' runs.
-    (before tmux activate)
-  ;; Docstring.  This describes the advice and is made available inside emacs;
-  ;; for example when doing C-h f terminal-init-screen RET
-  "Apply xterm keymap, allowing use of keys passed through tmux."
-  ;; This is the elisp code that is run before `terminal-init-screen'.
-  (if (getenv "TMUX")
-      (let ((map (copy-keymap xterm-function-map)))
-	(set-keymap-parent map (keymap-parent input-decode-map))
-	(set-keymap-parent input-decode-map map))))
-
-;; One escape to quit
-(global-set-key (kbd "<escape>")      'keyboard-escape-quit)
-; (global-set-key (kbd "ESC")      'keyboard-escape-quit)
-; (global-set-key [escape] 'keyboard-escape-quit)         ;; everywhere else
-; Map escape to cancel (like C-g)...
-; (define-key isearch-mode-map [escape] 'isearch-abort)   ;; isearch
-;; (define-key isearch-mode-map "\e" 'isearch-abort)   ;; \e seems to work better for terminals
-
+;; Splits navigation
 (global-set-key (kbd "C-w") 'other-window)
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
+
+;; One escape to quit
+;; (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
+;; (global-set-key (kbd "ESC")      'keyboard-escape-quit)
+;; (global-set-key [escape] 'keyboard-escape-quit)         ;; everywhere else
+; Map escape to cancel (like C-g)...
+;; (define-key isearch-mode-map [escape] 'isearch-abort)   ;; isearch
+;; (define-key isearch-mode-map "\e" 'isearch-abort)   ;; \e seems to work better for terminals
+
+
+;; Functions
+;; -------------------------------------------------------------------------------
 
 (defun comment-or-uncomment-region-or-line ()
     "Comments or uncomments the region or the current line if there's no active region."
@@ -353,5 +254,25 @@
         (comment-dwim nil))
     (comment-dwim nil))
   (deactivate-mark))
-
 (global-set-key (kbd "C-l") 'comment-or-uncomment-region-or-line)
+
+
+;; Tmux Fix
+;; -------------------------------------------------------------------------------
+;; Ctrl + Arrows keys
+;; (global-set-key "\M-[1;5C"    'forward-word)  ; Ctrl+right   => forward word
+;; (global-set-key "\M-[1;5D"    'backward-word) ; Ctrl+left    => backward wordy
+;; (define-key input-decode-map "\e[1;5A" [C-up])
+;; (define-key input-decode-map "\e[1;5B" [C-down])
+
+(defadvice terminal-init-screen
+     ;; The advice is named `tmux', and is run before `terminal-init-screen' runs.
+     (before tmux activate)
+   ;; Docstring.  This describes the advice and is made available inside emacs;
+   ;; for example when doing C-h f terminal-init-screen RET
+   "Apply xterm keymap, allowing use of keys passed through tmux."
+   ;; This is the elisp code that is run before `terminal-init-screen'.
+   (if (getenv "TMUX")
+       (let ((map (copy-keymap xterm-function-map)))
+ 	(set-keymap-parent map (keymap-parent input-decode-map))
+ 	(set-keymap-parent input-decode-map map))))
