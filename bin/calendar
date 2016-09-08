@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-khal -c "/data/doc/.data/calendar/khal.conf"
+khal -c "/data/doc/.data/calendar/khal.conf" "$@"
 
 exit 0
