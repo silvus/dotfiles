@@ -16,8 +16,15 @@ fi
 # Update
 git pull origin master
 
+# Sync with server
+# vdirsyncer -c "/data/doc/.data/dav/vdirsyncer.conf" discover
+# vdirsyncer -c "/data/doc/.data/dav/vdirsyncer.conf" sync
+
 # Open khal
 khal -c "/data/doc/.data/dav/khal.conf" "$@"
+
+# Sync with server
+vdirsyncer -c "/data/doc/.data/dav/vdirsyncer.conf" sync
 
 # Autocommit
 git add .
