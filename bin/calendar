@@ -1,5 +1,31 @@
 #!/usr/bin/env bash
 
-khal -c "/data/doc/.data/calendar/khal.conf" "$@"
+# If run under Tmux, set title
+if [[ -n "$TMUX" ]]; then
+	tmux rename-window "Calendar"
+fi
+
+# Go to doc folder
+if [[ -d "$DOCUMENTATION_HOME" ]]; then
+	cd "$DOCUMENTATION_HOME"
+else
+	echo "$DOCUMENTATION_HOME is not a folder"
+	exit 1
+fi
+
+# Update
+git pull origin master
+
+# Open khal
+khal -c "/data/doc/.data/dav/khal.conf" "$@"
+
+# Autocommit
+git add .
+git commit -m "Autocommit Calendar $(date +'%d/%m/%Y %T')"
+
+# If run under Tmux, unset title
+if [[ -n "$TMUX" ]]; then
+	tmux set-window-option -q automatic-rename
+fi
 
 exit 0
