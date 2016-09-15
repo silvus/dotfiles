@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 
 addressbook="/data/doc/.data/contact/addressbook"
+tmp_vcf_all="/tmp/allcontacts.vcf"
 
 # If run under Tmux, set title
 if [[ -n "$TMUX" ]]; then
 	tmux rename-window "contacts"
 fi
 
+# Convert all vcf to abook addressbook format
+cat /data/doc/.data/contacts/*.vcf > "$tmp_vcf_all"
+abook --convert --informat vcard --infile "$tmp_vcf_all" --outformat abook --outfile "$addressbook"
+rm "$tmp_vcf_all"
+
+# Open abook
 abook --datafile "${addressbook}"
 
 # If run under Tmux, unset title
