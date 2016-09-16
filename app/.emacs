@@ -20,7 +20,8 @@
     undo-tree
     ;; flycheck
     ;; magit ;; https://magit.vc/
-    ;; git-gutter
+    git-gutter
+    fiplr ;; Like CtrlP for vim
     neotree)
   "List of packages needs to be installed at launch")
 
@@ -47,6 +48,10 @@
 (require 'undo-tree)
 (global-undo-tree-mode 1)
 
+;; Git gutter with lines numbers
+(global-git-gutter-mode +1)
+(git-gutter:linum-setup)
+
 (require 'neotree)
 (setq neo-smart-open t)
 (setq-default neo-show-hidden-files t)
@@ -63,6 +68,9 @@
 ; (global-git-gutter-mode t)
 ;; Use git-gutter.el and linum-mode
 ;; (git-gutter:linum-setup)
+
+;; CtrlP like
+(global-set-key (kbd "C-p") 'fiplr-find-file)
 
 (require 'elpy)
 (elpy-enable)
@@ -223,6 +231,8 @@
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 
 ;; One escape to quit
+;; (global-set-key (kbd "<escape>") 'keyboard-quit)
+;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 ;; (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 ;; (global-set-key (kbd "ESC")      'keyboard-escape-quit)
 ;; (global-set-key [escape] 'keyboard-escape-quit)         ;; everywhere else
