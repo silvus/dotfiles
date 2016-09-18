@@ -198,15 +198,34 @@ vmap <S-Up> <Up>
 vmap <S-Down> <Down>
 vmap <S-Left> <Left>
 vmap <S-Right> <Right>
+imap <S-Up> <Esc>v<Up>
+imap <S-Down> <Esc>v<Down>
+imap <S-Left> <Esc>v<Left>
+imap <S-Right> <Esc>v<Right>
+
+" Simulate shift-arrows (select block in windows) with control-arrows
+inoremap <Esc>[A <C-O>vk
+vnoremap <Esc>[A k
+inoremap <Esc>[B <C-O>vj
+vnoremap <Esc>[B j
+inoremap <Esc>[C <C-O>vl
+vnoremap <Esc>[C l
+inoremap <Esc>[D <C-O>vh
+vnoremap <Esc>[D h
+noremap <ESC>[1;2D <C-S-Left>
+noremap! <ESC>[1;2D <C-S-Left>
+noremap <ESC>[1;2C <C-S-Right>
+noremap! <ESC>[1;2C <C-S-Right>
 
 " Cycling through buffers
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
-nnoremap <C-q> :bd<CR>
+" nnoremap <C-q> :bd<CR>
 
 " Save with Ctrl + s
 nmap <C-s> :w<CR>
 imap <C-s> <Esc>:w<CR>a
+vmap <C-s> <Esc>:w<CR>v
 
 " Toggle folds
 nnoremap <space> za
@@ -242,8 +261,8 @@ map <F4> :Explore<CR>
 " Change paste motion cp{motion}
 nmap <silent> cp :set opfunc=ChangePaste<CR>g@
 function! ChangePaste(type, ...)
-    silent exe "normal! `[v`]\"_c"
-    silent exe "normal! p"
+	silent exe "normal! `[v`]\"_c"
+	silent exe "normal! p"
 endfunction
 
 " GoTo
@@ -258,6 +277,57 @@ else " no gui
 		inoremap <Nul> <C-n>
 	endif
 endif
+
+
+" Keymaps - Vim more like Emacs
+" ------------------------------------------------------------------------------------
+" source $VIMRUNTIME/mswin.vim
+" set 'selection', 'selectmode', 'mousemodel' and 'keymodel' like other editors
+behave mswin
+
+" backspace in Visual mode deletes selection
+vnoremap <BS> d
+
+" CTRL-X and SHIFT-Del are Cut
+vnoremap <C-X> "+x
+vnoremap <S-Del> "+x
+
+" CTRL-C and CTRL-Insert are Copy
+vnoremap <C-C> "+y
+vnoremap <C-Insert> "+y
+
+" CTRL-V and SHIFT-Insert are Paste
+map <C-V> "+gP
+map <S-Insert> "+gP
+
+cmap <C-V> <C-R>+
+cmap <S-Insert> <C-R>+
+
+" Pasting blockwise and linewise selections is not possible in Insert and
+" Visual mode without the +virtualedit feature.  They are pasted as if they
+" were characterwise instead.
+" Uses the paste.vim autoload script.
+" Use CTRL-G u to have CTRL-Z only undo the paste.
+exe 'inoremap <script> <C-V> <C-G>u' . paste#paste_cmd['i']
+exe 'vnoremap <script> <C-V> ' . paste#paste_cmd['v']
+
+imap <S-Insert> <C-V>
+vmap <S-Insert> <C-V>
+
+" Use CTRL-Q to do what CTRL-V used to do
+noremap <C-Q> <C-V>
+
+" CTRL-Z is Undo; not in cmdline though
+noremap <C-Z> u
+inoremap <C-Z> <C-O>u
+
+" CTRL-Y is Redo (although not repeat); not in cmdline though
+noremap <C-Y> <C-R>
+inoremap <C-Y> <C-O><C-R>
+
+" Keep V-line behavior
+xnoremap <Up> k
+xnoremap <Down> j
 
 
 " Commands

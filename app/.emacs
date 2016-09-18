@@ -20,7 +20,6 @@
     undo-tree
     ;; flycheck
     ;; magit ;; https://magit.vc/
-    git-gutter
     fiplr ;; Like CtrlP for vim
     neotree)
   "List of packages needs to be installed at launch")
@@ -47,10 +46,6 @@
 
 (require 'undo-tree)
 (global-undo-tree-mode 1)
-
-;; Git gutter with lines numbers
-(global-git-gutter-mode +1)
-(git-gutter:linum-setup)
 
 (require 'neotree)
 (setq neo-smart-open t)
@@ -96,6 +91,9 @@
 
 ;; Show bell
 (setq visible-bell t)
+
+;; auto show completions for execute-extended-command
+(icomplete-mode 1)
 
 ;; Lines numbers
 (global-linum-mode t)
