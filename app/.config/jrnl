@@ -1,0 +1,16 @@
+{
+  "timeformat": "%Y-%m-%d %H:%M",
+  "default_hour": 9,
+  "tagsymbols": "@",
+  "editor": "vim -u $HOME/.vim/vimrc_sec",
+  "highlight": true,
+  "default_minute": 0,
+  "encrypt": false,
+  "linewrap": 79,
+  "journals": {
+    "default": {
+      "encrypt": false,
+      "journal": "/data/doc/.data/jnal/default.md"
+    }
+  }
+}
