@@ -3,8 +3,13 @@
 nm-applet &
 guake -r tmux -e tmuxdev &
 redshift-gtk &
-firefox &
 thunderbird &
 dropbox start &
 
 feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
+
+# Environment specific configuration
+# ------------------------------------------------------
+if [[ -f "$(which autostart_env)" ]]; then
+	source "$(which autostart_env)"
+fi
