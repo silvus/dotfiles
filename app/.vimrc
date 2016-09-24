@@ -27,8 +27,8 @@ set nowrap                " Don't wrap text
 set showbreak=↪           " Line wraps character
 set display=lastline      " Show as much as possible of a wrapped last line, not just "@"
 
-" Understand *.md as markdown
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown wrap linebreak nolist textwidth=0 wrapmargin=0
+" Understand *.md and jrnl (temps files) as markdown
+autocmd BufNewFile,BufReadPost *.md,jrnl*.txt set filetype=markdown wrap linebreak nolist textwidth=0 wrapmargin=0
 
 " Jump to the last position when reopening a file
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
