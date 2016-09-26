@@ -10,6 +10,8 @@ feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfi
 
 # Environment specific configuration
 # ------------------------------------------------------
-if [[ -f "$(which autostart_env)" ]]; then
-	source "$(which autostart_env)"
+if [[ $(hostname --short) == "saturn" ]]; then
+	~/.dotfiles/bin/netflix &
+else
+	firefox &
 fi
