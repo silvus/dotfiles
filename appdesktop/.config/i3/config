@@ -202,7 +202,9 @@ client.urgent           #C10004 #900000 #ffffff #900000
 bar {
     position top
 
+    output HDMI0
     output HDMI-0
+    output eDP1
     output eDP-1
 
     # show tray icons on the primary monitor
