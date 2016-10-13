@@ -12,6 +12,7 @@
       "welcome"
     ]
     projectHome: "/data/silvus/dev"
+    telemetryConsent: "no"
     themes: [
       "one-dark-ui"
       "monokai-seti"
