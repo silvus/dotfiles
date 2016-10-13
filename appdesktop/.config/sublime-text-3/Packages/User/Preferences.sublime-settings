@@ -1,6 +1,6 @@
 {
 	"always_show_minimap_viewport": true,
-	"color_scheme": "Packages/Monokai Extended/Monokai Extended Bright.tmTheme",
+	"color_scheme": "Packages/Monokai Extended/Monokai Extended.tmTheme",
 	"default_line_ending": "unix",
 	"detect_indentation": false,
 	"ensure_newline_at_eof_on_save": false,

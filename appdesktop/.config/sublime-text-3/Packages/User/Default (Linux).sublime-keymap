@@ -1,4 +1,6 @@
 [
+{ "keys": ["ctrl+q"], "command": "close_window" },
+{ "keys": ["ctrl+shift+w"], "command": "exit" },
 { "keys": ["ctrl+d"], "command": "run_macro_file", "args": {"file": "res://Packages/Default/Delete Line.sublime-macro"} },
 { "keys": ["ctrl+e"], "command": "find_under_expand"},
 {
