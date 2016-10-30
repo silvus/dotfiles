@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import argparse
+
+import sqlite3
+
+with_postgresql = True
+try:
+    import psycopg2
+except ImportError as e:
+    with_postgresql = False
+    pass
+
+
+__author__ = "Silvus"
+__version__ = "1.0.0"
+
+
+database_information = {
+    "engine": "",
+    "dbname": "",
+    "host": "",
+    "port": "",
+    "user": "",
+    "password": "",
+}
+
+filepath = ''
+database_connection = None
+database_cursor = None
+
+
+def sql_execute():
+    """
+    Execute a sql script
+    """
+
+    with open(filepath, 'r') as f:
+        sql_file = f.read()
+
+    # all SQL commands (split on ';')
+    sql_commands = sql_file.split(';')
+    # Execute every command from the input file
+    for command in sql_commands:
+        # This will skip and report errors
+        # For example, if the tables do not yet exist, this will skip over the DROP TABLE commands
+        command = command.strip()
+        if command:
+            try:
+                database_cursor.execute(command)
+            except Exception as e:
+                print("-- Command skipped: ", str(e))
+                print(command)
+                pass
+
+    database_connection.commit()
+
+
+def sql_connect():
+    """
+    Build a database connection based on the engine
+    """
+    global database_cursor, database_connection
+
+    try:
+
+        if database_information['engine'] == 'sqlite':
+            database_connection = sqlite3.connect(database_information['dbname'])
+        elif database_information['engine'] == 'postgresql':
+            if with_postgresql:
+                database_connection = psycopg2.connect(database=database_information['dbname'],
+                                                       user=database_information['user'],
+                                                       password=database_information['password'],
+                                                       host=database_information['host'],
+                                                       port=database_information['port'])
+            else:
+                raise Exception('psycopg2 not installed')
+        else:
+            raise Exception('Engine {} not supported'.format(database_information['engine']))
+    except:
+        raise
+        sys.exit(2)
+
+    database_cursor = database_connection.cursor()
+
+
+def sql_deconnect():
+    """
+    Close db cursor and connection
+    """
+
+    if database_cursor:
+        database_cursor.close()
+
+    if database_connection:
+        database_connection.close()
+
+
+def read_database_information():
+    """
+    read the sql file and search for database connection information
+    """
+    with open(filepath) as f:
+        for line in f:
+            # line = line.rstrip('\n')
+            if line.startswith('-- +'):
+                line_analyse = line[5:].split(':')
+                line_type = line_analyse[0].strip()
+                line_val = line_analyse[1].strip()
+                if line_type and line_val and line_type in database_information:
+                    database_information[line_type] = line_val
+
+
+def valid_file(param):
+    """
+    Validate file extension
+    """
+    base, ext = os.path.splitext(param)
+    if ext.lower() not in ('.sql'):
+        raise argparse.ArgumentTypeError('File must have a sql extension')
+    return param
+
+
+def main(args):
+    global filepath
+
+    # Build absolute filepath
+    filepath = os.path.abspath(args.filename)
+
+    # Read the sql file to find database connection parameters
+    read_database_information()
+    # Connect to database
+    sql_connect()
+    # Execute the sql file
+    sql_execute()
+    # Close connection
+    sql_deconnect()
+
+
+if __name__ == "__main__":
+
+    # Parse args
+    parser = argparse.ArgumentParser(description="""Execute a sql file.
+Connect to database with specials comments in this file
+-- + engine:
+-- + dbname:
+-- + host:
+-- + port:
+-- + user:
+-- + password:""", formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s {0}".format(__version__),
+                        help="show program's version number and exit")
+    parser.add_argument('filename', type=valid_file)
+    args = parser.parse_args()
+
+    main(args)
