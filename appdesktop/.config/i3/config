@@ -175,6 +175,11 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+bindsym $mod+Ctrl+Shift+Left resize grow width 5 px or 5 ppt
+bindsym $mod+Ctrl+Shift+Right resize shrink width 5 px or 5 ppt
+bindsym $mod+Ctrl+Shift+Down resize grow height 5 px or 5 ppt
+bindsym $mod+Ctrl+Shift+Up resize shrink height 5 px or 5 ppt
+
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
