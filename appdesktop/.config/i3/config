@@ -17,6 +17,9 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 8
 
+# Default layout <default|stacking|tabbed>
+workspace_layout tabbed
+
 # Border style for new windows
 new_window pixel 1
 
@@ -49,6 +52,9 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
+
+# Focus parent
+bindsym $mod+p focus parent
 
 # Automatic back-and-forth when switching to the current workspace
 workspace_auto_back_and_forth yes
