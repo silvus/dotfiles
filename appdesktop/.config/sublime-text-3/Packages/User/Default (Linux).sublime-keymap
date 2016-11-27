@@ -16,6 +16,11 @@
 { "keys": ["f1"], "command": "toggle_menu" },
 { "keys": ["f2"], "command": "toggle_side_bar" },
 { "keys": ["f3"], "command": "toggle_minimap" },
+{ "keys": ["f4"], "command": "next_bookmark" },
+{ "keys": ["shift+f4"], "command": "prev_bookmark" },
+{ "keys": ["ctrl+f4"], "command": "toggle_bookmark" },
+{ "keys": ["ctrl+shift+f4"], "command": "clear_bookmarks" },
+{ "keys": ["alt+f4"], "command": "select_all_bookmarks" },
 { "keys": ["f5"], "command": "build" },
 { "keys": ["f12"], "command": "toggle_setting", "args": {"setting": "spell_check"} },
 {
