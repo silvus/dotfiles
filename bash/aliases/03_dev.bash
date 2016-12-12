@@ -1,28 +1,28 @@
 
 # Dotfiles
-alias dot="cd $DOTFILES_PATH"
-alias dotbin="cd $DOTFILES_PATH/bin"
-alias dot_reload="source ${HOME}/.bashrc"
+alias dot="cd $SILVUSDOTFILES"
+alias dotbin="cd $SILVUSDOTFILES/bin"
+alias dotreload="source ${HOME}/.bashrc"
 alias s="cd /data/silvus"
-alias data="cd /data"
+alias d="cd /data"
 
 # Projects root folder (for Virtualenvwrapper, go, etc...)
-export PROJECT_HOME="/data/dev"
+export SILVUSPROJECT="/data/dev"
 
 # Doc folder
-export DOCUMENTATION_HOME="/data/doc"
+export SILVUSDOC="/data/doc"
 
 # Launch simple web server
 alias server="python3 -m http.server 5000"
 alias server_php="php -sS localhost:5000"
 
-if [[ -d "${PROJECT_HOME}/bin" ]]; then
-	export PATH="$PATH:$PROJECT_HOME/bin"
+if [[ -d "${SILVUSPROJECT}/bin" ]]; then
+	export PATH="$PATH:$SILVUSPROJECT/bin"
 fi
 
 # Golang
 # ------------------------------------------------------
-export GOPATH="$PROJECT_HOME"
+export GOPATH="$SILVUSPROJECT"
 
 if [[ -d "/usr/local/go/bin" ]]; then
 	export PATH="$PATH:/usr/local/go/bin"
@@ -60,8 +60,8 @@ dev() {
 	local projectname="$1"
 
 	# Search in projects
-	if [[ ! -z "$projectname" ]] && [[ -d "${PROJECT_HOME}/${projectname}" ]]; then
-		cd "${PROJECT_HOME}/${projectname}"
+	if [[ ! -z "$projectname" ]] && [[ -d "${SILVUSPROJECT}/${projectname}" ]]; then
+		cd "${SILVUSPROJECT}/${projectname}"
 		# Update project
 		if [[ -d ".git" ]]; then
 			git pull origin master
@@ -72,8 +72,8 @@ dev() {
 		fi
 		# Open in vim
 		vim
-	# go to PROJECT_HOME
+	# go to SILVUSPROJECT
 	else
-		cd "${PROJECT_HOME}"
+		cd "${SILVUSPROJECT}"
 	fi
 }

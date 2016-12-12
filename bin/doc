@@ -6,10 +6,10 @@ if [[ -n "$TMUX" ]]; then
 fi
 
 # Go to doc folder
-if [[ -d "$DOCUMENTATION_HOME" ]]; then
-	cd "$DOCUMENTATION_HOME"
+if [[ -d "$SILVUSDOC" ]]; then
+	cd "$SILVUSDOC"
 else
-	echo "$DOCUMENTATION_HOME is not a folder"
+	echo "$SILVUSDOC is not a folder"
 	exit 1
 fi
 

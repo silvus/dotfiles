@@ -17,8 +17,8 @@ _launch_tmux() {
 		tmux -2 new-session -s "${_TMUX_SESSION_NAME}" -d -n "$_WINDOWS_DEV"
 
 		# Source env script
-		if [[ -f "${DOTFILES_PATH}/tmux/tmuxdev_env" ]]; then
-			source "${DOTFILES_PATH}/tmux/tmuxdev_env"
+		if [[ -f "${SILVUSDOTFILES}/tmux/tmuxdev_env" ]]; then
+			source "${SILVUSDOTFILES}/tmux/tmuxdev_env"
 		fi
 
 		# Focus on first window

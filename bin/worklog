@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-worklog_file="${DOCUMENTATION_HOME}/.data/worklog/utt.log"
+worklog_file="${SILVUSDOC}/.data/worklog/utt.log"
 
 # If --data is set, utt doesn't print help
 if [[ -z "$@" ]]; then

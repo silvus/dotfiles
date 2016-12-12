@@ -1,7 +1,7 @@
 
 _readbag() {
-	if [[ -d "$DOCUMENTATION_HOME/.data/readbag" ]]; then
-		local files_readbag=("$DOCUMENTATION_HOME/.data/readbag/$2"*)
+	if [[ -d "$SILVUSDOC/.data/readbag" ]]; then
+		local files_readbag=("$SILVUSDOC/.data/readbag/$2"*)
 		[[ -f ${files_readbag[0]} ]] && COMPREPLY+=( "$COMPREPLY${files_readbag[@]##*/}" )
 	fi
 }

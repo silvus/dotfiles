@@ -1,8 +1,8 @@
 
 _dev() {
-	# Search in PROJECT_HOME
-	if [[ -d "$PROJECT_HOME" ]]; then
-		local files_dev=("$PROJECT_HOME/$2"*)
+	# Search in SILVUSPROJECT
+	if [[ -d "$SILVUSPROJECT" ]]; then
+		local files_dev=("$SILVUSPROJECT/$2"*)
 		[[ -d ${files_dev[0]} ]] && COMPREPLY+=( "$COMPREPLY${files_dev[@]##*/}" )
 	fi
 }

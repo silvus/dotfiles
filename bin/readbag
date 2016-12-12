@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-read_folder="${DOCUMENTATION_HOME}/.data/readbag"
+read_folder="${SILVUSDOC}/.data/readbag"
 read_file="${read_folder}/$1"
 
 # Go to folder

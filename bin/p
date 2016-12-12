@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-p_folder="${DOCUMENTATION_HOME}/.data/p"
+p_folder="${SILVUSDOC}/.data/p"
 p_file="${p_folder}/$1"
 
 if [[ -z "$1" ]];  then

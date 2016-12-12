@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-todo_file="${DOCUMENTATION_HOME}/.data/todo.md"
+todo_file="${SILVUSDOC}/.data/todo.md"
 
 # If run under Tmux, set title
 if [[ -n "$TMUX" ]]; then

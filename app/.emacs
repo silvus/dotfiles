@@ -167,7 +167,7 @@
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 ;; Change default folder
-;(setq default-directory (getenv "PROJECT_HOME"))
+;(setq default-directory (getenv "SILVUSPROJECT"))
 ;;(setq default-directory "/data/dev")
 
 ;; Enable backup files.
