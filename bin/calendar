@@ -28,7 +28,7 @@ vdirsyncer -c "/data/doc/.data/dav/vdirsyncer.conf" sync
 
 # Autocommit
 git add .
-git commit -m "Autocommit Calendar $(date +'%d/%m/%Y %T')"
+git commit -m "[calendar] Autocommit $(date +'%d/%m/%Y %T')"
 
 # If run under Tmux, unset title
 if [[ -n "$TMUX" ]]; then

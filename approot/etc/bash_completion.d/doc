@@ -1,0 +1,19 @@
+
+_doc()
+{
+    local cur prev
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    if [[ ${cur} == -* ]] ; then
+        COMPREPLY=( $(compgen -W "--no-autocommit --search --autocomplete --version --help" -- ${cur}) )
+    else
+        local files=("$SILVUSDOC"*)
+        [[ -f ${files[0]} ]] && COMPREPLY+=( "$COMPREPLY${files[@]##*/}" )
+    fi
+}
+
+# complete -F _doc -o nospace doc
+complete -F _doc doc
+

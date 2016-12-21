@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-todo_file="${SILVUSDOC}/.data/todo.md"
+todo_file="${SILVUSDOC}/todo.md"
 
 # If run under Tmux, set title
 if [[ -n "$TMUX" ]]; then
@@ -18,7 +18,7 @@ vim "$todo_file"
 
 # Autocommit
 git add .
-git commit -m "Autocommit Todo $(date +'%d/%m/%Y %T')"
+git commit -m "[todo] Autocommit $(date +'%d/%m/%Y %T')"
 
 # If run under Tmux, unset title
 if [[ -n "$TMUX" ]]; then

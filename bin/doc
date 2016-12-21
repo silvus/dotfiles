@@ -1,31 +1,201 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-# If run under Tmux, set title
-if [[ -n "$TMUX" ]]; then
-	tmux rename-window "Doc"
-fi
+import os
+import sys
+import shlex
+import shutil
+import datetime
+import argparse
+import subprocess
 
-# Go to doc folder
-if [[ -d "$SILVUSDOC" ]]; then
-	cd "$SILVUSDOC"
-else
-	echo "$SILVUSDOC is not a folder"
-	exit 1
-fi
+__author__ = "Silvus"
+__version__ = "0.2"
 
-# Update
-git pull origin master
+# Doc root directory
+DOCPATH = os.getenv('SILVUSDOC', os.path.expanduser('~/.doc'))
 
-# Open vim explorer
-vim -c "Explore"
+# Doc file extension to search for
+DOCEXTENSION = ('md', 'txt')
 
-# Autocommit
-git add .
-git commit -m "Autocommit Doc $(date +'%d/%m/%Y %T')"
+# Bash autocomplete
+DOCAUTOCOMPLETE = """
+_doc()
+{
+    local cur prev
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-# If run under Tmux, unset title
-if [[ -n "$TMUX" ]]; then
-	tmux set-window-option -q automatic-rename
-fi
+    if [[ ${cur} == -* ]] ; then
+        COMPREPLY=( $(compgen -W "--no-autocommit --search --autocomplete --version --help" -- ${cur}) )
+    else
+        local files=("$SILVUSDOC"*)
+        [[ -f ${files[0]} ]] && COMPREPLY+=( "$COMPREPLY${files[@]##*/}" )
+    fi
+}
 
-exit 0
+# complete -F _doc -o nospace doc
+complete -F _doc doc
+"""
+
+
+def check_requirements():
+    if not shutil.which('git'):
+        sys.exit('git is not installed')
+
+    if not shutil.which('fzf'):
+        sys.exit('fzf is not installed')
+
+    if not os.path.isdir(DOCPATH):
+        sys.exit('{} does not exist'.format(DOCPATH))
+
+
+def search(pattern):
+    """
+    Search for string in doc path and open the choosen file in EDITOR
+    """
+    grep = subprocess.Popen('grep -rnIH --exclude-dir=.* {0} --color=never "{1}" "{2}"'.format(
+        ' '.join(map('--include=*.{0}'.format, DOCEXTENSION)), pattern, DOCPATH),
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    grep_output = grep.communicate()[0]
+
+    # Open grep result in fzf
+    file_choosen = choose_in_list(grep_output.decode().split('\n'))
+    if file_choosen:
+        open_in_editor(file_choosen.split(':')[0])
+
+
+def choose_in_list(items, finder_title=""):
+    """
+    pick an item from a list with fzf
+    """
+    fzf = subprocess.Popen(
+        shlex.split('fzf --ansi --header "{}"'.format(finder_title)),
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE)
+    output = fzf.communicate('\n'.join(items).encode())[0]
+
+    return output.decode().strip('\n')
+
+
+def list_docs_files():
+    """
+    List all files with DOCEXTENSION extensions in DOCPATH (exclude hiddens)
+    """
+    file_list = []
+    for root, dirs, files in os.walk(DOCPATH):
+        # Exclude hiddens files and directories
+        files = [f for f in files if not f[0] == '.']
+        dirs[:] = [d for d in dirs if not d[0] == '.']
+        for name in files:
+            if os.path.splitext(name)[1][1:] in DOCEXTENSION:
+                # Keep relative path (from DOCPATH)
+                file_list.append(os.path.relpath(os.path.join(root, name), DOCPATH))
+
+    return sorted(file_list)
+
+
+def open_in_editor(filepath):
+    """
+    Open the choosen file in EDITOR.
+    Check filepath is in DOCPATH
+    """
+    # Get the absolute path
+    # file_choosen = os.path.abspath(file_choosen)
+    file_choosen = os.path.join(DOCPATH, filepath)
+    # Open the choosen file in vim
+    subprocess.call([os.environ.get('EDITOR', 'vim'), file_choosen])
+
+
+def git_pull():
+    # TODO: Do not use git pull ? http://stackoverflow.com/questions/15316601/in-what-cases-could-git-pull-be-harmful
+    subprocess.check_call(['git', '-C', DOCPATH, 'pull'])
+
+
+def git_commit():
+    subprocess.check_call(['git', '--git-dir={}/.git/'.format(DOCPATH),
+                           '--work-tree={}/'.format(DOCPATH), 'add', '--all'])
+    subprocess.call(['git', '--git-dir={}/.git/'.format(DOCPATH), '--work-tree={}/'.format(DOCPATH),
+                     'commit', '-m', '[doc] Autocommit {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))])
+    subprocess.check_call(['git', '-C', DOCPATH, 'push'])
+
+
+def main(args):
+
+    # Autcomplete special case
+    if args.autocomplete:
+        print(DOCAUTOCOMPLETE)
+        sys.exit(0)
+
+    check_requirements()
+
+    # autocommit or not
+    autocommit = args.autocommit and os.path.isdir(os.path.join(DOCPATH, '.git'))
+    # Change tmux tab name (in tmux session)
+    withtmux = os.getenv('TMUX')
+
+    # Change directory (usefull for git and NerdTree)
+    os.chdir(DOCPATH)
+
+    # Before action
+    if withtmux:
+        subprocess.call(['tmux', 'rename-window', 'Doc'])
+    if autocommit:
+        git_pull()
+
+    # Action
+    if args.search:
+        # Search take priority over file path
+        search(' '.join(args.search))
+    else:
+        if args.filepath:
+            # file path as argument (validation is done by argparse)
+            file_choosen = args.filepath
+        else:
+            # build docs list
+            file_list = list_docs_files()
+            # Pick a file with fzf
+            file_choosen = choose_in_list(file_list)
+
+        if file_choosen:
+            open_in_editor(file_choosen)
+
+    # After action
+    if autocommit:
+        git_commit()
+    if withtmux:
+        subprocess.call(['tmux', 'set-window-option', '-q', 'automatic-rename'])
+
+
+if __name__ == "__main__":
+
+    # Parse args
+    parser = argparse.ArgumentParser(description='Docs manager')
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s {0}".format(__version__),
+                        help="show program's version number and exit")
+    parser.add_argument("-n",
+                        "--no-autocommit",
+                        dest='autocommit',
+                        action='store_false',
+                        help="Force to not use git to update/commit SILVUSDOC")
+    parser.set_defaults(autocommit=True)
+    parser.add_argument("filepath", nargs='?',
+                        help="file path relative to SILVUSDOC env varibable", metavar="FILE")
+    parser.add_argument("-s",
+                        "--search",
+                        help="Search with grep in the docs", metavar="PATTERN",
+                        dest='search',
+                        nargs='+')
+    parser.add_argument("-a",
+                        "--autocomplete",
+                        dest='autocomplete',
+                        action='store_true',
+                        help="Print bash autocomplete. (doc --autocomplete > /tmp/doc && sudo mv /tmp/doc /etc/bash_completion.d/doc)")
+    parser.set_defaults(autocomplete=False)
+
+    args = parser.parse_args()
+
+    main(args)

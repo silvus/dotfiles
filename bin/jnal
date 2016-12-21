@@ -21,7 +21,7 @@ jrnl "$@"
 
 # Autocommit
 git add .
-git commit -m "Autocommit Jnal $(date +'%d/%m/%Y %T')"
+git commit -m "[jnal] Autocommit $(date +'%d/%m/%Y %T')"
 
 # If run under Tmux, unset title
 if [[ -n "$TMUX" ]]; then
