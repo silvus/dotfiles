@@ -46,13 +46,20 @@ alias vim.sec="vim -x -u $HOME/.vim/vimrc_sec"
 
 # Disable flow control (bind Ctrl+s in vim)
 stty -ixon
-if [[ -x "$(which setxkbmap)" ]]; then
-	# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
-	setxkbmap -option "nbsp:none"
-fi
+
+# Bindings
+# -----------------------------------------------------------------------------
+# Set keyboard repeat delay and rate
 if [[ -x "$(which xset)" ]]; then
-	# Set keyboard repeat delay and rate
 	# Default: xset r rate 660 25
 	xset r rate 300 30
 fi
 
+# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
+if [[ -x "$(which setxkbmap)" ]]; then
+	setxkbmap -option "nbsp:none"
+fi
+
+# Stop backward-kill-word on directory delimiter (Ctrl+w)
+stty werase undef
+bind '\C-w:unix-filename-rubout'
