@@ -292,8 +292,8 @@ if __name__ == '__main__':
         generate_config(
             os.path.expanduser("~/.sshrc"), [
                 dotfilespath + '/sshrc/sshrc_main',
-                dotfilespath + '/bash/aliases/01_main.bash',
-                dotfilespath + '/bash/aliases/04_prompt.bash',
+                dotfilespath + '/shell/aliases/01_main.sh',
+                dotfilespath + '/shell/bash/02_prompt.bash',
                 dotfilespath + '/sshrc/sshrc_ascii',
             ])
     except KeyboardInterrupt:
