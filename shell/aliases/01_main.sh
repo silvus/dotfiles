@@ -1,3 +1,12 @@
+# Add bins to user path
+# ------------------------------------------------------
+if [[ -d "$HOME/bin" ]]; then
+	export PATH="$HOME/bin:$PATH"
+fi
+
+if [[ -d "$SILVUSDOTFILES/bin" ]]; then
+	export PATH="$SILVUSDOTFILES/bin:$PATH"
+fi
 
 # Navigation
 # -----------------------------------------------------------------------------
@@ -44,11 +53,11 @@ alias screensimple="xrandr --output VGA-0 --off --output HDMI-0 --auto --primary
 alias vi='vim'
 alias vim.sec="vim -x -u $HOME/.vim/vimrc_sec"
 
+# Bindings
+# -----------------------------------------------------------------------------
 # Disable flow control (bind Ctrl+s in vim)
 stty -ixon
 
-# Bindings
-# -----------------------------------------------------------------------------
 # Set keyboard repeat delay and rate
 if [[ -x "$(which xset)" ]]; then
 	# Default: xset r rate 660 25
@@ -60,6 +69,5 @@ if [[ -x "$(which setxkbmap)" ]]; then
 	setxkbmap -option "nbsp:none"
 fi
 
-# Stop backward-kill-word on directory delimiter (Ctrl+w)
+# Stop backward-kill-word on directory delimiter (bind Ctrl+w in bash / zsh)
 stty werase undef
-bind '\C-w:unix-filename-rubout'

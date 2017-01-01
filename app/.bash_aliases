@@ -10,19 +10,15 @@ done
 
 export SILVUSDOTFILES="$( cd -P "$( dirname "$_bash_source" )"/../ && pwd )"
 
-# Add bins to user path
+# Source files from bash and aliases folder
 # ------------------------------------------------------
-if [[ -d "$HOME/bin" ]]; then
-	export PATH="$HOME/bin:$PATH"
-fi
+for file in "$SILVUSDOTFILES/shell/aliases/"*; do
+	if [[ -f "$file" ]]; then
+		source "$file"
+	fi
+done
 
-if [[ -d "$SILVUSDOTFILES/bin" ]]; then
-	export PATH="$SILVUSDOTFILES/bin:$PATH"
-fi
-
-# Source files from bash/aliases folder
-# ------------------------------------------------------
-for file in "$SILVUSDOTFILES/bash/aliases/"*; do
+for file in "$SILVUSDOTFILES/shell/bash/"*; do
 	if [[ -f "$file" ]]; then
 		source "$file"
 	fi
@@ -30,6 +26,10 @@ done
 
 # Environment specific configuration
 # ------------------------------------------------------
-if [[ -f "$SILVUSDOTFILES/bash/bash_env" ]]; then
-	source "$SILVUSDOTFILES/bash/bash_env"
+if [[ -f "$SILVUSDOTFILES/shell/shell_env" ]]; then
+	source "$SILVUSDOTFILES/shell/shell_env"
+fi
+# Historic compatibility - need to be removed
+if [[ -f "$SILVUSDOTFILES/shell/bash_env" ]]; then
+	source "$SILVUSDOTFILES/shell/bash_env"
 fi
