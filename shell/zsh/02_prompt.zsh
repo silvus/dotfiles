@@ -66,9 +66,13 @@ function() {
 
 	# Right Prompt
 	# --------------------------------------------------------------------------------------
-	local git_branch='$(git_super_status)%{$reset_color%}'
 	local return_code='%(?..[%{$fg[red]%}%? ↵%{$reset_color%}])'
 	local python_venv='$(_prompt_python_venv)'
+	if [ -n $ZSH_THEME_GIT_PROMPT_CACHE ]; then
+		local git_branch='$(git_super_status)%{$reset_color%}'
+	else
+		local git_branch=''
+	fi
 
 	RPROMPT="${return_code}${python_venv}${git_branch}"
 }
