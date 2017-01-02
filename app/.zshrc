@@ -18,19 +18,9 @@ if [[ -f ${ZPLUG_HOME}/init.zsh ]]; then
 	source ${ZPLUG_HOME}/init.zsh
 
 	zplug "zsh-users/zsh-autosuggestions"
-
 	zplug "zsh-users/zsh-completions"
-
 	zplug "zsh-users/zsh-syntax-highlighting"
-	typeset -A ZSH_HIGHLIGHT_STYLES
-	# To have paths colored instead of underlined
-	ZSH_HIGHLIGHT_STYLES[path]='fg=green'
-
 	zplug "olivierverdier/zsh-git-prompt", use:"zshrc.sh"
-	ZSH_THEME_GIT_PROMPT_PREFIX='['
-	ZSH_THEME_GIT_PROMPT_SUFFIX=']'
-	ZSH_THEME_GIT_PROMPT_CACHE='true'
-
 	zplug "junegunn/fzf", use:"shell/*.zsh"
 
 	# Install plugins if there are plugins that have not been installed
@@ -46,7 +36,17 @@ if [[ -f ${ZPLUG_HOME}/init.zsh ]]; then
 	zplug load
 fi
 
-# Fzf (managed in vim)
+# zsh-syntax-highlighting
+# To have paths colored instead of underlined
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]='fg=green'
+
+# zsh-git-prompt
+ZSH_THEME_GIT_PROMPT_PREFIX='['
+ZSH_THEME_GIT_PROMPT_SUFFIX=']'
+ZSH_THEME_GIT_PROMPT_CACHE='true'
+
+# Fzf
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Command not found like in bash
