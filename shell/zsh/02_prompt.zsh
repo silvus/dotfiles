@@ -60,10 +60,10 @@ function() {
 	# --------------------------------------------------------------------------------------
 	local return_code='%(?..[%{$fg[red]%}%? ↵%{$reset_color%}])'
 	local python_venv='$(_prompt_python_venv)'
-	if [[ -z $ZSH_THEME_GIT_PROMPT_CACHE ]]; then
-		local git_branch=''
-	else
+	if type git_super_status &>/dev/null; then
 		local git_branch='$(git_super_status)%{$reset_color%}'
+	else
+		local git_branch=''
 	fi
 
 	RPROMPT="${return_code}${python_venv}${git_branch}"

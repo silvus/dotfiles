@@ -29,7 +29,3 @@ done
 if [[ -f "$SILVUSDOTFILES/shell/shell_env" ]]; then
 	source "$SILVUSDOTFILES/shell/shell_env"
 fi
-# Historic compatibility - need to be removed
-if [[ -f "$SILVUSDOTFILES/shell/bash_env" ]]; then
-	source "$SILVUSDOTFILES/shell/bash_env"
-fi

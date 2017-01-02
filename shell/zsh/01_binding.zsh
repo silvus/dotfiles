@@ -1,5 +1,6 @@
 # Use emacs keybindings even if our EDITOR is set to vi
-bindkey -e
+# Conflict with fzf bindings?
+# bindkey -e
 
 # Ctrl + left and Ctrl + right
 bindkey "^[[1;5C" forward-word

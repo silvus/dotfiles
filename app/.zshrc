@@ -1,32 +1,56 @@
 
+if [[ ! -d ~/.zsh ]];then
+	mkdir ~/.zsh
+fi
+
 # Plugins
 # -----------------------------------------------------------------------------
 # zplug
 export ZPLUG_HOME=~/.zsh/zplug
-[ -f ${ZPLUG_HOME}/init.zsh ] && source ${ZPLUG_HOME}/init.zsh
+if [[ ! -d ${ZPLUG_HOME} ]];then
+	printf "Install zplug? [y/N]: "
+	if read -q; then
+		echo; git clone https://github.com/zplug/zplug.git ${ZPLUG_HOME}
+	fi
+fi
 
-# Suggestions
-[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [[ -f ${ZPLUG_HOME}/init.zsh ]]; then
+	source ${ZPLUG_HOME}/init.zsh
 
-# Syntax highlighting
-if [[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-	source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-	# Declare the variable
+	zplug "zsh-users/zsh-autosuggestions"
+
+	zplug "zsh-users/zsh-completions"
+
+	zplug "zsh-users/zsh-syntax-highlighting"
 	typeset -A ZSH_HIGHLIGHT_STYLES
 	# To have paths colored instead of underlined
 	ZSH_HIGHLIGHT_STYLES[path]='fg=green'
-fi
 
-# Git prompt
-if [[ -f ~/.zsh/zsh-git-prompt/zshrc.sh ]]; then
-	source ~/.zsh/zsh-git-prompt/zshrc.sh
+	zplug "olivierverdier/zsh-git-prompt", use:"zshrc.sh"
 	ZSH_THEME_GIT_PROMPT_PREFIX='['
 	ZSH_THEME_GIT_PROMPT_SUFFIX=']'
 	ZSH_THEME_GIT_PROMPT_CACHE='true'
+
+	zplug "junegunn/fzf", use:"shell/*.zsh"
+
+	# Install plugins if there are plugins that have not been installed
+	if ! zplug check --verbose; then
+		printf "Install? [y/N]: "
+		if read -q; then
+			echo; zplug install
+		fi
+	fi
+
+	# Then, source plugins and add commands to $PATH
+	# zplug load --verbose
+	zplug load
 fi
 
-# Fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Fzf (managed in vim)
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Command not found like in bash
+[[ -a "/etc/zsh_command_not_found" ]] && . /etc/zsh_command_not_found
 
 # History
 # -----------------------------------------------------------------------------
@@ -131,6 +155,3 @@ done
 # Environment specific configuration
 # -----------------------------------------------------------------------------
 [ -f ${SILVUSDOTFILES}/shell/shell_env ] && source ${SILVUSDOTFILES}/shell/shell_env
-
-# Historic compatibility - need to be removed
-[ -f ${SILVUSDOTFILES}/shell/bash_env ] && source ${SILVUSDOTFILES}/shell/bash_env
