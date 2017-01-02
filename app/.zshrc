@@ -1,3 +1,33 @@
+
+# Plugins
+# -----------------------------------------------------------------------------
+# zplug
+export ZPLUG_HOME=~/.zsh/zplug
+[ -f ${ZPLUG_HOME}/init.zsh ] && source ${ZPLUG_HOME}/init.zsh
+
+# Suggestions
+[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Syntax highlighting
+if [[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+	source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+	# Declare the variable
+	typeset -A ZSH_HIGHLIGHT_STYLES
+	# To have paths colored instead of underlined
+	ZSH_HIGHLIGHT_STYLES[path]='fg=green'
+fi
+
+# Git prompt
+if [[ -f ~/.zsh/zsh-git-prompt/zshrc.sh ]]; then
+	source ~/.zsh/zsh-git-prompt/zshrc.sh
+	ZSH_THEME_GIT_PROMPT_PREFIX='['
+	ZSH_THEME_GIT_PROMPT_SUFFIX=']'
+	ZSH_THEME_GIT_PROMPT_CACHE='true'
+fi
+
+# Fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # History
 # -----------------------------------------------------------------------------
 setopt histignorealldups histignorespace sharehistory
@@ -81,7 +111,7 @@ autoload -U select-word-style
 select-word-style bash
 
 # -----------------------------------------------------------------------------
-export SILVUSDOTFILES="${HOME}/.dotfiles"
+export SILVUSDOTFILES=~/.dotfiles
 
 # Source files from bash and aliases folder
 # ------------------------------------------------------
@@ -97,29 +127,10 @@ for file in ${SILVUSDOTFILES}/shell/zsh/*(.); do
 	fi
 done
 
-# Plugins
-# -----------------------------------------------------------------------------
-# Suggestions
-[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Syntax highlighting
-if [[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-	source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-	# Declare the variable
-	typeset -A ZSH_HIGHLIGHT_STYLES
-	# To have paths colored instead of underlined
-	ZSH_HIGHLIGHT_STYLES[path]='fg=green'
-fi
-
-# Fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Environment specific configuration
 # -----------------------------------------------------------------------------
-if [[ -f "$SILVUSDOTFILES/shell/shell_env" ]]; then
-	source "$SILVUSDOTFILES/shell/shell_env"
-fi
+[ -f ${SILVUSDOTFILES}/shell/shell_env ] && source ${SILVUSDOTFILES}/shell/shell_env
+
 # Historic compatibility - need to be removed
-if [[ -f "$SILVUSDOTFILES/shell/bash_env" ]]; then
-	source "$SILVUSDOTFILES/shell/bash_env"
-fi
+[ -f ${SILVUSDOTFILES}/shell/bash_env ] && source ${SILVUSDOTFILES}/shell/bash_env

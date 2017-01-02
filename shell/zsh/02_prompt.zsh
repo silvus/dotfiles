@@ -1,11 +1,3 @@
-# Plugin git
-if [[ -f ~/.zsh/zsh-git-prompt/zshrc.sh ]]; then
-	source ~/.zsh/zsh-git-prompt/zshrc.sh
-	ZSH_THEME_GIT_PROMPT_PREFIX='['
-	ZSH_THEME_GIT_PROMPT_SUFFIX=']'
-	ZSH_THEME_GIT_PROMPT_CACHE='true'
-fi
-
 setopt promptsubst
 autoload -U colors && colors
 
@@ -68,10 +60,10 @@ function() {
 	# --------------------------------------------------------------------------------------
 	local return_code='%(?..[%{$fg[red]%}%? ↵%{$reset_color%}])'
 	local python_venv='$(_prompt_python_venv)'
-	if [ -n $ZSH_THEME_GIT_PROMPT_CACHE ]; then
-		local git_branch='$(git_super_status)%{$reset_color%}'
-	else
+	if [[ -z $ZSH_THEME_GIT_PROMPT_CACHE ]]; then
 		local git_branch=''
+	else
+		local git_branch='$(git_super_status)%{$reset_color%}'
 	fi
 
 	RPROMPT="${return_code}${python_venv}${git_branch}"
