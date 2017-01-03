@@ -19,9 +19,12 @@ if [[ -f ${ZPLUG_HOME}/init.zsh ]]; then
 
 	zplug "zsh-users/zsh-autosuggestions"
 	zplug "zsh-users/zsh-completions"
-	zplug "zsh-users/zsh-syntax-highlighting"
 	zplug "olivierverdier/zsh-git-prompt", use:"zshrc.sh"
 	zplug "junegunn/fzf", use:"shell/*.zsh"
+
+	# zsh-syntax-highlighting must be loaded after executing compinit command and sourcing other plugins
+	# (If the defer tag is given 2 or above, run after compinit command)
+	zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 	# Install plugins if there are plugins that have not been installed
 	if ! zplug check --verbose; then
