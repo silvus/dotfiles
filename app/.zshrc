@@ -21,6 +21,12 @@ if [[ -f ${ZPLUG_HOME}/init.zsh ]]; then
 	zplug "zsh-users/zsh-completions"
 	zplug "olivierverdier/zsh-git-prompt", use:"zshrc.sh"
 	zplug "junegunn/fzf", use:"shell/*.zsh"
+	zplug "junegunn/fzf", use:"bin/fzf-tmux", as:command
+	# Grab binaries from GitHub Releases and rename with the "rename-to:" tag
+	zplug "junegunn/fzf-bin", \
+		from:gh-r, \
+		as:command, \
+		rename-to:fzf
 
 	# zsh-syntax-highlighting must be loaded after executing compinit command and sourcing other plugins
 	# (If the defer tag is given 2 or above, run after compinit command)
