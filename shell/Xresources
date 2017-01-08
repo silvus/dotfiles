@@ -3,7 +3,7 @@ URxvt.cursorBlink: 1
 URxvt.scrollBar: off
 
 ! Font
-URxvt.font: xft:DejaVuSansMono:pixelsize=12,xft:Symbola:pixelsize=10
+URxvt.font: xft:DejaVuSansMono:size=10,xft:Symbola:size=10
 URxvt.letterSpace: -1
 ! URxvt.font: xft:Dejavu Sans Mono Book:size=10,\
 !            xft:Dejavu Sans Mono:size=12,\
