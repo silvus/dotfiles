@@ -234,3 +234,23 @@ bind-key ENTER quit article # On article, back to list
 bind-key x toggle-article-read # Toggle read flag
 bind-key ESC hard-quit # Exit
 bind-key b bookmark # Bookmark
+
+# left hand navigation
+# bind-key q quit # Quit the program or return to the previous dialog (depending on the context). Already bind
+bind-key d toggle-article-read # Toggle read flag
+bind-key d open feedlist # Open the currently selected feed
+bind-key d open tagselection # Open the currently selected tag
+bind-key z up # Goes up one item in the list
+bind-key s down # Goes down one item in the list
+bind-key k save # Save the currently selected article to a file
+bind-key e open # Open the currently selected feed or article.
+bind-key e quit article # On article, back to list
+
+# right hand navigation
+bind-key LEFT quit # Quit the program or return to the previous dialog (depending on the context).
+bind-key RIGHT toggle-article-read # Toggle read flag
+# bind-key UP up # Goes up one item in the list. Already bind
+# bind-key DOWN down # Goes down one item in the list. Already bind
+bind-key RIGHT open feedlist # Open the currently selected feed
+bind-key RIGHT open tagselection # Open the currently selected tag
+bind-key ^ENTER open-in-browser-and-mark-read # Opens the URL associated with the current article and marks the article as read.
