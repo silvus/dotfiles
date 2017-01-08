@@ -3,54 +3,61 @@
 ;; Packages
 ;; -------------------------------------------------------------------------------
 
+;; Setup package.el
 (require 'package)
-(package-initialize)
+(setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
 
-(require 'cl)
-
-;; Guarantee all packages are installed on start
-(defvar packages-list
-  '(markdown-mode
-    php-mode
-    web-mode
-    elpy
-    auto-complete
-    undo-tree
-    ;; flycheck
-    ;; magit ;; https://magit.vc/
-    fiplr ;; Like CtrlP for vim
-    neotree)
-  "List of packages needs to be installed at launch")
-
-(defun has-package-not-installed ()
-  (loop for p in packages-list
-        when (not (package-installed-p p)) do (return t)
-        finally (return nil)))
-(when (has-package-not-installed)
-  ;; Check for new packages (package versions)
-  (message "%s" "Get latest versions of all packages...")
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (message "%s" " done.")
-  ;; Install the missing packages
-  (dolist (p packages-list)
-    (when (not (package-installed-p p))
-      (package-install p))))
+  (package-install 'use-package))
 
-
-(require 'auto-complete)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
-(require 'auto-complete-config)
-(ac-config-default)
-
-(require 'undo-tree)
-(global-undo-tree-mode 1)
-
-(require 'neotree)
-(setq neo-smart-open t)
-(setq-default neo-show-hidden-files t)
-(global-set-key (kbd "<f2>") 'neotree-toggle)
+;; Markdown
+(use-package markdown-mode)
+;; PHP
+(use-package php-mode)
+;; Html / JS
+(use-package web-mode)
+;; Python
+(use-package elpy
+	     :config
+	     (progn
+	       (elpy-enable)
+	       (setq elpy-rpc-python-command "/usr/bin/python3")
+	       (add-hook 'python-mode-hook (highlight-indentation-mode 0))))
+;; Betters commands
+(use-package smex
+	     :config
+	     (progn
+	       (smex-initialize)
+	       (global-set-key (kbd "M-x") 'smex)))
+;; Autocomplete
+(use-package auto-complete
+	     :config
+	     (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
+(use-package auto-complete-config
+	     :config
+	     (ac-config-default))
+;; Undo
+(use-package undo-tree
+	     :config
+	     (global-undo-tree-mode))
+;; Like CtrlP for vim
+(use-package fiplr
+	     :config
+	     (global-set-key (kbd "C-p") 'fiplr-find-file))
+;; Sidebar file explorer
+(use-package neotree
+	     :config
+	     (progn
+	       (setq neo-smart-open t)
+	       (setq-default neo-show-hidden-files t)
+	       (global-set-key (kbd "<f2>") 'neotree-toggle)))
+;; Project management
+(use-package projectile)
 
 (require 'ido)
 (ido-mode t)
@@ -58,23 +65,6 @@
 ;; (ido-mode 1)
 ;; (ido-vertical-mode 1)
 
-; (require 'git-gutter)
-; ;; Enable global minor mode
-; (global-git-gutter-mode t)
-;; Use git-gutter.el and linum-mode
-;; (git-gutter:linum-setup)
-
-;; CtrlP like
-(global-set-key (kbd "C-p") 'fiplr-find-file)
-
-(require 'elpy)
-(elpy-enable)
-(setq elpy-rpc-python-command "/usr/bin/python3")
-(add-hook 'python-mode-hook (highlight-indentation-mode 0))
-
-(require 'php-mode)
-(require 'web-mode)
-;; (require 'flycheck)
 
 ;; Keep emacs Custom-settings in separate file
 (setq custom-file "~/.emacs.d/custom.el")
@@ -82,7 +72,7 @@
 
 ;; Interface
 ;; -------------------------------------------------------------------------------
-(menu-bar-mode -1)
+; (menu-bar-mode -1)
 ;; Prevent the warning "Symbol's function definition is void" when running emacs in the console
 (if (display-graphic-p)
     (progn
@@ -90,7 +80,11 @@
       (scroll-bar-mode -1)))
 
 ;; Show bell
-(setq visible-bell t)
+; (setq visible-bell t)
+
+;; Cursor
+;; (set-cursor-color "#ffffff")
+;; (setq-default cursor-type 'bar))
 
 ;; auto show completions for execute-extended-command
 (icomplete-mode 1)
@@ -99,6 +93,9 @@
 (global-linum-mode t)
 ;; (setq linum-format "%d ")
 (setq linum-format "%4d \u2502")
+
+
+
 ;; (unless (display-graphic-p)
 ;;   (setq linum-format (concat linum-format " ")))
 ;; (setq-default left-fringe-width  10)
@@ -110,7 +107,7 @@
 
 ;; Theme
 (load-theme 'wombat t)
-;; (load-theme 'tango-dark t)
+; (load-theme 'tango-dark t)
 ;;(load-theme 'monokai t)
 ;;(load-theme 'moe-theme t)
 (custom-set-faces `(default ((t (:background "#121212")))))
@@ -264,6 +261,20 @@
   (deactivate-mark))
 (global-set-key (kbd "C-l") 'comment-or-uncomment-region-or-line)
 
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+   (if mark-active
+       (list (region-beginning) (region-end))
+     (list (line-beginning-position) (line-beginning-position 2)))))
+
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive
+   (if mark-active
+       (list (region-beginning) (region-end))
+     (message "Copied line")
+     (list (line-beginning-position) (line-beginning-position 2)))))
 
 ;; Tmux Fix
 ;; -------------------------------------------------------------------------------
@@ -274,8 +285,8 @@
 ;; (define-key input-decode-map "\e[1;5B" [C-down])
 
 (defadvice terminal-init-screen
-     ;; The advice is named `tmux', and is run before `terminal-init-screen' runs.
-     (before tmux activate)
+   ;; The advice is named `tmux', and is run before `terminal-init-screen' runs.
+   (before tmux activate)
    ;; Docstring.  This describes the advice and is made available inside emacs;
    ;; for example when doing C-h f terminal-init-screen RET
    "Apply xterm keymap, allowing use of keys passed through tmux."
