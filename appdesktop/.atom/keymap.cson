@@ -25,10 +25,35 @@
 # https://github.com/bevry/cson#what-is-cson
 # 'atom-workspace':
 #   'ctrl-shift-/': 'editor:toggle-line-comments'
+
 '.platform-linux atom-text-editor':
+  'ctrl-t': 'application:new-file'
   'ctrl-d': 'editor:delete-line'
   'ctrl-e': 'find-and-replace:select-next'
+  'ctrl-u': 'editor:lower-case'
+  'ctrl-shift-u': 'editor:upper-case'
   'ctrl-shift-e': 'find-and-replace:select-all'
   'ctrl-shift-l': 'editor:split-selections-into-lines'
-# 'cmd-shift-L'Convert a multi-line selection into multiple cursors
-# 'ctrl-e': 'fuzzy-finder:toggle-file-finder'
+  'ctrl-alt-s': 'settings-view:open'
+  'ctrl-q': 'window:close'
+  'ctrl-shift-q': 'application:quit'
+  'f1': 'window:toggle-menu-bar'
+  'f2': 'tree-view:toggle'
+
+# Already bind
+# 'ctrl-shift-t': 'pane:reopen-closed-item'
+# 'ctrl-shift-l'Convert a multi-line selection into multiple cursors
+
+# From ST3
+# { "keys": ["ctrl+shift+t"], "command": "new_pane" },
+# { "keys": ["ctrl+keypad0"], "command": "focus_side_bar" },
+# { "keys": ["ctrl+shift+="], "command": "reindent" },
+# { "keys": ["ctrl+!"], "command": "show_panel", "args": {"panel": "console", "toggle": true} },
+# { "keys": ["f3"], "command": "toggle_minimap" },
+# { "keys": ["f4"], "command": "next_bookmark" },
+# { "keys": ["shift+f4"], "command": "prev_bookmark" },
+# { "keys": ["ctrl+f4"], "command": "toggle_bookmark" },
+# { "keys": ["ctrl+shift+f4"], "command": "clear_bookmarks" },
+# { "keys": ["alt+f4"], "command": "select_all_bookmarks" },
+# { "keys": ["f5"], "command": "build" },
+# { "keys": ["f12"], "command": "toggle_setting", "args": {"setting": "spell_check"} },

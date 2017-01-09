@@ -1,31 +1,45 @@
 "*":
+  "autocomplete-plus":
+    backspaceTriggersAutocomplete: true
+    minimumWordLength: 1
+  "command-palette":
+    preserveLastSearch: true
   core:
     autoHideMenuBar: true
-    destroyEmptyPanes: false
     disabledPackages: [
       "background-tips"
       "exception-reporting"
       "language-java"
       "metrics"
       "package-generator"
-      "timecop"
       "welcome"
+      "wrap-guide"
+      "deprecation-cop"
+      "dev-live-reload"
+      "autoflow"
+      "language-clojure"
+      "language-csharp"
+      "language-objective-c"
+      "language-ruby"
+      "language-ruby-on-rails"
+      "spell-check"
     ]
     projectHome: "/data/silvus/dev"
     telemetryConsent: "no"
     themes: [
       "one-dark-ui"
-      "monokai-seti"
+      "atom-dark-syntax"
     ]
   editor:
     fontSize: 12
     invisibles: {}
     lineHeight: 1.4
-    preferredLineLength: 100
-    showIndentGuide: true
+    preferredLineLength: 120
+    showIndentGuide: false
     showInvisibles: true
     tabLength: 4
     zoomFontWhenCtrlScrolling: false
-  linter: {}
+  "git-diff":
+    showIconsInEditorGutter: true
   "one-dark-ui":
     layoutMode: "Compact"
