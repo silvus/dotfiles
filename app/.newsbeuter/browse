@@ -3,7 +3,7 @@
 if [[ -n "$DISPLAY" ]]; then
 	# Desktop
 	if echo "$1" | cut -d'/' -f3 | grep -q -e youtube.com$ -e dailymotion.com -e vimeo.com$ ; then
-		tmux split-window -d -l 10 -v "mpv $1"
+		tmux split-window -d -l 10 -v "mpv '$1'"
 	elif echo "$1" | grep -q -e jpg$ -e jpeg$ -e gif$ -e png$; then
 		# Picture
 		feh --auto-zoom -q "$1"
