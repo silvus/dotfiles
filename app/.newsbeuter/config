@@ -234,8 +234,6 @@ bind-key ENTER quit article # On article, back to list
 bind-key x toggle-article-read # Toggle read flag
 bind-key ESC hard-quit # Exit
 bind-key b bookmark # Bookmark
-bind-key o open-in-browser-and-mark-read # Opens the URL associated with the current article and marks the article as read.
-bind-key O open-in-browser # Opens the URL associated with the current article.
 
 # left hand navigation
 # bind-key q quit # Quit the program or return to the previous dialog (depending on the context). Already bind
