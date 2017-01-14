@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# List all file extensions in a directory plus do a sort according frequency
+# http://www.commandlinefu.com/commands/view/10526/list-unique-file-extensions-recursively-for-a-path-include-extension-frequency-stats
+
+
+find . -type f | awk -F'.' '{print $NF}' | sort| uniq -c | sort -g
