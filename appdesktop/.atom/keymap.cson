@@ -37,6 +37,7 @@
   'ctrl-alt-s': 'settings-view:open'
   'ctrl-q': 'window:close'
   'ctrl-shift-q': 'application:quit'
+  'ctrl-alt-p': 'application:reopen-project'
   'f1': 'window:toggle-menu-bar'
   'f2': 'tree-view:toggle'
 
