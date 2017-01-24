@@ -281,53 +281,58 @@ endif
 
 " Keymaps - Vim more like Emacs
 " ------------------------------------------------------------------------------------
-" source $VIMRUNTIME/mswin.vim
-" set 'selection', 'selectmode', 'mousemodel' and 'keymodel' like other editors
-behave mswin
+" if X clipboard is available
+if has("x11")
+	" source $VIMRUNTIME/mswin.vim
+	" set 'selection', 'selectmode', 'mousemodel' and 'keymodel' like other editors
+	behave mswin
+
+	" CTRL-X and SHIFT-Del are Cut
+	vnoremap <C-x> "+x
+	vnoremap <S-Del> "+x
+
+	" CTRL-C and CTRL-Insert are Copy
+	vnoremap <C-c> "+y
+	vnoremap <C-Insert> "+y
+
+	" CTRL-V and SHIFT-Insert are Paste
+	map <C-v> "+gP
+	map <S-Insert> "+gP
+
+	cmap <C-v> <C-r>+
+	cmap <S-Insert> <C-r>+
+
+	" Pasting blockwise and linewise selections is not possible in Insert and
+	" Visual mode without the +virtualedit feature.  They are pasted as if they
+	" were characterwise instead.
+	" Uses the paste.vim autoload script.
+	" Use CTRL-G u to have CTRL-Z only undo the paste.
+	exe 'inoremap <script> <C-v> <C-g>u' . paste#paste_cmd['i']
+	exe 'vnoremap <script> <C-v> ' . paste#paste_cmd['v']
+
+	imap <S-Insert> <C-v>
+	vmap <S-Insert> <C-v>
+
+	" Use CTRL-Q to do what CTRL-V used to do
+	noremap <C-q> <C-v>
+
+	" CTRL-Y is Redo (although not repeat); not in cmdline though
+	noremap <C-y> <C-r>
+	inoremap <C-y> <C-o><C-r>
+
+	" Keep V-line behavior
+	xnoremap <Up> k
+	xnoremap <Down> j
+	xnoremap <Left> h
+	xnoremap <Right> l
+endif
 
 " backspace in Visual mode deletes selection
 vnoremap <BS> d
 
-" CTRL-X and SHIFT-Del are Cut
-vnoremap <C-X> "+x
-vnoremap <S-Del> "+x
-
-" CTRL-C and CTRL-Insert are Copy
-vnoremap <C-C> "+y
-vnoremap <C-Insert> "+y
-
-" CTRL-V and SHIFT-Insert are Paste
-map <C-V> "+gP
-map <S-Insert> "+gP
-
-cmap <C-V> <C-R>+
-cmap <S-Insert> <C-R>+
-
-" Pasting blockwise and linewise selections is not possible in Insert and
-" Visual mode without the +virtualedit feature.  They are pasted as if they
-" were characterwise instead.
-" Uses the paste.vim autoload script.
-" Use CTRL-G u to have CTRL-Z only undo the paste.
-exe 'inoremap <script> <C-V> <C-G>u' . paste#paste_cmd['i']
-exe 'vnoremap <script> <C-V> ' . paste#paste_cmd['v']
-
-imap <S-Insert> <C-V>
-vmap <S-Insert> <C-V>
-
-" Use CTRL-Q to do what CTRL-V used to do
-noremap <C-Q> <C-V>
-
 " CTRL-Z is Undo; not in cmdline though
-noremap <C-Z> u
-inoremap <C-Z> <C-O>u
-
-" CTRL-Y is Redo (although not repeat); not in cmdline though
-noremap <C-Y> <C-R>
-inoremap <C-Y> <C-O><C-R>
-
-" Keep V-line behavior
-xnoremap <Up> k
-xnoremap <Down> j
+noremap <C-z> u
+inoremap <C-z> <C-o>u
 
 
 " Commands
