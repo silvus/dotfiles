@@ -84,9 +84,18 @@ imap <c-p> <Esc>:FZF<cr>
 " Switch buffers"
 nmap <C-e> :Buffers<CR>
 imap <C-e> <Esc>:Buffers<CR>
+" v:oldfiles and open buffers
+nmap <C-h> :History<CR>
+imap <C-h> <Esc>:History<CR>
 " Executes commands
-nmap <C-x> :Commands<CR>
-imap <C-x> <Esc>:Commands<CR>
+nmap <A-x> :Commands<CR>
+imap <A-x> <Esc>:Commands<CR>
+" File types
+nmap <A-f> :Filetypes<CR>
+imap <A-f> <Esc>:Filetypes<CR>
+" Lines in loaded buffers
+nmap <A-p> :Lines<CR>
+imap <A-p> <Esc>:Lines<CR>
 
 " NerdTree
 " ------------------------------------------------------------------------------------
