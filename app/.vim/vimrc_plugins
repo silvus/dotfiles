@@ -10,6 +10,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-speeddating'
 Plug 'mbbill/undotree'
@@ -17,6 +18,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
 Plug 'klen/python-mode'
 Plug 'plasticboy/vim-markdown'
+Plug 'dhruvasagar/vim-table-mode'
 " Plug 'othree/html5.vim'
 " Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
@@ -112,6 +114,11 @@ nnoremap <silent> <F3> :TagbarToggle<CR>
 " Undotree
 " ------------------------------------------------------------------------------------
 nnoremap <silent> <leader>u :UndotreeToggle<CR>
+
+" Table Mode
+" ------------------------------------------------------------------------------------
+" Markdown-compatible tables
+let g:table_mode_corner="|"
 
 " Python-mode
 " ------------------------------------------------------------------------------------
