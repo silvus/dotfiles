@@ -7,6 +7,9 @@ import shutil
 import datetime
 import argparse
 import subprocess
+import http.server
+import socketserver
+import webbrowser
 
 __author__ = "Silvus"
 __version__ = "0.2"
@@ -106,6 +109,24 @@ def open_in_editor(filepath):
     # Open the choosen file in vim
     subprocess.call([os.environ.get('EDITOR', 'vim'), file_choosen])
 
+def open_in_browser():
+    port = 8000
+    url = 'http://localhost:{}'.format(port)
+
+    os.chdir(DOCPATH)
+
+    Handler = http.server.SimpleHTTPRequestHandler
+    httpd = socketserver.TCPServer(("", port), Handler)
+
+    print("Serving at port", port)
+    webbrowser.open_new(url)
+
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt as e:
+        print("Closing...")
+        httpd.server_close()
+        pass
 
 def git_pull():
     # TODO: Do not use git pull ? http://stackoverflow.com/questions/15316601/in-what-cases-could-git-pull-be-harmful
@@ -122,49 +143,53 @@ def git_commit():
 
 def main(args):
 
-    # Autcomplete special case
+    # Autcomplete and web specials cases
     if args.autocomplete:
         print(DOCAUTOCOMPLETE)
         sys.exit(0)
-
-    check_requirements()
-
-    # autocommit or not
-    autocommit = args.autocommit and os.path.isdir(os.path.join(DOCPATH, '.git'))
-    # Change tmux tab name (in tmux session)
-    withtmux = os.getenv('TMUX')
-
-    # Change directory (usefull for git and NerdTree)
-    os.chdir(DOCPATH)
-
-    # Before action
-    if withtmux:
-        subprocess.call(['tmux', 'rename-window', 'Doc'])
-    if autocommit:
-        git_pull()
-
-    # Action
-    if args.search:
-        # Search take priority over file path
-        search(' '.join(args.search))
+    elif args.web:
+        open_in_browser()
+        sys.exit(0)
     else:
-        if args.filepath:
-            # file path as argument (validation is done by argparse)
-            file_choosen = args.filepath
+
+        check_requirements()
+
+        # autocommit or not
+        autocommit = args.autocommit and os.path.isdir(os.path.join(DOCPATH, '.git'))
+        # Change tmux tab name (in tmux session)
+        withtmux = os.getenv('TMUX')
+
+        # Change directory (usefull for git and NerdTree)
+        os.chdir(DOCPATH)
+
+        # Before action
+        if withtmux:
+            subprocess.call(['tmux', 'rename-window', 'Doc'])
+        if autocommit:
+            git_pull()
+
+        # Action
+        if args.search:
+            # Search take priority over file path
+            search(' '.join(args.search))
         else:
-            # build docs list
-            file_list = list_docs_files()
-            # Pick a file with fzf
-            file_choosen = choose_in_list(file_list)
+            if args.filepath:
+                # file path as argument (validation is done by argparse)
+                file_choosen = args.filepath
+            else:
+                # build docs list
+                file_list = list_docs_files()
+                # Pick a file with fzf
+                file_choosen = choose_in_list(file_list)
 
-        if file_choosen:
-            open_in_editor(file_choosen)
+            if file_choosen:
+                open_in_editor(file_choosen)
 
-    # After action
-    if autocommit:
-        git_commit()
-    if withtmux:
-        subprocess.call(['tmux', 'set-window-option', '-q', 'automatic-rename'])
+        # After action
+        if autocommit:
+            git_commit()
+        if withtmux:
+            subprocess.call(['tmux', 'set-window-option', '-q', 'automatic-rename'])
 
 
 if __name__ == "__main__":
@@ -189,6 +214,12 @@ if __name__ == "__main__":
                         help="Search with grep in the docs", metavar="PATTERN",
                         dest='search',
                         nargs='+')
+    parser.add_argument("-w",
+                        "--web",
+                        dest='web',
+                        action='store_true',
+                        help="Open doc in web browser")
+    parser.set_defaults(web=False)
     parser.add_argument("-a",
                         "--autocomplete",
                         dest='autocomplete',
