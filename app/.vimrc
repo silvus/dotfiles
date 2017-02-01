@@ -240,13 +240,15 @@ nnoremap <silent> <C-l> :nohl<CR><C-l>
 nnoremap <F5> :!%:p<CR>
 
 " Insert current date
-nnoremap <F6> "=strftime("%Y-%m-%d %T")<CR>P
-inoremap <F6> <C-R>=strftime("%Y-%m-%d %T")<CR>
+nnoremap <F6> "=strftime("%T")<CR>P
+inoremap <F6> <C-R>=strftime("%T")<CR>
 nnoremap <F7> "=strftime("%Y-%m-%d")<CR>P
 inoremap <F7> <C-R>=strftime("%Y-%m-%d")<CR>
 
-" Make Markdown header
+" Markdown headers
 nnoremap <F8> VypVr=
+nnoremap <leader>h1 VypVr=
+nnoremap <leader>h2 VypVr-
 
 " Indentation on paste
 set pastetoggle=<F9>
