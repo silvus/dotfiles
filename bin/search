@@ -3,7 +3,7 @@
 # Quick search in a directory for a string ($1).
 # -----------------------------------------------------------------------------
 if [[ -x "$(which pt 2>/dev/null)" ]]; then
-	pt "$1" .
+	pt --hidden --follow "$1" .
 elif [[ -x "$(which ack-grep 2>/dev/null)" ]]; then
 	ack-grep "$1" .
 else

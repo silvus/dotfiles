@@ -110,7 +110,7 @@ def open_in_editor(filepath):
     subprocess.call([os.environ.get('EDITOR', 'vim'), file_choosen])
 
 def open_in_browser():
-    port = 8000
+    port = 5000
     url = 'http://localhost:{}'.format(port)
 
     os.chdir(DOCPATH)
