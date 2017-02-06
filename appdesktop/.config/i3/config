@@ -242,7 +242,7 @@ bar {
 
     # i3status
     # status_command i3status
-    status_command i3status | python3 /data/dev/bin/statusbar -o i3status
+    status_command i3status | python3 ~/.dotfiles/bin/statusbar -o i3status
 }
 
 # Small bar

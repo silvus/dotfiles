@@ -1,0 +1,347 @@
+#!/usr/bin/env python3
+"""
+Status bar for tmux and i3status
+"""
+
+import os
+import json
+import sys
+import datetime
+import socket
+import argparse
+import subprocess
+import logging
+
+
+__author__ = "Silvus"
+__version__ = "0.2"
+
+
+logging.basicConfig()
+log = logging.getLogger(__name__)
+log.setLevel(logging.CRITICAL)
+
+
+class Status():
+    def __init__(self, output_mode="terminal"):
+        self.line = ""
+        self.output_mode = output_mode
+
+        func_name = 'format_' + output_mode
+        func = getattr(self, func_name)
+        func()
+
+    def format_terminal(self):
+        """
+        Default output
+        """
+        print("TODO")
+
+    def format_i3status(self):
+        """
+        Output for i3
+        """
+        # Skip the first line which contains the version header.
+        self.print_line(self._i3status_read_line())
+
+        # The second line contains the start of the infinite array.
+        self.print_line(self._i3status_read_line())
+
+        while True:
+
+            prefix = ''
+            line = self._i3status_read_line()
+            # ignore comma at start of lines
+            if line.startswith(','):
+                line, prefix = line[1:], ','
+
+            j = json.loads(line)
+
+            mail_count = self.call_mail_check()
+            if mail_count:
+                j.insert(8, {
+                    'full_text': '   {} '.format(mail_count),
+                    'name': 'mail',
+                    'color': '#8bdd58',
+                })
+
+            agenda_count = self.call_agenda()
+            if agenda_count:
+                j.insert(9, {
+                    'full_text': '   {} '.format(agenda_count),
+                    'name': 'agenda',
+                    'color': '#8bdd58',
+                })
+
+            # insert information into the start of the json, but could be anywhere
+            # j.append({'full_text': '%s' % 'ratatatatatata', 'name': 'gov'})
+            # and echo back new encoded json
+            self.print_line(prefix + json.dumps(j))
+
+    def _i3status_read_line(self):
+        """ Interrupted respecting reader for stdin. """
+        # try reading a line, removing any extra whitespace
+        try:
+            line = sys.stdin.readline().strip()
+            # i3status sends EOF, or an empty line
+            if not line:
+                sys.exit(3)
+            return line
+        # exit on ctrl-c
+        except KeyboardInterrupt:
+            sys.exit()
+
+    def print_line(self, message):
+        """ Non-buffered printing to stdout. """
+        sys.stdout.write(message + '\n')
+        sys.stdout.flush()
+
+    def format_tmux(self):
+        """
+        Output for tmux
+        """
+
+        tmux_line = ""
+
+        battery_content = self.call_battery()
+        if battery_content:
+            if int(battery_content.capacity) < 10:
+                battery_color = "yellow"
+            else:
+                battery_color = "green"
+
+            tmux_line += "#[bg=black]#[fg=white] ⚡ #[fg=black]#[bg={}] {}% #[default] ".format(
+                battery_color, battery_content.capacity)
+
+        # Mails block
+        mail_content = self.call_mail_check()
+        if mail_content:
+            tmux_line += "#[bg=black]#[fg=white] ✉ #[fg=black]#[bg=green] {} #[default] ".format(mail_content)
+
+        # Agenda block
+        agenda_content = self.call_agenda()
+        if agenda_content:
+            tmux_line += "#[bg=black]#[fg=white] 📅  #[fg=black]#[bg=green] {} #[default] ".format(
+                agenda_content)
+
+        # Hostname block
+        tmux_line += "#[bg=black]#[fg=white] {} #[fg=black]#[bg=green] {} #[default] ".format(
+            self.call_iplocal(), self.call_hostname())
+
+        # Date block
+        tmux_line += "#[bg=black]#[fg=white] {} #[fg=black]#[bg=green] ⌚ {} #[default]".format(
+            self.call_date(), self.call_time())
+
+        print(tmux_line)
+
+    def call_agenda(self):
+        """
+        Execute agenda
+        """
+        agenda_data = _launch_script("/data/dev/bin/agenda", ["count"])
+        return agenda_data.rstrip('\n')
+
+    def call_mail_check(self):
+        """
+        Get mail_check content
+        """
+        try:
+            with open(os.path.expanduser("~/.mail_check")) as f:
+                return f.read()
+        except IOError:
+            # File do not exist
+            return ''
+
+    def call_battery(self):
+        """
+        Get battery stats
+        https://github.com/nicolargo/batinfo
+        """
+        bat = Batteries()
+        try:
+            return bat.stat[0]
+        except IndexError:
+            # No battery
+            pass
+
+    def call_date(self):
+        # return datetime.datetime.now().strftime('%Y-%m-%d')
+        return datetime.datetime.now().strftime('%a %d %b')
+
+    def call_time(self, with_second=False):
+        if with_second:
+            time_format = '%H:%M:%S'
+        else:
+            time_format = '%H:%M'
+
+        return datetime.datetime.now().strftime(time_format)
+
+    def call_hostname(self):
+        return socket.getfqdn()
+
+    def call_iplocal(self):
+        """
+        http://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib
+        """
+        try:
+            ip_local = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close())
+                for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+        except OSError as e:
+            # Not connected
+            return ''
+
+        return ip_local
+
+def _launch_script(script, script_arg):
+    # if path exist and is executable
+    if os.path.isfile(script) and os.access(script, os.X_OK):
+        p = subprocess.Popen([script] + script_arg, stdout=subprocess.PIPE)
+        out, err = p.communicate()
+
+        return out.decode()
+
+def main():
+    # Parse args
+    parser = argparse.ArgumentParser(description='Display various status bar information')
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s {0}".format(__version__),
+                        help="show program's version number and exit")
+    parser.add_argument("-o",
+                        "--output",
+                        help="output format. Default \"terminal\"",
+                        choices=['terminal', 'tmux', 'i3status'])
+    args = parser.parse_args()
+
+    # Default output
+    if args.output is None:
+        args.output = "terminal"
+
+    Status(args.output)
+
+
+# Batinfo
+# A simple Python lib to retreive battery information
+#
+# Copyright (C) 2014 Nicolargo <nicolas@nicolargo.com>
+#
+# BatInfo is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# BatInfo is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+class Battery(object):
+    """
+    Battery stats
+    """
+
+    def __init__(self, path="/sys/class/power_supply", name="BAT0"):
+        self.path = os.path.join(path, name)
+        self.name = name
+        self.__update__()
+
+    def __str__(self):
+        self.__update__()
+        if 'capacity' in repr(self):
+            return str(self.capacity)
+        else:
+            return ""
+
+    def __repr__(self):
+        self.__update__()
+        return json.dumps(self, default=lambda o: o.__dict__)
+
+    def __getattr__(self, stat):
+        """
+        Catch message if attribute did not exist
+        """
+        log.error("Attribute %s did not exist" % stat)
+        return ""
+
+    def __get_stat__(self, stat):
+        """
+        Read stat from the Linux kernel
+        """
+        try:
+            with open(os.path.join(self.path, stat), 'r') as f:
+                return f.read().strip()
+        except Exception:
+            # log.error("Can not read file %s" % stat)
+            return ""
+
+    def __update__(self):
+        """
+        Update the stats
+        """
+        # Get all file in the battery system folder
+        stats = [f for f in os.listdir(self.path)
+                 if os.path.isfile(os.path.join(self.path, f))]
+        for stat in stats:
+            # ~ print("%s = %s" % (stat, self.__get_stat__(stat)))
+            value = self.__get_stat__(stat)
+            try:
+                # Try to convert to integer
+                value = int(value)
+            except ValueError:
+                # Not possible, not a problem
+                pass
+            setattr(self, stat, value)
+        if ('capacity' not in stats and
+                'charge_full' in stats and
+                'charge_now' in stats):
+            value = self.charge_now*100/self.charge_full
+            setattr(self, 'capacity', value)
+
+
+class Batteries(object):
+    """
+    Class to retreive stats of all the batteries
+    List of battery (class)
+    """
+
+    def __init__(self, bat_root_path="/sys/class/power_supply"):
+        # Root path for batteries stats
+        self.bat_root_path = bat_root_path
+        # Update stat
+        self.stat = []
+        self.update()
+
+    def update(self):
+        # Init the batteries stat list
+        self.stat = []
+        # and update it...
+        # Find all the batteries in the bat_root_path folder
+        # It's a battery if the file "type" exist
+        # and contain "Battery"
+        for dirname in os.listdir(self.bat_root_path):
+            type_file = os.path.join(self.bat_root_path, dirname, "type")
+            if (os.path.isfile(type_file)):
+                try:
+                    with open(type_file, 'r') as f:
+                        is_bat = (f.read().strip() == "Battery")
+                except Exception:
+                    log.error("Can not read file %s" % type_file)
+                if (is_bat):
+                    # It is a battery, let's add it to the list
+                    # print("Add the battery %s to the list" % dirname)
+                    self.stat.append(Battery(self.bat_root_path, dirname))
+
+    def __len__(self):
+        return len(self.stat)
+
+    def __iter__(self):
+        return iter(self.stat)
+
+
+if __name__ == "__main__":
+    main()
