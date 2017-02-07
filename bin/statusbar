@@ -139,7 +139,8 @@ class Status():
         Execute agenda
         """
         agenda_data = _launch_script("/data/dev/bin/agenda", ["count"])
-        return agenda_data.rstrip('\n')
+        if agenda_data:
+            return agenda_data.rstrip('\n')
 
     def call_mail_check(self):
         """
