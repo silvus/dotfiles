@@ -19,6 +19,7 @@ Plug 'mhinz/vim-startify'
 Plug 'klen/python-mode'
 Plug 'plasticboy/vim-markdown'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'vitalk/vim-simple-todo'
 " Plug 'othree/html5.vim'
 " Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
@@ -119,6 +120,21 @@ nnoremap <silent> <leader>u :UndotreeToggle<CR>
 " ------------------------------------------------------------------------------------
 " Markdown-compatible tables
 let g:table_mode_corner="|"
+
+" Simple Todo
+" ------------------------------------------------------------------------------------
+" Disable default key bindings
+let g:simple_todo_map_keys = 0
+
+" Create a new item at the start of this line
+nmap <leader>c <Plug>(simple-todo-new-start-of-line)
+vmap <leader>c <Plug>(simple-todo-new-start-of-line)
+" imap <leader>c <Plug>(simple-todo-new-start-of-line)
+
+" Toggle checkboxes states
+nmap <leader>x <Plug>(simple-todo-mark-switch)
+vmap <leader>x <Plug>(simple-todo-mark-switch)
+" imap <leader>x <Plug>(simple-todo-mark-switch)
 
 " Python-mode
 " ------------------------------------------------------------------------------------
