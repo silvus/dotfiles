@@ -70,6 +70,19 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
+;; Org-mode
+;; -------------------------------------------------------------------------------
+ (custom-set-variables
+ '(org-directory "/data/doc/orgs")
+ '(org-default-notes-file (concat org-directory "/todo.org"))
+ '(org-agenda-files (list org-directory)))
+
+;; support shift-selection-mode
+(setq org-support-shift-select t)
+
+;; for date selection start on Mondays
+(setq calendar-week-start-day 1)
+
 ;; Interface
 ;; -------------------------------------------------------------------------------
 ; (menu-bar-mode -1)
