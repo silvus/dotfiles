@@ -83,6 +83,9 @@
 ;; for date selection start on Mondays
 (setq calendar-week-start-day 1)
 
+(setq org-todo-keywords
+       '((sequence "TODO" "WAIT" "|" "DONE" "CANCELLED")))
+
 ;; Interface
 ;; -------------------------------------------------------------------------------
 ; (menu-bar-mode -1)
