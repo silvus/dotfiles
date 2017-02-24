@@ -70,6 +70,7 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
+
 ;; Org-mode
 ;; -------------------------------------------------------------------------------
  (custom-set-variables
@@ -83,8 +84,47 @@
 ;; for date selection start on Mondays
 (setq calendar-week-start-day 1)
 
+;; Keywords
 (setq org-todo-keywords
-       '((sequence "TODO" "WAIT" "|" "DONE" "CANCELLED")))
+       '((sequence "TODO" "CURRENT" "WAIT" "|" "DONE" "CANCELLED")))
+
+;; Clocking
+; Continuous clocking
+(setq org-clock-continuously t)
+; Save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persist t)
+(org-clock-persistence-insinuate)
+; Do not prompt to resume an active clock
+(setq org-clock-persist-query-resume nil)
+; Removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+; Clock out when moving task to a done state
+(setq org-clock-out-when-done t)
+; Include current clocking task in clock reports
+(setq org-clock-report-include-clocking-task t)
+;; Separate drawers for clocking and logs
+(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
+;; Save clock data and state changes and notes in the LOGBOOK drawer
+(setq org-clock-into-drawer t)
+
+; Bindings
+(global-set-key (kbd "<f6>") 'org-capture)
+(global-set-key (kbd "<f7>") 'org-clock-in)
+(global-set-key (kbd "<f8>") 'org-clock-out)
+(global-set-key (kbd "<f9>") 'org-agenda)
+
+; Fix \emsp in clocktable
+(defun my-org-clocktable-indent-string (level)
+  (if (= level 1)
+      ""
+    (let ((str "|"))
+      (while (> level 2)
+        (setq level (1- level)
+              str (concat str "--")))
+      (concat str "-> "))))
+
+(advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
+
 
 ;; Interface
 ;; -------------------------------------------------------------------------------
@@ -109,7 +149,6 @@
 (global-linum-mode t)
 ;; (setq linum-format "%d ")
 (setq linum-format "%4d \u2502")
-
 
 
 ;; (unless (display-graphic-p)
