@@ -74,9 +74,12 @@
 ;; Org-mode
 ;; -------------------------------------------------------------------------------
  (custom-set-variables
- '(org-directory "/data/doc/orgs")
+ '(org-directory "/data/doc/org")
  '(org-default-notes-file (concat org-directory "/todo.org"))
  '(org-agenda-files (list org-directory)))
+
+;; open agenda in current window
+(setq org-agenda-window-setup (quote current-window))
 
 ;; support shift-selection-mode
 (setq org-support-shift-select t)
@@ -84,9 +87,42 @@
 ;; for date selection start on Mondays
 (setq calendar-week-start-day 1)
 
+;; warn me of any deadlines in next 7 days
+(setq org-deadline-warning-days 7)
+
+;; show me tasks scheduled or due in next fortnight
+; (setq org-agenda-span (quote fortnight))
+
+;; don't show tasks as scheduled if they are already shown as a deadline
+; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+
+;; Agenda : do not dim blocked tasks
+; (setq org-agenda-dim-blocked-tasks nil)
+
+;; Compact the block agenda view
+; (setq org-agenda-compact-blocks t)
+
 ;; Keywords
 (setq org-todo-keywords
        '((sequence "TODO" "CURRENT" "WAIT" "|" "DONE" "CANCELLED")))
+
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+
+; 			 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+; 			("r" "respond" entry (file "~/git/org/refile.org")
+; 			 "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+; 			("n" "note" entry (file "~/git/org/refile.org")
+; 			 "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+; 			("j" "Journal" entry (file+datetree "~/git/org/diary.org")
+; 			 "* %?\n%U\n" :clock-in t :clock-resume t)
+; 			("w" "org-protocol" entry (file "~/git/org/refile.org")
+; 			 "* TODO Review %c\n%U\n" :immediate-finish t)
+; 			("m" "Meeting" entry (file "~/git/org/refile.org")
+; 			 "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+; 			("p" "Phone call" entry (file "~/git/org/refile.org")
+; 			 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+; 			("h" "Habit" entry (file "~/git/org/refile.org")
+; 			 "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 
 ;; Clocking
 ; Continuous clocking
@@ -107,13 +143,15 @@
 ;; Save clock data and state changes and notes in the LOGBOOK drawer
 (setq org-clock-into-drawer t)
 
-; Bindings
+;; Bindings
+(global-set-key (kbd "<f5>") (org-insert-time-stamp nil t))
 (global-set-key (kbd "<f6>") 'org-capture)
 (global-set-key (kbd "<f7>") 'org-clock-in)
 (global-set-key (kbd "<f8>") 'org-clock-out)
 (global-set-key (kbd "<f9>") 'org-agenda)
+(global-set-key (kbd "C-c a") 'org-agenda)
 
-; Fix \emsp in clocktable
+;; Fix \emsp in clocktable
 (defun my-org-clocktable-indent-string (level)
   (if (= level 1)
       ""
