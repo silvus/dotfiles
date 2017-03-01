@@ -73,6 +73,10 @@
 
 ;; Org-mode
 ;; -------------------------------------------------------------------------------
+
+;; Org mode on start-up
+(add-hook 'after-init-hook 'org-agenda-list)
+
  (custom-set-variables
  '(org-directory "/data/doc/org")
  '(org-default-notes-file (concat org-directory "/todo.org"))
@@ -80,6 +84,9 @@
 
 ;; open agenda in current window
 (setq org-agenda-window-setup (quote current-window))
+
+;; Show all logged state changes
+; (setq org-agenda-log-mode-items '(state))
 
 ;; support shift-selection-mode
 (setq org-support-shift-select t)
