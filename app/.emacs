@@ -75,21 +75,43 @@
 ;; -------------------------------------------------------------------------------
 
 ;; Org mode on start-up
-(add-hook 'after-init-hook 'org-agenda-list)
+;; (add-hook 'after-init-hook 'org-agenda-list)
+(setq initial-buffer-choice (lambda ()
+  (org-agenda nil "s")
+  (get-buffer "*Org Agenda*")))
 
+;; Open agenda in current window, not on a split
+(setq org-agenda-window-setup (quote current-window))
+
+;; Agenda view Presenting longer than 1 week
+(setq org-agenda-span 14)
+
+;; Starting view from today, not monday
+; (setq org-agenda-start-on-weekday nil)
+
+;; Starting view somes days ago
+; (setq org-agenda-start-day "-3d")
+
+;; Custom agenda
+(setq org-agenda-custom-commands
+      '(("s" "Simple global view"
+         ((agenda "")
+          (alltodo "")))))
+
+;; Org files paths
  (custom-set-variables
  '(org-directory "/data/doc/org")
  '(org-default-notes-file (concat org-directory "/todo.org"))
  '(org-agenda-files (list org-directory)))
-
-;; open agenda in current window
-(setq org-agenda-window-setup (quote current-window))
 
 ;; Show all logged state changes
 ; (setq org-agenda-log-mode-items '(state))
 
 ;; support shift-selection-mode
 (setq org-support-shift-select t)
+
+;; Return to activate a link
+(setq org-return-follows-link t)
 
 ;; for date selection start on Mondays
 (setq calendar-week-start-day 1)
