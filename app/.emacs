@@ -92,17 +92,38 @@
 ;; Starting view somes days ago
 ; (setq org-agenda-start-day "-3d")
 
+;; Agenda clock report parameters
+(setq org-agenda-clockreport-parameter-plist
+  '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
+
 ;; Custom agenda
 (setq org-agenda-custom-commands
-      '(("s" "Simple global view"
-         ((agenda "")
-          (alltodo "")))))
+  '(("s" "Simple global view"
+     ((agenda ""))
+      ((org-agenda-overriding-header "Agenda")
+      ; Start agenda with clock report
+      ; (org-agenda-start-with-clockreport-mode t)
+      (org-agenda-show-log 'clockcheck)
+      (alltodo "")))))
+
+;; Work report for today
+(add-to-list 'org-agenda-custom-commands
+   '("c" "Work report"
+     ((agenda ""))
+     ((org-agenda-overriding-header "Work report")
+      (org-agenda-show-log 'clockcheck)
+      (org-agenda-start-with-clockreport-mode t)
+      (org-agenda-span 'day)
+      (org-agenda-time-grid nil))))
 
 ;; Org files paths
  (custom-set-variables
  '(org-directory "/data/doc/org")
  '(org-default-notes-file (concat org-directory "/todo.org"))
  '(org-agenda-files (list org-directory)))
+
+;; Start in org folder
+(setq default-directory "/data/doc/org")
 
 ;; Show all logged state changes
 ; (setq org-agenda-log-mode-items '(state))
