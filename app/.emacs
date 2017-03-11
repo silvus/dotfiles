@@ -97,24 +97,79 @@
   '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
 
 ;; Custom agenda
+;; (setq org-agenda-custom-commands
+;;   '(("s" "Simple global view"
+;;      ((agenda ""))
+;;       ((org-agenda-overriding-header "Agenda")
+;;       (alltodo "")))))
 (setq org-agenda-custom-commands
   '(("s" "Simple global view"
-     ((agenda ""))
-      ((org-agenda-overriding-header "Agenda")
-      ; Start agenda with clock report
-      ; (org-agenda-start-with-clockreport-mode t)
-      (org-agenda-show-log 'clockcheck)
-      (alltodo "")))))
+      ((agenda ""
+        ((org-agenda-overriding-header "Agenda")))
+      (tags-todo "projet|support|organisation/!+TODO|+NEXT"
+        ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-overriding-header "Tasks")))
+      ; (tags-todo "projet|support|organisation/!+WAITING"
+      ;   ((org-agenda-overriding-header "Stuck")))
+      (tags "break+TODO=\"\""
+        ((org-agenda-overriding-header "Breaks")))))))
 
 ;; Work report for today
 (add-to-list 'org-agenda-custom-commands
    '("c" "Work report"
-     ((agenda ""))
+     (agenda "")
      ((org-agenda-overriding-header "Work report")
       (org-agenda-show-log 'clockcheck)
       (org-agenda-start-with-clockreport-mode t)
       (org-agenda-span 'day)
       (org-agenda-time-grid nil))))
+
+;; Deadlines list
+(add-to-list 'org-agenda-custom-commands
+  '("d" agenda "Deadlines"
+    ((org-agenda-span 'week)
+    (org-agenda-time-grid nil)
+    (org-agenda-ndays 7)
+    (org-agenda-start-on-weekday 0)
+    (org-agenda-show-all-dates nil)
+    (org-agenda-entry-types '(:scheduled))
+    (org-agenda-overriding-header "Today's Deadlines "))))
+
+;; Today report
+(add-to-list 'org-agenda-custom-commands
+     '("f" "Today"
+       ((agenda ""
+                ((org-agenda-entry-types '(:timestamp :sexp))
+                 (org-agenda-overriding-header
+                  (concat "CALENDAR Today"
+                          (format-time-string "%a %d" (current-time))))
+                 (org-agenda-span 'day)))
+        (tags-todo "LEVEL=1+REFILE"
+                   ((org-agenda-overriding-header "COLLECTBOX (Unscheduled)")))
+        (tags-todo "DEADLINE=\"<+0d>\""
+                   ((org-agenda-overriding-header "DUE TODAY")
+                    (org-agenda-skip-function
+                     '(org-agenda-skip-entry-if 'notedeadline))
+                    (org-agenda-sorting-strategy '(priority-down))))
+        (tags-todo "DEADLINE<\"<+0d>\""
+                   ((org-agenda-overriding-header "OVERDUE")
+                    (org-agenda-skip-function
+                     '(org-agenda-skip-entry-if 'notedeadline))
+                    (org-agenda-sorting-strategy '(priority-down))))
+        (agenda ""
+                ((org-agenda-entry-types '(:scheduled))
+                 (org-agenda-overriding-header "SCHEDULED")
+                 (org-agenda-skip-function
+                  '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-sorting-strategy
+                  '(priority-down time-down))
+                 (org-agenda-span 'day)
+                 (org-agenda-start-on-weekday nil)
+                 (org-agenda-time-grid nil)))
+        (todo "DONE"
+              ((org-agenda-overriding-header "COMPLETED"))))
+       ((org-agenda-format-date "")
+        (org-agenda-start-with-clockreport-mode nil))) t)
 
 ;; Org files paths
  (custom-set-variables
@@ -154,7 +209,7 @@
 
 ;; Keywords
 (setq org-todo-keywords
-       '((sequence "TODO" "CURRENT" "WAIT" "|" "DONE" "CANCELLED")))
+       '((sequence "TODO" "NEXT" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED")))
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 
