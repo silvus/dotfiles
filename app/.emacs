@@ -93,8 +93,7 @@
 ; (setq org-agenda-start-day "-3d")
 
 ;; Agenda clock report parameters
-(setq org-agenda-clockreport-parameter-plist
-  '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
+;; (setq org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
 
 ;; Custom agenda
 ;; (setq org-agenda-custom-commands
@@ -103,37 +102,42 @@
 ;;       ((org-agenda-overriding-header "Agenda")
 ;;       (alltodo "")))))
 (setq org-agenda-custom-commands
-  '(("s" "Simple global view"
+  '(("s" "Work agenda"
       ((agenda ""
-        ((org-agenda-overriding-header "Agenda")))
+        ((org-agenda-overriding-header "Agenda")
+        (org-agenda-files '("/data/doc/org/work.org"))))
       (tags-todo "projet|support|organisation/!+TODO|+NEXT"
         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-files '("/data/doc/org/work.org"))
         (org-agenda-overriding-header "Tasks")))
       ; (tags-todo "projet|support|organisation/!+WAITING"
       ;   ((org-agenda-overriding-header "Stuck")))
       (tags "break+TODO=\"\""
-        ((org-agenda-overriding-header "Breaks")))))))
+        ((org-agenda-overriding-header "Breaks")
+        (org-agenda-files '("/data/doc/org/work.org"))))))))
 
 ;; Work report for today
 (add-to-list 'org-agenda-custom-commands
-   '("c" "Work report"
-     (agenda "")
-     ((org-agenda-overriding-header "Work report")
-      (org-agenda-show-log 'clockcheck)
-      (org-agenda-start-with-clockreport-mode t)
-      (org-agenda-span 'day)
-      (org-agenda-time-grid nil))))
+  '("wc" "Work report"
+    ((agenda ""
+      ((org-agenda-show-log 'clockcheck)
+       (org-agenda-start-with-clockreport-mode t)
+       (org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
+       (org-agenda-span 'day)
+       (org-agenda-files '("/data/doc/org/work.org"))
+       (org-agenda-overriding-header "Work report")
+       (org-agenda-time-grid nil))))))
 
-;; Deadlines list
+;; Work Deadlines list
 (add-to-list 'org-agenda-custom-commands
-  '("d" agenda "Deadlines"
+  '("wd" agenda "Deadlines"
     ((org-agenda-span 'week)
     (org-agenda-time-grid nil)
     (org-agenda-ndays 7)
     (org-agenda-start-on-weekday 0)
     (org-agenda-show-all-dates nil)
     (org-agenda-entry-types '(:scheduled))
-    (org-agenda-overriding-header "Today's Deadlines "))))
+    (org-agenda-overriding-header "Deadlines "))))
 
 ;; Today report
 (add-to-list 'org-agenda-custom-commands
@@ -206,6 +210,10 @@
 
 ;; Compact the block agenda view
 ; (setq org-agenda-compact-blocks t)
+
+;; Keep track of when a TODO item was finished
+(setq org-log-done 'time)
+;; (setq org-log-done 'note)
 
 ;; Keywords
 (setq org-todo-keywords
