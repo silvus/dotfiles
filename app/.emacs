@@ -106,13 +106,17 @@
       ((agenda ""
         ((org-agenda-overriding-header "Agenda")
         (org-agenda-files '("/data/doc/org/work.org"))))
-      (tags-todo "projet|support|organisation/!+TODO|+NEXT"
+      (tags-todo "projet|support/!+TODO|+NEXT"
         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
         (org-agenda-files '("/data/doc/org/work.org"))
         (org-agenda-overriding-header "Tasks")))
       ; (tags-todo "projet|support|organisation/!+WAITING"
       ;   ((org-agenda-overriding-header "Stuck")))
-      (tags "break+TODO=\"\""
+      (tags-todo "organisation/!+TODO|+NEXT"
+        ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-overriding-header "Organisation")
+        (org-agenda-files '("/data/doc/org/work.org"))))
+      (tags "break"
         ((org-agenda-overriding-header "Breaks")
         (org-agenda-files '("/data/doc/org/work.org"))))))))
 
