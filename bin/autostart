@@ -3,7 +3,6 @@
 nm-applet &
 guake -r tmux -e tmuxdev &
 redshift-gtk &
-thunderbird &
 dropbox start &
 
 feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
@@ -11,7 +10,8 @@ feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfi
 # Environment specific configuration
 # ------------------------------------------------------
 if [[ $(hostname --short) == "saturn" ]]; then
-	~/.dotfiles/bin/netflix &
+	# ~/.dotfiles/bin/netflix &
 else
 	firefox &
+	thunderbird &
 fi
