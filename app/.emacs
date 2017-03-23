@@ -276,6 +276,7 @@
 (global-set-key (kbd "<f8>") 'org-clock-out)
 (global-set-key (kbd "<f9>") 'org-agenda)
 (global-set-key (kbd "C-c a") 'org-agenda)
+(org-defkey org-mode-map (kbd "C-e") 'buffer-menu)
 
 ;; Fix \emsp in clocktable
 (defun my-org-clocktable-indent-string (level)
