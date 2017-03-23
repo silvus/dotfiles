@@ -219,9 +219,12 @@
 (setq org-log-done 'time)
 ;; (setq org-log-done 'note)
 
+;; Changes and notes will be stored into a drawer called LOGBOOK
+(setq org-log-into-drawer t)
+
 ;; Keywords
 (setq org-todo-keywords
-       '((sequence "TODO" "NEXT" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED")))
+       '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 
@@ -240,6 +243,12 @@
 ; 			 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
 ; 			("h" "Habit" entry (file "~/git/org/refile.org")
 ; 			 "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+
+(defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states)   ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 ;; Clocking
 ; Continuous clocking
