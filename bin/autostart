@@ -9,9 +9,7 @@ feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfi
 
 # Environment specific configuration
 # ------------------------------------------------------
-if [[ $(hostname --short) == "saturn" ]]; then
-	# ~/.dotfiles/bin/netflix &
-else
+if [[ $(hostname --short) == "mars" ]]; then
 	firefox &
 	thunderbird &
 fi
