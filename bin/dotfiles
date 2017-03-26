@@ -321,6 +321,23 @@ if __name__ == '__main__':
                 os.path.join(dotfilespath, 'shell/bash/02_prompt.bash'),
                 os.path.join(dotfilespath, 'sshrc/sshrc_ascii'),
             ])
+
+        # ST3 Hidpi special case
+        if X_is_running() and is_hidpi():
+            print_header('Sublime Text 3 HiDPI')
+            st_preference_file = os.path.expanduser('~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')
+            # Replace symlink by original file
+            if os.path.islink(st_preference_file):
+                os.unlink(st_preference_file)
+            # Copy te file and replace line with the dpi setting
+            with open(os.path.join(dotfilespath, 'appdesktop/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')) as oldfile, open(st_preference_file, 'w') as newfile:
+                for line in oldfile:
+                    if 'dpi_scale' in line:
+                        newfile.write('    "dpi_scale": 1.5,\n')
+                    else:
+                        newfile.write(line)
+            print_success('Generated: ' + st_preference_file)
+
     except KeyboardInterrupt:
         print_error('Aborting...')
         sys.exit(1)
