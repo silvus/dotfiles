@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+
+import sys
+import shlex
+import subprocess
+import argparse
+
+__author__ = "Silvus"
+__version__ = "0.1"
+
+ALIAS = {
+    'Web': 'firefox',
+    'Terminal': 'urxvt',
+    'Torrent': 'transmission-gtk',
+    'Files': 'pcmanfm',
+    'Code': 'subl',
+    'Steam': 'steam',
+}
+
+
+def X_is_running():
+    """
+    Try to guess if x is running
+    """
+    try:
+        p = subprocess.Popen(["xset", "-q"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errors = p.communicate()
+
+        return p.returncode == 0
+    except OSError:
+        # If xset (user preference utility for X) doesn't exist, there is a FileNotFoundError
+        return False
+
+
+def choose_in_list_with_dmenu(items):
+    """
+    pick an item from a list with dmenu
+    """
+    dmenu = subprocess.Popen(
+        shlex.split('dmenu -i'),
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE)
+    output = dmenu.communicate('\n'.join(items).encode())[0]
+    return output.decode().strip('\n')
+
+
+def choose_in_list_with_fzf(items):
+    """
+    pick an item from a list with fzf
+    """
+    fzf = subprocess.Popen(
+        shlex.split('fzf'),
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE)
+    output = fzf.communicate('\n'.join(items).encode())[0]
+
+    return output.decode().strip('\n')
+
+
+def main(args):
+    if X_is_running():
+        program = choose_in_list_with_dmenu(ALIAS)
+    else:
+        program = choose_in_list_with_fzf(ALIAS)
+
+    try:
+        subprocess.Popen(ALIAS[program])
+    except (KeyError, IndexError) as e:
+        # Abort
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+
+    # Parse args
+    parser = argparse.ArgumentParser(description='Launch programs with dmenu')
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s {0}".format(__version__),
+                        help="show program's version number and exit")
+    args = parser.parse_args()
+
+    main(args)
