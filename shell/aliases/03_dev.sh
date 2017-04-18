@@ -16,8 +16,12 @@ export SILVUSDOC="/data/doc"
 alias server="python3 -m http.server 5000"
 alias server_php="php -sS localhost:5000"
 
+# Add somes paths
 if [[ -d "${SILVUSPROJECT}/bin" ]]; then
 	export PATH="$PATH:$SILVUSPROJECT/bin"
+fi
+if [[ -d "${SILVUSDOC}/.bin" ]]; then
+	export PATH="$PATH:$SILVUSDOC/.bin"
 fi
 
 # Golang
