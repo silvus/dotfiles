@@ -20,6 +20,7 @@ Plug 'klen/python-mode'
 Plug 'plasticboy/vim-markdown'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'vitalk/vim-simple-todo'
+Plug 'jamessan/vim-gnupg'
 " Plug 'othree/html5.vim'
 " Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
@@ -35,12 +36,9 @@ Plug 'junegunn/fzf.vim'
 " Tagbar (On demand)
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }"
 
-" Vim go (for Go)
-Plug 'fatih/vim-go', { 'for': 'go' }
-
 " YouCompleteMe
-Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py', 'for': ['go', 'php', 'sh', 'js', 'css', 'python'] }
-autocmd! User YouCompleteMe call youcompleteme#Enable()
+" Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py', 'for': ['go', 'php', 'sh', 'js', 'css', 'python'] }
+" autocmd! User YouCompleteMe call youcompleteme#Enable()
 
 call plug#end()
 
@@ -180,7 +178,7 @@ hi StartifySpecial ctermfg=240
 
 " YouCompleteMe
 " ------------------------------------------------------------------------------------
-let g:ycm_python_binary_path = '/usr/bin/python3'
-let g:ycm_server_python_interpreter = '/usr/bin/python3'
-let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
+" let g:ycm_python_binary_path = '/usr/bin/python3'
+" let g:ycm_server_python_interpreter = '/usr/bin/python3'
+" let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
