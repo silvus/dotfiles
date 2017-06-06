@@ -11,7 +11,7 @@ import socket
 import argparse
 import subprocess
 import logging
-
+import shutil
 
 __author__ = "Silvus"
 __version__ = "0.2"
@@ -138,7 +138,7 @@ class Status():
         """
         Execute agenda
         """
-        agenda_data = _launch_script("/data/dev/bin/agenda", ["count"])
+        agenda_data = _launch_script("/data/doc/.bin/agenda", ["count"])
         if agenda_data:
             return agenda_data.rstrip('\n')
 
@@ -193,6 +193,7 @@ class Status():
 
         return ip_local
 
+
 def _launch_script(script, script_arg):
     # if path exist and is executable
     if os.path.isfile(script) and os.access(script, os.X_OK):
@@ -200,6 +201,7 @@ def _launch_script(script, script_arg):
         out, err = p.communicate()
 
         return out.decode()
+
 
 def main():
     # Parse args
