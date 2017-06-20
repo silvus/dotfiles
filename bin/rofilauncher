@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rofi -show combi -combi-modi "window,run" -modi combi
