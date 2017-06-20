@@ -7,7 +7,7 @@ set nocompatible          " Get rid of Vi compatibility mode
 set wildmenu              " Show list instead of just completing
 set backspace=2           " Backspace in insert mode works like other editors
 set encoding=utf-8        " Encoding
-set cm=blowfish           " Cryptmethod
+set cm=blowfish2          " Cryptmethod
 set hidden                " Switch between buffers without saving
 set splitright            " New vsplit windows to the right of the current
 set splitbelow            " New split windows to the bottom of the current
