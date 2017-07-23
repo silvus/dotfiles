@@ -1,6 +1,10 @@
 setopt promptsubst
 autoload -U colors && colors
 
+# Parameters (Overwritten in shell_env)
+# -----------------------------------------------------------------------------
+DOTFILES_PROMPT_SHOW_GIT_STATUT=1
+
 # Prompt commands
 # -----------------------------------------------------------------------------
 
@@ -60,10 +64,11 @@ function() {
 	# --------------------------------------------------------------------------------------
 	local return_code='%(?..[%{$fg[red]%}%? ↵%{$reset_color%}])'
 	local python_venv='$(_prompt_python_venv)'
-	if type git_super_status &>/dev/null; then
-		local git_branch='$(git_super_status)%{$reset_color%}'
-	else
-		local git_branch=''
+	local git_branch=''
+	if [[ "$DOTFILES_PROMPT_SHOW_GIT_STATUT" -eq 1 ]]; then
+		if type git_super_status &>/dev/null; then
+			git_branch='$(git_super_status)%{$reset_color%}'
+		fi
 	fi
 
 	RPROMPT="${return_code}${python_venv}${git_branch}"

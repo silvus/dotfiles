@@ -2,7 +2,7 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# Parameters (Overwritten in bash_env)
+# Parameters (Overwritten in shell_env)
 # -------------------------------------------------------------------------------------------
 DOTFILES_PROMPT_SHOW_GIT_STATUT=1
 
