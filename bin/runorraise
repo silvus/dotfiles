@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Run or focus
+
+# Exemples :
+# $ runorraise firefox firefox
+# $ runorraise emacs "emacsclient -a '' -c"
+
+wmctrl -x -a "$1" || $2
