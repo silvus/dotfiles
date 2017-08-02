@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 
-nm-applet &
-guake -r tmux -e tmuxdev &
-redshift-gtk &
-dropbox start &
+function run {
+	if ! pgrep $1;	then
+		$@ &
+	fi
+}
 
-feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
+run nm-applet
+run guake -r tmux -e tmuxdev
+run redshift-gtk
+run dropbox start
+
+run feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
 
 # Environment specific configuration
 # ------------------------------------------------------
 if [[ $(hostname --short) == "mars" ]]; then
-	firefox &
-	thunderbird &
+	run firefox
+	run thunderbird
 fi
