@@ -195,6 +195,31 @@ lain.widget.calendar({
 -- local fsbg = wibox.container.background(fsbar, beautiful.info, gears.shape.rectangle)
 -- local myfswidget = wibox.container.margin(fsbg, 2, 7, 4, 4)
 
+-- Net bar
+local neticon = wibox.widget.imagebox(beautiful.net)
+local netbar = wibox.widget {
+    forced_height    = 1,
+    forced_width     = 100,
+    margins          = 1,
+    paddings         = 1,
+    ticks            = true,
+    ticks_size       = 10,
+    max_value        = 1000,
+    value            = 0,
+    color            = beautiful.success,
+    background_color = beautiful.info,
+    border_color     = beautiful.info,
+    widget           = wibox.widget.progressbar
+}
+local net = lain.widget.net({
+    width = 100, border_width = 0, ticks = true, ticks_size = 100,
+    settings = function()
+        netbar:set_value(net_now.received)
+    end
+})
+local netbg = wibox.container.background(netbar, beautiful.info, gears.shape.rectangle)
+local mynetwidget = wibox.container.margin(netbg, 2, 7, 4, 4)
+
 -- CPU bar
 local cpuicon = wibox.widget.imagebox(beautiful.cpu)
 local cpubar = wibox.widget {
@@ -204,9 +229,9 @@ local cpubar = wibox.widget {
     paddings         = 1,
     ticks            = true,
     ticks_size       = 10,
-    max_value 		 = 100,
+    max_value        = 100,
     value            = 0,
-    color 			 = beautiful.success,
+    color            = beautiful.success,
     background_color = beautiful.info,
     border_color     = beautiful.info,
     widget           = wibox.widget.progressbar
@@ -358,6 +383,8 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mymoc,
             myspaceseparator,
+            neticon,
+            mynetwidget,
             -- fsicon,
             -- myfswidget,
             cpuicon,
