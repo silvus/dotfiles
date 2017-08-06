@@ -28,10 +28,10 @@ theme.bg_focus                                  = "#00141a"
 theme.fg_urgent                                 = theme.error
 theme.bg_urgent                                 = "#FFFFFF"
 
-theme.taglist_fg_normal                         = "#FFFFFF"
-theme.taglist_fg_focus                          = "#FFFFFF"
+theme.taglist_fg_normal                         = theme.fg_normal
+theme.taglist_fg_focus                          = theme.success
 theme.taglist_bg_normal                         = theme.bg_normal
-theme.taglist_bg_focus                          = theme.bg_normal
+theme.taglist_bg_focus                          = theme.bg_focus
 
 theme.titlebar_bg_normal                        = "#333333"
 theme.titlebar_bg_focus                         = "#00141a"

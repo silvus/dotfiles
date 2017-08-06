@@ -42,14 +42,40 @@ end
 -- }}}
 
 -- ---------------------------------------------------------------------
+-- Include personal config
+-- ---------------------------------------------------------------------
+function isModuleAvailable(name)
+  if package.loaded[name] then
+    return true
+  else
+    for _, searcher in ipairs(package.searchers or package.loaders) do
+      local loader = searcher(name)
+      if type(loader) == 'function' then
+        package.preload[name] = loader
+        return true
+      end
+    end
+    return false
+  end
+end
+
+function requireSafe(lib)
+	if isModuleAvailable(lib) then
+		require(lib)
+	end
+end
+
+-- require("mail")
+requireSafe('mail')
+
+-- ---------------------------------------------------------------------
 -- Config
 -- ---------------------------------------------------------------------
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 -- beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
-beautiful.init("~/.dotfiles/appdesktop/.config/awesome/themes/thetheme/theme.lua")
-
+beautiful.init("~/.config/awesome/themes/thetheme/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "x-terminal-emulator"
@@ -63,6 +89,25 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+
+-- naughty.config.presets.normal.bg = theme.bg_normal
+-- naughty.config.presets.normal.fg = theme.fg_normal
+-- naughty.config.presets.normal.border_color = theme.fg_normal
+
+-- naughty.config.presets.low.bg = theme.bg_normal
+-- naughty.config.presets.low.fg = theme.fg_normal
+-- naughty.config.presets.low.border_color = theme.bg_normal
+
+-- naughty.config.presets.critical.bg = theme.bg_urgent
+-- naughty.config.presets.critical.fg = theme.fg_urgent
+-- naughty.config.presets.critical.border_color = theme.fg_urgent
+-- naughty.notify({ title = "Achtung!", text = "You're idling", timeout = 0 })
+
+-- Tooltips
+-- theme.tooltip_border_width = theme.border_width
+-- theme.tooltip_border_color = theme.fg_normal
+-- theme.tooltip_opacity = 0.9
+-- theme.tooltip_fg_color = theme.fg_normal
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -340,6 +385,27 @@ local moc = lain.widget.contrib.moc({
 local mocbg = wibox.container.background(moc.widget, beautiful.bg_normal, gears.shape.rectangle)
 local mymoc = wibox.container.margin(mocbg, 2, 7, 4, 4)
 
+-- -- Mail - in mail.lua
+-- local mailicondev = wibox.widget.imagebox()
+-- mailicondev:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mail) end)))
+-- local myimapcheckdev = lain.widget.imap({
+-- 	timeout  = 180,
+--  	is_plain = true,
+--  	password = "nope",
+--  	server = "mail.nope.net",
+--  	mail = "nope@nope.fr",
+--  	icon = beautiful.mail,
+--  	settings = function()
+--  		if mailcount > 0 then
+--  			widget:set_markup("Dev <span color='#ffffff'>" .. mailcount .. '</span>')
+--  			mailicondev:set_image(beautiful.mail_on)
+--  		else
+--  			widget:set_markup("")
+--  			mailicondev:set_image(beautiful.mail)
+--  		end
+--  	end
+-- })
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     -- set_wallpaper(s)
@@ -393,6 +459,11 @@ awful.screen.connect_for_each_screen(function(s)
             mymemwidget,
             volicon,
             myvolumewidget,
+            myspaceseparator,
+            myimapcheckdev,
+            mailicondev,
+            myimapcheckpers,
+            mailiconpers,
             myspaceseparator,
             mykeyboardlayout,
             wibox.widget.systray(),
