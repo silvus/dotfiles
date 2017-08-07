@@ -90,24 +90,21 @@ editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
--- naughty.config.presets.normal.bg = theme.bg_normal
--- naughty.config.presets.normal.fg = theme.fg_normal
--- naughty.config.presets.normal.border_color = theme.fg_normal
-
--- naughty.config.presets.low.bg = theme.bg_normal
--- naughty.config.presets.low.fg = theme.fg_normal
--- naughty.config.presets.low.border_color = theme.bg_normal
-
--- naughty.config.presets.critical.bg = theme.bg_urgent
--- naughty.config.presets.critical.fg = theme.fg_urgent
--- naughty.config.presets.critical.border_color = theme.fg_urgent
--- naughty.notify({ title = "Achtung!", text = "You're idling", timeout = 0 })
-
--- Tooltips
--- theme.tooltip_border_width = theme.border_width
--- theme.tooltip_border_color = theme.fg_normal
--- theme.tooltip_opacity = 0.9
--- theme.tooltip_fg_color = theme.fg_normal
+-- Notifications
+naughty.config.defaults.timeout = 0
+-- naughty.config.defaults.screen = 1
+naughty.config.defaults.position = "top_right"
+naughty.config.defaults.margin = 10
+naughty.config.defaults.gap = 35
+naughty.config.defaults.ontop = true
+-- naughty.config.defaults.font = "terminus 12"
+-- naughty.config.defaults.icon = nil
+-- naughty.config.defaults.icon_size = 256
+naughty.config.defaults.fg = beautiful.fg_focus
+naughty.config.defaults.bg = beautiful.bg_focus
+naughty.config.defaults.border_color = beautiful.border_focus
+naughty.config.defaults.border_width = beautiful.border_width
+naughty.config.defaults.hover_timeout = nil
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
