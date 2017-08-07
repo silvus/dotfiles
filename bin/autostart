@@ -11,11 +11,12 @@ run guake -r tmux -e tmuxdev
 run redshift-gtk
 run dropbox start
 
-run feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
+if [[ $GDMSESSION == 'i3' ]]; then
+	run feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
+fi
 
 # Environment specific configuration
 # ------------------------------------------------------
 if [[ $(hostname --short) == "mars" ]]; then
-	run firefox
-	run thunderbird
+	run sensible-browser
 fi
