@@ -127,6 +127,21 @@ awful.layout.layouts = {
 }
 -- }}}
 
+local function set_wallpaper(s)
+    -- Wallpaper
+    if beautiful.wallpaper then
+        local wallpaper = beautiful.wallpaper
+        -- If wallpaper is a function, call it with the screen
+        if type(wallpaper) == "function" then
+            wallpaper = wallpaper(s)
+        end
+        gears.wallpaper.maximized(wallpaper, s, true)
+    end
+end
+
+-- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
+screen.connect_signal("property::geometry", set_wallpaper)
+
 -- ---------------------------------------------------------------------
 -- Status bar
 -- ---------------------------------------------------------------------
@@ -405,7 +420,7 @@ local mymoc = wibox.container.margin(mocbg, 2, 7, 4, 4)
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
-    -- set_wallpaper(s)
+    set_wallpaper(s)
 
     -- Each screen has its own tag table.
 	-- local names = { "main", "www", "skype", "gimp", "office", "im", "7", "8", "9" }
@@ -627,7 +642,21 @@ globalkeys = awful.util.table.join(
 	end),
 	awful.key({}, "XF86AudioPrev", function()
 		awful.util.spawn("mocp --previous", false)
+	end),
+
+	-- lock
+	awful.key({ modkey, "Shift" }, 'l', function()
+		-- awful.util.spawn("i3lock --color 001912 --show-failed-attempts --ignore-empty-password", false)
+		awful.util.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
 	end)
+	-- shutdown or restart
+	-- awful.key({ modkey }, "s", function()
+	-- 	awful.util.spawn("~/.dotfiles/bin/dmenu_shutdown", false)
+	-- end),
+	-- -- manage VPN
+	-- awful.key({ modkey }, "v", function()
+	-- 	awful.util.spawn("~/.dotfiles/bin/dmenu_vpn", false)
+	-- end)
 )
 
 clientkeys = awful.util.table.join(
