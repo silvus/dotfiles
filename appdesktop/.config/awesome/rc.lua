@@ -15,6 +15,8 @@ local naughty = require("naughty")
 local lain    = require("lain")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+local os      = { getenv = os.getenv, setlocale = os.setlocale }
+
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -645,18 +647,18 @@ globalkeys = awful.util.table.join(
 	end),
 
 	-- lock
-	awful.key({ modkey, "Shift" }, 'l', function()
+	awful.key({ modkey, "Shift" }, "l", function()
 		-- awful.util.spawn("i3lock --color 001912 --show-failed-attempts --ignore-empty-password", false)
 		awful.util.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
-	end)
+	end),
 	-- shutdown or restart
-	-- awful.key({ modkey }, "s", function()
-	-- 	awful.util.spawn("~/.dotfiles/bin/dmenu_shutdown", false)
-	-- end),
-	-- -- manage VPN
-	-- awful.key({ modkey }, "v", function()
-	-- 	awful.util.spawn("~/.dotfiles/bin/dmenu_vpn", false)
-	-- end)
+	awful.key({ modkey, "Shift" }, "s", function()
+		awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_shutdown", false)
+	end),
+	-- manage VPN
+	awful.key({ modkey, "Shift" }, "v", function()
+		awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_vpn", false)
+	end)
 )
 
 clientkeys = awful.util.table.join(
