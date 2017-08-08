@@ -2,10 +2,6 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# Parameters (Overwritten in shell_env)
-# -------------------------------------------------------------------------------------------
-DOTFILES_PROMPT_SHOW_GIT_STATUT=1
-
 # Styles
 # -------------------------------------------------------------------------------------------
 
@@ -91,11 +87,7 @@ _vcs_prompt() {
 	if _has_parent_dir ".svn" ; then
 		_VCS_PROMPT="-[${TXTYELLOW}svn${TXTRESET}]"
 	elif _has_parent_dir ".git"; then
-		if [[ "$DOTFILES_PROMPT_SHOW_GIT_STATUT" -eq 1 ]]; then
-			_vcs_prompt_git
-		else
-			_VCS_PROMPT="-[${TXTYELLOW}git${TXTRESET}]"
-		fi
+		_VCS_PROMPT="-[${TXTYELLOW}git${TXTRESET}]"
 	else
 		_VCS_PROMPT=""
 	fi

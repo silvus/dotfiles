@@ -18,5 +18,5 @@ fi
 # Environment specific configuration
 # ------------------------------------------------------
 if [[ $(hostname --short) == "mars" ]]; then
-	run sensible-browser
+	run firefox
 fi
