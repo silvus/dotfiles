@@ -81,7 +81,8 @@ beautiful.init("~/.config/awesome/themes/thetheme/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "x-terminal-emulator"
-terminal = "urxvt"
+-- terminal = "urxvt"
+terminal = "rxvt-unicode -title terminal -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -709,8 +710,16 @@ for i = 1, 9 do
                   function ()
                         local screen = awful.screen.focused()
                         local tag = screen.tags[i]
+                        local tag_current = awful.screen.focused().selected_tag
+
                         if tag then
-                           tag:view_only()
+	                        if tag == tag_current then
+	                        	-- If already on focused screen, go to previous one
+								awful.tag.history.restore()
+	                        else
+								-- Just go to the screen
+								tag:view_only()
+							end
                         end
                   end,
                   {description = "view tag #"..i, group = "tag"}),
@@ -731,6 +740,7 @@ for i = 1, 9 do
                           local tag = client.focus.screen.tags[i]
                           if tag then
                               client.focus:move_to_tag(tag)
+                              tag:view_only()
                           end
                      end
                   end,
@@ -822,6 +832,12 @@ awful.rules.rules = {
 			ontop = true,
 		}
     },
+    { rule = { class = "Steam" },
+		properties = {
+			tag = "8"
+			--switchtotag = true
+		}
+	}
 }
 -- }}}
 
@@ -838,6 +854,18 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
+
+	if (c.class == "Firefox") then
+		-- if it's a Firefox we will connect a signal which will call if 'name' changing
+		c:connect_signal("property::name", function(c)
+			if (string.find(c.name, "(Private Browsing)")) then
+				-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tags[1][9]
+				local tags = root.tags()
+				c:tags({tags[9]})
+			end
+		end)
+	end
+
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
