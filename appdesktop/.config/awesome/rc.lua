@@ -82,7 +82,7 @@ beautiful.init("~/.config/awesome/themes/thetheme/theme.lua")
 -- This is used later as the default terminal and editor to run.
 -- terminal = "x-terminal-emulator"
 -- terminal = "urxvt"
-terminal = "rxvt-unicode -title terminal -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev"
+terminal = "rxvt-unicode"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -569,7 +569,7 @@ globalkeys = awful.util.table.join(
     -- awful.key({ altkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
+    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal .. " -title terminal -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev") end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Shift"   }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
