@@ -827,7 +827,7 @@ awful.rules.rules = {
     { rule = { class = "mpv" },
 		properties = {
 			floating = false,
-			titlebars_enabled = false,
+			-- titlebars_enabled = false,
 			sticky = true,
 			ontop = true,
 		}
