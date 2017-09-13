@@ -5,7 +5,13 @@ events.connect(events.LEXER_LOADED, function(lang)
 end)
 
 -- Theme
-ui.set_theme(not CURSES and 'dark' or 'term')
+-- ui.set_theme(not CURSES and 'dark' or 'term')
+
+-- From https://github.com/rgieseke/textadept-themes
+-- ui.set_theme(not CURSES and 'base16-default-dark' or 'term')
+-- ui.set_theme(not CURSES and 'base16-ocean-dark' or 'term')
+-- ui.set_theme(not CURSES and 'base16-solarized-dark' or 'term')
+ui.set_theme(not CURSES and 'base16-monokai-dark' or 'term')
 
 -- Strip trailing whitespace on save
 textadept.editing.strip_trailing_spaces = true
