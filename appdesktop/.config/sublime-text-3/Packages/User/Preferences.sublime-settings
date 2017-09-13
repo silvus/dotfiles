@@ -3,7 +3,7 @@
 	"color_scheme": "Packages/Monokai Extended/Monokai Extended.tmTheme",
 	"default_line_ending": "unix",
 	"detect_indentation": false,
-	"ensure_newline_at_eof_on_save": false,
+	"ensure_newline_at_eof_on_save": true,
 	"font_size": 10,
 	"dpi_scale": 1.0,
 	"highlight_modified_tabs": true,
