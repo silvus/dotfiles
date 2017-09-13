@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # Check if vpn is up
-vpnisup=$(ifconfig tun0 2>/dev/null | grep "UP" | wc -l)
-if [[ "$vpnisup" == 1 ]]; then
+if ip addr show tun0 &>/dev/null; then
 	actionstop="Stop\n"
 else
 	actionstop=""

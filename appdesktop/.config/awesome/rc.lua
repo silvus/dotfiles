@@ -145,6 +145,21 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+-- Quake like (single instance for all screens)
+local quake = lain.util.quake({
+	settings = function(c)
+		-- c.sticky = true
+	end,
+	-- name = "",
+	-- app = "subl",
+	app = "gvim",
+	followtag = true,
+	height = 1,
+	width = 1,
+	vert = "top",
+	horiz = "center"
+})
+
 -- ---------------------------------------------------------------------
 -- Status bar
 -- ---------------------------------------------------------------------
@@ -400,6 +415,21 @@ local moc = lain.widget.contrib.moc({
 local mocbg = wibox.container.background(moc.widget, beautiful.bg_normal, gears.shape.rectangle)
 local mymoc = wibox.container.margin(mocbg, 2, 7, 4, 4)
 
+-- VPN
+-- TODO: Use icons
+local vpn = awful.widget.watch(
+    "ip addr show tun0",
+    5,
+    function(widget, stdout, stderr, exitreason, exitcode)
+		if exitcode == 0 then
+	        widget:set_markup("<span color='#00FF00'>VPN: ON</span>")
+	    else
+	    	widget:set_markup("<span color='#FF0000'>VPN: OFF</span>")
+	    end
+    end
+)
+local myvpn = wibox.container.margin(vpn, 2, 7, 4, 4)
+
 -- -- Mail - in mail.lua
 -- local mailicondev = wibox.widget.imagebox()
 -- mailicondev:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mail) end)))
@@ -464,6 +494,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mymoc,
             myspaceseparator,
+            myvpn,
             neticon,
             mynetwidget,
             -- fsicon,
@@ -622,9 +653,12 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "d", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
 
-	-- Editor
-    awful.key({ modkey }, "e", function()
-		awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/ta")
+    -- awful.key({ modkey }, "e", function()
+	-- 	awful.util.spawn("subl", false)
+	-- end),
+	-- Editor in quake
+	awful.key({ modkey, }, "e", function ()
+		quake:toggle()
 	end),
 
 	-- Volume Keys
