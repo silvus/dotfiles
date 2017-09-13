@@ -220,9 +220,9 @@ myspaceseparator = wibox.widget.textbox(' ')
 
 -- Textclock widget with calendar
 mytextclock = wibox.widget.textclock("%a %d %b <span color='#ffffff'>%H:%M:%S</span>", 1)
-lain.widget.calendar({
-    attach_to = { mytextclock  }
-})
+-- lain.widget.calendar({
+--    attach_to = { mytextclock  }
+--})
 
 -- Disks bar
 -- local fsicon = wibox.widget.imagebox(beautiful.hdd)
@@ -621,6 +621,11 @@ globalkeys = awful.util.table.join(
     -- Menubar
     awful.key({ modkey }, "d", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
+
+	-- Editor
+    awful.key({ modkey }, "e", function()
+		awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/ta")
+	end),
 
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function ()
