@@ -25,8 +25,8 @@ theme.bg_normal                                 = "#111111"
 theme.fg_focus                                  = "#BBBBBB"
 theme.bg_focus                                  = "#00141a"
 
-theme.fg_urgent                                 = theme.error
-theme.bg_urgent                                 = "#FFFFFF"
+theme.fg_urgent                                 = "#FFFFFF"
+theme.bg_urgent                                 = theme.error
 
 theme.taglist_fg_normal                         = theme.fg_normal
 theme.taglist_fg_focus                          = "#FFFFFF"

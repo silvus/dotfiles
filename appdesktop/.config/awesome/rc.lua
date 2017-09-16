@@ -437,7 +437,7 @@ local crypto = awful.widget.watch(
     10800, -- 3 heures
     function(widget, stdout, stderr, exitreason, exitcode)
 		local xmr, pos, err = require("lain.util").dkjson.decode(stdout, 1, nil)
-		local xmr_price = 'XMR: '.. (not err and xmr and '$' .. xmr["USD"]) or "N/A"
+		local xmr_price = 'XMR: $'.. (not err and xmr and xmr["USD"]) or "N/A"
 
         -- customize here
         widget:set_text(xmr_price)
@@ -889,6 +889,18 @@ awful.rules.rules = {
 			ontop = true,
 		}
     },
+    { rule = { class = "Firefox" },
+		properties = {
+			tag = "1"
+			--switchtotag = true
+		}
+	},
+    { rule = { class = "Thunderbird" },
+		properties = {
+			tag = "3"
+			--switchtotag = true
+		}
+	},
     { rule = { class = "Steam" },
 		properties = {
 			tag = "8"
@@ -983,5 +995,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- Auto start
 -- ---------------------------------------------------------------------
 
-awful.spawn.with_shell("setxkbmap -layout 'fr'")
+awful.spawn.with_shell("setxkbmap fr oss")
 awful.spawn.with_shell("~/.dotfiles/bin/autostart")
