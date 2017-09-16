@@ -2,6 +2,9 @@
 -- Init
 -- ---------------------------------------------------------------------
 
+-- Standard lua
+local string = require("string")
+
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -397,19 +400,18 @@ local volumebg = wibox.container.background(volume.bar, beautiful.info, gears.sh
 local myvolumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
 
 -- Moc
+local musicicon = wibox.widget.imagebox(beautiful.music)
+musicicon.visible = false
 local moc = lain.widget.contrib.moc({
     music_dir = "/data/silvus/music",
     settings  = function()
-    	if moc_now.state == 'PLAY' then
-    		widget:set_markup("<span color='#ffffff'>" .. moc_now.elapsed .. ' / ' .. moc_now.total .. "</span>")
+    	if moc_now.state == 'PLAY' or moc_now.state == 'PAUSE' then
+    		widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. ' | ' .. moc_now.elapsed .. ' / ' .. moc_now.total .. "</span>")
+    		musicicon.visible = true
     	else
-    		widget:set_markup("")
+			widget:set_markup("")
+			musicicon.visible = false
     	end
-    	moc_notification_preset = {
-		    title   = "Now playing",
-		    timeout = 10,
-		    text    = string.format("%s (%s) - %s\n%s", moc_now.artist, moc_now.album, moc_now.elapsed, moc_now.title)
-		}
     end
 })
 local mocbg = wibox.container.background(moc.widget, beautiful.bg_normal, gears.shape.rectangle)
@@ -422,9 +424,9 @@ local vpn = awful.widget.watch(
     5,
     function(widget, stdout, stderr, exitreason, exitcode)
 		if exitcode == 0 then
-	        widget:set_markup("<span color='#00FF00'>VPN: ON</span>")
+	        widget:set_markup("<span color='" .. beautiful.success .. "'>VPN: ON</span>")
 	    else
-	    	widget:set_markup("<span color='#FF0000'>VPN: OFF</span>")
+	    	widget:set_markup("VPN: OFF")
 	    end
     end
 )
@@ -438,8 +440,6 @@ local crypto = awful.widget.watch(
     function(widget, stdout, stderr, exitreason, exitcode)
 		local xmr, pos, err = require("lain.util").dkjson.decode(stdout, 1, nil)
 		local xmr_price = 'XMR: $'.. (not err and xmr and xmr["USD"]) or "N/A"
-
-        -- customize here
         widget:set_text(xmr_price)
     end
 )
@@ -508,6 +508,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            musicicon,
             mymoc,
             myspaceseparator,
             myvpn,
