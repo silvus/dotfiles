@@ -112,6 +112,9 @@ theme.vol_no                                    = theme.dir .. "/icons/vol_no.pn
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = nil
 
+-- Awesome >= 4.1
+-- theme.tasklist_disable_task_name = true
+
 -- lain related
 theme.layout_centerfair                         = theme.dir .. "/icons/centerfair.png"
 theme.layout_termfair                           = theme.dir .. "/icons/termfair.png"

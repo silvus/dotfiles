@@ -430,6 +430,22 @@ local vpn = awful.widget.watch(
 )
 local myvpn = wibox.container.margin(vpn, 2, 7, 4, 4)
 
+-- Crypto
+-- TODO: Use icons
+local crypto = awful.widget.watch(
+    'curl -m10 -s "https://min-api.cryptocompare.com/data/price?fsym=XMR&tsyms=USD"',
+    10800, -- 3 heures
+    function(widget, stdout, stderr, exitreason, exitcode)
+		local xmr, pos, err = require("lain.util").dkjson.decode(stdout, 1, nil)
+		local xmr_price = 'XMR: '.. (not err and xmr and '$' .. xmr["USD"]) or "N/A"
+
+        -- customize here
+        widget:set_text(xmr_price)
+    end
+)
+local mycrypto = wibox.container.margin(crypto, 2, 7, 4, 4)
+
+
 -- -- Mail - in mail.lua
 -- local mailicondev = wibox.widget.imagebox()
 -- mailicondev:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mail) end)))
@@ -473,7 +489,7 @@ awful.screen.connect_for_each_screen(function(s)
                            awful.button({ }, 4, function () awful.layout.inc( 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
+    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.noempty, taglist_buttons)
 
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
@@ -510,6 +526,8 @@ awful.screen.connect_for_each_screen(function(s)
             mailicondev,
             myimapcheckpers,
             mailiconpers,
+            myspaceseparator,
+            mycrypto,
             myspaceseparator,
             mykeyboardlayout,
             wibox.widget.systray(),
