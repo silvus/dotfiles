@@ -149,19 +149,19 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 -- Quake like (single instance for all screens)
-local quake = lain.util.quake({
-	settings = function(c)
-		-- c.sticky = true
-	end,
-	-- name = "",
-	-- app = "subl",
-	app = "gvim",
-	followtag = true,
-	height = 1,
-	width = 1,
-	vert = "top",
-	horiz = "center"
-})
+-- local quake = lain.util.quake({
+-- 	settings = function(c)
+-- 		-- c.sticky = true
+-- 	end,
+-- 	-- name = "",
+-- 	-- app = "subl",
+-- 	app = "gvim",
+-- 	followtag = true,
+-- 	height = 1,
+-- 	width = 1,
+-- 	vert = "top",
+-- 	horiz = "center"
+-- })
 
 -- ---------------------------------------------------------------------
 -- Status bar
@@ -676,8 +676,13 @@ globalkeys = awful.util.table.join(
 	-- 	awful.util.spawn("subl", false)
 	-- end),
 	-- Editor in quake
-	awful.key({ modkey, }, "e", function ()
-		quake:toggle()
+	-- awful.key({ modkey, }, "e", function ()
+	--	quake:toggle()
+	-- end),
+
+	-- Text Editor
+	awful.key({ modkey }, "e", function()
+		awful.util.spawn("subl", false)
 	end),
 
 	-- Volume Keys
