@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Launch signal chrome-app
+
+if [[ -x $(which chromium-browser) ]]; then
+	nohup chromium-browser --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk  >/dev/null 2>&1 &
+elif [[ -x $(which chromium) ]]; then
+	nohup chromium --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk  >/dev/null 2>&1 &
+else
+	echo "Chromium is not installed"
+fi
