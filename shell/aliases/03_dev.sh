@@ -47,6 +47,12 @@ pipvendor() {
    pip3 "$@" -t ".venv"
 }
 
+# Pipenv
+# export PIPENV_VENV_IN_PROJECT=true
+
+# Pew
+export WORKON_HOME="/data/dev/.venvs"
+
 # Virtualenv
 export VIRTUAL_ENV_DISABLE_PROMPT=true # Don't touch my PS1
 alias activate="source .venv/bin/activate"
