@@ -129,7 +129,7 @@ class Status():
             self.call_iplocal(), self.call_hostname())
 
         # Date block
-        tmux_line += "#[bg=black]#[fg=white] {} #[fg=black]#[bg=green] ⌚ {} #[default]".format(
+        tmux_line += "#[bg=black]#[fg=white] {} #[fg=black]#[bg=green] {} #[default]".format(
             self.call_date(), self.call_time())
 
         print(tmux_line)
