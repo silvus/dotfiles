@@ -341,6 +341,13 @@ vnoremap <BS> d
 noremap <C-z> u
 inoremap <C-z> <C-o>u
 
+" Break inserts into smaller undo-chunks
+inoremap . .<C-g>u
+inoremap ? ?<C-g>u
+inoremap ! !<C-g>u
+inoremap , ,<C-g>u
+inoremap <CR> <CR><C-g>u
+
 
 " Commands
 " ------------------------------------------------------------------------------------
