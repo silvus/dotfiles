@@ -54,31 +54,6 @@ _has_parent_dir() {
 	return 1;
 }
 
-_vcs_prompt_git() {
-	# Branch name
-	local STATUS="$(git status 2>&1)"
-
-	if [[ "$STATUS" != *'Not a git repository'* ]]; then
-		local GIT_PROMPT=$(__git_ps1 '%s')
-		# Defaut color
-		local STATE_COLOR="$TXTBLUE"
-		# Defaut picto
-		local PICTO="✔"
-
-		if [[ "$STATUS" != *'working directory clean'* ]]; then
-			# red if need to commit
-			local STATE_COLOR="$TXTRED"
-			local PICTO="⚡"
-		elif [[ "$STATUS" == *'Your branch is ahead'* ]]; then
-			# cyan if need to push
-			local STATE_COLOR="$TXTCYAN"
-			local PICTO="↑"
-		fi
-
-		_VCS_PROMPT="-[${STATE_COLOR}${GIT_PROMPT}${TXTRESET}]-[${STATE_COLOR}${PICTO}${TXTRESET}]"
-	fi
-}
-
 # Prompt Command functions
 # -------------------------------------------------------------------------------------------
 
@@ -146,6 +121,7 @@ _prompt_command_function() {
 
 PROMPT_COMMAND=_prompt_command_function
 
+# Things that doesn't change during sessions
 _is_ssh
 _is_root
 
