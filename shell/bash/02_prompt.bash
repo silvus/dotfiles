@@ -127,7 +127,7 @@ _prompt_pwd_length() {
 
 # Check if python virtualenv is active
 _is_virtualenv() {
-	if [ ! -z "$VIRTUAL_ENV" ]; then
+	if [[ ! -z "$VIRTUAL_ENV" ]]; then
 		_PYTHON_VENV="[${TXTPURPLE}$(basename "$(dirname "${VIRTUAL_ENV}")")${TXTRESET}]"
 	else
 		_PYTHON_VENV=""
@@ -149,7 +149,13 @@ PROMPT_COMMAND=_prompt_command_function
 _is_ssh
 _is_root
 
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
+
+# ┌─[21:55:59]-[silvus@mars]-[git]
+# └─[~/.dotfiles] $
+# PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
+
+# [21:56:13]-[silvus@mars]-[~/.dotfiles]-[git] $
+PS1='[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]-[\[$TXTBLUE\]\w\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\] \[$_COLOR_END\]\$\[$TXTRESET\] '
 
 # -n : unexport PS1 so sub-processes will not inherit it (Fix for /bin/sh)
 export -n PS1
