@@ -434,16 +434,16 @@ local myvpn = wibox.container.margin(vpn, 2, 7, 4, 4)
 
 -- Crypto
 -- TODO: Use icons
-local crypto = awful.widget.watch(
-    'curl -m10 -s "https://min-api.cryptocompare.com/data/price?fsym=XMR&tsyms=USD"',
-    10800, -- 3 heures
-    function(widget, stdout, stderr, exitreason, exitcode)
-		local xmr, pos, err = require("lain.util").dkjson.decode(stdout, 1, nil)
-		local xmr_price = 'XMR: $'.. (not err and xmr and xmr["USD"]) or "N/A"
-        widget:set_text(xmr_price)
-    end
-)
-local mycrypto = wibox.container.margin(crypto, 2, 7, 4, 4)
+-- local crypto = awful.widget.watch(
+--     'curl -m10 -s "https://min-api.cryptocompare.com/data/price?fsym=XMR&tsyms=USD"',
+--     10800, -- 3 heures
+--     function(widget, stdout, stderr, exitreason, exitcode)
+-- 		local xmr, pos, err = require("lain.util").dkjson.decode(stdout, 1, nil)
+-- 		local xmr_price = 'XMR: $'.. (not err and xmr and xmr["USD"]) or "N/A"
+--         widget:set_text(xmr_price)
+--     end
+-- )
+-- local mycrypto = wibox.container.margin(crypto, 2, 7, 4, 4)
 
 
 -- -- Mail - in mail.lua
@@ -527,8 +527,8 @@ awful.screen.connect_for_each_screen(function(s)
             mailicondev,
             myimapcheckpers,
             mailiconpers,
-            myspaceseparator,
-            mycrypto,
+            -- myspaceseparator,
+            -- mycrypto,
             myspaceseparator,
             mykeyboardlayout,
             wibox.widget.systray(),
