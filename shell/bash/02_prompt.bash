@@ -57,7 +57,7 @@ _has_parent_dir() {
 # Prompt Command functions
 # -------------------------------------------------------------------------------------------
 
-# Versioning ?
+# Versioning
 _vcs_prompt() {
 	if _has_parent_dir ".svn" ; then
 		_VCS_PROMPT="-[${TXTYELLOW}svn${TXTRESET}]"
@@ -70,7 +70,7 @@ _vcs_prompt() {
 
 # The error code of the last command, if it has failed in some way
 _last_command() {
-	local error="$?"
+	local error="${?}"
 	if [[ "$error" != 0 ]]; then
 		_LAST_COMMAND="-[${TXTRED}${error}${TXTRESET}]"
 	else
@@ -113,6 +113,7 @@ _is_virtualenv() {
 # --------------------------------------------------------------------------------------
 _prompt_command_function() {
 	_last_command # As this get the last returned code, it should be called first
+	history -a # Bash history handling with multiple terminals
 	_prompt_pwd_length
 	_is_writable
 	_vcs_prompt
@@ -128,10 +129,11 @@ _is_root
 
 # ┌─[21:55:59]-[silvus@mars]-[git]
 # └─[~/.dotfiles] $
-# PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
 
+# Broken when navigating history because of empty variables ($_VCS_PROMPT)
 # [21:56:13]-[silvus@mars]-[~/.dotfiles]-[git] $
-PS1='[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]-[\[$TXTBLUE\]\w\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\] \[$_COLOR_END\]\$\[$TXTRESET\] '
+# PS1='[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]-[\[$TXTBLUE\]\w\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\] \[$_COLOR_END\]\$\[$TXTRESET\] '
 
 # -n : unexport PS1 so sub-processes will not inherit it (Fix for /bin/sh)
 export -n PS1
