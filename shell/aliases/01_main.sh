@@ -52,6 +52,8 @@ alias screensimple="xrandr --output VGA-0 --off --output HDMI-0 --auto --primary
 # -----------------------------------------------------------------------------
 alias vi='vim'
 alias vim.sec="vim -x -u $HOME/.vim/vimrc_sec"
+alias vim.min="vim --cmd 'let load_plugins = 0'"
+alias vim.max="vim --cmd 'let load_plugins = 1'"
 
 # Bindings
 # -----------------------------------------------------------------------------

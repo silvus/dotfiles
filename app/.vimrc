@@ -264,6 +264,12 @@ nnoremap <leader>s :shell<CR>
 " Open file explorer
 nnoremap <leader>e :Explore<CR>
 map <F4> :Explore<CR>
+nmap <C-p> :Explore<CR>
+imap <C-p> <Esc>:Explore<CR>
+
+" Buffers
+nmap <C-e> :ls<CR>:buffer<Space>
+imap <C-e> <Esc>:ls<CR>:buffer<Space>
 
 " Change paste motion cp{motion}
 nmap <silent> cp :set opfunc=ChangePaste<CR>g@
@@ -422,9 +428,15 @@ set statusline+=\ %c\                               " Colnr
 set statusline+=\ %l/%L\                            " Current line / Total lines
 set statusline+=\ %P\                               " Percent through file
 
+hi StatusLine ctermbg=DarkGreen ctermfg=black
 
 " Plugins
 " ------------------------------------------------------------------------------------
+" Disable plugin on SSH connections (if not alrerady set)
+if !exists("g:load_plugins") && ($SSH_CONNECTION || $SSH_CLIENT || $SSH_TTY)
+	let g:load_plugins = 0
+endif
+
 if filereadable(expand("~/.vim/vimrc_plugins")) && filereadable(expand("~/.vim/autoload/plug.vim"))
 	" g:load_plugins = 0 is use to disable plugins loading
 	if !exists("g:load_plugins") || (exists("g:load_plugins") && g:load_plugins)
