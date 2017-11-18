@@ -158,12 +158,12 @@ max-items 999
 ## configuration option: text-width
 ## description: If set to a number greater than 0, then all HTML will be rendered to this maximum line length. If set to 0, the terminal width will be used.
 ## parameter syntax: <number>
-# text-width 0
+text-width 120
 
 ## configuration option: reload-threads
 ## description: The number of parallel reload threads that shall be started when all feeds are reloaded.
 ## parameter syntax: <number>
-reload-threads 4
+reload-threads 8
 
 ## configuration option: error-log
 ## description : If set, then user errors (e.g. errors regarding defunct RSS feeds) will be logged to this file.
@@ -173,7 +173,7 @@ error-log "~/.newsbeuter/error.log"
 ## configuration option: save-path
 ## description: The default path where articles shall be saved to. If an invalid path is specified, the current directory is used.
 ## parameter syntax: <path>
-# save-path ~/inbox/podbeuter/
+save-path ~/Downloads
 
 ## configuration option: search-highlight-colors
 ## description: This configuration command specifies the highlighting colors when searching for text from the article view.

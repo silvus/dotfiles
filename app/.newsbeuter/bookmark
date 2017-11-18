@@ -6,4 +6,4 @@ url="$1"
 title="$2"
 description="$3"
 
-bk add "$url" "$title" "Rss"
+readbag --category "rss" --format "md" "$url"

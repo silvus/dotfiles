@@ -12,6 +12,5 @@ if [[ -n "$DISPLAY" ]]; then
 	fi
 else
 	# Server
-
 	elinks "$1"
 fi
