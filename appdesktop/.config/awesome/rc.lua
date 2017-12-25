@@ -1001,5 +1001,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- Auto start
 -- ---------------------------------------------------------------------
 
-awful.spawn.with_shell("setxkbmap fr oss")
+awful.spawn.with_shell("setxkbmap -model pc105 -layout fr,us -variant oss")
 awful.spawn.with_shell("~/.dotfiles/bin/autostart")
