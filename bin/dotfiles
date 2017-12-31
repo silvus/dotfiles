@@ -190,7 +190,6 @@ def symlink_root(src, dest):
         print_error(src + " doesn't exist")
         return False
 
-
 #####################################################################
 # Compile
 #####################################################################
@@ -277,6 +276,83 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
 # Main
 #####################################################################
 
+
+def main(dotfilespath, restarted):
+    hostname = socket.gethostname()
+
+    # Requirements
+    check_requirements()
+
+    # Self update
+    git_clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git', dotfilespath, restarted)
+
+    # Make symlinks
+    print_header('Symlinks apps')
+    if symlink_arbo(os.path.join(dotfilespath, 'app'), os.path.expanduser('~')):
+
+        print_header('Symlinks root apps')
+        symlink_arbo(os.path.join(dotfilespath, 'approot'), '/', True)
+
+        # Host specifics app files
+        if os.path.isdir(os.path.join(dotfilespath, 'app_{}'.format(hostname))):
+            print_header('Symlinks {} specifics apps'.format(hostname))
+            symlink_arbo(os.path.join(dotfilespath, 'app_{}'.format(hostname)), os.path.expanduser('~'))
+
+        if X_is_running():
+            print_header('Symlinks desktop apps')
+            symlink_arbo(os.path.join(dotfilespath, 'appdesktop'), os.path.expanduser('~'))
+
+            # Host specifics desktop app files
+            if os.path.isdir(os.path.join(dotfilespath, 'appdesktop_{}'.format(hostname))):
+                print_header('Symlinks {} specifics desktop apps'.format(hostname))
+                symlink_arbo(os.path.join(dotfilespath, 'appdesktop_{}'.format(hostname)), os.path.expanduser('~'))
+
+            # Compile .Xresources
+            if is_hidpi():
+                print_header('Xresources HiDPI')
+                xresources_xft = os.path.join(dotfilespath, 'shell/Xresources_xft_hidpi')
+            else:
+                print_header('Xresources')
+                xresources_xft = os.path.join(dotfilespath, 'shell/Xresources_xft')
+            generate_config(
+                os.path.expanduser("~/.Xresources"), [
+                    xresources_xft,
+                    os.path.join(dotfilespath, 'shell/Xresources'),
+                ], '!')
+            exec_command(['xrdb', os.path.expanduser('~/.Xresources')])
+
+    # import dconf settings
+    if is_installed('dconf'):
+        print_header('Dconf')
+        dconf_load(os.path.join(dotfilespath, 'appconf'))
+
+    # Compile sshrc config
+    print_header('Sshrc')
+    generate_config(
+        os.path.expanduser("~/.sshrc"), [
+            os.path.join(dotfilespath, 'sshrc/sshrc_main'),
+            os.path.join(dotfilespath, 'shell/aliases/01_main.sh'),
+            os.path.join(dotfilespath, 'shell/bash/02_prompt.bash'),
+            os.path.join(dotfilespath, 'sshrc/sshrc_ascii'),
+        ])
+
+    # ST3 Hidpi special case
+    if X_is_running() and is_hidpi():
+        print_header('Sublime Text 3 HiDPI')
+        st_preference_file = os.path.expanduser('~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')
+        # Replace symlink by original file
+        if os.path.islink(st_preference_file):
+            os.unlink(st_preference_file)
+        # Copy te file and replace line with the dpi setting
+        with open(os.path.join(dotfilespath, 'appdesktop/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')) as oldfile, open(st_preference_file, 'w') as newfile:
+            for line in oldfile:
+                if 'dpi_scale' in line:
+                    newfile.write('    "dpi_scale": 1.5,\n')
+                else:
+                    newfile.write(line)
+        print_success('Generated: ' + st_preference_file)
+
+
 if __name__ == '__main__':
 
     # Read arguments
@@ -293,72 +369,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    dotfilespath = args.path
-    restarted = args.restart
-
     try:
-        # Requirements
-        check_requirements()
-
-        # Self update
-        git_clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git', dotfilespath,
-                                     restarted)
-
-        # Make symlinks
-        print_header('Symlinks apps')
-        if symlink_arbo(os.path.join(dotfilespath, 'app'), os.path.expanduser('~')):
-
-            print_header('Symlinks root apps')
-            symlink_arbo(os.path.join(dotfilespath, 'approot'), '/', True)
-
-            if X_is_running():
-                print_header('Symlinks desktop apps')
-                symlink_arbo(os.path.join(dotfilespath, 'appdesktop'), os.path.expanduser('~'))
-
-                # Compile .Xresources
-                if is_hidpi():
-                    print_header('Xresources HiDPI')
-                    xresources_xft = os.path.join(dotfilespath, 'shell/Xresources_xft_hidpi')
-                else:
-                    print_header('Xresources')
-                    xresources_xft = os.path.join(dotfilespath, 'shell/Xresources_xft')
-                generate_config(
-                    os.path.expanduser("~/.Xresources"), [
-                        xresources_xft,
-                        os.path.join(dotfilespath, 'shell/Xresources'),
-                    ], '!')
-                exec_command(['xrdb', os.path.expanduser('~/.Xresources')])
-
-        # import dconf settings
-        if is_installed('dconf'):
-            print_header('Dconf')
-            dconf_load(os.path.join(dotfilespath, 'appconf'))
-
-        # Compile sshrc config
-        print_header('Sshrc')
-        generate_config(
-            os.path.expanduser("~/.sshrc"), [
-                os.path.join(dotfilespath, 'sshrc/sshrc_main'),
-                os.path.join(dotfilespath, 'shell/aliases/01_main.sh'),
-                os.path.join(dotfilespath, 'shell/bash/02_prompt.bash'),
-                os.path.join(dotfilespath, 'sshrc/sshrc_ascii'),
-            ])
-
-        # ST3 Hidpi special case
-        if X_is_running() and is_hidpi():
-            print_header('Sublime Text 3 HiDPI')
-            st_preference_file = os.path.expanduser('~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')
-            # Replace symlink by original file
-            if os.path.islink(st_preference_file):
-                os.unlink(st_preference_file)
-            # Copy te file and replace line with the dpi setting
-            with open(os.path.join(dotfilespath, 'appdesktop/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')) as oldfile, open(st_preference_file, 'w') as newfile:
-                for line in oldfile:
-                    if 'dpi_scale' in line:
-                        newfile.write('    "dpi_scale": 1.5,\n')
-                    else:
-                        newfile.write(line)
-            print_success('Generated: ' + st_preference_file)
+        main(args.path, args.restart)
 
     except KeyboardInterrupt:
         print_error('Aborting...')
