@@ -62,13 +62,16 @@ stty -ixon
 
 # Set keyboard repeat delay and rate
 if [[ -x "$(which xset)" ]]; then
-	# Default: xset r rate 660 25
-	xset r rate 300 30
-fi
+	# If X is running
+	if xset q &>/dev/null; then
+		# Default: xset r rate 660 25
+		xset r rate 300 30
 
-# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
-if [[ -x "$(which setxkbmap)" ]]; then
-	setxkbmap -option "nbsp:none"
+		# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
+		if [[ -x "$(which setxkbmap)" ]]; then
+			setxkbmap -option "nbsp:none"
+		fi
+	fi
 fi
 
 # Stop backward-kill-word on directory delimiter (bind Ctrl+w in bash / zsh)
