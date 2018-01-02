@@ -12,10 +12,6 @@ export SILVUSPROJECT="/data/dev"
 # Doc folder
 export SILVUSDOC="/data/doc"
 
-# Launch simple web server
-alias server="python3 -m http.server 5000"
-alias server_php="php -sS localhost:5000"
-
 # Add somes paths
 if [[ -d "${SILVUSPROJECT}/bin" ]]; then
 	export PATH="$PATH:$SILVUSPROJECT/bin"

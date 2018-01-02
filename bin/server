@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Start an HTTP server from a directory
+# First argument can be "php" to use php instead of python 3
+function server() {
+    # local port="${1:-5000}"
+    local port="5000"
+
+	sleep 1 && nohup xdg-open "http://localhost:${port}/" >/dev/null 2>&1 &
+
+    if [[ "$1" == "php" ]] ; then
+        php -S 0.0.0.0:"$port"
+    else
+        python3 -m http.server "$port"
+    fi
+}
+
+server "$@"
