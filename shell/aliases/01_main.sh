@@ -40,13 +40,39 @@ alias ports='netstat -tulanp'
 alias tcpdump='tcpdump -i eth0'
 alias netusage='lsof -P -i -n'
 alias firewalllist='sudo iptables -L -n -v --line-numbers'
+alias hosts='sudo vim /etc/hosts'
 alias mountshow='mount |column -t'
+alias copy='xclip -selection clipboard'
+alias clipboard='copy' # Same as copy alias
 alias calculator='bc -l'
-alias photo='feh --draw-filename --draw-tinted --scale-down'
+alias photo='eom' # Eye of Mate
 alias lynx="lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
-alias tmux="tmux -2" # Getting 256 colors to work in tmux
+alias tmux="tmux -2" # Make 256 colors work in tmux
 alias screendual="xrandr --output HDMI-0 --auto --primary --output VGA-0 --auto --above HDMI-0"
 alias screensimple="xrandr --output VGA-0 --off --output HDMI-0 --auto --primary"
+
+# Man
+# -----------------------------------------------------------------------------
+# Don’t clear the screen after quitting a manual page
+export MANPAGER="less -X";
+# Get colors in manual pages
+man() {
+	env \
+		LESS_TERMCAP_mb=$(tput bold; tput setaf 4) \
+		LESS_TERMCAP_md=$(tput setaf 2) \
+		LESS_TERMCAP_me=$(tput sgr0) \
+		LESS_TERMCAP_so=$(tput setaf 0; tput setab 2) \
+		LESS_TERMCAP_se=$(tput rmso; tput sgr0) \
+		LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) \
+		LESS_TERMCAP_ue=$(tput rmul; tput sgr0) \
+		LESS_TERMCAP_mr=$(tput rev) \
+		LESS_TERMCAP_mh=$(tput dim) \
+		LESS_TERMCAP_ZN=$(tput ssubm) \
+		LESS_TERMCAP_ZV=$(tput rsubm) \
+		LESS_TERMCAP_ZO=$(tput ssupm) \
+		LESS_TERMCAP_ZW=$(tput rsupm) \
+		man "$@"
+}
 
 # Vim
 # -----------------------------------------------------------------------------

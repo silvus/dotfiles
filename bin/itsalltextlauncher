@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# "It's All Text!" launcher
-# https://addons.mozilla.org/en-US/firefox/addon/its-all-text/
-
-/usr/bin/tmux new-window "vim $@"

@@ -4,7 +4,7 @@ alias dot="cd $SILVUSDOTFILES"
 alias dotbin="cd $SILVUSDOTFILES/bin"
 alias dotreload="source ${HOME}/.bashrc"
 alias s="cd /data/silvus"
-alias d="cd /data"
+alias d="cd /data/doc"
 
 # Projects root folder (for Virtualenvwrapper, go, etc...)
 export SILVUSPROJECT="/data/dev"
