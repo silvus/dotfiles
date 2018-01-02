@@ -46,7 +46,7 @@ alias copy='xclip -selection clipboard'
 alias clipboard='copy' # Same as copy alias
 alias calculator='bc -l'
 alias photo='eom' # Eye of Mate
-alias lynx="lynx -cfg=$HOME/.lynx/lynxrc -lss=$HOME/.lynx/lynx.lss"
+alias lynx="lynx -cfg=$HOME/.config/lynx/lynxrc -lss=$HOME/.config/lynx/lynx.lss"
 alias tmux="tmux -2" # Make 256 colors work in tmux
 alias screendual="xrandr --output HDMI-0 --auto --primary --output VGA-0 --auto --above HDMI-0"
 alias screensimple="xrandr --output VGA-0 --off --output HDMI-0 --auto --primary"

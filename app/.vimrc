@@ -437,8 +437,9 @@ if !exists("g:load_plugins") && ($SSH_CONNECTION || $SSH_CLIENT || $SSH_TTY)
 	let g:load_plugins = 0
 endif
 
+" If there is plugins to load and Vima Plug is present
 if filereadable(expand("~/.vim/vimrc_plugins")) && filereadable(expand("~/.vim/autoload/plug.vim"))
-	" g:load_plugins = 0 is use to disable plugins loading
+	" g:load_plugins = 0 is used to disable plugins loading
 	if !exists("g:load_plugins") || (exists("g:load_plugins") && g:load_plugins)
 		source ~/.vim/vimrc_plugins
 	endif

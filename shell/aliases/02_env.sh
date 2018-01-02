@@ -11,7 +11,12 @@ fi
 
 # XDG
 # -----------------------------------------------------------------------------
-export XDG_CONFIG_HOME="$HOME/.config"
+# if not already set
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
+export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
+
+# Elinks
+export ELINKS_CONFDIR="$XDG_CONFIG_HOME"/elinks
 
 # History
 # -----------------------------------------------------------------------------
@@ -25,3 +30,4 @@ export HISTIGNORE="jrnl*:jnal*" # Ignore some commands
 # -----------------------------------------------------------------------------
 # export FZF_DEFAULT_COMMAND='pt --hidden --follow --global-gitignore --ignore=".git/" --files-with-matches ""'
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
