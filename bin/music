@@ -5,7 +5,7 @@ if [[ -n "$TMUX" ]]; then
 	tmux rename-window "music"
 fi
 
-mocp "$@"
+mocp -M "$XDG_CONFIG_HOME"/moc "$@"
 
 # If run under Tmux, unset title
 if [[ -n "$TMUX" ]]; then
@@ -13,4 +13,3 @@ if [[ -n "$TMUX" ]]; then
 fi
 
 exit 0
-

@@ -1,12 +1,12 @@
 [include]
-	path = ~/.gitconfiguser
+	path = ~/.gituser
 [color]
 	ui = auto
 [core]
 	editor = vim
 	autocrlf = input
 	eol = lf
-	excludesfile = ~/.gitignore_global
+	excludesfile = ~/.config/git/gitignore_global
 	quotepath = false
 [alias]
 	st = status
@@ -19,7 +19,7 @@
 	pulom = pull origin master
 	dif = diff --stat=160,120
 [web]
-	browser = w3m
+	browser = elinks
 [github]
 	user = Silvus
 [diff]

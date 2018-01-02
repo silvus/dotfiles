@@ -8,7 +8,13 @@ function run {
 
 run nm-applet
 run guake -r tmux -e tmuxdev
-run redshift-gtk
+
+if [[ $(hostname --short) == "somnus" ]]; then
+	run redshift-gtk -b1.0:0.3
+else
+	run redshift-gtk
+fi
+
 run dropbox start
 
 if [[ $GDMSESSION == 'i3' ]]; then

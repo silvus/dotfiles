@@ -168,7 +168,7 @@ reload-threads 8
 ## configuration option: error-log
 ## description : If set, then user errors (e.g. errors regarding defunct RSS feeds) will be logged to this file.
 # error-log ""
-error-log "~/.newsbeuter/error.log"
+error-log "~/.config/newsbeuter/error.log"
 
 ## configuration option: save-path
 ## description: The default path where articles shall be saved to. If an invalid path is specified, the current directory is used.

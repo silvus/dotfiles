@@ -1,14 +1,15 @@
-#! /usr/bin/env python3
-
-""" Recursively walk the current working directory looking for broken
-symlinks. If any broken symlinks are found print out a report and exit
-with status 1. If none are found print out OK and exit with status 0.
+#!/usr/bin/env python3
 
 """
+Recursively walk the current working directory looking for broken
+symlinks. If any broken symlinks are found print out a report and exit
+with status 1. If none are found print out OK and exit with status 0.
+"""
 
-import sys,os
+import sys
+import os
 
-print ("Checking for broken symlinks...")
+print("Checking for broken symlinks...")
 
 links = []
 broken = []
@@ -17,12 +18,12 @@ for root, dirs, files in os.walk('.'):
         # Ignore the .git directory.
         continue
     for filename in files:
-        path = os.path.join(root,filename)
+        path = os.path.join(root, filename)
         if os.path.islink(path):
             target_path = os.readlink(path)
             # Resolve relative symlinks
             if not os.path.isabs(target_path):
-                target_path = os.path.join(os.path.dirname(path),target_path)
+                target_path = os.path.join(os.path.dirname(path), target_path)
             if not os.path.exists(target_path):
                 links.append(path)
                 broken.append(path)
@@ -32,12 +33,12 @@ for root, dirs, files in os.walk('.'):
             # If it's not a symlink we're not interested.
             continue
 
-print (len(links), 'symlinks found...')
+print(len(links), 'symlinks found...')
 if broken == []:
-    print ('OK')
+    print('OK')
     sys.exit(0)
 else:
-    print ("broken symlink(s) found:")
+    print("broken symlink(s) found:")
     for link in broken:
-        print (link)
+        print(link)
     sys.exit(1)
