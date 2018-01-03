@@ -29,8 +29,18 @@ def print_success(message):
     print(COLOR_GREEN + '    ✔ ' + COLOR_RESET + message)
 
 
-def print_update(message):
-    print(COLOR_GREEN + '    ✔ ' + COLOR_RESET + message, end='\r')
+def print_progress(count, total):
+    barLength = 40
+    percent = int(round((count / total) * 100))
+    nb_bar_fill = int(round((barLength * percent) / 100))
+    bar_fill = '=' * nb_bar_fill
+    bar_empty = ' ' * (barLength - nb_bar_fill)
+    symbol = COLOR_BLUE + '➤' + COLOR_RESET
+    if count == total:
+        symbol = COLOR_GREEN + '✔' + COLOR_RESET
+
+    sys.stdout.write("\r    {} [{}] {}/{}".format(symbol, str(bar_fill + bar_empty), count, total))
+    sys.stdout.flush()
 
 
 def print_info(message):
@@ -167,7 +177,7 @@ def symlink_arbo(rootSource, rootDestination, with_sudo=False):
                     return False
 
             # Update the same line each time
-            print_update('➜ {}/{}'.format(count, total))
+            print_progress(count, total)
 
     print()
     return True
