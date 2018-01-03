@@ -7,7 +7,7 @@ function server() {
 
 	sleep 1 && nohup xdg-open "http://localhost:${port}/" >/dev/null 2>&1 &
 
-	python3 -m http.server "$port"
+	php -S 0.0.0.0:"$port"
 }
 
 server "$@"
