@@ -145,6 +145,7 @@ select-word-style bash
 
 # -----------------------------------------------------------------------------
 export SILVUSDOTFILES=~/.dotfiles
+export SILVUSDOTFILES_CUSTOM=~/.dotfiles_custom
 
 # Source files from bash and aliases folder
 # ------------------------------------------------------
@@ -163,4 +164,5 @@ done
 
 # Environment specific configuration
 # -----------------------------------------------------------------------------
-[ -f ${SILVUSDOTFILES}/shell/shell_env ] && source ${SILVUSDOTFILES}/shell/shell_env
+[ -f ${SILVUSDOTFILES_CUSTOM}/shell ] && source ${SILVUSDOTFILES_CUSTOM}/shell
+
