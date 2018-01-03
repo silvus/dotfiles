@@ -29,6 +29,10 @@ def print_success(message):
     print(COLOR_GREEN + '    ✔ ' + COLOR_RESET + message)
 
 
+def print_update(message):
+    print(COLOR_GREEN + '    ✔ ' + COLOR_RESET + message, end='\r')
+
+
 def print_info(message):
     print(COLOR_BLUE + '    ➤ ' + COLOR_RESET + message)
 
@@ -119,6 +123,16 @@ def is_hidpi():
     height = int(resolution[1])
     return (width > 2600 and height > 1600)
 
+
+def count_files(rootFolder):
+    """
+    Recursive count files in rootFolder
+    """
+    total = 0
+    for root, dirs, files in os.walk(rootFolder):
+        total += len(files)
+    return total
+
 #####################################################################
 # Symlinks
 #####################################################################
@@ -130,6 +144,9 @@ def symlink_arbo(rootSource, rootDestination, with_sudo=False):
     in home for each file.
     If X is running, scan also "appdesktop"
     """
+    count = 0
+    total = count_files(rootSource)
+
     for dirName, subdirList, fileList in os.walk(rootSource):
         for fileName in fileList:
             # Get relative dir from dotfiles root
@@ -141,6 +158,7 @@ def symlink_arbo(rootSource, rootDestination, with_sudo=False):
             source = os.path.join(rootSource, relativeFile)
             destination = os.path.join(rootDestination, relativeFile)
 
+            count += 1
             if with_sudo:
                 if not symlink_root(source, destination):
                     return False
@@ -148,6 +166,10 @@ def symlink_arbo(rootSource, rootDestination, with_sudo=False):
                 if not symlink(source, destination):
                     return False
 
+            # Update the same line each time
+            print_update('➜ {}/{}'.format(count, total))
+
+    print()
     return True
 
 
@@ -164,7 +186,6 @@ def symlink(src, dest):
         assure_dir_exist(dest)
         # Make symlink
         os.symlink(src, dest)
-        print_success('➜ ' + os.path.relpath(dest, os.path.expanduser('~')))
         return True
     else:
         print_error(src + " doesn't exist")
@@ -179,7 +200,7 @@ def symlink_root(src, dest):
     if os.path.exists(src):
         # Check if destination already exist
         if os.path.exists(dest):
-            print_info('Symlink (sudo) exist: ' + os.path.basename(dest))
+            # print_info('Symlink (sudo) exist: ' + os.path.basename(dest))
             return True
         # Create directories if necessary
         assure_dir_exist(dest)
@@ -351,6 +372,7 @@ def main(dotfilespath, restarted):
                 else:
                     newfile.write(line)
         print_success('Generated: ' + st_preference_file)
+    print()
 
 
 if __name__ == '__main__':
