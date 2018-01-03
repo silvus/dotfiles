@@ -2,6 +2,9 @@
 -- Init
 -- ---------------------------------------------------------------------
 
+-- init random
+math.randomseed(os.time());
+
 -- Standard lua
 local string = require("string")
 
@@ -19,7 +22,6 @@ local lain    = require("lain")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local os      = { getenv = os.getenv, setlocale = os.setlocale }
-
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -71,7 +73,10 @@ function requireSafe(lib)
 end
 
 -- require("mail")
-requireSafe('mail')
+-- only for mars
+if awesome.hostname == 'mars' then
+	requireSafe('mail')
+end
 
 -- ---------------------------------------------------------------------
 -- Config
@@ -133,16 +138,58 @@ awful.layout.layouts = {
 }
 -- }}}
 
+-- Get the list of files from a directory
+function scanDir(directory)
+	local i, fileList, popen = 0, {}, io.popen
+	for filename in popen([[find "]] ..directory.. [[" -type f]]):lines() do
+		i = i + 1
+		fileList[i] = filename
+	end
+	return fileList
+end
+
+-- Wallpaper
 local function set_wallpaper(s)
-    -- Wallpaper
-    if beautiful.wallpaper then
-        local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
-        gears.wallpaper.maximized(wallpaper, s, true)
-    end
+	if awful.util.file_readable(os.getenv("HOME") .. '/.wallpaper') then
+		-- if ~/.wallpaper is a file, use it
+		local wallpaper = os.getenv("HOME") .. '/.wallpaper'
+		gears.wallpaper.maximized(wallpaper, s, true)
+	elseif awful.util. dir_readable (os.getenv("HOME") .. '/.wallpaper') then
+		-- if ~/.wallpaper is a directory, pick a random wallpaper
+		local wallpapers = scanDir(os.getenv("HOME") .. '/.wallpaper')
+		local wallpaper = wallpapers[math.random(#wallpapers)]
+		gears.wallpaper.maximized(wallpaper, s, true)
+
+		-- TODO: pick a different for each tag ?
+		-- -- Go over each tag
+		-- for t = 1, 9 do
+		--     local screen = awful.screen.focused()
+		--     local tag = screen.tags[t]
+		--
+		-- 	tag:connect_signal("property::selected", function (tag)
+		-- 	-- tags[s][t]:connect_signal(nil, "property::selected", function (tag)
+		-- 	-- And if selected
+		-- 		if not tag.selected then return end
+		--
+		-- 		naughty.notify({ preset = naughty.config.presets.critical,
+		--               title = "DEBUG",
+		--               text = 'wallpaper' })
+		-- 		-- Set wallpaper
+		-- 		gears.wallpaper.maximized(os.getenv("HOME") .. '/.wallpaper/' .. wallpapers[1], s, true)
+		-- 	end)
+		-- end
+
+	else
+		-- Fallback to beautiful.wallpaper
+		if beautiful.wallpaper then
+	        local wallpaper = beautiful.wallpaper
+	        -- If wallpaper is a function, call it with the screen
+	        if type(wallpaper) == "function" then
+	            wallpaper = wallpaper(s)
+	        end
+	        gears.wallpaper.maximized(wallpaper, s, true)
+		end
+	end
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)

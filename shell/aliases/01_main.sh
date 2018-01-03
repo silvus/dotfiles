@@ -1,13 +1,3 @@
-# Add bins to user path
-# ------------------------------------------------------
-if [[ -d "$HOME/bin" ]]; then
-	export PATH="$HOME/bin:$PATH"
-fi
-
-if [[ -d "$SILVUSDOTFILES/bin" ]]; then
-	export PATH="$SILVUSDOTFILES/bin:$PATH"
-fi
-
 # Navigation
 # -----------------------------------------------------------------------------
 alias cd..='cd ..'

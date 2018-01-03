@@ -338,18 +338,7 @@ def main(dotfilespath, restarted):
                 print_header('Symlinks {} specifics desktop apps'.format(hostname))
                 symlink_arbo(os.path.join(dotfilespath, 'appdesktop_{}'.format(hostname)), os.path.expanduser('~'))
 
-            # Compile .Xresources
-            if is_hidpi():
-                print_header('Xresources HiDPI')
-                xresources_xft = os.path.join(dotfilespath, 'shell/Xresources_xft_hidpi')
-            else:
-                print_header('Xresources')
-                xresources_xft = os.path.join(dotfilespath, 'shell/Xresources_xft')
-            generate_config(
-                os.path.expanduser("~/.Xresources"), [
-                    xresources_xft,
-                    os.path.join(dotfilespath, 'shell/Xresources'),
-                ], '!')
+            # Reload .Xresources
             exec_command(['xrdb', os.path.expanduser('~/.Xresources')])
 
     # import dconf settings

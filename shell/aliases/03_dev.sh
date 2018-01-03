@@ -1,23 +1,31 @@
-
-# Dotfiles
-alias dot="cd $SILVUSDOTFILES"
-alias dotbin="cd $SILVUSDOTFILES/bin"
-alias dotreload="source ${HOME}/.bashrc"
-alias s="cd /data/silvus"
-alias d="cd /data/doc"
-
 # Projects root folder (for Virtualenvwrapper, go, etc...)
 export SILVUSPROJECT="/data/dev"
 
 # Doc folder
 export SILVUSDOC="/data/doc"
 
-# Add somes paths
-if [[ -d "${SILVUSPROJECT}/bin" ]]; then
-	export PATH="$PATH:$SILVUSPROJECT/bin"
+# Dotfiles
+alias dot="cd $SILVUSDOTFILES"
+alias dotreload="source ${HOME}/.bashrc"
+alias s="cd /data/silvus"
+alias d="cd $SILVUSDOC"
+
+# PATH
+# ------------------------------------------------------
+if [[ -d "${HOME}/bin" ]]; then
+	export PATH="${HOME}/bin:$PATH"
 fi
+
+if [[ -d "${SILVUSDOTFILES}/bin" ]]; then
+	export PATH="${SILVUSDOTFILES}/bin:$PATH"
+fi
+
 if [[ -d "${SILVUSDOC}/.bin" ]]; then
-	export PATH="$PATH:$SILVUSDOC/.bin"
+	export PATH="$PATH:${SILVUSDOC}/.bin"
+fi
+
+if [[ -d "${SILVUSPROJECT}/bin" ]]; then
+	export PATH="$PATH:${SILVUSPROJECT}/bin"
 fi
 
 # Golang

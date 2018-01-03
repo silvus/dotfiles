@@ -149,7 +149,7 @@ export SILVUSDOTFILES_CUSTOM=~/.dotfiles_custom
 
 # Source files from bash and aliases folder
 # ------------------------------------------------------
-for file in $SILVUSDOTFILES/shell/aliases/*(.); do
+for file in ${SILVUSDOTFILES}/shell/aliases/*(.); do
 	if [[ -f "$file" ]]; then
 		source "$file"
 	fi

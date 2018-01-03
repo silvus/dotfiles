@@ -1,3 +1,19 @@
+! Changes take effect after running: xrdb -merge ~/.Xresources
+
+! Hidpi on mars
+#ifdef SRVR_mars
+	Xft.dpi: 150
+#else
+	Xft.dpi: 96
+#endif
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+
+
 URxvt.termName: rxvt-256color
 URxvt.cursorBlink: 1
 URxvt.scrollBar: off
