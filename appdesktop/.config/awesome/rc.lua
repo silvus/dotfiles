@@ -141,7 +141,7 @@ awful.layout.layouts = {
 -- Get the list of files from a directory
 function scanDir(directory)
 	local i, fileList, popen = 0, {}, io.popen
-	for filename in popen([[find "]] ..directory.. [[" -type f]]):lines() do
+	for filename in popen("find " .. directory .. " -type f | sort"):lines() do
 		i = i + 1
 		fileList[i] = filename
 	end
@@ -155,29 +155,21 @@ local function set_wallpaper(s)
 		local wallpaper = os.getenv("HOME") .. '/.wallpaper'
 		gears.wallpaper.maximized(wallpaper, s, true)
 	elseif awful.util. dir_readable (os.getenv("HOME") .. '/.wallpaper') then
-		-- if ~/.wallpaper is a directory, pick a random wallpaper
+		-- if ~/.wallpaper is a directory, pick one into it
 		local wallpapers = scanDir(os.getenv("HOME") .. '/.wallpaper')
-		local wallpaper = wallpapers[math.random(#wallpapers)]
-		gears.wallpaper.maximized(wallpaper, s, true)
-
-		-- TODO: pick a different for each tag ?
-		-- -- Go over each tag
-		-- for t = 1, 9 do
-		--     local screen = awful.screen.focused()
-		--     local tag = screen.tags[t]
-		--
-		-- 	tag:connect_signal("property::selected", function (tag)
-		-- 	-- tags[s][t]:connect_signal(nil, "property::selected", function (tag)
-		-- 	-- And if selected
-		-- 		if not tag.selected then return end
-		--
-		-- 		naughty.notify({ preset = naughty.config.presets.critical,
-		--               title = "DEBUG",
-		--               text = 'wallpaper' })
-		-- 		-- Set wallpaper
-		-- 		gears.wallpaper.maximized(os.getenv("HOME") .. '/.wallpaper/' .. wallpapers[1], s, true)
-		-- 	end)
-		-- end
+		-- If we got a tag and an associated wallpaper
+		local tag = awful.screen.focused().selected_tag
+		if tag and wallpapers[tag.index] then
+			-- if on a tag, use his index to find a wallpaper
+			local wallpaper = wallpapers[tag.index]
+			gears.wallpaper.maximized(wallpaper, s, true)
+		else
+			-- Fallback to random one
+			-- local wallpaper = wallpapers[math.random(#wallpapers)]
+			-- Fallback to first one
+			local wallpaper = wallpapers[1]
+			gears.wallpaper.maximized(wallpaper, s, true)
+		end
 
 	else
 		-- Fallback to beautiful.wallpaper
@@ -830,6 +822,10 @@ for i = 1, 9 do
 								-- Just go to the screen
 								tag:view_only()
 							end
+							-- change wallpaper
+							-- TODO: Should be during tag creation
+							-- TODO: here, it doesn't handle mouse event
+							set_wallpaper(screen)
                         end
                   end,
                   {description = "view tag #"..i, group = "tag"}),
