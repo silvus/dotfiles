@@ -215,7 +215,6 @@ def symlink_root(src, dest):
         # Create directories if necessary
         assure_dir_exist(dest)
         # Make symlink
-        print_success('➜ ' + dest)
         return exec_command(['sudo', 'ln', '-s', src, dest])
     else:
         print_error(src + " doesn't exist")
