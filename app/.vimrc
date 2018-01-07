@@ -401,34 +401,31 @@ set relativenumber        " Show relative line numbers
 set showmode              " Current mode in status line
 set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
 set showmatch             " Show matching brackets when text indicator is over them
-set cursorline            " Highlights the current line
+" set cursorline            " Highlights the current line
 
 " Highlights the current line on insert
-" autocmd InsertEnter * set cul
-" autocmd InsertLeave * set nocul
-
-" Highlights the current line on insert only on current split
-augroup CursorLine
-	au!
-	au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-	au WinLeave * setlocal nocursorline
-augroup END
-
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
 
 " Status line
 " ------------------------------------------------------------------------------------
 set laststatus=2          " Last window always has a statusline
 
 set statusline=
-set statusline+=\ %<%f\                             " File name
+set statusline+=\ %n\                               " Buffer number
+set statusline+=%1*\ %<%f\ %*                       " File name
 set statusline+=\ %y\                               " File type
+" set statusline+=\ %{&fileencoding?&fileencoding:&encoding} " Encoding -
+" TODO: only if not utf-8. Need a an autoload command (https://stackoverflow.com/questions/25178484/how-to-change-color-in-statusline-if-current-file-has-no-utf8-fileencoding) ?
 set statusline+=\ %h%m%r%w\                         " Modified? Readonly?
 set statusline+=%=                                  " Switch to the right side
-set statusline+=\ %c\                               " Colnr
-set statusline+=\ %l/%L\                            " Current line / Total lines
-set statusline+=\ %P\                               " Percent through file
+set statusline+=\ %c\                               " Col number
+" set statusline+=\ %P\                             " Percent through file
+set statusline+=%1*\ %l/%L\ %*
+" Current line / Total lines
 
-hi StatusLine ctermbg=DarkGreen ctermfg=black
+hi StatusLine ctermbg=DarkGreen ctermfg=black cterm=NONE term=NONE gui=NONE
+" hi User1 ctermbg=black ctermfg=white
 
 " Plugins
 " ------------------------------------------------------------------------------------
