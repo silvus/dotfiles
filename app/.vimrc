@@ -407,11 +407,27 @@ set showmatch             " Show matching brackets when text indicator is over t
 autocmd InsertEnter * set cul
 autocmd InsertLeave * set nocul
 
+" Plugins will be loaded ?
+" ------------------------------------------------------------------------------------
+let g:with_plugins = 0   " Used to load plugins if all is ok
+
+" Disable plugin on SSH connections (if not already set)
+" if !exists("g:load_plugins") && ($SSH_CONNECTION || $SSH_CLIENT || $SSH_TTY)
+"	let g:load_plugins = 0
+" endif
+
+" If there is plugins to load and Vima Plug is present
+if filereadable(expand("~/.vim/vimrc_plugins")) && filereadable(expand("~/.vim/autoload/plug.vim"))
+	" g:load_plugins = 0 is used to disable plugins loading
+	if !exists("g:load_plugins") || (exists("g:load_plugins") && g:load_plugins)
+		let g:with_plugins = 1
+	endif
+endif
+
 " Status line
 " ------------------------------------------------------------------------------------
 set laststatus=2          " Last window always has a statusline
 
-set statusline=
 set statusline+=\ %n\                               " Buffer number
 set statusline+=%1*\ %<%f\ %*                       " File name
 set statusline+=\ %y\                               " File type
@@ -421,23 +437,18 @@ set statusline+=\ %h%m%r%w\                         " Modified? Readonly?
 set statusline+=%=                                  " Switch to the right side
 set statusline+=\ %c\                               " Col number
 " set statusline+=\ %P\                             " Percent through file
-set statusline+=%1*\ %l/%L\ %*
+set statusline+=%1*
+if g:with_plugins
+	set statusline+=\ >                             " Plugins indicator
+endif
+set statusline+=\ %l/%L\ %*
 " Current line / Total lines
 
 hi StatusLine ctermbg=DarkGreen ctermfg=black cterm=NONE term=NONE gui=NONE
 " hi User1 ctermbg=black ctermfg=white
 
-" Plugins
+" Load plugins if need
 " ------------------------------------------------------------------------------------
-" Disable plugin on SSH connections (if not alrerady set)
-if !exists("g:load_plugins") && ($SSH_CONNECTION || $SSH_CLIENT || $SSH_TTY)
-	let g:load_plugins = 0
-endif
-
-" If there is plugins to load and Vima Plug is present
-if filereadable(expand("~/.vim/vimrc_plugins")) && filereadable(expand("~/.vim/autoload/plug.vim"))
-	" g:load_plugins = 0 is used to disable plugins loading
-	if !exists("g:load_plugins") || (exists("g:load_plugins") && g:load_plugins)
-		source ~/.vim/vimrc_plugins
-	endif
+if g:with_plugins
+	source ~/.vim/vimrc_plugins
 endif

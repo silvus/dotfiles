@@ -2,8 +2,6 @@
 " ------------------------------------------------------------------------------------
 call plug#begin('~/.vim/bundle')
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/syntastic'
 Plug 'Raimondi/delimitMate'
@@ -18,13 +16,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
 Plug 'klen/python-mode'
 Plug 'plasticboy/vim-markdown'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'vitalk/vim-simple-todo'
 Plug 'jamessan/vim-gnupg'
-" Plug 'othree/html5.vim'
-" Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
-Plug 'ryanss/vim-hackernews'
 
 " Nerdtree (On demand)
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
@@ -41,24 +34,6 @@ Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }"
 " autocmd! User YouCompleteMe call youcompleteme#Enable()
 
 call plug#end()
-
-" vim-airline
-" ------------------------------------------------------------------------------------
-let g:airline_theme = 'powerlineish'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 0
-
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-
-if !exists('g:airline_symbols')
-	let g:airline_symbols = {}
-endif
-
-let g:airline_symbols.readonly = '[RO]'
-" let g:airline_symbols.branch = ''
 
 " Fzf
 " ------------------------------------------------------------------------------------
@@ -114,16 +89,6 @@ nnoremap <silent> <F3> :TagbarToggle<CR>
 " ------------------------------------------------------------------------------------
 nnoremap <silent> <leader>u :UndotreeToggle<CR>
 
-" Table Mode
-" ------------------------------------------------------------------------------------
-" Markdown-compatible tables
-let g:table_mode_corner="|"
-
-" Simple Todo
-" ------------------------------------------------------------------------------------
-" Disable default key bindings
-let g:simple_todo_map_keys = 0
-
 " Create a new item at the start of this line
 nmap <leader>c <Plug>(simple-todo-new-start-of-line)
 vmap <leader>c <Plug>(simple-todo-new-start-of-line)
@@ -133,6 +98,12 @@ vmap <leader>c <Plug>(simple-todo-new-start-of-line)
 nmap <leader>x <Plug>(simple-todo-mark-switch)
 vmap <leader>x <Plug>(simple-todo-mark-switch)
 " imap <leader>x <Plug>(simple-todo-mark-switch)
+
+" Markdown
+" ------------------------------------------------------------------------------------
+" Level 1 heading which is served as a document title is not folded. g:vim_markdown_folding_level setting is not active with this fold style.
+let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_toc_autofit = 1
 
 " Python-mode
 " ------------------------------------------------------------------------------------
@@ -176,9 +147,3 @@ hi StartifyPath    ctermfg=245
 hi StartifySlash   ctermfg=240
 hi StartifySpecial ctermfg=240
 
-" YouCompleteMe
-" ------------------------------------------------------------------------------------
-" let g:ycm_python_binary_path = '/usr/bin/python3'
-" let g:ycm_server_python_interpreter = '/usr/bin/python3'
-" let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
-" let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
