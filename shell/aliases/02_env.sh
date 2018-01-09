@@ -29,4 +29,8 @@ export HISTIGNORE="jrnl*:jnal*" # Ignore some commands
 # Fzf
 # -----------------------------------------------------------------------------
 # export FZF_DEFAULT_COMMAND='pt --hidden --follow --global-gitignore --ignore=".git/" --files-with-matches ""'
-# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# Ignore only hiddens directories
+# export FZF_DEFAULT_COMMAND="find . -path '*/\.*' -type d -prune -o -type f -print -o -type l -print 2> /dev/null | sed s/^..//"
+# Do not ignore hiddens files (except .git and .svn)
+export FZF_DEFAULT_COMMAND="find . -type f -not -path '*/\.git/*' -not -path '*/\.svn/*' -print -o -type l -print 2> /dev/null | sed s/^..//"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

@@ -6,6 +6,8 @@ if [[ -x "$(which pt 2>/dev/null)" ]]; then
 	pt --hidden --follow "$1" .
 elif [[ -x "$(which ack-grep 2>/dev/null)" ]]; then
 	ack-grep "$1" .
+elif [[ -x "$(which ack 2>/dev/null)" ]]; then
+	ack "$1" .
 else
 	grep -rnI --exclude-dir=dir --color=always "$1" .
 fi
