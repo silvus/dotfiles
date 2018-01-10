@@ -111,6 +111,7 @@ let g:pymode_rope_completion = 0
 let g:pymode_lint_ignore="E501"
 let g:pymode_doc=0
 let g:pymode_python = 'python3'
+let g:pymode_options_colorcolumn = 0
 " Completion tip window to close when a selection is made
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
