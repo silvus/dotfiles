@@ -3,12 +3,11 @@
 call plug#begin('~/.vim/bundle')
 
 Plug 'easymotion/vim-easymotion'
-Plug 'scrooloose/syntastic'
 Plug 'Raimondi/delimitMate'
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'godlygeek/tabular'
-Plug 'junegunn/vim-easy-align'
+" Plug 'godlygeek/tabular'
+" Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-speeddating'
 Plug 'mbbill/undotree'
@@ -19,19 +18,15 @@ Plug 'plasticboy/vim-markdown'
 Plug 'jamessan/vim-gnupg'
 Plug 'ap/vim-css-color'
 
-" Nerdtree (On demand)
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
-
 " Fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+" Nerdtree (On demand)
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
+
 " Tagbar (On demand)
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }"
-
-" YouCompleteMe
-" Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py', 'for': ['go', 'php', 'sh', 'js', 'css', 'python'] }
-" autocmd! User YouCompleteMe call youcompleteme#Enable()
 
 call plug#end()
 
@@ -89,16 +84,6 @@ nnoremap <silent> <F3> :TagbarToggle<CR>
 " ------------------------------------------------------------------------------------
 nnoremap <silent> <leader>u :UndotreeToggle<CR>
 
-" Create a new item at the start of this line
-nmap <leader>c <Plug>(simple-todo-new-start-of-line)
-vmap <leader>c <Plug>(simple-todo-new-start-of-line)
-" imap <leader>c <Plug>(simple-todo-new-start-of-line)
-
-" Toggle checkboxes states
-nmap <leader>x <Plug>(simple-todo-mark-switch)
-vmap <leader>x <Plug>(simple-todo-mark-switch)
-" imap <leader>x <Plug>(simple-todo-mark-switch)
-
 " Markdown
 " ------------------------------------------------------------------------------------
 " Level 1 heading which is served as a document title is not folded. g:vim_markdown_folding_level setting is not active with this fold style.
@@ -115,10 +100,6 @@ let g:pymode_options_colorcolumn = 0
 " Completion tip window to close when a selection is made
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-" Syntastic
-" ------------------------------------------------------------------------------------
-let g:syntastic_python_flake8_args = "--ignore=E501"
 
 " Startify
 " ------------------------------------------------------------------------------------
