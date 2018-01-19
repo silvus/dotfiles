@@ -324,7 +324,7 @@ local netbar = wibox.widget {
     max_value        = 1000,
     value            = 0,
     color            = beautiful.success,
-    background_color = beautiful.info,
+    background_color = beautiful.bg_normal,
     border_color     = beautiful.info,
     widget           = wibox.widget.progressbar
 }
@@ -349,7 +349,7 @@ local cpubar = wibox.widget {
     max_value        = 100,
     value            = 0,
     color            = beautiful.success,
-    background_color = beautiful.info,
+    background_color = beautiful.bg_normal,
     border_color     = beautiful.info,
     widget           = wibox.widget.progressbar
 }
@@ -375,7 +375,7 @@ local membar = wibox.widget {
     max_value 		 = 100,
     value            = 0,
     color 			 = beautiful.success,
-    background_color = beautiful.info,
+    background_color = beautiful.bg_normal,
     border_color     = beautiful.info,
     widget           = wibox.widget.progressbar
 }
@@ -383,7 +383,6 @@ local mem = lain.widget.mem({
     width = 100, border_width = 0, ticks = true, ticks_size = 10,
     settings = function()
         membar:set_value(mem_now.perc)
-        -- membar:set_value(mem_now.used)
     end
 })
 local membg = wibox.container.background(membar, beautiful.info, gears.shape.rectangle)
@@ -393,8 +392,7 @@ local mymemwidget = wibox.container.margin(membg, 2, 7, 4, 4)
 local volicon = wibox.widget.imagebox(beautiful.vol)
 local volume = lain.widget.alsabar({
     width = 100, border_width = 0, ticks = true, ticks_size = 10,
-    timeout= 2,
-    notification_preset = { font = beautiful.font },
+    timeout = 2, notification_preset = { font = beautiful.font },
     --togglechannel = "IEC958,3",
     settings = function()
         if volume_now.status == "off" then
@@ -408,7 +406,7 @@ local volume = lain.widget.alsabar({
         end
     end,
     colors = {
-        background   = beautiful.info,
+        background   = beautiful.bg_normal,
         mute         = beautiful.error,
         unmute       = beautiful.success
     }
