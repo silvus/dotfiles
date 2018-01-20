@@ -16,7 +16,7 @@ case "$action" in
 		;;
 	*)
 		if [[ -f "/etc/openvpn/${action}.ovpn" ]]; then
-			sudo openvpn --config "/etc/openvpn/${action}.ovpn"
+			gksudo -- bash -c 'openvpn --config "/etc/openvpn/'${action}'.ovpn"'
 		fi
 		;;
 esac
