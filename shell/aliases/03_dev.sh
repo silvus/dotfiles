@@ -21,11 +21,11 @@ if [[ -d "${SILVUSDOTFILES}/bin" ]]; then
 fi
 
 if [[ -d "${SILVUSDOC}/.bin" ]]; then
-	export PATH="$PATH:${SILVUSDOC}/.bin"
+	export PATH="${SILVUSDOC}/.bin:$PATH"
 fi
 
 if [[ -d "${SILVUSPROJECT}/bin" ]]; then
-	export PATH="$PATH:${SILVUSPROJECT}/bin"
+	export PATH="${SILVUSPROJECT}/bin:$PATH"
 fi
 
 # Golang
