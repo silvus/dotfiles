@@ -25,4 +25,7 @@ fi
 # ------------------------------------------------------
 if [[ $(hostname --short) == "mars" ]]; then
 	run firefox
+	# Dual screens configuration
+	xrandr --output HDMI-1 --mode 1920x1080 --pos 0x1080 --rotate normal --output DP-2 --primary --mode 3840x2160 --pos 1920x0 --rotate normal
+	# xrandr --output DP-2 --primary --auto --output HDMI-1 --left-of DP-2 --off
 fi

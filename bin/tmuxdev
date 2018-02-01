@@ -13,8 +13,21 @@ _launch_tmux() {
 	tmux has-session -t "${_TMUX_SESSION_NAME}"
 	if [[ "$?" != 0 ]]; then
 
-		#  Launch session
+		# Launch session
 		tmux -2 new-session -s "${_TMUX_SESSION_NAME}" -d -n "$_WINDOWS_DEV"
+
+		# Remind stuff
+		if [[ -x "$(which remind 2>/dev/null)" ]]; then
+			if [[ -x "/data/doc/.bin/remindnotif" ]]; then
+				tmux split-window -h -t "${_TMUX_SESSION_NAME}" "/data/doc/.bin/remindnotif"
+				tmux resize-pane -t "${_TMUX_SESSION_NAME}" -x 85
+			fi
+			if [[ -x "/data/doc/.bin/remindreload" ]]; then
+				tmux split-window -v -t "${_TMUX_SESSION_NAME}" "/data/doc/.bin/remindreload"
+				tmux resize-pane -t "${_TMUX_SESSION_NAME}" -y 75
+				tmux select-pane -t 1
+			fi
+		fi
 
 		# Source env script
 		if [[ -f "${SILVUSDOTFILES_CUSTOM}/tmuxdev" ]]; then

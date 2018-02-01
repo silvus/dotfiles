@@ -543,8 +543,10 @@ awful.screen.connect_for_each_screen(function(s)
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
-        { -- Right widgets
+        { -- Right widgets (monitoring)
             layout = wibox.layout.fixed.horizontal,
+            -- layout = awful.widget.only_on_screen,
+            -- screen = "primary", -- Only display on primary screen
             musicicon,
             mymoc,
             myspaceseparator,
@@ -559,16 +561,25 @@ awful.screen.connect_for_each_screen(function(s)
             mymemwidget,
             volicon,
             myvolumewidget,
-            myspaceseparator,
-            myimapcheckdev,
-            mailicondev,
-            myimapcheckpers,
-            mailiconpers,
+            -- Widget for main screen only
+            -- TODO: Should use awful.widget.only_on_screen after upgrade
+            s == screen.primary and myspaceseparator,
+            s == screen.primary and myimapcheckdev,
+            s == screen.primary and mailicondev,
+            s == screen.primary and myimapcheckpers,
+            s == screen.primary and mailiconpers,
             -- myspaceseparator,
             -- mycrypto,
+            s == screen.primary and myspaceseparator,
+            s == screen.primary and mykeyboardlayout,
+            s == screen.primary and wibox.widget.systray(),
             myspaceseparator,
-            mykeyboardlayout,
-            wibox.widget.systray(),
+            mytextclock,
+            myspaceseparator,
+            s.mylayoutbox,
+        },
+        { -- Far right (share between screens)
+            layout = wibox.layout.fixed.horizontal,
             myspaceseparator,
             mytextclock,
             myspaceseparator,
@@ -609,22 +620,22 @@ globalkeys = awful.util.table.join(
      -- By direction client focus
     awful.key({ modkey }, "Down",
         function()
-            awful.client.focus.bydirection("down")
+            awful.client.focus.global_bydirection("down")
             if client.focus then client.focus:raise() end
         end),
     awful.key({ modkey }, "Up",
         function()
-            awful.client.focus.bydirection("up")
+            awful.client.focus.global_bydirection("up")
             if client.focus then client.focus:raise() end
         end),
     awful.key({ modkey }, "Left",
         function()
-            awful.client.focus.bydirection("left")
+            awful.client.focus.global_bydirection("left")
             if client.focus then client.focus:raise() end
         end),
     awful.key({ modkey }, "Right",
         function()
-            awful.client.focus.bydirection("right")
+            awful.client.focus.global_bydirection("right")
             if client.focus then client.focus:raise() end
         end),
 
@@ -632,11 +643,15 @@ globalkeys = awful.util.table.join(
     --          {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx(  1)    end,
+    awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.global_bydirection('right')    end,
               {description = "swap with next client by index", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "Left", function () awful.client.swap.byidx( -1)    end,
+    awful.key({ modkey, "Shift"   }, "Left", function () awful.client.swap.global_bydirection('left')    end,
               {description = "swap with previous client by index", group = "client"}),
-    awful.key({ modkey, "Control" }, "Right", function () awful.screen.focus_relative( 1) end,
+    awful.key({ modkey, "Shift"   }, "Up", function () awful.client.swap.global_bydirection('up')    end,
+              {description = "swap with next client by index", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "Down", function () awful.client.swap.global_bydirection('down')    end,
+              {description = "swap with previous client by index", group = "client"}),
+    awful.key({ modkey, "Control" }, "Right", function () awful.screen.focus_relative(1) end,
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "Left", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
@@ -884,6 +899,7 @@ root.keys(globalkeys)
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
+max_screen_count = screen:count()
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
@@ -940,6 +956,7 @@ awful.rules.rules = {
 			-- titlebars_enabled = false,
 			sticky = true,
 			ontop = true,
+			screen = max_screen_count, -- Open on last screen
 		}
     },
     { rule = { class = "Firefox" },
