@@ -127,7 +127,7 @@ def is_hidpi():
     """
     Get screen width resolution. If it's looks big, return true
     """
-    output = Popen('xrandr | grep "\*" | cut -d" " -f4', shell=True, stdout=PIPE, stderr=PIPE).communicate()
+    output = Popen('xrandr | grep "\*" | sort -nr | head -n 1 | cut -d" " -f4', shell=True, stdout=PIPE, stderr=PIPE).communicate()
     resolution = output[0].decode('UTF-8').split()[0].split('x')
     width = int(resolution[0])
     height = int(resolution[1])
