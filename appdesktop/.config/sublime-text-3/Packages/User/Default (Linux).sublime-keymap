@@ -23,6 +23,7 @@
 { "keys": ["alt+f4"], "command": "select_all_bookmarks" },
 { "keys": ["f5"], "command": "build" },
 { "keys": ["f12"], "command": "toggle_setting", "args": {"setting": "spell_check"} },
+{ "keys": ["ctrl+l"], "command": "insert_date", "args": {"format": "%Y-%m-%d %X"} },
 {
 	"keys": ["ctrl+space"],
 	"command": "auto_complete"
