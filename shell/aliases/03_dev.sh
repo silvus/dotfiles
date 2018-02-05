@@ -1,14 +1,16 @@
 # Projects root folder (for Virtualenvwrapper, go, etc...)
 export SILVUSPROJECT="/data/dev"
 
-# Doc folder
-export SILVUSDOC="/data/doc"
-
 # Dotfiles
-alias dot="cd $SILVUSDOTFILES"
+export SILVUSDOC="/data/doc"
+export SILVUSTOOLS="/data/tools"
+export SILVUSHOME="/data/silvus"
+
 alias dotreload="source ${HOME}/.bashrc"
-alias s="cd /data/silvus"
+alias dot="cd $SILVUSDOTFILES"
 alias d="cd $SILVUSDOC"
+alias t="cd $SILVUSTOOLS"
+alias s="cd $SILVUSHOME"
 
 # PATH
 # ------------------------------------------------------
@@ -22,6 +24,9 @@ fi
 
 if [[ -d "${SILVUSDOC}/.bin" ]]; then
 	export PATH="${SILVUSDOC}/.bin:$PATH"
+fi
+if [[ -d "${SILVUSTOOLS}/.bin" ]]; then
+	export PATH="${SILVUSTOOLS}/.bin:$PATH"
 fi
 
 if [[ -d "${SILVUSPROJECT}/bin" ]]; then
