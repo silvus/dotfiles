@@ -20,10 +20,10 @@ export ELINKS_CONFDIR="$XDG_CONFIG_HOME"/elinks
 
 # History
 # -----------------------------------------------------------------------------
-export HISTSIZE=4096 # Lines in memory
-export HISTFILESIZE=4096 # Lines on disk
+export HISTSIZE=65536 # Lines in memory
+export HISTFILESIZE=65536 # Lines on disk
 export HISTCONTROL=ignoreboth # ignoredups + ignorespace
-export HISTTIMEFORMAT="[%F %T] " # timestamps
+# export HISTTIMEFORMAT="[%F %T] " # timestamps
 export HISTIGNORE="jrnl*:jnal*" # Ignore some commands
 
 # Fzf
