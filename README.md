@@ -4,5 +4,5 @@ Installation
 ------------
 
 ```shell
-curl -sS https://raw.githubusercontent.com/Silvus/dotfiles/master/bin/dotfiles | python3
+curl -sS https://raw.githubusercontent.com/silvus/dotfiles/master/bin/dotfiles | python3
 ```
