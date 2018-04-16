@@ -3,14 +3,14 @@
 if [[ -n "$DISPLAY" ]]; then
 	# Desktop
 	if echo "$1" | cut -d'/' -f3 | grep -q -e youtube.com$ -e dailymotion.com -e vimeo.com$ ; then
+		# video
 		tmux split-window -d -l 10 -v "mpv '$1'"
-	elif echo "$1" | grep -q -e jpg$ -e jpeg$ -e gif$ -e png$; then
-		# Picture
-		feh --auto-zoom -q "$1"
+	elif [[ -x $(which firefox) ]]; then
+		"$(which firefox)" "$1"
 	else
-		firefox "$1"
+		"$BROWSER" "$1"
 	fi
 else
 	# Server
-	elinks "$1"
+	"$(which elinks)" "$1"
 fi
