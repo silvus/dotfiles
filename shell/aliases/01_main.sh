@@ -11,7 +11,7 @@ mkcd() { mkdir -p "$@" && cd "$_"; }
 
 # Misc
 # -----------------------------------------------------------------------------
-alias l='ls -lhaF --color=auto --group-directories-first'
+alias l='LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'
 alias rm='rm -I' # prompt if deleting more than 3 files at a time
 alias diskfree='df -H'
 alias diskusage='ncdu'
