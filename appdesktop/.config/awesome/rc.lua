@@ -734,7 +734,7 @@ globalkeys = awful.util.table.join(
 
 	-- Text Editor
 	awful.key({}, "F1", function()
-		awful.util.spawn("subl", false)
+		awful.util.spawn("vnote", false)
 	end),
 	awful.key({ modkey }, "e", function()
 		awful.util.spawn("subl", false)
