@@ -44,7 +44,7 @@ fi
 # Python
 # ------------------------------------------------------
 export PYTHONSTARTUP="$HOME/.pythonrc"
-export PYTHONPATH="./.venv:$PYTHONPATH"
+# export PYTHONPATH="./.venv:$PYTHONPATH"
 
 if [[ -d "${HOME}/.local/bin" ]]; then
 	export PATH="$HOME/.local/bin:$PATH"
