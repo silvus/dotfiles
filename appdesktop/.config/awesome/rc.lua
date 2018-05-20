@@ -721,8 +721,10 @@ globalkeys = awful.util.table.join(
     --           end,
     --           {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({ modkey }, "d", function() menubar.show() end,
+    awful.key({ modkey,           }, "d", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey, "Shift"   }, "d", function() menubar.refresh() end,
+              {description = "refresh the menubar", group = "launcher"}),
 
     -- awful.key({ modkey }, "e", function()
 	-- 	awful.util.spawn("subl", false)
