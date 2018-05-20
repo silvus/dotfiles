@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Launch Textadept
+
+# If X is running
+if xset q &>/dev/null; then
+	# with gtk
+	nohup ~/.textadept/textadept/textadept >/dev/null 2>&1 &
+else
+	# with curse
+	~/.textadept/textadept/textadept-curses
+fi
