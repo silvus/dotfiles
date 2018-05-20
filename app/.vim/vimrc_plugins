@@ -32,6 +32,10 @@ call plug#end()
 
 " Fzf
 " ------------------------------------------------------------------------------------
+if ! has('gui_running')
+	let g:fzf_launcher = 'urxvt -geometry 120x30 -e sh -c %s'
+endif
+
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)

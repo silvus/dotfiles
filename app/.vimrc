@@ -45,6 +45,9 @@ if ! has('gui_running')
 	augroup END
 endif
 
+" GUI : by default, hide gui menus
+set guioptions=i
+
 
 " Spaces - Tabs - Indent - Fold
 " ------------------------------------------------------------------------------------
@@ -444,7 +447,7 @@ endif
 set statusline+=\ %l/%L\ %*
 " Current line / Total lines
 
-hi StatusLine ctermbg=DarkGreen ctermfg=black cterm=NONE term=NONE gui=NONE
+hi StatusLine ctermbg=DarkGreen guibg=DarkGreen ctermfg=black guifg=black cterm=NONE term=NONE gui=NONE
 " hi User1 ctermbg=black ctermfg=white
 
 " Load plugins if need
