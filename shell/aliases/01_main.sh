@@ -9,6 +9,9 @@ alias ......='cd ../../../../../'
 
 mkcd() { mkdir -p "$@" && cd "$_"; }
 
+tmpfile() { $EDITOR $(mktemp); }
+tmpdir() { cd $(mktemp -d); }
+
 # Misc
 # -----------------------------------------------------------------------------
 alias l='LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'
