@@ -81,16 +81,14 @@ M._rules = {
   {'code', code},
 }
 
-local font_size = l.property_int['fontsize'] > 0 and
-                  l.property_int['fontsize'] or 10
 local hstyle = 'fore:$(color.red)'
 M._tokenstyles = {
   h6 = hstyle,
-  h5 = hstyle..',size:'..(font_size + 1),
-  h4 = hstyle..',size:'..(font_size + 2),
-  h3 = hstyle..',size:'..(font_size + 3),
-  h2 = hstyle..',size:'..(font_size + 4),
-  h1 = hstyle..',size:'..(font_size + 5),
+  h5 = hstyle,
+  h4 = hstyle,
+  h3 = hstyle,
+  h2 = hstyle,
+  h1 = hstyle,
   code = l.STYLE_EMBEDDED..',eolfilled',
   hr = 'back:$(color.black),eolfilled',
   link = 'underlined',
