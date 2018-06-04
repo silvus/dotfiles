@@ -1,4 +1,5 @@
-_M.file_browser = require 'file_browser'
+local textredux = require('textredux')
+textredux.hijack()
 
 events.connect(events.LEXER_LOADED, function(lexer)
 	-- Tabs
@@ -15,10 +16,10 @@ end)
 -- Theme
 -- ui.set_theme(not CURSES and 'dark' or 'term')
 -- From https://github.com/rgieseke/textadept-themes
--- ui.set_theme(not CURSES and 'base16-default-dark' or 'term')
--- ui.set_theme(not CURSES and 'base16-ocean-dark' or 'term')
+ui.set_theme(not CURSES and 'base16-default-dark' or 'term')
+--ui.set_theme(not CURSES and 'base16-ocean-dark' or 'term')
 -- ui.set_theme(not CURSES and 'base16-solarized-dark' or 'term')
-ui.set_theme(not CURSES and 'base16-monokai-dark' or 'term')
+--ui.set_theme(not CURSES and 'base16-monokai-dark' or 'term')
 
 -- Strip trailing whitespace on save
 textadept.editing.strip_trailing_spaces = true
@@ -38,9 +39,7 @@ keys['cpgup'] = m_buffer[_L['_Previous Buffer']][2]
 -- Already on default
 -- keys['cE'] = Command Selection
 keys['cp'] = io.open_recent_file
---  shows buffers by their z-order (most recently viewed to least recently viewed
-keys['ce'] = function() ui.switch_buffer(true) end
+-- shows buffers by their z-order (most recently viewed to least recently viewed
+-- keys['ce'] = function() ui.switch_buffer(true) end
+keys['ce'] = textredux.buffer_list.show
 
-local m_tools = textadept.menu.menubar[_L['_Tools']]
-local m_quick_open = m_tools[_L['Quick _Open']]
-keys['cP'] = m_quick_open[_L['Quickly Open _Current Directory']][2]
