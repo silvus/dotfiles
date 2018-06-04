@@ -385,7 +385,6 @@ command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 command! Lorem :read !lorem --words 50 --cols 2000<CR>
 nnoremap <leader>lo :read !lorem --words 50 --cols 2000<CR>
 
-
 " Theme
 " ------------------------------------------------------------------------------------
 set t_Co=256              " Enable 256-color mode.
