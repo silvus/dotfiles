@@ -14,6 +14,7 @@ if [[ -f "$1" ]]; then
 		(*.gz)      gunzip "$1" ;;
 		(*.tar.xz)  tar Jxvf "$1" ;;
 		(*.xz)      xz -d "$1" ;;
+		(*.txz)     tar Jxvf "$1" ;;
 		(*.tbz2)    tar xvjf "$1" ;;
 		(*.tgz)     tar xvzf "$1" ;;
 		(*.zip)     unzip "$1" ;;
