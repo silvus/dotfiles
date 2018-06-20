@@ -11,6 +11,7 @@ Plug 'mhinz/vim-startify'
 " Plug 'terryma/vim-multiple-cursors'
 " Plug 'w0rp/ale'
 Plug 'itchyny/lightline.vim'
+Plug 'farmergreg/vim-lastplace'
 
 " Fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -27,6 +28,13 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Default to non modal
 Plug 'tombh/novim-mode'
+
+" Markdown
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
+" Language packs
+Plug 'sheerun/vim-polyglot'
 
 " Theme
 Plug 'joshdick/onedark.vim'
@@ -96,6 +104,9 @@ inoremap <silent> <F3> <C-o>:TagbarToggle<CR>
 " Novim
 " ------------------------------------------------------------------------------------
 let g:novim_mode_use_shortcuts = 0
+" Allows scrolling through wrapped lines one visual line at a time
+" But set md as txt
+let g:novim_mode_use_better_wrap_navigation = 0
 
 " Startify
 " ------------------------------------------------------------------------------------
@@ -115,26 +126,74 @@ let g:startify_custom_header = [
 set number
 set relativenumber number
 set cursorline
-syntax on
-
-" Theme (mute error if absent)
-silent! colorscheme onedark
+set laststatus=2          " Last window always has a statusline
+syntax enable             " Enable syntax highlighting
 
 " 24-bit colour enabled
-set termguicolors
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+	if (has("nvim"))
+		"For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+		let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+	endif
+	"For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+	"Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+	" < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+	if (has("termguicolors"))
+		set termguicolors
+	endif
+endif
 
+" Theme
+" set background=dark
+" let g:onedark_termcolors=16
+" let g:onedark_termcolors=256
+let g:onedark_terminal_italics = 1
+let g:lightline = { 'colorscheme': 'onedark', }
+
+if (has("autocmd"))
+	" Doesn't work here https://github.com/equalsraf/neovim-qt/issues/219
+	" if (has("gui_running"))
+		" Set a different background in gui
+	"	augroup colorextend
+	"		autocmd!
+	"		let s:background = { "gui": "#282C34", "cterm": "232", "cterm16": "0" }
+	"		autocmd ColorScheme * call onedark#set_highlight("Normal", { "bg": s:background }) "No `fg` setting
+	"	augroup END
+
+	" Don't set a background color when running in a terminal, just use the terminal's background color
+	" `gui` is the hex color code used in GUI mode/nvim true-color mode
+	" `cterm` is the color code used in 256-color mode
+	" `cterm16` is the color code used in 16-color mode
+	augroup colorset
+		autocmd!
+		let s:white = { "gui": "#282C34", "cterm": "145", "cterm16" : "7" }
+		autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white }) " `bg` will not be styled since there is no `bg` setting
+	augroup END
+endif
+
+let g:airline_theme='onedark'
+silent! colorscheme onedark
+
+
+" Misc
+" ------------------------------------------------------------------------------------
+set wildmenu              " Show list instead of just completing
+set backspace=2           " Backspace in insert mode works like other editors
+
+" Understand *.md as markdown
+autocmd BufNewFile,BufReadPost *.md,*.mdown,*.markdown,*.org,*.mediawiki set filetype=markdown
+
+" Clipboard
 set clipboard+=unnamedplus
-
-" if has("gui_running")
-	" Guifont DejaVu Sans Mono:h13
-" fi
 
 " Weird symbols ([2 q) when changing modes
 " https://github.com/neovim/neovim/wiki/FAQ#nvim-shows-weird-symbols-2-q-when-changing-modes
 set guicursor=
 " Workaround some broken plugins which set guicursor indiscriminately.
-:autocmd OptionSet guicursor noautocmd set guicursor=
-
+autocmd OptionSet guicursor noautocmd set guicursor=
 
 " Makes Vim work in a way that Insert mode is the default mode. Useful if you want to use Vim as a modeless editor.
 " Use CTRL-O to execute one Normal mode command. When this is a mapping, it is executed as if 'insertmode' was off. Normal mode remains active until the mapping is finished.
@@ -142,6 +201,9 @@ set guicursor=
 " set insertmode
 " set noinsertmode
 " Or use tombh/novim-mode to keep vim-startify ?
+" Set normal mode at start (Doesn't work with tombh/novim-mode
+" autocmd BufRead,BufNewFile * execute "normal \<ESC>"
+
 
 " Scroll
 " ------------------------------------------------------------------------------------
@@ -233,6 +295,12 @@ xnoremap <Down> j
 xnoremap <Left> h
 xnoremap <Right> l
 
+" Ctrl + arrow: move quickly
+nnoremap <silent> <C-Up> {
+inoremap <silent> <C-Up> <Esc>{i
+nnoremap <silent> <C-Down> }
+inoremap <silent> <C-Down> <Esc>}i
+
 " backspace in Visual mode deletes selection
 vnoremap <BS> d
 
@@ -243,3 +311,11 @@ inoremap ! !<C-g>u
 inoremap , ,<C-g>u
 inoremap <CR> <CR><C-g>u
 
+" Toggle folds
+nnoremap <space> za
+
+" Better window navigation
+nnoremap <leader><Up> <C-w>k
+nnoremap <leader><Down> <C-w>j
+nnoremap <leader><Left> <C-w>h
+nnoremap <leader><Right> <C-w>l
