@@ -66,7 +66,7 @@ export WORKON_HOME="/data/dev/.venvs"
 export VIRTUAL_ENV_DISABLE_PROMPT=true # Don't touch my PS1
 alias activate="source .venv/bin/activate"
 alias pythonvenv=".venv/bin/python3"
-alias pythonvenvcreate="python3 -m venv --without-pip .venv; source .venv/bin/activate; curl https://bootstrap.pypa.io/get-pip.py | python3; deactivate; source .venv/bin/activate"
+alias pythonvenvcreate="python3 -m venv .venv; source .venv/bin/activate"
 alias pythonvenvpip=".venv/bin/pip3"
 
 # Pipsi
