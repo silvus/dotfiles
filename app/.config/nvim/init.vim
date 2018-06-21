@@ -146,12 +146,17 @@ if (empty($TMUX))
 	endif
 endif
 
+" Statubar Theme
+" Default lightline theme hightlight all bar on insert mode
+" let g:lightline = { 'colorscheme': 'onedark', }
+" hide -- INSERT --
+set noshowmode
+
 " Theme
 " set background=dark
 " let g:onedark_termcolors=16
-" let g:onedark_termcolors=256
 let g:onedark_terminal_italics = 1
-let g:lightline = { 'colorscheme': 'onedark', }
+" let g:onedark_termcolors=256
 
 if (has("autocmd"))
 	" Doesn't work here https://github.com/equalsraf/neovim-qt/issues/219
@@ -174,7 +179,6 @@ if (has("autocmd"))
 	augroup END
 endif
 
-let g:airline_theme='onedark'
 silent! colorscheme onedark
 
 
@@ -319,3 +323,4 @@ nnoremap <leader><Up> <C-w>k
 nnoremap <leader><Down> <C-w>j
 nnoremap <leader><Left> <C-w>h
 nnoremap <leader><Right> <C-w>l
+
