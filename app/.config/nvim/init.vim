@@ -3,131 +3,170 @@
 " Vim-Plug
 " ------------------------------------------------------------------------------------
 " curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'mhinz/vim-startify'
-" Plug 'vim-signify'
-" Plug 'farmergreg/vim-lastplace'
-" Plug 'terryma/vim-multiple-cursors'
-" Plug 'w0rp/ale'
-Plug 'itchyny/lightline.vim'
-Plug 'farmergreg/vim-lastplace'
+let g:with_plugins = 0   " Used track if plugins are load
 
-" Fzf
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+" Automatic installation of Vim-Plug
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | q | source $MYVIMRC
+endif
 
-" Nerdtree (On demand)
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
+" if exists("plug#begin") " Doesn't work, plugins are loaded after
+if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
+	let g:with_plugins = 1 " Keep info that plugins are loaded
 
-" Tagbar (On demand)
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }"
+	call plug#begin('~/.local/share/nvim/plugged')
 
-" Deoplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+	Plug 'mhinz/vim-startify'
+	" Plug 'vim-signify'
+	" Plug 'terryma/vim-multiple-cursors'
+	" Plug 'w0rp/ale'
+	Plug 'itchyny/lightline.vim'
+	Plug 'farmergreg/vim-lastplace'
 
-" Default to non modal
-Plug 'tombh/novim-mode'
+	" Fzf
+	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+	Plug 'junegunn/fzf.vim'
 
-" Markdown
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+	" Nerdtree (On demand)
+	Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
 
-" Language packs
-Plug 'sheerun/vim-polyglot'
+	" Tagbar (On demand)
+	Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }"
 
-" Theme
-Plug 'joshdick/onedark.vim'
+	" Deoplete
+	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-call plug#end()
+	" Default to non modal
+	Plug 'tombh/novim-mode'
+
+	" Markdown
+	Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+
+	" Language packs
+	Plug 'sheerun/vim-polyglot'
+
+	" Theme
+	Plug 'joshdick/onedark.vim'
+
+	call plug#end()
+
+	" Automatically install missing plugins on startup
+	" ------------------------------------------------------------------------------------
+	autocmd VimEnter *
+		\  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+			\|   PlugInstall --sync | q
+		\| endif
+
+	" Deoplete
+	" ------------------------------------------------------------------------------------
+	" pip3 install --user neovim
+	let g:deoplete#enable_at_startup = 1
+	autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+	" Disable the candidates in Comment/String syntaxes.
+	" call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
+
+	" Fzf
+	" ------------------------------------------------------------------------------------
+	" Mapping selecting mappings
+	nmap <leader><tab> <plug>(fzf-maps-n)
+	xmap <leader><tab> <plug>(fzf-maps-x)
+	omap <leader><tab> <plug>(fzf-maps-o)
+
+	" Find files
+	nmap <c-p> :FZF<cr>
+	imap <c-p> <Esc>:FZF<cr>
+	" Switch buffers"
+	nmap <c-e> :Buffers<CR>
+	imap <c-e> <Esc>:Buffers<CR>
+	" v:oldfiles and open buffers
+	nmap <c-h> :History<CR>
+	imap <c-h> <Esc>:History<CR>
+	" Executes commands
+	nmap <a-x> :Commands<CR>
+	imap <z-x> <Esc>:Commands<CR>
+	" File types
+	nmap <a-f> :Filetypes<CR>
+	imap <a-f> <Esc>:Filetypes<CR>
+	" Lines in loaded buffers
+	nmap <a-p> :Lines<CR>
+	imap <a-p> <Esc>:Lines<CR>
+
+	aug fzf_setup
+		au!
+		au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
+	aug END
+
+	autocmd! FileType fzf
+	autocmd  FileType fzf set laststatus=0 noshowmode noruler
+	  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 
-" Deoplete
+	" NerdTree
+	" ------------------------------------------------------------------------------------
+	" Toogle NerdTree
+	nnoremap <silent> <F2> :NERDTreeToggle<CR>
+	inoremap <silent> <F2> <C-o>:NERDTreeToggle<CR>
+
+	" Show hidden files
+	let NERDTreeShowHidden=1
+
+	" Tagbar
+	" ------------------------------------------------------------------------------------
+	nnoremap <silent> <F3> :TagbarToggle<CR>
+	inoremap <silent> <F3> <C-o>:TagbarToggle<CR>
+
+	" Novim
+	" ------------------------------------------------------------------------------------
+	let g:novim_mode_use_shortcuts = 0
+	" Allows scrolling through wrapped lines one visual line at a time
+	" But set md as txt
+	let g:novim_mode_use_better_wrap_navigation = 0
+
+	" Startify
+	" ------------------------------------------------------------------------------------
+	let g:startify_custom_header = [
+	\ '  _______             ____   ____.___          ',
+	\ '  \      \   ____  ___\   \ /   /|   | _____   ',
+	\ '  /   |   \_/ __ \/  _ \   Y   / |   |/     \  ',
+	\ ' /    |    \  ___(  <_> )     /  |   |  Y Y  \ ',
+	\ ' \____|__  /\___  >____/ \___/   |___|__|_|  / ',
+	\ '         \/     \/                         \/  ',
+	\ '',
+	\ ]
+endif
+
+" Status line
 " ------------------------------------------------------------------------------------
-" pip3 install --user neovim
-let g:deoplete#enable_at_startup = 1
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+set laststatus=2          " Last window always has a statusline
 
-" Disable the candidates in Comment/String syntaxes.
-" call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
+set statusline+=\ %n\                               " Buffer number
+set statusline+=%1*\ %<%f\ %*                       " File name
+set statusline+=\ %y\                               " File type
+" set statusline+=\ %{&fileencoding?&fileencoding:&encoding} " Encoding -
+" TODO: only if not utf-8. Need a an autoload command (https://stackoverflow.com/questions/25178484/how-to-change-color-in-statusline-if-current-file-has-no-utf8-fileencoding) ?
+set statusline+=\ %h%m%r%w\                         " Modified? Readonly?
+set statusline+=%=                                  " Switch to the right side
+set statusline+=\ %c\                               " Col number
+" set statusline+=\ %P\                             " Percent through file
+set statusline+=%1*
+set statusline+=\ %l/%L\ %*
+" Current line / Total lines
 
-" Fzf
-" ------------------------------------------------------------------------------------
-" Mapping selecting mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
-
-" Find files
-nmap <c-p> :FZF<cr>
-imap <c-p> <Esc>:FZF<cr>
-" Switch buffers"
-nmap <c-e> :Buffers<CR>
-imap <c-e> <Esc>:Buffers<CR>
-" v:oldfiles and open buffers
-nmap <c-h> :History<CR>
-imap <c-h> <Esc>:History<CR>
-" Executes commands
-nmap <a-x> :Commands<CR>
-imap <z-x> <Esc>:Commands<CR>
-" File types
-nmap <a-f> :Filetypes<CR>
-imap <a-f> <Esc>:Filetypes<CR>
-" Lines in loaded buffers
-nmap <a-p> :Lines<CR>
-imap <a-p> <Esc>:Lines<CR>
-
-aug fzf_setup
-	au!
-	au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
-aug END
-
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-
-" NerdTree
-" ------------------------------------------------------------------------------------
-" Toogle NerdTree
-nnoremap <silent> <F2> :NERDTreeToggle<CR>
-inoremap <silent> <F2> <C-o>:NERDTreeToggle<CR>
-
-" Show hidden files
-let NERDTreeShowHidden=1
-
-" Tagbar
-" ------------------------------------------------------------------------------------
-nnoremap <silent> <F3> :TagbarToggle<CR>
-inoremap <silent> <F3> <C-o>:TagbarToggle<CR>
-
-" Novim
-" ------------------------------------------------------------------------------------
-let g:novim_mode_use_shortcuts = 0
-" Allows scrolling through wrapped lines one visual line at a time
-" But set md as txt
-let g:novim_mode_use_better_wrap_navigation = 0
-
-" Startify
-" ------------------------------------------------------------------------------------
-let g:startify_custom_header = [
-\ '  _______             ____   ____.___          ',
-\ '  \      \   ____  ___\   \ /   /|   | _____   ',
-\ '  /   |   \_/ __ \/  _ \   Y   / |   |/     \  ',
-\ ' /    |    \  ___(  <_> )     /  |   |  Y Y  \ ',
-\ ' \____|__  /\___  >____/ \___/   |___|__|_|  / ',
-\ '         \/     \/                         \/  ',
-\ '',
-\ ]
-
+hi StatusLine ctermbg=DarkBlue guibg=DarkBlue ctermfg=black guifg=black cterm=NONE term=NONE gui=NONE
+" hi User1 ctermbg=black ctermfg=white
 
 " Style
 " ------------------------------------------------------------------------------------
 set number
 set relativenumber number
-set cursorline
-set laststatus=2          " Last window always has a statusline
 syntax enable             " Enable syntax highlighting
+"if (g:with_plugins)
+	" Cursor line hightlight if not default theme
+	"set cursorline
+"endif
 
 " 24-bit colour enabled
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
@@ -149,8 +188,10 @@ endif
 " Statubar Theme
 " Default lightline theme hightlight all bar on insert mode
 " let g:lightline = { 'colorscheme': 'onedark', }
-" hide -- INSERT --
-set noshowmode
+if (g:with_plugins)
+	" hide -- INSERT --
+	set noshowmode
+endif
 
 " Theme
 " set background=dark
