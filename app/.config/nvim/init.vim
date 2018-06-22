@@ -43,6 +43,7 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 
 	" Markdown
 	Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+	Plug 'SidOfc/mkdx'
 
 	" Language packs
 	Plug 'sheerun/vim-polyglot'
@@ -124,6 +125,13 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 	" Allows scrolling through wrapped lines one visual line at a time
 	" But set md as txt
 	let g:novim_mode_use_better_wrap_navigation = 0
+
+	" Markdown
+	" ------------------------------------------------------------------------------------
+	let g:mkdx#settings = { 'checkbox': { 'toggles': [' ', 'X'] }, 'highlight': { 'enable': 1 } }
+	hi link mkdxCheckboxEmpty gitcommitSelectedFile
+	" hi link mkdxCheckboxPending gitcommitBranch
+	hi link mkdxCheckboxComplete Comment
 
 	" Startify
 	" ------------------------------------------------------------------------------------
