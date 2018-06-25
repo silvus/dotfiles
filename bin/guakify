@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Run or raise (or minimalize) a program
+#
+# guakify [prog class] [prog launch command]
+#
+# Exemples :
+# guakify "sublime_text.Sublime_text" "/opt/sublime_text/sublime_text"
+# guakify "Navigator.Firefox" "firefox"
+# guakify "urxvt.URxvt" "urxvt -e tmux"
+
+set -e
+
+prog_class="$1"
+prog_command="$2"
+# prog_class="sublime_text.Sublime_text"
+# prog_command="/opt/sublime_text/sublime_text"
+# prog_class="urxvt"
+# prog_command="urxvt"
+
+prog_focused=$(xdotool getactivewindow getwindowpid)
+prog_pid=$(pgrep -u "$(whoami)" -x "${prog_command##*/}" | head -n 1)
+
+if [ -z "$prog_pid" ]; then
+	# Prog is not running, launch it (in background)
+	# Nohup mess with the arguments, so it need a bash -c
+    nohup bash -c "$prog_command" >/dev/null 2>&1 & # doesn't create nohup.out
+else
+	if [[ "$prog_focused" == "$prog_pid" ]]; then
+		# Prog is already focused, minimalize it
+    	xdotool getactivewindow windowminimize
+	else
+		# Focus prog
+    	wmctrl -x -R "$prog_class"
+	fi
+fi
+
+# Set prog window properties
+
+# Warning : wmctrl -b take only 2 properties
+# modal, sticky, maximized_vert, maximized_horz, shaded, skip_taskbar, skip_pager, hidden, fullscreen, above, below
+# Do not list in taskbar or in alt-tab
+wmctrl -x -r "$prog_class" -b add,skip_taskbar,skip_pager
+# Maximised
+wmctrl -x -r "$prog_class" -b add,maximized_vert,maximized_horz
+# Act like a modal
+# wmctrl -x -r "$prog_class" -b add,above,modal
+wmctrl -x -r "$prog_class" -b add,modal
+
+exit 0
