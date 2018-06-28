@@ -4,7 +4,7 @@
 " ------------------------------------------------------------------------------------
 " curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-let g:with_plugins = 0   " Used track if plugins are load
+let g:with_plugins = 0   " Use to track if plugins are loaded
 
 " Automatic installation of Vim-Plug
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
@@ -18,16 +18,11 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 
 	call plug#begin('~/.local/share/nvim/plugged')
 
-	Plug 'mhinz/vim-startify'
 	" Plug 'vim-signify'
 	" Plug 'terryma/vim-multiple-cursors'
-	" Plug 'w0rp/ale'
-	Plug 'itchyny/lightline.vim'
-	Plug 'farmergreg/vim-lastplace'
 
-	" Fzf
-	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-	Plug 'junegunn/fzf.vim'
+	" Denite (Unite replacement - pip3 install neovim)
+	Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 
 	" Nerdtree (On demand)
 	Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }"
@@ -38,11 +33,19 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 	" Deoplete
 	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-	" Default to non modal
+	" Ale (Linter)
+	Plug 'w0rp/ale'
+
+	" Default to non modal editor
 	Plug 'tombh/novim-mode'
 
+	" Remember last position
+	Plug 'farmergreg/vim-lastplace'
+
 	" Markdown
-	Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+	Plug 'plasticboy/vim-markdown'
+		Plug 'godlygeek/tabular'
+
 	Plug 'SidOfc/mkdx'
 
 	" Language packs
@@ -50,6 +53,10 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 
 	" Theme
 	Plug 'joshdick/onedark.vim'
+	Plug 'itchyny/lightline.vim'
+
+	" Start page
+	Plug 'mhinz/vim-startify'
 
 	call plug#end()
 
@@ -60,6 +67,17 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 			\|   PlugInstall --sync | q
 		\| endif
 
+	" Denite
+	" ------------------------------------------------------------------------------------
+	nmap <c-e> :Denite buffer<CR>
+	imap <c-e> <C-o>:Denite buffer<CR>
+	nmap <c-p> :Denite file/rec buffer<CR>
+	imap <c-p> <C-o>:Denite file/rec buffer<CR>
+	call denite#custom#map('insert', '<Up>', '<denite:move_to_previous_line>', 'noremap')
+	call denite#custom#map('insert', '<Down>', '<denite:move_to_next_line>', 'noremap')
+
+	call denite#custom#source('buffer', 'matchers', ['matcher/fuzzy', 'matcher/project_files'])
+
 	" Deoplete
 	" ------------------------------------------------------------------------------------
 	" pip3 install --user neovim
@@ -69,41 +87,10 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 	" Disable the candidates in Comment/String syntaxes.
 	" call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
 
-	" Fzf
-	" ------------------------------------------------------------------------------------
-	" Mapping selecting mappings
-	nmap <leader><tab> <plug>(fzf-maps-n)
-	xmap <leader><tab> <plug>(fzf-maps-x)
-	omap <leader><tab> <plug>(fzf-maps-o)
-
-	" Find files
-	nmap <c-p> :FZF<cr>
-	imap <c-p> <Esc>:FZF<cr>
-	" Switch buffers"
-	nmap <c-e> :Buffers<CR>
-	imap <c-e> <Esc>:Buffers<CR>
-	" v:oldfiles and open buffers
-	nmap <c-h> :History<CR>
-	imap <c-h> <Esc>:History<CR>
-	" Executes commands
-	nmap <a-x> :Commands<CR>
-	imap <z-x> <Esc>:Commands<CR>
-	" File types
-	nmap <a-f> :Filetypes<CR>
-	imap <a-f> <Esc>:Filetypes<CR>
-	" Lines in loaded buffers
-	nmap <a-p> :Lines<CR>
-	imap <a-p> <Esc>:Lines<CR>
-
-	aug fzf_setup
-		au!
-		au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
-	aug END
-
-	autocmd! FileType fzf
-	autocmd  FileType fzf set laststatus=0 noshowmode noruler
-	  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
+	" Hide highlight in string
+	call denite#custom#option('_', 'highlight_mode_insert', 'CursorLine')
+	call denite#custom#option('_', 'highlight_matched_range', 'None')
+	call denite#custom#option('_', 'highlight_matched_char', 'None')
 
 	" NerdTree
 	" ------------------------------------------------------------------------------------
@@ -313,9 +300,11 @@ nmap <F10> :set invnumber<bar>:set invrelativenumber<CR>
 " Spellchecking
 nnoremap <F12> :setlocal spell! spell?<CR>
 
-" Buffers navigation
-inoremap <C-e> <C-l>:ls<CR>:buffer<Space>
-nnoremap <C-e> :ls<CR>:buffer<Space>
+" Buffers navigation without plugins
+if (!g:with_plugins)
+	inoremap <C-e> <C-l>:ls<CR>:buffer<Space>
+	nnoremap <C-e> :ls<CR>:buffer<Space>
+endif
 
 " Save with Ctrl + S
 nmap <C-s> :w<CR>
