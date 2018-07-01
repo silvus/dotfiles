@@ -7,7 +7,7 @@ function run {
 }
 
 run nm-applet
-run guake -r tmux -e tmuxdev
+# run guake -r tmux -e tmuxdev
 
 if [[ $(hostname --short) == "somnus" ]]; then
 	run redshift-gtk -b1.0:0.2

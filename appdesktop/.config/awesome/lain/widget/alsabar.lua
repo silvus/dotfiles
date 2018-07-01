@@ -1,10 +1,9 @@
-
 --[[
-                                                  
-     Licensed under GNU General Public License v2 
-      * (c) 2013, Luke Bonham                     
-      * (c) 2013, Rman                            
-                                                  
+
+     Licensed under GNU General Public License v2
+      * (c) 2013, Luca CPZ
+      * (c) 2013, Rman
+
 --]]
 
 local helpers        = require("lain.helpers")
@@ -108,15 +107,29 @@ local function factory(args)
         alsabar.update(function()
             local preset = alsabar.notification_preset
 
+            preset.title = string.format("%s - %s%%", alsabar.channel, alsabar._current_level)
+
             if alsabar._playback == "off" then
-                preset.title = string.format("%s - Muted", alsabar.channel)
-            else
-                preset.title = string.format("%s - %s%%", alsabar.channel, alsabar._current_level)
+                preset.title = preset.title .. " Muted"
             end
 
-            int = math.modf((alsabar._current_level / 100) * awful.screen.focused().mywibox.height)
+            -- tot is the maximum number of ticks to display in the notification
+            -- fallback: default horizontal wibox height
+            local wib, tot = awful.screen.focused().mywibox, 20
+
+            -- if we can grab mywibox, tot is defined as its height if
+            -- horizontal, or width otherwise
+            if wib then
+                if wib.position == "left" or wib.position == "right" then
+                    tot = wib.width
+                else
+                    tot = wib.height
+                end
+            end
+
+            int = math.modf((alsabar._current_level / 100) * tot)
             preset.text = string.format("[%s%s]", string.rep("|", int),
-                          string.rep(" ", awful.screen.focused().mywibox.height - int))
+                          string.rep(" ", tot - int))
 
             if alsabar.followtag then preset.screen = awful.screen.focused() end
 

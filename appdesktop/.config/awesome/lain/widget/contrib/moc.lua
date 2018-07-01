@@ -1,9 +1,8 @@
-
 --[[
-                                                                  
-     Licensed under GNU General Public License v2                 
-      * (c) 2014, anticlockwise <http://github.com/anticlockwise> 
-                                                                  
+
+     Licensed under GNU General Public License v2
+      * (c) 2014, anticlockwise <http://github.com/anticlockwise>
+
 --]]
 
 local helpers      = require("lain.helpers")
@@ -24,6 +23,7 @@ local function factory(args)
     local args          = args or {}
     local timeout       = args.timeout or 2
     local music_dir     = args.music_dir or os.getenv("HOME") .. "/Music"
+    local moc_dir       = os.getenv("HOME") .. "/.config/moc"
     local cover_pattern = args.cover_pattern or "*\\.(jpg|jpeg|png|gif)$"
     local cover_size    = args.cover_size or 100
     local default_art   = args.default_art or ""
@@ -35,7 +35,7 @@ local function factory(args)
     helpers.set_map("current moc track", nil)
 
     function moc.update()
-        helpers.async("mocp -i", function(f)
+        helpers.async("mocp -M " .. moc_dir .. " -i", function(f)
             moc_now = {
                 state   = "N/A",
                 file    = "N/A",
