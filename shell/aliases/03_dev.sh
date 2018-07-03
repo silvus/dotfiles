@@ -72,6 +72,13 @@ alias pythonvenvpip=".venv/bin/pip3"
 # Pipsi
 export PIPSI_BIN_DIR="$HOME/bin"
 
+# Pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+	eval "$(pyenv init -)"
+fi
+
 # Go to projects folder and git pull
 # Must be here due to "cd" subshell usage
 # ------------------------------------------------------------
