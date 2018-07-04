@@ -19,7 +19,7 @@ URxvt.cursorBlink: 1
 URxvt.scrollBar: off
 
 ! Font
-URxvt.font: xft:DejaVuSansMono:size=10,xft:Symbola:size=10
+URxvt.font: xft:Hack:size=9, xft:Terminus:size=13, xft:DejaVuSansMono:size=10, xft:Symbola:size=10
 URxvt.letterSpace: -1
 ! URxvt.font: xft:Dejavu Sans Mono Book:size=10,\
 !            xft:Dejavu Sans Mono:size=12,\
@@ -44,8 +44,23 @@ URxvt.clipboard.autocopy: True
 URxvt.url-launcher: /usr/bin/xdg-open
 URxvt.matcher.button: C1
 
-! Tango color palette
-URxvt*background:         #00141a
+! Transparent
+URxvt.transparent: true
+URxvt.shading: 15
+URxvt.fading: 25
+
+! Cursor
+URxvt.cursorColor:        #00aa00
+URxvt.cursorColor2:       #120d11
+
+! Mouse
+URxvt.pointerColor:       #ef2929
+URxvt.pointerColor2:      black
+URxvt.pointerBlank:       true
+
+! Color palette
+! URxvt*background:         #00141a
+URxvt*background:         #00060f
 URxvt*foreground:         #eeeeec
 URxvt*cursorColor:        #8ae234
 ! foreground color for underline
@@ -54,7 +69,7 @@ URxvt*colorUL:            #8ae234
 URxvt*underlineColor:     #00aa00
 ! black dark/light
 URxvt*color0:             #2e3436
-URxvt*color8:             #6e706b
+URxvt*color8:             #353535
 ! red dark/light
 URxvt*color1:             #cc0000
 URxvt*color9:             #ef2929
