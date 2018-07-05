@@ -405,21 +405,21 @@ local membar = wibox.widget {
 	paddings		= 1,
 	ticks			= true,
 	ticks_size		= 10,
-	step_width		= 5,
+	step_width		= 10,
 	max_value		= 100,
 	min_value		= 0,
 	value			= 0,
 	color 			= beautiful.success,
 	background_color = beautiful.bg_normal,
 	border_color	= beautiful.info,
-	-- widget		   = wibox.widget.progressbar
-	widget			= wibox.widget.graph
+	widget		   = wibox.widget.progressbar
+	-- widget			= wibox.widget.graph
 }
 local mem = lain.widget.mem({
 	width = 100, border_width = 0, ticks = true, ticks_size = 10,
 	settings = function()
-		-- membar:set_value(mem_now.perc)
-		membar:add_value(mem_now.perc)
+		membar:set_value(mem_now.perc)
+		-- membar:add_value(mem_now.perc)
 	end
 })
 local membg = wibox.container.background(membar, beautiful.info, gears.shape.rectangle)
