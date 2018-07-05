@@ -5,6 +5,7 @@ Setup dotfiles
 
 import os
 import sys
+import shutil
 import socket
 import fileinput
 import argparse
@@ -44,7 +45,7 @@ def print_progress(count, total):
 
 
 def print_info(message):
-    print(COLOR_BLUE + '    ➤ ' + COLOR_RESET + message)
+    print(COLOR_BLUE + '    > ' + COLOR_RESET + message)
 
 
 def print_warning(message):
@@ -84,20 +85,12 @@ def exec_command(command, show_errors=True):
     return p.returncode == 0
 
 
-def is_installed(prog):
-    """ Check if a program is installed """
-    p = Popen(['which', prog], stdout=PIPE, stderr=PIPE)
-    command_path, errors = p.communicate()
-
-    return len(command_path) > 0
-
-
 def check_requirements():
     """
     Exit if git isn't installed or Github isn't reachable
     """
     # Need git
-    if not is_installed('git'):
+    if not shutil.which('git'):
         print_error('Git is missing. Aborting.')
         sys.exit(2)
 
@@ -112,15 +105,11 @@ def check_requirements():
         sys.exit(3)
 
 
-def X_is_running():
+def X_is_installed():
     """
-    Try to guess if x is running
+    Try to guess if x is installed
     """
-    try:
-        return exec_command(["xset", "-q"], False)
-    except OSError:
-        # If xset (user preference utility for X) doesn't exist, there is a FileNotFoundError
-        return False
+    return shutil.which('startx')
 
 
 def is_hidpi():
@@ -328,7 +317,7 @@ def main(dotfilespath, restarted):
             print_header('Symlinks {} specifics apps'.format(hostname))
             symlink_arbo(os.path.join(dotfilespath, 'app_{}'.format(hostname)), os.path.expanduser('~'))
 
-        if X_is_running():
+        if X_is_installed():
             print_header('Symlinks desktop apps')
             symlink_arbo(os.path.join(dotfilespath, 'appdesktop'), os.path.expanduser('~'))
 
@@ -341,7 +330,7 @@ def main(dotfilespath, restarted):
             exec_command(['xrdb', os.path.expanduser('~/.Xresources')])
 
     # import dconf settings
-    if is_installed('dconf'):
+    if shutil.which('dconf'):
         print_header('Dconf')
         dconf_load(os.path.join(dotfilespath, 'appconf'))
 
@@ -356,7 +345,7 @@ def main(dotfilespath, restarted):
         ])
 
     # ST3 Hidpi special case
-    if X_is_running() and is_hidpi():
+    if X_is_installed() and is_hidpi():
         print_header('Sublime Text 3 HiDPI')
         st_preference_file = os.path.expanduser('~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')
         # Replace symlink by original file
