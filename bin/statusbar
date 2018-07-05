@@ -121,7 +121,7 @@ class Status():
         # Agenda block
         agenda_content = self.call_agenda()
         if agenda_content:
-            tmux_line += "#[bg=black]#[fg=white] 📅  #[fg=black]#[bg=green] {} #[default] ".format(
+            tmux_line += "#[bg=black]#[fg=white] ▶ #[fg=black]#[bg=green] {} #[default] ".format(
                 agenda_content)
 
         # Hostname block

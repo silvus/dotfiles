@@ -23,7 +23,7 @@ COLOR_BLUE = '\033[34m'
 
 
 def print_header(message):
-    print('\n' + COLOR_BLUE + '⦿ ' + COLOR_RESET + message)
+    print('\n' + COLOR_BLUE + '▶ ' + COLOR_RESET + message)
 
 
 def print_success(message):
@@ -45,7 +45,7 @@ def print_progress(count, total):
 
 
 def print_info(message):
-    print(COLOR_BLUE + '    > ' + COLOR_RESET + message)
+    print(COLOR_BLUE + '    ➤ ' + COLOR_RESET + message)
 
 
 def print_warning(message):
