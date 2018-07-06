@@ -2,7 +2,12 @@
 
 # If run under Tmux, open in new split
 if [[ -n "$TMUX" ]]; then
-	tmux split-window -d -l 10 -v "mpv \"$@\""
+	if [ $# -eq 0 ]; then
+		# Takes the URL from the clipboard when no arguments are given
+		tmux split-window -d -l 10 -v "mpv \"$(xclip -selection "clipboard" -out)\""
+	else
+		tmux split-window -d -l 10 -v "mpv \"$@\""
+	fi
 else
 	mpv "$@"
 fi
