@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Add to clipboard
+# -----------------------------------------------------------------------------
+
+if [[ -x "$(which xclip)" ]]; then
+	xclip -selection clipboard -in "$@"
+else
+	echo "Please install xclip"
+	exit 1
+fi
+
+exit 0
