@@ -187,8 +187,8 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
--- Quake like (single instance for all screens)
-local quake = lain.util.quake({
+-- Quake like terminal (single instance for all screens)
+local quaketerm = lain.util.quake({
 	-- client name
 	name = "guaketerm",
 	-- client to spawn
@@ -218,6 +218,38 @@ local quake = lain.util.quake({
 		-- c.sticky = true
 	end
 })
+
+-- Quake like editor (single instance for all screens)
+-- local quakeeditor = lain.util.quake({
+-- 	-- client name
+-- 	name = "guakeeditor",
+-- 	-- client to spawn
+-- 	app = 'subl',
+-- 	-- extra app arguments
+-- 	extra = "",
+-- 	-- border width
+-- 	border = 0,
+-- 	-- initially visible
+-- 	-- visible = false,
+-- 	-- Overlap the wibox or not
+-- 	overlap = false,
+-- 	-- always spawn on currently focused screen
+-- 	followtag = true,
+-- 	-- dropdown client height (float in [0,1] or exact pixels number)
+-- 	height = 1,
+-- 	-- dropdown client width (float in [0,1] or exact pixels number)
+-- 	width = 1,
+-- 	-- vertical position (string, possible values: "top", "bottom", "center")
+-- 	vert = "top",
+-- 	-- horizontal position (string, possible values: "left", "right", "center")
+-- 	horiz = "center",
+-- 	-- settings is a function which takes the client as input, and can be used to customize its properties
+-- 	settings = function(c)
+-- 		-- titlebars_enabled = false
+-- 		c.fullscreen = true
+-- 		-- c.sticky = true
+-- 	end
+-- })
 
 -- ---------------------------------------------------------------------
 -- Status bar
@@ -720,7 +752,7 @@ globalkeys = awful.util.table.join(
 	-- ),
 	-- awful.key({ modkey,		   }, "Left",
 	--	 function ()
-	--		 awful.client.focus.byidx(-1)
+	--		 awful.gclient.focus.byidx(-1)
 	--	 end,
 	--	 {description = "focus previous by index", group = "client"}
 	-- ),
@@ -730,22 +762,26 @@ globalkeys = awful.util.table.join(
 		function()
 			awful.client.focus.global_bydirection("down")
 			if client.focus then client.focus:raise() end
-		end),
+		end,
+		{description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "Up",
 		function()
 			awful.client.focus.global_bydirection("up")
 			if client.focus then client.focus:raise() end
-		end),
+		end,
+		{description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "Left",
 		function()
 			awful.client.focus.global_bydirection("left")
 			if client.focus then client.focus:raise() end
-		end),
+		end,
+		{description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "Right",
 		function()
 			awful.client.focus.global_bydirection("right")
 			if client.focus then client.focus:raise() end
-		end),
+		end,
+		{description = "change client focus", group = "client"}),
 
 	-- Next/previous tag
 	-- PageUp doesn't work: https://github.com/awesomeWM/awesome/issues/2147
@@ -807,7 +843,7 @@ globalkeys = awful.util.table.join(
 	--		   {description = "increase the number of columns", group = "layout"}),
 	-- awful.key({ modkey, "Control" }, "l",	 function () awful.tag.incncol(-1, nil, true)	end,
 	--		   {description = "decrease the number of columns", group = "layout"}),
-	awful.key({ modkey,		   }, "space", function () awful.layout.inc( 1)				end,
+	awful.key({ modkey,	"Control" }, "space", function () awful.layout.inc( 1)				end,
 			  {description = "select next", group = "layout"}),
 	awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)				end,
 			  {description = "select previous", group = "layout"}),
@@ -838,9 +874,9 @@ globalkeys = awful.util.table.join(
 	--		   end,
 	--		   {description = "lua execute prompt", group = "awesome"}),
 	-- Menubar
-	awful.key({ modkey,		   }, "d", function() menubar.show() end,
+	awful.key({ modkey,		    }, "d", function() menubar.show() end,
 			  {description = "show the menubar", group = "launcher"}),
-	awful.key({ modkey, "Shift"   }, "d", function() menubar.refresh() end,
+	awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
 			  {description = "refresh the menubar", group = "launcher"}),
 
 	-- awful.key({ modkey }, "e", function()
@@ -849,58 +885,63 @@ globalkeys = awful.util.table.join(
 
 	-- quake-like terminal
 	awful.key({}, "²", function ()
-		quake:toggle()
-	end),
+		quaketerm:toggle()
+	end, {description = "Toggle guake like terminal", group = "launcher"}),
+
+	-- quake-like editor
+	-- awful.key({}, "F1", function ()
+	-- 	quakeeditor:toggle()
+	-- end, {description = "Toggle guake like editor", group = "launcher"}),
 
 	-- Text Editor
 	awful.key({}, "F1", function()
-		awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'sublime_text.Sublime_text' '/opt/sublime_text/sublime_text'")
-	end),
+	 	awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'sublime_text.Sublime_text' '/opt/sublime_text/sublime_text'")
+	end, {description = "Toggle guake like editor", group = "launcher"}),
 	awful.key({ modkey }, "e", function()
 		awful.util.spawn("subl", false)
-	end),
+	end, {description = "launch editor", group = "launcher"}),
 
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function ()
 		awful.util.spawn("amixer -q sset Master 5%-", false)
 		volume.update()
-	end),
+	end, {description = "Volume UP", group = "audio"}),
 	awful.key({}, "XF86AudioRaiseVolume", function ()
 		awful.util.spawn("amixer -q sset Master 5%+", false)
 		volume.update()
-	end),
+	end, {description = "Volume down", group = "audio"}),
 	awful.key({}, "XF86AudioMute", function ()
 		awful.util.spawn("amixer set Master 1+ toggle", false)
 		volume.update()
-	end),
+	end, {description = "volume mute", group = "audio"}),
 
 	-- Media Keys
 	awful.key({}, "XF86AudioPlay", function()
 		awful.util.spawn("music --toggle-pause", false)
-	end),
+	end, {description = "audio toggle play/pause", group = "audio"}),
 	awful.key({}, "XF86AudioStop", function()
 		awful.util.spawn("music --stop", false)
-	end),
+	end, {description = "music stop", group = "audio"}),
 	awful.key({}, "XF86AudioNext", function()
 		awful.util.spawn("music --next", false)
-	end),
+	end, {description = "music next", group = "audio"}),
 	awful.key({}, "XF86AudioPrev", function()
 		awful.util.spawn("music --previous", false)
-	end),
+	end, {description = "music previous", group = "audio"}),
 
 	-- lock
 	awful.key({ modkey, "Shift" }, "l", function()
 		-- awful.util.spawn("i3lock --color 001912 --show-failed-attempts --ignore-empty-password", false)
 		awful.util.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
-	end),
+	end, {description = "lock screen", group = "launcher"}),
 	-- shutdown or restart
 	awful.key({ modkey, "Shift" }, "s", function()
 		awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_shutdown", false)
-	end),
+	end, {description = "shutdown", group = "launcher"}),
 	-- manage VPN
 	awful.key({ modkey, "Shift" }, "v", function()
 		awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_vpn", false)
-	end)
+	end, {description = "launch vpn", group = "launcher"})
 )
 
 clientkeys = awful.util.table.join(
@@ -918,7 +959,7 @@ clientkeys = awful.util.table.join(
 	   {description = "toggle titlebar", group = "client"}),
 	awful.key({ modkey, "Shift"   }, "q",	  function (c) c:kill()						 end,
 			  {description = "close", group = "client"}),
-	awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle					 ,
+	awful.key({ modkey,       }, "space",  awful.client.floating.toggle					 ,
 			  {description = "toggle floating", group = "client"}),
 	awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
 			  {description = "move to master", group = "client"}),
@@ -973,7 +1014,8 @@ for i = 1, 9 do
 							set_wallpaper(screen)
 						end
 				  end,
-				  {description = "view tag #"..i, group = "tag"}),
+				  -- {description = "view tag #"..i, group = "tag"}),
+				  {description = "view tag", group = "tag"}),
 		-- Toggle tag display.
 		awful.key({ modkey, "Control" }, "#" .. i + 9,
 				  function ()
@@ -983,7 +1025,8 @@ for i = 1, 9 do
 						 awful.tag.viewtoggle(tag)
 					  end
 				  end,
-				  {description = "toggle tag #" .. i, group = "tag"}),
+				  -- {description = "toggle tag #" .. i, group = "tag"}),
+				  {description = "toggle tag", group = "tag"}),
 		-- Move client to tag.
 		awful.key({ modkey, "Shift" }, "#" .. i + 9,
 				  function ()
@@ -995,7 +1038,8 @@ for i = 1, 9 do
 						  end
 					 end
 				  end,
-				  {description = "move focused client to tag #"..i, group = "tag"}),
+				  -- {description = "move focused client to tag #"..i, group = "tag"}),
+				  {description = "move focused client to tag", group = "tag"}),
 		-- Toggle tag on focused client.
 		awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
 				  function ()
@@ -1006,7 +1050,8 @@ for i = 1, 9 do
 						  end
 					  end
 				  end,
-				  {description = "toggle focused client on tag #" .. i, group = "tag"})
+				  -- {description = "toggle focused client on tag #" .. i, group = "tag"})
+				  {description = "toggle focused client on tag", group = "tag"})
 	)
 end
 
@@ -1081,8 +1126,10 @@ awful.rules.rules = {
 			floating = false,
 			-- titlebars_enabled = false,
 			sticky = true,
-			ontop = true,
+			-- ontop = true, -- Not compatible with fullscreen
 			fullscreen = true,
+			-- maximized_vertical = true,
+			-- maximized_horizontal = true,
 			screen = max_screen_count -- Open on last screen
 		}
 	},
