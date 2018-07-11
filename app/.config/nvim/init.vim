@@ -18,8 +18,6 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 
 	call plug#begin('~/.local/share/nvim/plugged')
 
-	" Plug 'vim-signify'
-	" Plug 'terryma/vim-multiple-cursors'
 
 	" Denite (Unite replacement - pip3 install neovim)
 	Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -35,6 +33,19 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 
 	" Ale (Linter)
 	Plug 'w0rp/ale'
+
+	" Git sidebar
+	Plug 'airblade/vim-gitgutter'
+
+	" Commentaty
+	Plug 'tpope/vim-commentary'
+	
+	" Cursors
+	Plug 'terryma/vim-multiple-cursors'
+
+	" Sessions
+	" Plug 'thaerkh/vim-workspace'
+	Plug 'tpope/vim-obsession'
 
 	" Default to non modal editor
 	Plug 'tombh/novim-mode'
@@ -106,6 +117,20 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 	nnoremap <silent> <F3> :TagbarToggle<CR>
 	inoremap <silent> <F3> <C-o>:TagbarToggle<CR>
 
+	" Sessions
+	" ------------------------------------------------------------------------------------
+	" Save session in specific folder
+	function! SessionSave(sessionname)
+		let b:sessiondir = $HOME . "/.local/share/nvim/sessions"
+		if (filewritable(b:sessiondir) != 2)
+			exe 'silent !mkdir -p ' b:sessiondir
+			redraw!
+		endif
+		let b:filename = b:sessiondir . '/'. a:sessionname
+		exe "Obsession! " . b:filename
+	endfunction
+	command! -nargs=1 SessionSave call SessionSave(<f-args>)
+
 	" Novim
 	" ------------------------------------------------------------------------------------
 	let g:novim_mode_use_shortcuts = 0
@@ -122,6 +147,16 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 
 	" Startify
 	" ------------------------------------------------------------------------------------
+	let g:startify_lists = [
+	          \ { 'type': 'sessions',  'header': ['   Sessions']       },
+	          \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+	          \ { 'type': 'files',     'header': ['   MRU']            },
+	          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+	          \ { 'type': 'commands',  'header': ['   Commands']       },
+		  \ ]
+	let g:startify_bookmarks = [ '~/.config/nvim/init.vim' ]
+	" Sessions from Obsession
+	let g:startify_session_dir = $HOME . "/.local/share/nvim/sessions"
 	let g:startify_custom_header = [
 	\ '  _______             ____   ____.___          ',
 	\ '  \      \   ____  ___\   \ /   /|   | _____   ',
@@ -210,7 +245,8 @@ if (has("autocmd"))
 	" `cterm16` is the color code used in 16-color mode
 	augroup colorset
 		autocmd!
-		let s:white = { "gui": "#282C34", "cterm": "145", "cterm16" : "7" }
+		" let s:white = { "gui": "#282C34", "cterm": "145", "cterm16" : "7" }
+		let s:white = { "gui": "#282C34", "cterm": "255", "cterm16" : "7" }
 		autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white }) " `bg` will not be styled since there is no `bg` setting
 	augroup END
 endif
