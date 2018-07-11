@@ -46,7 +46,7 @@ URxvt.matcher.button: C1
 
 ! Transparent
 URxvt.transparent: true
-URxvt.shading: 15
+URxvt.shading: 7
 URxvt.fading: 25
 
 ! Cursor
