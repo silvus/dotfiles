@@ -86,7 +86,7 @@
 ;;   (org-agenda nil "s")
 ;;   (get-buffer "*Org Agenda*")))
 ;;
-;; ;; Open agenda in current window, not on a split
+;; Open agenda in current window, not on a split
 ;; (setq org-agenda-window-setup (quote current-window))
 ;;
 ;; ;; Agenda view Presenting longer than 1 week
@@ -311,9 +311,9 @@
 
 ;; Cursor
 ;; (set-cursor-color "#ffffff")
-;; (setq-default cursor-type 'bar))
+(setq-default cursor-type 'bar)
 
-;; auto show completions for execute-extended-command
+;; Auto show completions for execute-extended-command
 (icomplete-mode 1)
 
 ;; Use mouse
@@ -321,9 +321,6 @@
 
 ;; Lines numbers
 (global-linum-mode t)
-;; (setq linum-format "%d ")
-; (setq linum-format "%4d \u2502")
-
 
 ;; (unless (display-graphic-p)
 ;;   (setq linum-format (concat linum-format " ")))
@@ -339,7 +336,14 @@
 ; (load-theme 'tango-dark t)
 ;;(load-theme 'monokai t)
 ;;(load-theme 'moe-theme t)
-(custom-set-faces `(default ((t (:background "#121212")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:background "#121212"))))
+ '(cursor ((t (:background "white")))))
+
 (set-face-attribute 'default nil :height 90)
 
 ;; Window title (with edited status + remote indication)

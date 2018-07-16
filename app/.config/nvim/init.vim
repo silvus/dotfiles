@@ -18,7 +18,6 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 
 	call plug#begin('~/.local/share/nvim/plugged')
 
-
 	" Denite (Unite replacement - pip3 install neovim)
 	Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -37,7 +36,7 @@ if !empty(glob("~/.local/share/nvim/site/autoload/plug.vim"))
 	" Git sidebar
 	Plug 'airblade/vim-gitgutter'
 
-	" Commentaty
+	" Commentary
 	Plug 'tpope/vim-commentary'
 	
 	" Cursors
