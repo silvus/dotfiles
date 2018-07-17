@@ -110,7 +110,7 @@
 (setq org-agenda-start-day "-3d")
 
 ;; Agenda clock report parameters
-;; (setq org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
+(setq org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
 
 ;; Custom agenda
 ;; (setq org-agenda-custom-commands
@@ -225,6 +225,9 @@
 
 ;; Compact the block agenda view
 ; (setq org-agenda-compact-blocks t)
+
+;; Show inline images
+(setq org-startup-with-inline-images t)
 
 ;; Keep track of when a TODO item was finished
 (setq org-log-done 'time)
