@@ -83,7 +83,11 @@
 (require 'org)
 
 ;; Org files paths
-(setq org-directory "~/Notes")
+(if (file-directory-p "/data/doc/org")
+	; at home
+	(setq org-directory "/data/doc/org")
+	; at work
+	(setq org-directory "~/Notes"))
 (setq org-default-notes-file (concat org-directory "/todo.org"))
 (setq org-agenda-files (list org-directory))
 
@@ -118,20 +122,20 @@
   '(("s" "Work agenda"
       ((agenda ""
         ((org-agenda-overriding-header "Agenda")
-        (org-agenda-files '("~/Notes/agenda.org"))))
+        (org-agenda-files (concat org-directory "/agenda.org"))))
       (tags-todo "projet|support/!+TODO|+NEXT"
         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
-        (org-agenda-files '("~/Notes/agenda.org"))
+        (org-agenda-files (concat org-directory "/agenda.org"))
         (org-agenda-overriding-header "Tasks")))
       ; (tags-todo "projet|support|organisation/!+WAITING"
       ;   ((org-agenda-overriding-header "Stuck")))
       (tags-todo "organisation/!+TODO|+NEXT"
         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
         (org-agenda-overriding-header "Organisation")
-        (org-agenda-files '("~/Notes/agenda.org"))))
+        (org-agenda-files (concat org-directory "/agenda.org"))))
       (tags "break"
         ((org-agenda-overriding-header "Breaks")
-        (org-agenda-files '("~/Notes/agenda.org"))))))))
+        (org-agenda-files (concat org-directory "/agenda.org"))))))))
 
 ;; Work report for today
 (add-to-list 'org-agenda-custom-commands
@@ -141,7 +145,7 @@
        (org-agenda-start-with-clockreport-mode t)
        (org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
        (org-agenda-span 'day)
-       (org-agenda-files '("/data/doc/org/work.org"))
+       (org-agenda-files (concat org-directory "/work.org"))
        (org-agenda-overriding-header "Work report")
        (org-agenda-time-grid nil))))))
 
