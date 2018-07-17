@@ -80,221 +80,222 @@
 ;; Org-mode
 ;; -------------------------------------------------------------------------------
 
-;; ;; Org mode on start-up
-;; ;; (add-hook 'after-init-hook 'org-agenda-list)
-;; (setq initial-buffer-choice (lambda ()
-;;   (org-agenda nil "s")
-;;   (get-buffer "*Org Agenda*")))
-;;
+(require 'org)
+
+;; Org files paths
+(setq org-directory "~/Notes")
+(setq org-default-notes-file (concat org-directory "/todo.org"))
+(setq org-agenda-files (list org-directory))
+
+;; Org mode on start-up
+;; (add-hook 'after-init-hook 'org-agenda-list)
+(setq initial-buffer-choice (lambda ()
+  (org-agenda nil "s")
+  (get-buffer "*Org Agenda*")))
+
 ;; Open agenda in current window, not on a split
-;; (setq org-agenda-window-setup (quote current-window))
-;;
-;; ;; Agenda view Presenting longer than 1 week
-;; (setq org-agenda-span 14)
-;;
-;; ;; Starting view from today, not monday
-;; ; (setq org-agenda-start-on-weekday nil)
-;;
-;; ;; Starting view somes days ago
-;; ; (setq org-agenda-start-day "-3d")
-;;
-;; ;; Agenda clock report parameters
-;; ;; (setq org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
-;;
-;; ;; Custom agenda
-;; ;; (setq org-agenda-custom-commands
-;; ;;   '(("s" "Simple global view"
-;; ;;      ((agenda ""))
-;; ;;       ((org-agenda-overriding-header "Agenda")
-;; ;;       (alltodo "")))))
+(setq org-agenda-window-setup (quote current-window))
+
+;; Agenda view Presenting longer than 1 week
+(setq org-agenda-span 14)
+
+;; Starting view from today, not monday
+; (setq org-agenda-start-on-weekday nil)
+
+;; Starting view somes days ago
+(setq org-agenda-start-day "-3d")
+
+;; Agenda clock report parameters
+;; (setq org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
+
+;; Custom agenda
 ;; (setq org-agenda-custom-commands
-;;   '(("s" "Work agenda"
-;;       ((agenda ""
-;;         ((org-agenda-overriding-header "Agenda")
-;;         (org-agenda-files '("/data/doc/org/work.org"))))
-;;       (tags-todo "projet|support/!+TODO|+NEXT"
-;;         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
-;;         (org-agenda-files '("/data/doc/org/work.org"))
-;;         (org-agenda-overriding-header "Tasks")))
-;;       ; (tags-todo "projet|support|organisation/!+WAITING"
-;;       ;   ((org-agenda-overriding-header "Stuck")))
-;;       (tags-todo "organisation/!+TODO|+NEXT"
-;;         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
-;;         (org-agenda-overriding-header "Organisation")
-;;         (org-agenda-files '("/data/doc/org/work.org"))))
-;;       (tags "break"
-;;         ((org-agenda-overriding-header "Breaks")
-;;         (org-agenda-files '("/data/doc/org/work.org"))))))))
-;;
-;; ;; Work report for today
-;; (add-to-list 'org-agenda-custom-commands
-;;   '("wc" "Work report"
-;;     ((agenda ""
-;;       ((org-agenda-show-log 'clockcheck)
-;;        (org-agenda-start-with-clockreport-mode t)
-;;        (org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
-;;        (org-agenda-span 'day)
-;;        (org-agenda-files '("/data/doc/org/work.org"))
-;;        (org-agenda-overriding-header "Work report")
-;;        (org-agenda-time-grid nil))))))
-;;
-;; ;; Work Deadlines list
-;; (add-to-list 'org-agenda-custom-commands
-;;   '("wd" agenda "Deadlines"
-;;     ((org-agenda-span 'week)
-;;     (org-agenda-time-grid nil)
-;;     (org-agenda-ndays 7)
-;;     (org-agenda-start-on-weekday 0)
-;;     (org-agenda-show-all-dates nil)
-;;     (org-agenda-entry-types '(:scheduled))
-;;     (org-agenda-overriding-header "Deadlines "))))
-;;
-;; ;; Today report
-;; (add-to-list 'org-agenda-custom-commands
-;;      '("f" "Today"
-;;        ((agenda ""
-;;                 ((org-agenda-entry-types '(:timestamp :sexp))
-;;                  (org-agenda-overriding-header
-;;                   (concat "CALENDAR Today"
-;;                           (format-time-string "%a %d" (current-time))))
-;;                  (org-agenda-span 'day)))
-;;         (tags-todo "LEVEL=1+REFILE"
-;;                    ((org-agenda-overriding-header "COLLECTBOX (Unscheduled)")))
-;;         (tags-todo "DEADLINE=\"<+0d>\""
-;;                    ((org-agenda-overriding-header "DUE TODAY")
-;;                     (org-agenda-skip-function
-;;                      '(org-agenda-skip-entry-if 'notedeadline))
-;;                     (org-agenda-sorting-strategy '(priority-down))))
-;;         (tags-todo "DEADLINE<\"<+0d>\""
-;;                    ((org-agenda-overriding-header "OVERDUE")
-;;                     (org-agenda-skip-function
-;;                      '(org-agenda-skip-entry-if 'notedeadline))
-;;                     (org-agenda-sorting-strategy '(priority-down))))
-;;         (agenda ""
-;;                 ((org-agenda-entry-types '(:scheduled))
-;;                  (org-agenda-overriding-header "SCHEDULED")
-;;                  (org-agenda-skip-function
-;;                   '(org-agenda-skip-entry-if 'todo 'done))
-;;                  (org-agenda-sorting-strategy
-;;                   '(priority-down time-down))
-;;                  (org-agenda-span 'day)
-;;                  (org-agenda-start-on-weekday nil)
-;;                  (org-agenda-time-grid nil)))
-;;         (todo "DONE"
-;;               ((org-agenda-overriding-header "COMPLETED"))))
-;;        ((org-agenda-format-date "")
-;;         (org-agenda-start-with-clockreport-mode nil))) t)
-;;
-;; ;; Org files paths
-;;  (custom-set-variables
-;;  '(org-directory "/data/doc/org")
-;;  '(org-default-notes-file (concat org-directory "/todo.org"))
-;;  '(org-agenda-files (list org-directory)))
-;;
-;; ;; Start in org folder
-;; (setq default-directory "/data/doc/org")
-;;
-;; ;; Show all logged state changes
-;; ; (setq org-agenda-log-mode-items '(state))
-;;
-;; ;; support shift-selection-mode
-;; (setq org-support-shift-select t)
-;;
-;; ;; Return to activate a link
-;; (setq org-return-follows-link t)
-;;
-;; ;; for date selection start on Mondays
-;; (setq calendar-week-start-day 1)
-;;
-;; ;; warn me of any deadlines in next 7 days
-;; (setq org-deadline-warning-days 7)
-;;
-;; ;; show me tasks scheduled or due in next fortnight
-;; ; (setq org-agenda-span (quote fortnight))
-;;
-;; ;; don't show tasks as scheduled if they are already shown as a deadline
-;; ; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
-;;
-;; ;; Agenda : do not dim blocked tasks
-;; ; (setq org-agenda-dim-blocked-tasks nil)
-;;
-;; ;; Compact the block agenda view
-;; ; (setq org-agenda-compact-blocks t)
-;;
-;; ;; Keep track of when a TODO item was finished
-;; (setq org-log-done 'time)
-;; ;; (setq org-log-done 'note)
-;;
-;; ;; Changes and notes will be stored into a drawer called LOGBOOK
-;; (setq org-log-into-drawer t)
-;;
-;; ;; Keywords
-;; (setq org-todo-keywords
-;;        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
-;;
-;; ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
-;;
-;; ; 			 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-;; ; 			("r" "respond" entry (file "~/git/org/refile.org")
-;; ; 			 "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-;; ; 			("n" "note" entry (file "~/git/org/refile.org")
-;; ; 			 "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-;; ; 			("j" "Journal" entry (file+datetree "~/git/org/diary.org")
-;; ; 			 "* %?\n%U\n" :clock-in t :clock-resume t)
-;; ; 			("w" "org-protocol" entry (file "~/git/org/refile.org")
-;; ; 			 "* TODO Review %c\n%U\n" :immediate-finish t)
-;; ; 			("m" "Meeting" entry (file "~/git/org/refile.org")
-;; ; 			 "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-;; ; 			("p" "Phone call" entry (file "~/git/org/refile.org")
-;; ; 			 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-;; ; 			("h" "Habit" entry (file "~/git/org/refile.org")
-;; ; 			 "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
-;;
-;; (defun org-summary-todo (n-done n-not-done)
-;;     "Switch entry to DONE when all subentries are done, to TODO otherwise."
-;;     (let (org-log-done org-log-states)   ; turn off logging
-;;     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-;; (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-;;
-;; ;; Clocking
-;; ; Continuous clocking
-;; (setq org-clock-continuously t)
-;; ; Save the running clock and all clock history when exiting Emacs, load it on startup
-;; (setq org-clock-persist t)
-;; (org-clock-persistence-insinuate)
-;; ; Do not prompt to resume an active clock
-;; (setq org-clock-persist-query-resume nil)
-;; ; Removes clocked tasks with 0:00 duration
-;; (setq org-clock-out-remove-zero-time-clocks t)
-;; ; Clock out when moving task to a done state
-;; (setq org-clock-out-when-done t)
-;; ; Include current clocking task in clock reports
-;; (setq org-clock-report-include-clocking-task t)
-;; ;; Separate drawers for clocking and logs
-;; (setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
-;; ;; Save clock data and state changes and notes in the LOGBOOK drawer
-;; (setq org-clock-into-drawer t)
-;;
-;; ;; Bindings
-;; (global-set-key (kbd "<f5>") (org-insert-time-stamp nil t))
-;; (global-set-key (kbd "<f6>") 'org-capture)
-;; (global-set-key (kbd "<f7>") 'org-clock-in)
-;; (global-set-key (kbd "<f8>") 'org-clock-out)
-;; (global-set-key (kbd "<f9>") 'org-agenda)
-;; (global-set-key (kbd "C-c a") 'org-agenda)
-;; (org-defkey org-mode-map (kbd "C-e") 'buffer-menu)
-;;
-;; ;; Fix \emsp in clocktable
-;; (defun my-org-clocktable-indent-string (level)
-;;   (if (= level 1)
-;;       ""
-;;     (let ((str "|"))
-;;       (while (> level 2)
-;;         (setq level (1- level)
-;;               str (concat str "--")))
-;;       (concat str "-> "))))
-;;
-;; (advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
+;;   '(("s" "Simple global view"
+;;      ((agenda ""))
+;;       ((org-agenda-overriding-header "Agenda")
+;;       (alltodo "")))))
+(setq org-agenda-custom-commands
+  '(("s" "Work agenda"
+      ((agenda ""
+        ((org-agenda-overriding-header "Agenda")
+        (org-agenda-files '("~/Notes/agenda.org"))))
+      (tags-todo "projet|support/!+TODO|+NEXT"
+        ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-files '("~/Notes/agenda.org"))
+        (org-agenda-overriding-header "Tasks")))
+      ; (tags-todo "projet|support|organisation/!+WAITING"
+      ;   ((org-agenda-overriding-header "Stuck")))
+      (tags-todo "organisation/!+TODO|+NEXT"
+        ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-overriding-header "Organisation")
+        (org-agenda-files '("~/Notes/agenda.org"))))
+      (tags "break"
+        ((org-agenda-overriding-header "Breaks")
+        (org-agenda-files '("~/Notes/agenda.org"))))))))
+
+;; Work report for today
+(add-to-list 'org-agenda-custom-commands
+  '("wc" "Work report"
+    ((agenda ""
+      ((org-agenda-show-log 'clockcheck)
+       (org-agenda-start-with-clockreport-mode t)
+       (org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
+       (org-agenda-span 'day)
+       (org-agenda-files '("/data/doc/org/work.org"))
+       (org-agenda-overriding-header "Work report")
+       (org-agenda-time-grid nil))))))
+
+;; Work Deadlines list
+(add-to-list 'org-agenda-custom-commands
+  '("wd" agenda "Deadlines"
+    ((org-agenda-span 'week)
+    (org-agenda-time-grid nil)
+    (org-agenda-ndays 7)
+    (org-agenda-start-on-weekday 0)
+    (org-agenda-show-all-dates nil)
+    (org-agenda-entry-types '(:scheduled))
+    (org-agenda-overriding-header "Deadlines "))))
+
+;; Today report
+(add-to-list 'org-agenda-custom-commands
+     '("f" "Today"
+       ((agenda ""
+                ((org-agenda-entry-types '(:timestamp :sexp))
+                 (org-agenda-overriding-header
+                  (concat "CALENDAR Today"
+                          (format-time-string "%a %d" (current-time))))
+                 (org-agenda-span 'day)))
+        (tags-todo "LEVEL=1+REFILE"
+                   ((org-agenda-overriding-header "COLLECTBOX (Unscheduled)")))
+        (tags-todo "DEADLINE=\"<+0d>\""
+                   ((org-agenda-overriding-header "DUE TODAY")
+                    (org-agenda-skip-function
+                     '(org-agenda-skip-entry-if 'notedeadline))
+                    (org-agenda-sorting-strategy '(priority-down))))
+        (tags-todo "DEADLINE<\"<+0d>\""
+                   ((org-agenda-overriding-header "OVERDUE")
+                    (org-agenda-skip-function
+                     '(org-agenda-skip-entry-if 'notedeadline))
+                    (org-agenda-sorting-strategy '(priority-down))))
+        (agenda ""
+                ((org-agenda-entry-types '(:scheduled))
+                 (org-agenda-overriding-header "SCHEDULED")
+                 (org-agenda-skip-function
+                  '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-sorting-strategy
+                  '(priority-down time-down))
+                 (org-agenda-span 'day)
+                 (org-agenda-start-on-weekday nil)
+                 (org-agenda-time-grid nil)))
+        (todo "DONE"
+              ((org-agenda-overriding-header "COMPLETED"))))
+       ((org-agenda-format-date "")
+        (org-agenda-start-with-clockreport-mode nil))) t)
+
+;; Start in org folder
+(setq default-directory org-directory)
+
+;; Show all logged state changes
+; (setq org-agenda-log-mode-items '(state))
+
+;; support shift-selection-mode
+(setq org-support-shift-select t)
+
+;; Return to activate a link
+(setq org-return-follows-link t)
+
+;; for date selection start on Mondays
+(setq calendar-week-start-day 1)
+
+;; warn me of any deadlines in next 7 days
+(setq org-deadline-warning-days 7)
+
+;; show me tasks scheduled or due in next fortnight
+; (setq org-agenda-span (quote fortnight))
+
+;; don't show tasks as scheduled if they are already shown as a deadline
+; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+
+;; Agenda : do not dim blocked tasks
+; (setq org-agenda-dim-blocked-tasks nil)
+
+;; Compact the block agenda view
+; (setq org-agenda-compact-blocks t)
+
+;; Keep track of when a TODO item was finished
+(setq org-log-done 'time)
+;; (setq org-log-done 'note)
+
+;; Changes and notes will be stored into a drawer called LOGBOOK
+(setq org-log-into-drawer t)
+
+;; Keywords
+(setq org-todo-keywords
+       '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+
+; 			 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+; 			("r" "respond" entry (file "~/git/org/refile.org")
+; 			 "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+; 			("n" "note" entry (file "~/git/org/refile.org")
+; 			 "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+; 			("j" "Journal" entry (file+datetree "~/git/org/diary.org")
+; 			 "* %?\n%U\n" :clock-in t :clock-resume t)
+; 			("w" "org-protocol" entry (file "~/git/org/refile.org")
+; 			 "* TODO Review %c\n%U\n" :immediate-finish t)
+; 			("m" "Meeting" entry (file "~/git/org/refile.org")
+; 			 "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+; 			("p" "Phone call" entry (file "~/git/org/refile.org")
+; 			 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+; 			("h" "Habit" entry (file "~/git/org/refile.org")
+; 			 "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+
+(defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states)   ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
+;; Clocking
+; Continuous clocking
+(setq org-clock-continuously t)
+; Save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persist t)
+(org-clock-persistence-insinuate)
+; Do not prompt to resume an active clock
+(setq org-clock-persist-query-resume nil)
+; Removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+; Clock out when moving task to a done state
+(setq org-clock-out-when-done t)
+; Include current clocking task in clock reports
+(setq org-clock-report-include-clocking-task t)
+;; Separate drawers for clocking and logs
+(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
+;; Save clock data and state changes and notes in the LOGBOOK drawer
+(setq org-clock-into-drawer t)
+
+;; Bindings
+(global-set-key (kbd "<f5>") (org-insert-time-stamp nil t))
+(global-set-key (kbd "<f6>") 'org-capture)
+(global-set-key (kbd "<f7>") 'org-clock-in)
+(global-set-key (kbd "<f8>") 'org-clock-out)
+(global-set-key (kbd "<f9>") 'org-agenda)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(org-defkey org-mode-map (kbd "C-e") 'buffer-menu)
+
+;; Fix \emsp in clocktable
+(defun my-org-clocktable-indent-string (level)
+  (if (= level 1)
+      ""
+    (let ((str "|"))
+      (while (> level 2)
+        (setq level (1- level)
+              str (concat str "--")))
+      (concat str "-> "))))
+
+(advice-add 'org-clocktable-indent-string :override #'my-org-clocktable-indent-string)
 
 
 ;; Interface
