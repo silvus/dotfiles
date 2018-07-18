@@ -99,7 +99,14 @@
 	; at work
 	(setq org-directory "~/Notes"))
 (setq org-default-notes-file (concat org-directory "/todo.org"))
-(setq org-agenda-files (list org-directory))
+
+;; Collect all .org from my Org directory and subdirs
+(load-library "find-lisp")
+(if (file-directory-p "/data/doc/org")
+	; at home (more than just-org directory to include work folder
+	(setq org-agenda-files (find-lisp-find-files "/data/doc" "\\.org$"))
+	; at work
+	(setq org-directory org-directory))
 
 ;; Org mode on start-up
 ;; (add-hook 'after-init-hook 'org-agenda-list)
@@ -113,6 +120,9 @@
 ;; Agenda view Presenting longer than 1 week
 (setq org-agenda-span 14)
 
+;; Agenda look at archives files too
+(setq org-agenda-archives-mode t)
+
 ;; Starting view from today, not monday
 ; (setq org-agenda-start-on-weekday nil)
 
@@ -120,7 +130,7 @@
 (setq org-agenda-start-day "-3d")
 
 ;; Agenda clock report parameters
-(setq org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
+(setq org-agenda-clockreport-parameter-plist '(:stepskip0 t :fileskip0 t :maxlevel 5 :tcolumns 1 :link t :narrow 80 :indent t :timestamp t))
 
 ;; Custom agenda
 ;; (setq org-agenda-custom-commands
@@ -131,21 +141,17 @@
 (setq org-agenda-custom-commands
   '(("s" "Work agenda"
       ((agenda ""
-        ((org-agenda-overriding-header "Agenda")
-        (org-agenda-files (concat org-directory "/agenda.org"))))
+        ((org-agenda-overriding-header "Agenda")))
       (tags-todo "projet|support/!+TODO|+NEXT"
         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
-        (org-agenda-files (concat org-directory "/agenda.org"))
         (org-agenda-overriding-header "Tasks")))
       ; (tags-todo "projet|support|organisation/!+WAITING"
       ;   ((org-agenda-overriding-header "Stuck")))
       (tags-todo "organisation/!+TODO|+NEXT"
         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
-        (org-agenda-overriding-header "Organisation")
-        (org-agenda-files (concat org-directory "/agenda.org"))))
+        (org-agenda-overriding-header "Organisation")))
       (tags "break"
-        ((org-agenda-overriding-header "Breaks")
-        (org-agenda-files (concat org-directory "/agenda.org"))))))))
+        ((org-agenda-overriding-header "Breaks")))))))
 
 ;; Work report for today
 (add-to-list 'org-agenda-custom-commands
@@ -153,9 +159,11 @@
     ((agenda ""
       ((org-agenda-show-log 'clockcheck)
        (org-agenda-start-with-clockreport-mode t)
-       (org-agenda-clockreport-parameter-plist '(:fileskip0 t :maxlevel 5 :tstart t :link t :narrow 80 :indent t :timestamp t))
-       (org-agenda-span 'day)
-       (org-agenda-files (concat org-directory "/work.org"))
+       (org-agenda-clockreport-parameter-plist '(:step day :stepskip0 t :fileskip0 t :maxlevel 5 :tcolumns 1 :link t :narrow 80 :indent t :timestamp t))
+       (org-agenda-start-with-log-mode t)
+       (org-agenda-span 2)
+       (org-agenda-start-day "-1d")
+       (org-agenda-start-on-weekday nil)
        (org-agenda-overriding-header "Work report")
        (org-agenda-time-grid nil))))))
 
