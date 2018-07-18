@@ -32,6 +32,9 @@
 	       (elpy-enable)
 	       (setq elpy-rpc-python-command "/usr/bin/python3")
 	       (add-hook 'python-mode-hook (highlight-indentation-mode 0))))
+;; Git
+(use-package magit
+  :ensure t)
 ;; Betters commands
 (use-package smex
 		 :ensure t
@@ -75,6 +78,13 @@
 ;; Keep emacs Custom-settings in separate file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
+
+;; Games scores files
+(if (file-directory-p "/data/doc/org")
+    ; at home
+    (setq gamegrid-user-score-file-directory "/data/doc/.gamesscores")
+    ; at work
+    (setq org-directory "~/Notes/.games"))
 
 
 ;; Org-mode
