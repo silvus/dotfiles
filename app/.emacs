@@ -84,7 +84,7 @@
     ; at home
     (setq gamegrid-user-score-file-directory "/data/doc/.gamesscores")
     ; at work
-    (setq org-directory "~/Notes/.games"))
+    (setq gamegrid-user-score-file-directory "~/Notes/.games"))
 
 
 ;; Org-mode
@@ -106,7 +106,7 @@
 	; at home (more than just-org directory to include work folder
 	(setq org-agenda-files (find-lisp-find-files "/data/doc" "\\.org$"))
 	; at work
-	(setq org-directory org-directory))
+	(setq org-agenda-files (find-lisp-find-files org-directory "\\.org$")))
 
 ;; Org mode on start-up
 ;; (add-hook 'after-init-hook 'org-agenda-list)
