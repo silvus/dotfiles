@@ -114,6 +114,24 @@
   (org-agenda nil "s")
   (get-buffer "*Org Agenda*")))
 
+;; Hooks
+(defun my-org-clock-out ()
+	" Call external script on org-mode clock out "
+	(shell-command (format "%s %s"
+		"~/.emacs.d/hooks/org-clock-out.sh"
+		(shell-quote-argument(
+			;format "%s: %s" (buffer-file-name (window-buffer (minibuffer-selected-window))) (org-clock-get-clock-string)
+			format "%s: %s" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) (org-clock-get-clock-string)
+			;(concat "lebuffer" ": " (org-clock-get-clock-string))
+			;(concat (buffer-file-name (window-buffer (minibuffer-selected-window))) ": " (org-clock-get-clock-string))
+			;(concat (buffer-file-name (window-buffer (minibuffer-selected-window))) ": " (org-clock-get-clock-string))
+			;; format "%s: %s" (buffer-file-name (window-buffer (minibuffer-selected-window))) (org-clock-get-clock-string)))
+		)))
+	)
+)
+(when (file-readable-p "~/.emacs.d/hooks/org-clock-out.sh")
+	(add-hook 'org-clock-out-hook 'my-org-clock-out))
+
 ;; Open agenda in current window, not on a split
 (setq org-agenda-window-setup (quote current-window))
 
@@ -246,6 +264,9 @@
 
 ;; Show inline images
 (setq org-startup-with-inline-images t)
+
+;; In modeline, show current timer for today and not total for a task
+(setq org-clock-mode-line-total 'today)
 
 ;; Keep track of when a TODO item was finished
 (setq org-log-done 'time)
