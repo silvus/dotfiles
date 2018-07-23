@@ -572,12 +572,75 @@ local vpn = awful.widget.watch(
 			widget:set_markup("<span color='" .. beautiful.success .. "'>VPN: ON</span>")
 			vpnicon.visible = true
 		else
-			widget:set_markup("VPN: OFF")
+			widget:set_markup("")
 			vpnicon.visible = false
 		end
 	end
 )
 local myvpn = wibox.container.margin(vpn, 2, 7, 4, 4)
+
+
+-- Battery
+local baticon = wibox.widget.imagebox(beautiful.battery)
+local batbar = wibox.widget {
+	forced_height	= 1,
+	forced_width	= 100,
+	margins			= 1,
+	paddings		= 1,
+	ticks			= true,
+	ticks_size		= 10,
+	step_width		= 10,
+	max_value		= 100,
+	min_value		= 0,
+	value			= 0,
+	color 			= beautiful.success,
+	background_color = beautiful.bg_normal,
+	border_color	= beautiful.info,
+	widget		   = wibox.widget.progressbar
+}
+batbar.visible  = false
+baticon.visible = false
+local battery = lain.widget.bat({
+	settings = function()
+		if bat_now.status == "N/A" then
+			-- No battery
+			batbar.visible  = false
+			baticon.visible = false
+		else
+			batbar.visible  = true
+			baticon.visible = true
+			batbar:set_value(bat_now.perc)
+
+			if bat_now.status == "Charging" then
+				batbar.color = beautiful.info
+			elseif bat_now.status == "Discharging" then
+				batbar.color = beautiful.success
+			elseif bat_now.status == "Full" then
+				batbar.color = beautiful.success
+			end
+
+			-- Change icon if low battery
+			if bat_now.perc <= 15 then
+				baticon:set_image(beautiful.battery_low)
+			elseif bat_now.perc <= 5 then
+				baticon:set_image(beautiful.battery_empty)
+				batbar.color = beautiful.error
+			else
+			-- 	baticon:set_image(beautiful.battery)
+			end
+		end
+	end,
+})
+local batbg = wibox.container.background(batbar, beautiful.info, gears.shape.rectangle)
+local mybatwidget = wibox.container.margin(batbg, 2, 7, 4, 4)
+
+
+-- theme.bat                                       = theme.dir .. "/icons/bat.png"
+-- theme.bat_low                                   = theme.dir .. "/icons/bat_low.png"
+-- theme.bat_no                                    = theme.dir .. "/icons/bat_no.png"
+-- theme.battery                                   = theme.dir .. "/icons/battery.png"
+-- theme.battery_empty                             = theme.dir .. "/icons/battery_empty.png"
+-- theme.battery_low                               = theme.dir .. "/icons/battery_low.png"
 
 -- Crypto
 -- TODO: Use icons
@@ -687,6 +750,8 @@ awful.screen.connect_for_each_screen(function(s)
 				mycpuwidget,
 				memicon,
 				mymemwidget,
+				baticon,
+				mybatwidget,
 				volicon,
 				myvolumewidget,
 				-- Widget for main screen only
@@ -704,6 +769,7 @@ awful.screen.connect_for_each_screen(function(s)
 				myspaceseparator,
 				myspaceseparator,
 				myclockicon,
+				myspaceseparator,
 				mytextclock,
 				myspaceseparator,
 				s.mylayoutbox,
