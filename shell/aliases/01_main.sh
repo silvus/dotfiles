@@ -90,6 +90,9 @@ if [[ -x "$(which xset)" ]]; then
 		if [[ -x "$(which setxkbmap)" ]]; then
 			setxkbmap -option "nbsp:none"
 		fi
+
+		# Disable beeps
+		xset b off
 	fi
 fi
 
