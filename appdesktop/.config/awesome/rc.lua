@@ -622,6 +622,7 @@ local battery = lain.widget.bat({
 			-- Change icon if low battery
 			if bat_now.perc <= 15 then
 				baticon:set_image(beautiful.battery_low)
+				batbar.color = beautiful.error
 			elseif bat_now.perc <= 5 then
 				baticon:set_image(beautiful.battery_empty)
 				batbar.color = beautiful.error
@@ -961,10 +962,11 @@ globalkeys = awful.util.table.join(
 
 	-- Text Editor
 	awful.key({}, "F1", function()
-	 	awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'sublime_text.Sublime_text' '/opt/sublime_text/sublime_text'")
+	 	-- awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'sublime_text.Sublime_text' '/opt/sublime_text/sublime_text'")
+	 	awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'emacs.Emacs' 'emacs'")
 	end, {description = "Toggle guake like editor", group = "launcher"}),
 	awful.key({ modkey }, "e", function()
-		awful.util.spawn("subl", false)
+		awful.util.spawn("emacs", false)
 	end, {description = "launch editor", group = "launcher"}),
 
 	-- Volume Keys
