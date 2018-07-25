@@ -71,6 +71,7 @@
 	:config
 	(progn
 	    (require 'spaceline-config)
+		(setq spaceline-highlight-face-func 'spaceline-highlight-face-modified)
 		(spaceline-emacs-theme)))
 
 (require 'ido)
