@@ -65,8 +65,13 @@
 	       (setq neo-smart-open t)
 	       (setq-default neo-show-hidden-files t)
 	       (global-set-key (kbd "<f2>") 'neotree-toggle)))
-;; Project management
-; (use-package projectile)
+;; Modeline
+(use-package spaceline
+	:ensure t
+	:config
+	(progn
+	    (require 'spaceline-config)
+		(spaceline-emacs-theme)))
 
 (require 'ido)
 (ido-mode t)
@@ -577,3 +582,4 @@
        (let ((map (copy-keymap xterm-function-map)))
  	(set-keymap-parent map (keymap-parent input-decode-map))
  	(set-keymap-parent input-decode-map map))))
+
