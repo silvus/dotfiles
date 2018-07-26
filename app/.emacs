@@ -52,11 +52,6 @@
 		 :ensure t
 	     :config
 	     (global-undo-tree-mode))
-;; Like CtrlP for vim
-(use-package fiplr
-	     :ensure t
-	     :config
-	     (global-set-key (kbd "C-p") 'fiplr-find-file))
 ;; Sidebar file explorer
 (use-package neotree
 	     :ensure t
@@ -77,8 +72,17 @@
 (use-package 2048-game
 	:ensure t)
 
-(require 'ido)
-(ido-mode t)
+(use-package helm
+	:ensure t
+	:config
+	(progn
+		(require 'helm-config)
+		(helm-mode 1)
+		(global-set-key (kbd "C-e") 'helm-buffers-list)
+		(global-set-key (kbd "C-p") 'helm-find-files)))
+
+;(require 'ido)
+;(ido-mode t)
 ;; (require 'ido-vertical-mode)
 ;; (ido-mode 1)
 ;; (ido-vertical-mode 1)
@@ -338,7 +342,8 @@
 (global-set-key (kbd "<f8>") 'org-clock-out)
 (global-set-key (kbd "<f9>") 'org-agenda)
 (global-set-key (kbd "C-c a") 'org-agenda)
-(org-defkey org-mode-map (kbd "C-e") 'buffer-menu)
+;(org-defkey org-mode-map (kbd "C-e") 'buffer-menu)
+(org-defkey org-mode-map (kbd "C-e") 'helm-buffers-list)
 
 ;; Fix \emsp in clocktable
 (defun my-org-clocktable-indent-string (level)
@@ -498,7 +503,7 @@
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
 (global-set-key (kbd "C-d") 'kill-whole-line)
 (global-set-key (kbd "C-s") 'save-buffer)
-(global-set-key (kbd "C-e") 'buffer-menu)
+;(global-set-key (kbd "C-e") 'buffer-menu)
 
 (global-set-key (kbd "C-o") 'find-file)
 (global-set-key (kbd "M-o") 'recentf-open-files)
