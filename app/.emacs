@@ -32,9 +32,6 @@
 	       (elpy-enable)
 	       (setq elpy-rpc-python-command "/usr/bin/python3")
 	       (add-hook 'python-mode-hook (highlight-indentation-mode 0))))
-;; Git
-(use-package magit
-  :ensure t)
 ;; Betters commands
 (use-package smex
 		 :ensure t
@@ -72,6 +69,7 @@
 (use-package 2048-game
 	:ensure t)
 
+;; Fuzzy find
 (use-package helm
 	:ensure t
 	:config
@@ -153,6 +151,9 @@
 
 ;; Agenda look at archives files too
 (setq org-agenda-archives-mode t)
+
+;; Display events from calendar diary
+(setq org-agenda-include-diary t)
 
 ;; Starting view from today, not monday
 ; (setq org-agenda-start-on-weekday nil)
@@ -285,6 +286,9 @@
 (setq org-log-done 'time)
 ;; (setq org-log-done 'note)
 
+;; Non-nil means undone TODO entries will block switching the parent to DONE
+(setq org-enforce-todo-dependencies t)
+
 ;; Changes and notes will be stored into a drawer called LOGBOOK
 (setq org-log-into-drawer t)
 
@@ -336,7 +340,10 @@
 (setq org-clock-into-drawer t)
 
 ;; Bindings
-(global-set-key (kbd "<f5>") (org-insert-time-stamp nil t))
+;(global-set-key (kbd "<f5>") (org-insert-time-stamp nil t))
+(global-set-key (kbd "<f5>") (lambda () (interactive)
+	(org-insert-time-stamp nil t)))
+;(global-set-key (kbd "<f5>") (org-insert-time-stamp (current-time)))
 (global-set-key (kbd "<f6>") 'org-capture)
 (global-set-key (kbd "<f7>") 'org-clock-in)
 (global-set-key (kbd "<f8>") 'org-clock-out)
