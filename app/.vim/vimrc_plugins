@@ -15,6 +15,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
 Plug 'klen/python-mode'
 Plug 'plasticboy/vim-markdown'
+Plug 'jceb/vim-orgmode'
 Plug 'jamessan/vim-gnupg'
 Plug 'ap/vim-css-color'
 
@@ -93,6 +94,10 @@ nnoremap <silent> <leader>u :UndotreeToggle<CR>
 " Level 1 heading which is served as a document title is not folded. g:vim_markdown_folding_level setting is not active with this fold style.
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_toc_autofit = 1
+
+" Org-mode
+" ------------------------------------------------------------------------------------
+let g:org_agenda_files = ['/data/doc/*.org', '/data/doc/org/*.org']
 
 " Python-mode
 " ------------------------------------------------------------------------------------

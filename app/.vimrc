@@ -151,6 +151,7 @@ endif
 " Keymaps
 " ------------------------------------------------------------------------------------
 let mapleader="!"
+let maplocalleader="!"
 
 " Edit vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
