@@ -143,6 +143,9 @@
 (when (file-readable-p "~/.emacs.d/hooks/org-clock-out.sh")
 	(add-hook 'org-clock-out-hook 'my-org-clock-out))
 
+;; Start in org folder
+(setq default-directory org-directory)
+
 ;; Open agenda in current window, not on a split
 (setq org-agenda-window-setup (quote current-window))
 
@@ -173,25 +176,39 @@
 (setq org-agenda-custom-commands
   '(("s" "Work agenda"
       ((agenda ""
-        ((org-agenda-overriding-header "Agenda")))
-      (tags-todo "projet|support/!+TODO|+NEXT"
-        ((org-agenda-sorting-strategy '(priority-down todo-state-down))
-        (org-agenda-overriding-header "Tasks")))
+        ((org-agenda-overriding-header "AGENDA")
+          (org-agenda-span 2)
+          (org-agenda-start-day "today")))
       ; (tags-todo "projet|support|organisation/!+WAITING"
       ;   ((org-agenda-overriding-header "Stuck")))
-      (tags-todo "organisation/!+TODO|+NEXT"
+      ;(tags-todo "SCHEDULED=\"<+0d>\"|DEADLINE=\"<+0d>\""
+  	  ; (tags-todo "SCHEDULED<=\"<today>\"|DEADLINE<=\"<today>\""
+      ;  ((org-agenda-overriding-header "TODAY ")
+      ;      (org-agenda-sorting-strategy '(priority-down))))
+      ; (tags-todo "SCHEDULED<\"<today>\"|DEADLINE<\"<today>\""
+      ;   ((org-agenda-overriding-header "Retard")
+      ;     (org-agenda-sorting-strategy '(priority-down))))
+      (tags-todo "SCHEDULED>\"<today>\"|DEADLINE>\"<today>\""
+        ((org-agenda-overriding-header "SCHEDULED")
+          (org-agenda-sorting-strategy '(priority-down))))
+      (todo "NEXT"
         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
-        (org-agenda-overriding-header "Organisation")))
-      (tags "break"
+          (org-agenda-overriding-header "NEXT")))
+      (todo "TODO"
+        ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+          (org-agenda-overriding-header "TODO")))
+      (tags "breaks"
         ((org-agenda-overriding-header "Breaks")))))))
 
 ;; Work report for today
 (add-to-list 'org-agenda-custom-commands
   '("wc" "Work report"
     ((agenda ""
-      ((org-agenda-show-log 'clockcheck)
-       (org-agenda-start-with-clockreport-mode t)
+       ; TODO: to be set with setq
+       ((org-agenda-start-with-clockreport-mode t)
        (org-agenda-clockreport-parameter-plist '(:step day :stepskip0 t :fileskip0 t :maxlevel 5 :tcolumns 1 :link t :narrow 80 :indent t :timestamp t))
+       (org-agenda-show-log 'clockcheck)
+       ;(org-agenda-log-mode-items '(clock))
        (org-agenda-start-with-log-mode t)
        (org-agenda-span 2)
        (org-agenda-start-day "-1d")
@@ -200,24 +217,23 @@
        (org-agenda-time-grid nil))))))
 
 ;; Work Deadlines list
-(add-to-list 'org-agenda-custom-commands
-  '("wd" agenda "Deadlines"
-    ((org-agenda-span 'week)
-    (org-agenda-time-grid nil)
-    (org-agenda-ndays 7)
-    (org-agenda-start-on-weekday 0)
-    (org-agenda-show-all-dates nil)
-    (org-agenda-entry-types '(:scheduled))
-    (org-agenda-overriding-header "Deadlines "))))
+; (add-to-list 'org-agenda-custom-commands
+;   '("wd" agenda "Deadlines"
+;     ((org-agenda-span 'week)
+;     (org-agenda-time-grid nil)
+;     (org-agenda-ndays 7)
+;     (org-agenda-start-on-weekday 0)
+;     (org-agenda-show-all-dates nil)
+;     (org-agenda-entry-types '(:scheduled))
+;     (org-agenda-overriding-header "Deadlines "))))
 
-;; Today report
+;; Today report (WIP and tests)
 (add-to-list 'org-agenda-custom-commands
      '("f" "Today"
        ((agenda ""
                 ((org-agenda-entry-types '(:timestamp :sexp))
                  (org-agenda-overriding-header
-                  (concat "CALENDAR Today"
-                          (format-time-string "%a %d" (current-time))))
+                  (concat "CALENDAR Today " (format-time-string "%a %d" (current-time))))
                  (org-agenda-span 'day)))
         (tags-todo "LEVEL=1+REFILE"
                    ((org-agenda-overriding-header "COLLECTBOX (Unscheduled)")))
@@ -246,9 +262,6 @@
        ((org-agenda-format-date "")
         (org-agenda-start-with-clockreport-mode nil))) t)
 
-;; Start in org folder
-(setq default-directory org-directory)
-
 ;; Show all logged state changes
 ; (setq org-agenda-log-mode-items '(state))
 
@@ -258,16 +271,16 @@
 ;; Return to activate a link
 (setq org-return-follows-link t)
 
-;; for date selection start on Mondays
+;; For date selection start on Mondays
 (setq calendar-week-start-day 1)
 
-;; warn me of any deadlines in next 7 days
+;; Warn me of any deadlines in next 7 days
 (setq org-deadline-warning-days 7)
 
-;; show me tasks scheduled or due in next fortnight
+;; Show me tasks scheduled or due in next fortnight
 ; (setq org-agenda-span (quote fortnight))
 
-;; don't show tasks as scheduled if they are already shown as a deadline
+;; Don't show tasks as scheduled if they are already shown as a deadline
 ; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
 
 ;; Agenda : do not dim blocked tasks
@@ -284,7 +297,11 @@
 
 ;; Keep track of when a TODO item was finished
 (setq org-log-done 'time)
+;; Keep track of when a TODO item was finished with a note
 ;; (setq org-log-done 'note)
+
+;; Change tasks to whatever when clocking in
+(setq org-clock-in-switch-to-state "NEXT")
 
 ;; Non-nil means undone TODO entries will block switching the parent to DONE
 (setq org-enforce-todo-dependencies t)
