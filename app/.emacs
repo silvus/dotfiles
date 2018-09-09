@@ -311,25 +311,18 @@
 
 ;; Keywords
 (setq org-todo-keywords
-       '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+       '(
+       	;; Sequence for TASKS
+       	(sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")
+       	;; Sequence for EVENTS
+       	;;(sequence "VISIT(v@/!)" "|" "DIDNOTGO(z@/!)" "MEETING(m@/!)" "VISITED(y@/!)")
+       	))
 
-;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
-
-; 			 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-; 			("r" "respond" entry (file "~/git/org/refile.org")
-; 			 "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-; 			("n" "note" entry (file "~/git/org/refile.org")
-; 			 "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-; 			("j" "Journal" entry (file+datetree "~/git/org/diary.org")
-; 			 "* %?\n%U\n" :clock-in t :clock-resume t)
-; 			("w" "org-protocol" entry (file "~/git/org/refile.org")
-; 			 "* TODO Review %c\n%U\n" :immediate-finish t)
-; 			("m" "Meeting" entry (file "~/git/org/refile.org")
-; 			 "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-; 			("p" "Phone call" entry (file "~/git/org/refile.org")
-; 			 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-; 			("h" "Habit" entry (file "~/git/org/refile.org")
-; 			 "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+(setq org-capture-templates
+ '(("t" "Todo" entry (file+headline org-default-notes-file "Collect")
+        "* TODO %?\n  %i" :empty-lines 1)
+   ("j" "Journal" entry (file+datetree org-default-notes-file)
+        "* %?\nLe %U\n  %i" :empty-lines 1)))
 
 (defun org-summary-todo (n-done n-not-done)
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
