@@ -178,7 +178,10 @@
       ((agenda ""
         ((org-agenda-overriding-header "AGENDA")
           (org-agenda-span 2)
-          (org-agenda-start-day "today")))
+          (org-agenda-start-day "today")
+          (org-agenda-start-with-log-mode t)
+          ;(org-agenda-time-grid nil)
+          (org-agenda-show-log 'clockcheck)))
       ; (tags-todo "projet|support|organisation/!+WAITING"
       ;   ((org-agenda-overriding-header "Stuck")))
       ;(tags-todo "SCHEDULED=\"<+0d>\"|DEADLINE=\"<+0d>\""
@@ -300,9 +303,6 @@
 ;; Keep track of when a TODO item was finished with a note
 ;; (setq org-log-done 'note)
 
-;; Change tasks to whatever when clocking in
-(setq org-clock-in-switch-to-state "NEXT")
-
 ;; Non-nil means undone TODO entries will block switching the parent to DONE
 (setq org-enforce-todo-dependencies t)
 
@@ -321,14 +321,10 @@
 (setq org-capture-templates
  '(("t" "Todo" entry (file+headline org-default-notes-file "Collect")
         "* TODO %?\n  %i" :empty-lines 1)
+   ("b" "Bookmark" entry (file+headline (concat org-directory "/bookmark.org") "Bookmarks")
+        "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
    ("j" "Journal" entry (file+datetree org-default-notes-file)
         "* %?\nLe %U\n  %i" :empty-lines 1)))
-
-(defun org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 ;; Clocking
 ; Continuous clocking
@@ -348,6 +344,8 @@
 (setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
 ;; Save clock data and state changes and notes in the LOGBOOK drawer
 (setq org-clock-into-drawer t)
+;; Change tasks to whatever when clocking in
+; (setq org-clock-in-switch-to-state "NEXT")
 
 ;; Bindings
 ;(global-set-key (kbd "<f5>") (org-insert-time-stamp nil t))
