@@ -356,21 +356,25 @@
 (setq org-log-into-drawer t)
 
 ;; Keywords
+;; Tracking TODO state changes (https://orgmode.org/manual/Tracking-TODO-state-changes.html) :
+;; - '!' for a timestamp
+;; - '@' for a note with timestamp
+;; - '@/!' in addition to the note taken when entering the state, a timestamp should be recorded when leaving the state, if the target state does not configure logging for entering it
 (setq org-todo-keywords
        '(
        	;; Sequence for TASKS
-       	(sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")
+       	(sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)" "DELEGATED(g@)")
        	;; Sequence for EVENTS
        	;;(sequence "VISIT(v@/!)" "|" "DIDNOTGO(z@/!)" "MEETING(m@/!)" "VISITED(y@/!)")
        	))
 
 (setq org-capture-templates
- '(("t" "Todo" entry (file+headline org-default-notes-file "Collect")
-        "* TODO %?\n  %i" :empty-lines 1)
-   ("b" "Bookmark" entry (file+headline (concat org-directory "/bookmark.org") "Bookmarks")
-        "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
-   ("j" "Journal" entry (file+datetree org-default-notes-file)
-        "* %?\nLe %U\n  %i" :empty-lines 1)))
+ '(("t" "Todo" entry (file+headline org-default-notes-file "Idea box")
+        "* TODO %?\n %i" :empty-lines 1 :prepend t)
+   ("b" "Bookmark" entry (file (concat org-directory "/bookmark.org"))
+        "* %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n" :empty-lines 1 :prepend t)
+   ("j" "Journal" entry (file (concat org-directory "/journal.org.gpg"))
+   	    "* %U %?\n  :PROPERTIES:\n  :CREATED: %T\n  :END:\n\n" :empty-lines 1 :prepend t)))
 
 ;; Clocking
 ; Continuous clocking
