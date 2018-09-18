@@ -124,7 +124,11 @@
 ;; Org mode on start-up
 ;; (add-hook 'after-init-hook 'org-agenda-list)
 (setq initial-buffer-choice (lambda ()
-  (org-agenda nil "s")
+	(if (file-directory-p "/data/doc/org")
+	  ; at home
+	  (org-agenda nil "e")
+	  ; at work
+	  (org-agenda nil "s"))
   (get-buffer "*Org Agenda*")))
 
 ;; Hooks
@@ -213,9 +217,33 @@
           (org-agenda-overriding-header "NEXT")))
       (todo "TODO"
         ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+          (org-agenda-skip-entry-if 'scheduled)
           (org-agenda-overriding-header "TODO")))
-      (tags "breaks"
-        ((org-agenda-overriding-header "Breaks")))))))
+      (todo "WAIT"
+        ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+          (org-agenda-skip-entry-if 'scheduled)
+          (org-agenda-overriding-header "WAIT")))))))
+
+;; Home agenda
+(add-to-list 'org-agenda-custom-commands
+  '("e" "Agenda"
+    ((agenda ""
+        ((org-agenda-overriding-header "AGENDA")
+          (org-agenda-span 7)
+          (org-agenda-start-day "today")
+          (org-agenda-start-on-weekday nil)
+          (org-agenda-time-grid nil)))
+    (todo "NEXT"
+      ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-skip-entry-if 'scheduled)
+        (org-agenda-overriding-header "NEXT")))
+    (todo "TODO"
+      ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-overriding-header "TODO")))
+    (todo "WAIT"
+      ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-skip-entry-if 'scheduled)
+        (org-agenda-overriding-header "WAIT"))))))
 
 ;; Work report for today
 (add-to-list 'org-agenda-custom-commands
@@ -303,7 +331,7 @@
 (require 'holidays)
 (defvar holiday-french-holidays nil "French holidays")
 (setq holiday-french-holidays
-      `((holiday-fixed 1 1 "Jour de l'an")
+  `((holiday-fixed 1 1 "Jour de l'an")
 	(holiday-fixed 1 6 "Épiphanie")
 	(holiday-fixed 2 2 "Chandeleur")
 	(holiday-fixed 2 14 "Saint Valentin")
@@ -316,17 +344,22 @@
 	(holiday-fixed 11 1 "Toussaint")
 	(holiday-fixed 11 2 "Commémoration des fidèles défunts")
 	(holiday-fixed 12 25 "Noël")
-        ;; fetes a date variable
+    ;; fetes a date variable
 	(holiday-easter-etc 0 "Pâques")
-        (holiday-easter-etc 1 "Lundi de Pâques")
-        (holiday-easter-etc 39 "Ascension")
-        (holiday-easter-etc 49 "Pentecôte")
-        (holiday-easter-etc -47 "Mardi gras")
+      (holiday-easter-etc 1 "Lundi de Pâques")
+      (holiday-easter-etc 39 "Ascension")
+      (holiday-easter-etc 49 "Pentecôte")
+      (holiday-easter-etc -47 "Mardi gras")
 	(holiday-float 5 0 4 "Fête des mères")
 	;; dernier dimanche de mai ou premier dimanche de juin si c'est le
 	;; même jour que la pentecôte TODO
 	(holiday-float 6 0 3 "Fête des pères"))) ;; troisième dimanche de juin
 (setq calendar-holidays holiday-french-holidays)
+
+;; French localization
+(setq calendar-week-start-day 1
+  calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi" "Jeudi" "Vendredi" "Samedi"]
+  calendar-month-name-array ["Janvier" "Février" "Mars" "Avril" "Mai" "Juin" "Juillet" "Août" "Septembre" "Octobre" "Novembre" "Décembre"])
 
 ;; Warn me of any deadlines in next 7 days
 (setq org-deadline-warning-days 7)
@@ -339,6 +372,24 @@
 
 ;; Compact the block agenda view
 ; (setq org-agenda-compact-blocks t)
+
+;; Agenda style (colors: http://www.raebear.net/computers/emacs-colors/)
+;(setq org-agenda-date-today '(:foreground "yellow"))
+;(setq org-agenda-date-weekend '(:foreground "green"))
+;(set-face-attribute 'org-agenda-date-today (:foreground "green"))
+(defun my-org-agenda-get-day-face-fn (date)
+"Return the face DATE should be displayed with."
+  (let ((day-of-week (calendar-day-of-week date)))
+    (cond
+      ((org-agenda-todayp date)
+        ;'org-agenda-date-today)
+        '(:foreground "LightGoldenrod"))
+      ;((member day-of-week org-agenda-weekend-days)
+      ; 'org-agenda-date-weekend)
+      ((or (= day-of-week 6) (= day-of-week 0))
+        '(:foreground "DarkSeaGreen2"))
+      (t 'org-agenda-date))))
+(setq org-agenda-day-face-function 'my-org-agenda-get-day-face-fn)
 
 ;; Show inline images
 (setq org-startup-with-inline-images t)
@@ -365,7 +416,7 @@
 (setq org-todo-keywords
        '(
        	;; Sequence for TASKS
-       	(sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)" "DELEGATED(g@)")
+       	(sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)" "DELEGATED(g@)" "INACTIVE(i@)")
        	;; Sequence for EVENTS
        	;;(sequence "VISIT(v@/!)" "|" "DIDNOTGO(z@/!)" "MEETING(m@/!)" "VISITED(y@/!)")
        	))
