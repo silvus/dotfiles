@@ -114,8 +114,10 @@
 ;; Collect all .org from my Org directory and subdirs
 (load-library "find-lisp")
 (if (file-directory-p "/data/doc/org")
-	; at home (more than just-org directory to include work folder
-	(setq org-agenda-files (find-lisp-find-files "/data/doc" "\\.org$"))
+	; at home (more than just-org directory to include work folder)
+	;(setq org-agenda-files (find-lisp-find-files "/data/doc" "\\.org$"))
+	; at home (just-org directory to exclude work folder)
+	(setq org-agenda-files (find-lisp-find-files org-directory "\\.org$"))
 	; at work
 	(setq org-agenda-files (find-lisp-find-files org-directory "\\.org$")))
 
