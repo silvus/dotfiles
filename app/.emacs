@@ -10,80 +10,101 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
 
-;; Bootstrap `use-package'
+;; Bootstrap "use-package"
+;; https://github.com/jwiegley/use-package/blob/master/README.md
+;; :init execute code before package is loaded.
+;; :config execute code after package is loaded.
+;; :bind bind keystrokes to function.
+;; :command creates autoload for those commands.
+;; :ensure installs package if not found on system. Great way to setup environment.
+;; :defer defers loading of the package until needed. You can pass integer which loads the package after N seconds of idle time. Eg: :defer 4.
+;; :demand will force loading to occur immediately and not establish an autoload for the bound key, even if you use :bind
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Markdown
-(use-package markdown-mode
-	:ensure t)
-;; PHP
-(use-package php-mode
-	:ensure t)
-;; Html / JS
-(use-package web-mode
-	:ensure t)
-;; Python
-(use-package elpy
-		 :ensure t
-	     :config
-	     (progn
-	       (elpy-enable)
-	       (setq elpy-rpc-python-command "/usr/bin/python3")
-	       (add-hook 'python-mode-hook (highlight-indentation-mode 0))))
-;; Betters commands
-(use-package smex
-		 :ensure t
-	     :config
-	     (progn
-	       (smex-initialize)
-	       (global-set-key (kbd "M-x") 'smex)))
-;; Autocomplete
-(use-package auto-complete
-		 :ensure t
-	     :config
-	     (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
-;; Undo
-(use-package undo-tree
-		 :ensure t
-	     :config
-	     (global-undo-tree-mode))
-;; Sidebar file explorer
-(use-package neotree
-	     :ensure t
-	     :config
-	     (progn
-	       (setq neo-smart-open t)
-	       (setq-default neo-show-hidden-files t)
-	       (global-set-key (kbd "<f2>") 'neotree-toggle)))
-;; Modeline
-(use-package spaceline
-	:ensure t
-	:config
-	(progn
-	    (require 'spaceline-config)
-		(setq spaceline-highlight-face-func 'spaceline-highlight-face-modified)
-		(spaceline-emacs-theme)))
-;; 2048
-(use-package 2048-game
-	:ensure t)
-
-;; Fuzzy find
+;; Fuzzy find all
 (use-package helm
-	:ensure t
-	:config
-	(progn
-		(require 'helm-config)
-		(helm-mode 1)
-		(global-set-key (kbd "C-e") 'helm-buffers-list)
-		(global-set-key (kbd "C-p") 'helm-find-files)))
-
+  :ensure t
+  :config
+  (progn
+    (require 'helm-config)
+    (helm-mode 1)
+    (global-set-key (kbd "C-e") 'helm-buffers-list)
+    (global-set-key (kbd "C-p") 'helm-find-files)))
 ;(require 'ido)
 ;(ido-mode t)
 ;; (require 'ido-vertical-mode)
 ;; (ido-mode 1)
 ;; (ido-vertical-mode 1)
+;; Modeline
+(use-package spaceline
+  :ensure t
+  :config
+  (progn
+    (require 'spaceline-config)
+    (setq spaceline-highlight-face-func 'spaceline-highlight-face-modified)
+    (spaceline-emacs-theme)))
+;; Undo
+(use-package undo-tree
+  :ensure t
+  :config
+    (global-undo-tree-mode))
+
+;; Lazy load packages
+
+;; Markdown
+(use-package markdown-mode
+  :ensure t
+  :defer 3)
+;; Python
+(use-package elpy
+  :ensure t
+  :defer 4
+  :config
+    (progn
+      (elpy-enable)
+      (setq elpy-rpc-python-command "/usr/bin/python3")
+      (add-hook 'python-mode-hook (highlight-indentation-mode 0))))
+;; Html / JS
+(use-package web-mode
+  :ensure t
+  :defer 5)
+;; Autocomplete
+(use-package auto-complete
+  :ensure t
+  :defer 6
+  :config
+    (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
+;; PHP
+(use-package php-mode
+  :ensure t)
+;; Betters commands
+(use-package smex
+  :ensure t
+  :defer t
+  :bind (
+  	("M-x" . smex)))
+;  :config
+;    (progn
+;      (smex-initialize)
+;      (global-set-key (kbd "M-x") 'smex)))
+;; Sidebar file explorer
+(use-package neotree
+  :ensure t
+  :defer t
+  :bind (
+  	("<f2>" . neotree-toggle)
+  )
+  :config
+    (progn
+      (setq neo-smart-open t)
+      (setq-default neo-show-hidden-files t)))
+      ;(global-set-key (kbd "<f2>") 'neotree-toggle)
+;; 2048
+(use-package 2048-game
+  :ensure t
+  :defer t)
 
 
 ;; Keep emacs Custom-settings in separate file
