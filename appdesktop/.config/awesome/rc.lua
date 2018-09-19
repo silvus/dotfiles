@@ -220,36 +220,36 @@ local quaketerm = lain.util.quake({
 })
 
 -- Quake like editor (single instance for all screens)
--- local quakeeditor = lain.util.quake({
--- 	-- client name
--- 	name = "guakeeditor",
--- 	-- client to spawn
--- 	app = 'subl',
--- 	-- extra app arguments
--- 	extra = "",
--- 	-- border width
--- 	border = 0,
--- 	-- initially visible
--- 	-- visible = false,
--- 	-- Overlap the wibox or not
--- 	overlap = false,
--- 	-- always spawn on currently focused screen
--- 	followtag = true,
--- 	-- dropdown client height (float in [0,1] or exact pixels number)
--- 	height = 1,
--- 	-- dropdown client width (float in [0,1] or exact pixels number)
--- 	width = 1,
--- 	-- vertical position (string, possible values: "top", "bottom", "center")
--- 	vert = "top",
--- 	-- horizontal position (string, possible values: "left", "right", "center")
--- 	horiz = "center",
--- 	-- settings is a function which takes the client as input, and can be used to customize its properties
--- 	settings = function(c)
--- 		-- titlebars_enabled = false
--- 		c.fullscreen = true
--- 		-- c.sticky = true
--- 	end
--- })
+local quakeeditor = lain.util.quake({
+	-- client name
+	name = "guakeeditor",
+	-- client to spawn
+	app = 'emacs',
+	-- extra app arguments
+	extra = "",
+	-- border width
+	border = 0,
+	-- initially visible
+	-- visible = false,
+	-- Overlap the wibox or not
+	overlap = false,
+	-- always spawn on currently focused screen
+	followtag = true,
+	-- dropdown client height (float in [0,1] or exact pixels number)
+	height = 1,
+	-- dropdown client width (float in [0,1] or exact pixels number)
+	width = 1,
+	-- vertical position (string, possible values: "top", "bottom", "center")
+	vert = "top",
+	-- horizontal position (string, possible values: "left", "right", "center")
+	horiz = "center",
+	-- settings is a function which takes the client as input, and can be used to customize its properties
+	settings = function(c)
+		-- titlebars_enabled = false
+		c.fullscreen = true
+		-- c.sticky = true
+	end
+})
 
 -- ---------------------------------------------------------------------
 -- Status bar
@@ -956,15 +956,15 @@ globalkeys = awful.util.table.join(
 	end, {description = "Toggle guake like terminal", group = "launcher"}),
 
 	-- quake-like editor
-	-- awful.key({}, "F1", function ()
-	-- 	quakeeditor:toggle()
-	-- end, {description = "Toggle guake like editor", group = "launcher"}),
+	awful.key({}, "F1", function ()
+		quakeeditor:toggle()
+	end, {description = "Toggle guake like editor", group = "launcher"}),
 
 	-- Text Editor
-	awful.key({}, "F1", function()
+	-- awful.key({}, "F1", function()
 	 	-- awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'sublime_text.Sublime_text' '/opt/sublime_text/sublime_text'")
-	 	awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'emacs.Emacs' 'emacs'")
-	end, {description = "Toggle guake like editor", group = "launcher"}),
+	-- 	awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'emacs.Emacs' 'emacs'")
+	--end, {description = "Toggle guake like editor", group = "launcher"}),
 	awful.key({ modkey }, "e", function()
 		awful.util.spawn("emacs", false)
 	end, {description = "launch editor", group = "launcher"}),
