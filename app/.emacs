@@ -58,24 +58,21 @@
   :ensure t
   :defer 3)
 ;; Python
-(use-package elpy
+(use-package anaconda-mode
   :ensure t
   :defer 4
   :config
-    (progn
-      (elpy-enable)
-      (setq elpy-rpc-python-command "/usr/bin/python3")
-      (add-hook 'python-mode-hook (highlight-indentation-mode 0))))
+  (progn
+    (eval-after-load "company"
+      '(add-to-list 'company-backends 'company-anaconda))
+    (add-hook 'python-mode-hook 'anaconda-mode)))
+(use-package company-anaconda
+  :ensure t
+  :defer)
 ;; Html / JS
 (use-package web-mode
   :ensure t
   :defer 5)
-;; Autocomplete
-(use-package auto-complete
-  :ensure t
-  :defer 6
-  :config
-    (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict"))
 ;; PHP
 (use-package php-mode
   :ensure t)
