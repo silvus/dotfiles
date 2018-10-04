@@ -263,6 +263,25 @@
         (org-agenda-skip-entry-if 'scheduled)
         (org-agenda-overriding-header "WAIT"))))))
 
+;; Family agenda (for exports)
+; org-agenda-tag-filter-preset doesn't work in -batch ?!
+(add-to-list 'org-agenda-custom-commands
+  '("f" "Family Agenda"
+    ((agenda ""
+        ((org-agenda-overriding-header "AGENDA")
+          (org-agenda-span 7)
+          (org-agenda-start-day "today")
+		  (org-agenda-tag-filter-preset '("+famille"))
+          (org-agenda-start-on-weekday nil)
+          (org-agenda-time-grid nil)))
+		 ; (org-agenda-remove-tags t)))
+    (todo "+famille/TODO|NEXT"
+      ((org-agenda-sorting-strategy '(priority-down todo-state-down))
+        (org-agenda-skip-entry-if 'scheduled)
+		(org-agenda-remove-tags t)
+		  (org-agenda-tag-filter-preset '("+famille" "-SCHEDULE"))
+        (org-agenda-overriding-header "NEXT TODOS"))))))
+
 ;; Work report for today
 (add-to-list 'org-agenda-custom-commands
   '("wc" "Work report"
@@ -292,7 +311,7 @@
 
 ;; Today report (WIP and tests)
 (add-to-list 'org-agenda-custom-commands
-     '("f" "Today"
+     '("t" "Today"
        ((agenda ""
                 ((org-agenda-entry-types '(:timestamp :sexp))
                  (org-agenda-overriding-header
