@@ -263,23 +263,38 @@
         (org-agenda-skip-entry-if 'scheduled)
         (org-agenda-overriding-header "WAIT"))))))
 
+(defun org-agenda-skip-tag (tag &optional others)
+  "Skip all entries that correspond to TAG.
+  If OTHERS is true, skip all entries that do not correspond to TAG."
+  (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
+        (current-headline (or (and (org-at-heading-p)
+                                   (point))
+                              (save-excursion (org-back-to-heading)))))
+    (if others
+        (if (not (member tag (org-get-tags-at current-headline)))
+            next-headline
+          nil)
+      (if (member tag (org-get-tags-at current-headline))
+          next-headline
+        nil))))
+
 ;; Family agenda (for exports)
-; org-agenda-tag-filter-preset doesn't work in -batch ?!
 (add-to-list 'org-agenda-custom-commands
   '("f" "Family Agenda"
     ((agenda ""
         ((org-agenda-overriding-header "AGENDA")
           (org-agenda-span 7)
           (org-agenda-start-day "today")
-		  (org-agenda-tag-filter-preset '("+famille"))
+          (org-agenda-skip-function '(org-agenda-skip-tag "famille" 't))
+          (org-agenda-remove-tags t)
           (org-agenda-start-on-weekday nil)
           (org-agenda-time-grid nil)))
-		 ; (org-agenda-remove-tags t)))
-    (todo "+famille/TODO|NEXT"
+    (tags-todo "+famille-SCHEDULED={.+}-DEADLINE={.+}/+TODO|+NEXT"
       ((org-agenda-sorting-strategy '(priority-down todo-state-down))
         (org-agenda-skip-entry-if 'scheduled)
-		(org-agenda-remove-tags t)
-		  (org-agenda-tag-filter-preset '("+famille" "-SCHEDULE"))
+	    	(org-agenda-remove-tags t)
+        ; org-agenda-tag-filter-preset doesn't work in -batch ?!
+		    ;(org-agenda-tag-filter-preset '("+famille" "-SCHEDULE"))
         (org-agenda-overriding-header "NEXT TODOS"))))))
 
 ;; Work report for today
