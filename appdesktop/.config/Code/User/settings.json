@@ -5,5 +5,7 @@
     "editor.multiCursorModifier": "ctrlCmd",
     "editor.fontFamily": "'DejaVu Sans Mono', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
     "editor.fontSize": 13,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "python.pythonPath": "/usr/bin/python3",
+    "python.formatting.provider": "yapf"
 }
