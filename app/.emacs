@@ -282,13 +282,14 @@
 (add-to-list 'org-agenda-custom-commands
   '("f" "Family Agenda"
     ((agenda ""
-        ((org-agenda-overriding-header "AGENDA")
+        ((org-agenda-overriding-header "")
           (org-agenda-span 7)
           (org-agenda-start-day "today")
           (org-agenda-skip-function '(org-agenda-skip-tag "famille" 't))
           (org-agenda-remove-tags t)
           (org-agenda-start-on-weekday nil)
-          (org-agenda-time-grid nil)))
+          (org-agenda-time-grid nil)
+          (org-agenda-show-all-dates nil)))
     (tags-todo "+famille-SCHEDULED={.+}-DEADLINE={.+}/+TODO|+NEXT"
       ((org-agenda-sorting-strategy '(priority-down todo-state-down))
         (org-agenda-skip-entry-if 'scheduled)
