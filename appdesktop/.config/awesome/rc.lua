@@ -529,7 +529,7 @@ mymocbarwidget.visible = false
 local musicicon = wibox.widget.imagebox(beautiful.music)
 musicicon.visible = false
 local moc = lain.widget.contrib.moc({
-	music_dir = "/data/silvus/music",
+	music_dir = "/data/media/music",
 	settings  = function()
 		if moc_now.state == 'PLAY' or moc_now.state == 'PAUSE' then
 			-- widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. ' | ' .. moc_now.elapsed .. ' / ' .. moc_now.total .. "</span>")
