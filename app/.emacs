@@ -512,7 +512,7 @@
 (global-set-key (kbd "<f7>") 'org-clock-in)
 (global-set-key (kbd "<f8>") 'org-clock-out)
 (global-set-key (kbd "<f9>") 'org-agenda)
-(global-set-key (kbd "C-c a") 'org-agenda)
+;(global-set-key (kbd "C-c a") 'org-agenda)
 ;(org-defkey org-mode-map (kbd "C-e") 'buffer-menu)
 (org-defkey org-mode-map (kbd "C-e") 'helm-buffers-list)
 
@@ -671,8 +671,15 @@
 (setq scroll-error-top-bottom t)
 
 ;; Bindings
+(defun my-kill-whole-line ()
+  "Delete text from current position to end of line char. This command does not push text to `kill-ring'."
+  (interactive)
+    (delete-region (progn (forward-line 0) (point))
+      (progn (forward-line 1) (point))))
+(global-set-key (kbd "C-d") 'my-kill-whole-line)
+
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
-(global-set-key (kbd "C-d") 'kill-whole-line)
+(define-key org-mode-map (kbd "C-a") 'mark-whole-buffer)
 (global-set-key (kbd "C-s") 'save-buffer)
 ;(global-set-key (kbd "C-e") 'buffer-menu)
 
@@ -684,15 +691,20 @@
 
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-y") 'redo)
+(global-set-key (kbd "C-S-y") 'redo)
+(define-key org-mode-map (kbd "C-y") 'redo)
 
 ;; Splits navigation
-(global-set-key (kbd "C-w") 'other-window)
+(global-set-key (kbd "C-w") 'kill-buffer)
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 
 ;; One escape to quit
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(define-key org-mode-map (kbd "<escape>") 'keyboard-escape-quit)
+
 ;; (global-set-key (kbd "<escape>") 'keyboard-quit)
 ;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 ;; (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
