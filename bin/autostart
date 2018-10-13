@@ -15,7 +15,7 @@ else
 	run redshift-gtk
 fi
 
-run dropbox start
+# run dropbox start
 
 if [[ $GDMSESSION == 'i3' ]]; then
 	run feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
