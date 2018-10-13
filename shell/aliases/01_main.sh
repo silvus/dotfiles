@@ -43,6 +43,8 @@ alias lynx="lynx -cfg=$HOME/.config/lynx/lynxrc -lss=$HOME/.config/lynx/lynx.lss
 alias tmux="tmux -2" # Make 256 colors work in tmux
 alias screendual="xrandr --output HDMI-0 --auto --primary --output VGA-0 --auto --above HDMI-0"
 alias screensimple="xrandr --output VGA-0 --off --output HDMI-0 --auto --primary"
+alias keymapazerty="setxkbmap -model pc105 -layout fr,us -variant oss"
+alias keymapqwerty="setxkbmap -model pc105 -layout us,fr -variant oss"
 
 # Man
 # -----------------------------------------------------------------------------
