@@ -1191,14 +1191,28 @@ awful.rules.rules = {
 
 	{ rule = { class = "mpv" },
 		properties = {
-			floating = false,
-			-- titlebars_enabled = false,
+			-- Full screen on second monitor
+			-- floating = false,
+			-- sticky = true,
+			-- fullscreen = false,
+			-- screen = max_screen_count -- Open on last screen
+
+			-- Sticky in corner
+			focus = false,
 			sticky = true,
-			-- ontop = true, -- Not compatible with fullscreen
-			fullscreen = true,
+			fullscreen = false,
+			floating = true,
+			ontop = true, -- Not compatible with fullscreen
+			callback = function(c)
+				-- 1/3 bottom right of focused screen
+				sreen_geometry = awful.screen.focused().geometry
+				c:geometry( { width = sreen_geometry.width / 3 , height = sreen_geometry.height / 3 } )
+				awful.placement.bottom_right(c)
+			end
+
 			-- maximized_vertical = true,
 			-- maximized_horizontal = true,
-			screen = max_screen_count -- Open on last screen
+			-- titlebars_enabled = false,
 		}
 	},
 	{ rule = { class = "Firefox" },
