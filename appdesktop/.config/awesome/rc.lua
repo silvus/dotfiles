@@ -1218,20 +1218,21 @@ awful.rules.rules = {
 	{ rule = { class = "Firefox" },
 		properties = {
 			tag = "1",
-			titlebars_enabled = false
+			floating = false,
+			titlebars_enabled = false,
+			maximized_vertical = true,
+			maximized_horizontal = true
 			--switchtotag = true
 		}
 	},
 	{ rule = { class = "Thunderbird" },
 		properties = {
 			tag = "3"
-			--switchtotag = true
 		}
 	},
 	{ rule = { class = "Steam" },
 		properties = {
 			tag = "8"
-			--switchtotag = true
 		}
 	}
 }
