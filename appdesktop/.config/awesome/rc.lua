@@ -1231,7 +1231,7 @@ awful.rules.rules = {
 			--switchtotag = true
 		}
 	},
-	{ rule = { class = "Code" },
+	{ rule_any = { class = { "Code", "krita" }},
 		except = { type = "dialog" },
 		properties = {
 			tag = "2",
