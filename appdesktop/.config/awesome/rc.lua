@@ -1225,6 +1225,14 @@ awful.rules.rules = {
 			--switchtotag = true
 		}
 	},
+	{ rule = { class = "Code" },
+		properties = {
+			tag = "2",
+			floating = false,
+			maximized_vertical = true,
+			maximized_horizontal = true
+		}
+	},
 	{ rule = { class = "Thunderbird" },
 		properties = {
 			tag = "3"
