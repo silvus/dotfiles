@@ -1173,6 +1173,9 @@ awful.rules.rules = {
 		name = {
 		  "Event Tester",  -- xev.
 		},
+		type = {
+			"dialog"
+		},
 		role = {
 		  "AlarmWindow",  -- Thunderbird's calendar.
 		  -- "pop-up",	   -- e.g. Google Chrome's (detached) Developer Tools.
@@ -1181,8 +1184,10 @@ awful.rules.rules = {
 	},
 
 	-- Add titlebars to normal clients and dialogs
-	{ rule_any = {type = { "normal", "dialog" }
-		}, properties = { titlebars_enabled = true }
+	{ rule_any = { type = { "normal", "dialog" } }, 
+		properties = {
+			titlebars_enabled = true
+		}
 	},
 
 	-- Set Firefox to always map on the tag named "2" on screen 1.
@@ -1216,6 +1221,7 @@ awful.rules.rules = {
 		}
 	},
 	{ rule = { class = "Firefox" },
+		except = { type = "dialog" },
 		properties = {
 			tag = "1",
 			floating = false,
@@ -1226,6 +1232,7 @@ awful.rules.rules = {
 		}
 	},
 	{ rule = { class = "Code" },
+		except = { type = "dialog" },
 		properties = {
 			tag = "2",
 			floating = false,
