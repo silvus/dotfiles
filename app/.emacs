@@ -503,6 +503,27 @@
 ;; Change tasks to whatever when clocking in
 ; (setq org-clock-in-switch-to-state "NEXT")
 
+; Export
+(setq org-html-html5-fancy t)
+(setq org-html-doctype "html5")
+(defun my-org-inline-css-hook (exporter)
+  "Insert custom inline css"
+  (when (eq exporter 'html)
+    (let* ((dir (ignore-errors (file-name-directory (buffer-file-name))))
+           (path (concat dir "style.css"))
+           (homestyle (or (null dir) (null (file-exists-p path))))
+           (final (if homestyle "~/.emacs.d/org-style.css" path)))
+      (setq org-html-head-include-default-style nil)
+      (setq org-html-head (concat
+                           "<style type=\"text/css\">\n"
+                           "<!--/*--><![CDATA[/*><!--*/\n"
+                           (with-temp-buffer
+                             (insert-file-contents final)
+                             (buffer-string))
+                           "/*]]>*/-->\n"
+                           "</style>\n")))))
+(add-hook 'org-export-before-processing-hook 'my-org-inline-css-hook)
+
 ;; Bindings
 ;(global-set-key (kbd "<f5>") (org-insert-time-stamp nil t))
 (global-set-key (kbd "<f5>") (lambda () (interactive)
