@@ -506,6 +506,7 @@
 ; Export
 (setq org-html-html5-fancy t)
 (setq org-html-doctype "html5")
+(setq org-html-validation-link nil)
 (defun my-org-inline-css-hook (exporter)
   "Insert custom inline css"
   (when (eq exporter 'html)
