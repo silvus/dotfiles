@@ -33,6 +33,8 @@ theme.taglist_fg_focus                          = "#FFFFFF"
 theme.taglist_bg_normal                         = theme.bg_normal
 theme.taglist_bg_focus                          = theme.success
 
+theme.tasklist_spacing 							= 10
+
 theme.titlebar_bg_normal                        = "#333333"
 theme.titlebar_bg_focus                         = "#00141a"
 
@@ -47,8 +49,6 @@ theme.gap_single_client                         = true
 
 theme.menu_height                               = 16
 theme.menu_width                                = 250
-
-theme.tasklist_spacing 							= 3
 
 theme.ac                                        = theme.dir .. "/icons/ac.png"
 theme.awesome_icon                              = theme.dir .. "/icons/awesome.png"

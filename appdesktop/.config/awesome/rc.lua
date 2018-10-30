@@ -532,25 +532,39 @@ local moc = lain.widget.contrib.moc({
 	music_dir = "/data/media/music",
 	settings  = function()
 		if moc_now.state == 'PLAY' or moc_now.state == 'PAUSE' then
-			-- widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. ' | ' .. moc_now.elapsed .. ' / ' .. moc_now.total .. "</span>")
-			widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. "</span>")
 			musicicon.visible = true
 
-			local pattern = "(%d+):(%d+)"
-			local timeToConvert = moc_now.total
-			local totalminute, totalseconds = moc_now.total:match(pattern)
-			local total_time = (totalminute * 60) + totalseconds
-			local nowminute, nowseconds = moc_now.elapsed:match(pattern)
-			local now_time = (nowminute * 60) + nowseconds
-			if total_time > 0 then
-				mymocbarwidget.visible = true
-				if now_time > 0 then
-					mymocbar:set_value(now_time * 100 / total_time)
+			if moc_now.total == 'N/A' then
+				-- Remote m3a (Like Rainwave)
+				if moc_now.title == nil or moc_now.title == '' then
+					widget:set_markup("<span color='#ffffff'>" .. moc_now.state .. "</span>")
 				else
-					mymocbar:set_value(0)
+					widget:set_markup("<span color='#ffffff'>" .. moc_now.title .. "</span>")
+				end
+			else
+				-- Local file
+				widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. "</span>")
+				-- widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. ' | ' .. moc_now.elapsed .. ' / ' .. moc_now.total .. "</span>")
+
+				local time_pattern = "(%d+):(%d+)"
+				local totalminute, totalseconds = moc_now.total:match(time_pattern)
+
+				local total_time = (totalminute * 60) + totalseconds
+				local nowminute, nowseconds = moc_now.elapsed:match(time_pattern)
+				local now_time = (nowminute * 60) + nowseconds
+
+				-- Build current song progress bar
+				if total_time > 0 then
+					mymocbarwidget.visible = true
+					if now_time > 0 then
+						mymocbar:set_value(now_time * 100 / total_time)
+					else
+						mymocbar:set_value(0)
+					end
 				end
 			end
 		else
+			-- No music, hide bar and icon
 			widget:set_markup("")
 			musicicon.visible = false
 			mymocbarwidget.visible = false
@@ -731,8 +745,16 @@ awful.screen.connect_for_each_screen(function(s)
 				s.mytaglist,
 				s.mypromptbox,
 			},
-			-- Middle widget
-			s.mytasklist,
+			{ -- Middle widget
+				widget = wibox.container.margin,
+				left = 10,
+				right = 10,
+				{
+					layout = s.mytasklist,
+					-- layout = wibox.layout.fixed.horizontal,
+					-- s.mytasklist,
+				}
+			},
 			{ -- Right widgets
 				layout = wibox.layout.fixed.horizontal,
 				-- layout = awful.widget.only_on_screen,
