@@ -710,6 +710,7 @@
 
 (global-set-key (kbd "C-f") 'isearch-forward)
 (global-set-key (kbd "C-S-f") 'isearch-backward)
+(define-key isearch-mode-map [(control f)] 'isearch-repeat-forward)')
 
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-y") 'redo)
