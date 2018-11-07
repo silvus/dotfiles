@@ -678,6 +678,19 @@
 ;; (setq initial-major-mode 'python-mode)
 
 
+;; Spell check
+;; -------------------------------------------------------------------------------
+
+;; Enable it for text-mode, and disable it for log-edit-mode and change-log-mode
+; (dolist (hook '(text-mode-hook))
+;   (add-hook hook (lambda () (flyspell-mode 1))))
+; (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+;   (add-hook hook (lambda () (flyspell-mode -1))))
+
+(setq ispell-dictionary "francais")    ;set the default dictionary
+(global-set-key (kbd "<f12>") 'flyspell-mode)
+
+
 ;; Bindings
 ;; -------------------------------------------------------------------------------
 
