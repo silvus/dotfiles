@@ -44,7 +44,7 @@ theme.border_width                              = 3
 
 -- theme.useless_gap                               = 5
 -- theme.gap_single_client                         = false
-theme.useless_gap                               = 10
+theme.useless_gap                               = theme.border_width
 theme.gap_single_client                         = true
 
 theme.menu_height                               = 16

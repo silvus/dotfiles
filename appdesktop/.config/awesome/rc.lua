@@ -1171,6 +1171,7 @@ awful.rules.rules = {
 					 keys = clientkeys,
 					 buttons = clientbuttons,
 					 screen = awful.screen.preferred,
+					 titlebars_enabled = true,
 					 placement = awful.placement.no_overlap+awful.placement.no_offscreen
 		}
 	},
@@ -1356,11 +1357,18 @@ end)
 -- client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- No border for maximized clients
 function border_adjust(c)
-	if c.maximized then -- no borders if only 1 client visible
-		c.border_width = 0
-	elseif #awful.screen.focused().clients > 1 then
-		c.border_width = beautiful.border_width
-		c.border_color = beautiful.border_focus
+	if c.maximized then
+		-- transparents borders if maximized
+		c.border_color = beautiful.border_focus .. "00"
+	else
+		-- c.border_width = beautiful.border_width
+		if max_screen_count > 1 then
+			-- dual screen
+			c.border_color = beautiful.border_focus
+		elseif #awful.screen.focused().clients > 1 then
+			-- On simple screen, show borders if more than one app on focused screen
+			c.border_color = beautiful.border_focus
+		end
 	end
 end
 client.connect_signal("focus", border_adjust)
