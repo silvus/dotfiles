@@ -40,11 +40,11 @@ theme.titlebar_bg_focus                         = "#00141a"
 
 theme.border_normal                             = "#141414"
 theme.border_focus                              = theme.success
-theme.border_width                              = 3
+theme.border_width                              = 2
 
 -- theme.useless_gap                               = 5
 -- theme.gap_single_client                         = false
-theme.useless_gap                               = theme.border_width
+theme.useless_gap                               = 0
 theme.gap_single_client                         = true
 
 theme.menu_height                               = 16

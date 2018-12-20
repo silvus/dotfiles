@@ -102,20 +102,21 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
 -- Notifications
-naughty.config.defaults.timeout = 0
--- naughty.config.defaults.screen = 1
+naughty.config.defaults.timeout = 30
+naughty.config.defaults.screen = screen.primary
 naughty.config.defaults.position = "top_right"
 naughty.config.defaults.margin = 10
 naughty.config.defaults.gap = 35
 naughty.config.defaults.ontop = true
--- naughty.config.defaults.font = "terminus 12"
--- naughty.config.defaults.icon = nil
--- naughty.config.defaults.icon_size = 256
-naughty.config.defaults.fg = beautiful.fg_focus
-naughty.config.defaults.bg = beautiful.bg_focus
-naughty.config.defaults.border_color = beautiful.border_focus
-naughty.config.defaults.border_width = beautiful.border_width
+naughty.config.defaults.border_width = 1
 naughty.config.defaults.hover_timeout = nil
+naughty.config.defaults.fg = beautiful.fg_focus
+naughty.config.defaults.bg = beautiful.bg_Efocus
+naughty.config.defaults.border_color = beautiful.border_focus
+
+naughty.config.presets.low.timeout = 10
+naughty.config.presets.critical.bg = beautiful.error
+naughty.config.presets.critical.border_color = beautiful.fg_urgent
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -1247,10 +1248,10 @@ awful.rules.rules = {
 		except = { type = "dialog" },
 		properties = {
 			tag = "1",
-			floating = false,
-			titlebars_enabled = false,
-			maximized_vertical = true,
-			maximized_horizontal = true
+			-- floating = false,
+			-- titlebars_enabled = false,
+			-- maximized_vertical = true,
+			-- maximized_horizontal = true
 			--switchtotag = true
 		}
 	},
@@ -1258,17 +1259,19 @@ awful.rules.rules = {
 		except = { type = "dialog" },
 		properties = {
 			tag = "2",
-			floating = false,
-			maximized_vertical = true,
-			maximized_horizontal = true
+			--floating = false,
+			--maximized_vertical = true,
+			--maximized_horizontal = true
 		}
 	},
 	{ rule = { class = "Thunderbird" },
+		except = { type = "dialog" },
 		properties = {
 			tag = "3"
 		}
 	},
 	{ rule = { class = "Steam" },
+		except = { type = "dialog" },
 		properties = {
 			tag = "8"
 		}
@@ -1353,28 +1356,31 @@ end)
 --	 end
 -- end)
 
--- client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
--- client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- No border for maximized clients
-function border_adjust(c)
-	if c.maximized then
-		-- transparents borders if maximized
-		c.border_color = beautiful.border_focus .. "00"
-	else
-		-- c.border_width = beautiful.border_width
-		if max_screen_count > 1 then
-			-- dual screen
-			c.border_color = beautiful.border_focus
-		elseif #awful.screen.focused().clients > 1 then
-			-- On simple screen, show borders if more than one app on focused screen
-			c.border_color = beautiful.border_focus
-		end
-	end
-end
-client.connect_signal("focus", border_adjust)
-client.connect_signal("property::maximized", border_adjust)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- function border_adjust(c)
+-- 	if c.maximized then
+-- 		-- transparents borders if maximized
+-- 		c.border_color = beautiful.border_focus .. "00"
+-- 	else
+-- 		-- c.border_width = beautiful.border_width
+-- 		if max_screen_count > 1 then
+-- 			-- dual screen
+-- 			c.border_color = beautiful.border_focus
+-- 		elseif #awful.screen.focused().clients > 1 then
+-- 			-- On simple screen, show borders if more than one app on focused screen
+-- 			c.border_color = beautiful.border_focus
+-- 		end
+-- 	end
+-- end
+-- client.connect_signal("focus", border_adjust)
+-- client.connect_signal("property::maximized", border_adjust)
+-- client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+-- Border on focused clients
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
 
 -- ---------------------------------------------------------------------
 -- Auto start
