@@ -202,7 +202,7 @@ local quaketerm = lain.util.quake({
 	-- Overlap the wibox or not
 	overlap = true,
 	-- always spawn on currently focused screen
-	followtag = true,
+	followtag = false,
 	-- dropdown client height (float in [0,1] or exact pixels number)
 	height = 1,
 	-- dropdown client width (float in [0,1] or exact pixels number)
@@ -234,7 +234,7 @@ local quakeeditor = lain.util.quake({
 	-- Overlap the wibox or not
 	overlap = false,
 	-- always spawn on currently focused screen
-	followtag = true,
+	followtag = false,
 	-- dropdown client height (float in [0,1] or exact pixels number)
 	height = 1,
 	-- dropdown client width (float in [0,1] or exact pixels number)
@@ -244,11 +244,11 @@ local quakeeditor = lain.util.quake({
 	-- horizontal position (string, possible values: "left", "right", "center")
 	horiz = "center",
 	-- settings is a function which takes the client as input, and can be used to customize its properties
-	settings = function(c)
+	-- settings = function(c)
 		-- titlebars_enabled = false
-		c.fullscreen = true
+		-- c.fullscreen = true
 		-- c.sticky = true
-	end
+	-- end
 })
 
 -- ---------------------------------------------------------------------
@@ -1207,7 +1207,7 @@ awful.rules.rules = {
 	},
 
 	-- Add titlebars to normal clients and dialogs
-	{ rule_any = { type = { "normal", "dialog" } }, 
+	{ rule_any = { type = { "normal", "dialog" } },
 		properties = {
 			titlebars_enabled = true
 		}
