@@ -53,6 +53,14 @@
 
 ;; Lazy load packages
 
+;; Calfw
+(use-package calfw-org
+  :ensure t
+  :defer 2
+  :config
+  (progn
+    (setq cfw:org-overwrite-default-keybinding t)))
+
 ;; Markdown
 (use-package markdown-mode
   :ensure t
@@ -526,6 +534,7 @@
 (add-hook 'org-export-before-processing-hook 'my-org-inline-css-hook)
 
 ;; Bindings
+(global-set-key (kbd "<f4>") 'cfw:open-org-calendar)
 ;(global-set-key (kbd "<f5>") (org-insert-time-stamp nil t))
 (global-set-key (kbd "<f5>") (lambda () (interactive)
 	(org-insert-time-stamp nil t)))
