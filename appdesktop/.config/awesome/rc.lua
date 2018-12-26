@@ -1165,15 +1165,16 @@ max_screen_count = screen:count()
 awful.rules.rules = {
 	-- All clients will match this rule.
 	{ rule = { },
-		properties = { border_width = beautiful.border_width,
-					 border_color = beautiful.border_normal,
-					 focus = awful.client.focus.filter,
-					 raise = true,
-					 keys = clientkeys,
-					 buttons = clientbuttons,
-					 screen = awful.screen.preferred,
-					 titlebars_enabled = true,
-					 placement = awful.placement.no_overlap+awful.placement.no_offscreen
+		properties = {
+			border_width = beautiful.border_width,
+			border_color = beautiful.border_normal,
+			focus = awful.client.focus.filter,
+			raise = true,
+			keys = clientkeys,
+			buttons = clientbuttons,
+			screen = awful.screen.preferred,
+			titlebars_enabled = true,
+			placement = awful.placement.no_overlap+awful.placement.no_offscreen
 		}
 	},
 
@@ -1211,6 +1212,16 @@ awful.rules.rules = {
 	{ rule_any = { type = { "normal", "dialog" } },
 		properties = {
 			titlebars_enabled = true
+		}
+	},
+
+	-- default normal client rules
+	{ rule_any = { type = { "normal" } },
+		properties = {
+			titlebars_enabled = true,
+			floating = false,
+			maximized_vertical = false,
+			maximized_horizontal = false
 		}
 	},
 
