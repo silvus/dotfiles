@@ -216,7 +216,12 @@ local quaketerm = lain.util.quake({
 	settings = function(c)
 		-- titlebars_enabled = false
 		c.fullscreen = true
+		-- c.ontop = true -- Not compatible with fullscreen
 		-- c.sticky = true
+		c.titlebars_enabled = true
+		c.floating = true
+		-- c.maximized_vertical = true
+		-- c.maximized_horizontal = true
 	end
 })
 
@@ -245,11 +250,15 @@ local quakeeditor = lain.util.quake({
 	-- horizontal position (string, possible values: "left", "right", "center")
 	horiz = "center",
 	-- settings is a function which takes the client as input, and can be used to customize its properties
-	-- settings = function(c)
-		-- titlebars_enabled = false
-		-- c.fullscreen = true
-		-- c.sticky = true
-	-- end
+	-- settings is a function which takes the client as input, and can be used to customize its properties
+	settings = function(c)
+		c.ontop = true -- Not compatible with fullscreen
+		c.sticky = true
+		c.titlebars_enabled = true
+		c.floating = true
+		c.maximized_vertical = true
+		c.maximized_horizontal = true
+	end
 })
 
 -- ---------------------------------------------------------------------
