@@ -59,6 +59,7 @@ def print_error(message):
 def print_question(question):
     return input('\n' + COLOR_YELLOW + '➜ ' + COLOR_RESET + question + ' ')
 
+
 #####################################################################
 # Helpers
 #####################################################################
@@ -116,11 +117,17 @@ def is_hidpi():
     """
     Get screen width resolution. If it's looks big, return true
     """
-    output = Popen('xrandr | grep "\*" | sort -nr | head -n 1 | cut -d" " -f4', shell=True, stdout=PIPE, stderr=PIPE).communicate()
-    resolution = output[0].decode('UTF-8').split()[0].split('x')
-    width = int(resolution[0])
-    height = int(resolution[1])
-    return (width > 2600 and height > 1600)
+    output = Popen(
+        'xrandr | grep "\*" | sort -nr | head -n 1 | cut -d" " -f4', shell=True, stdout=PIPE,
+        stderr=PIPE).communicate()
+    try:
+        resolution = output[0].decode('UTF-8').split()[0].split('x')
+        width = int(resolution[0])
+        height = int(resolution[1])
+        return (width > 2600 and height > 1600)
+    except IndexError:
+        # Without display
+        return False
 
 
 def count_files(rootFolder):
@@ -131,6 +138,7 @@ def count_files(rootFolder):
     for root, dirs, files in os.walk(rootFolder):
         total += len(files)
     return total
+
 
 #####################################################################
 # Symlinks
@@ -209,6 +217,7 @@ def symlink_root(src, dest):
         print_error(src + " doesn't exist")
         return False
 
+
 #####################################################################
 # Compile
 #####################################################################
@@ -225,6 +234,7 @@ def dconf_load(appconf):
         else:
             print_success('Load {}'.format(confname))
 
+
 #####################################################################
 # Compile
 #####################################################################
@@ -238,6 +248,7 @@ def generate_config(outfilename, filenames, comment='#'):
             fout.write(line)
     print_success('Generated: ' + outfilename)
 
+
 #####################################################################
 # Git
 #####################################################################
@@ -250,17 +261,15 @@ def git_clone(url, destination):
 
 def git_pull(destination):
     print_info('Update ' + destination)
-    return exec_command(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git',
-                         'pull', 'origin', 'master'])
+    return exec_command(
+        ['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'pull', 'origin', 'master'])
 
 
 def git_version(destination):
     """ Get current commit """
-    p = Popen(
-        ['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'rev-parse',
-         'HEAD'],
-        stdout=PIPE,
-        stderr=PIPE)
+    p = Popen(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'rev-parse', 'HEAD'],
+              stdout=PIPE,
+              stderr=PIPE)
     version, errors = p.communicate()
     if p.returncode != 0:
         print_error(errors.decode('UTF-8'))
@@ -290,6 +299,7 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
         if dot_version_prev != dot_version_next:
             # Restart current script if version change
             os.execl(sys.executable, sys.executable, sys.argv[0], '--restart', *sys.argv[1:])
+
 
 #####################################################################
 # Main
@@ -352,7 +362,11 @@ def main(dotfilespath, restarted):
         if os.path.islink(st_preference_file):
             os.unlink(st_preference_file)
         # Copy te file and replace line with the dpi setting
-        with open(os.path.join(dotfilespath, 'appdesktop/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')) as oldfile, open(st_preference_file, 'w') as newfile:
+        with open(
+                os.path.join(
+                    dotfilespath,
+                    'appdesktop/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')) as oldfile, open(
+                        st_preference_file, 'w') as newfile:
             for line in oldfile:
                 if 'dpi_scale' in line:
                     newfile.write('    "dpi_scale": 1.5,\n')
@@ -366,15 +380,9 @@ if __name__ == '__main__':
 
     # Read arguments
     parser = argparse.ArgumentParser(prog='dotfiles')
-    parser.add_argument("-p",
-                        "--path",
-                        help="Dotfiles base path. Default ~/.dotfiles",
-                        default=os.path.expanduser('~/.dotfiles'))
-    parser.add_argument("-r",
-                        "--restart",
-                        help=argparse.SUPPRESS,
-                        action="store_true",
-                        default=False)
+    parser.add_argument(
+        "-p", "--path", help="Dotfiles base path. Default ~/.dotfiles", default=os.path.expanduser('~/.dotfiles'))
+    parser.add_argument("-r", "--restart", help=argparse.SUPPRESS, action="store_true", default=False)
 
     args = parser.parse_args()
 
