@@ -121,7 +121,7 @@ visualizer_look = "▒░"
 ## Time of inactivity (in seconds) after playlist
 ## highlighting will be disabled (0 = always on).
 ##
-#playlist_disable_highlight_delay = 5
+playlist_disable_highlight_delay = 0
 #
 ## Defines how long messages are supposed to be visible.
 ##
@@ -293,10 +293,10 @@ visualizer_look = "▒░"
 ##
 ## Note: Possible display modes: classic, columns.
 ##
-#playlist_display_mode = columns
-#
-#browser_display_mode = classic
-#
+playlist_display_mode = columns
+
+browser_display_mode = columns
+
 #search_engine_display_mode = classic
 #
 #playlist_editor_display_mode = classic
@@ -436,9 +436,9 @@ display_volume_level = yes
 #block_search_constraints_change_if_items_found = yes
 #
 #mouse_support = yes
-#
-#mouse_list_scroll_whole_page = yes
-#
+
+mouse_list_scroll_whole_page = no
+
 #empty_tag_marker = <empty>
 #
 #tags_separator = " | "
@@ -524,15 +524,24 @@ external_editor = vim
 #active_window_border = red
 
 # Display Settings
-statusbar_color = "white"
-main_window_color = "cyan"
-main_window_highlight_color = "magenta"
-active_column_color = "cyan"
+song_columns_list_format = "$L(9)[cyan]{l} (25)[green]{a} (40)[white]{t} $R(30)[blue]{b}"
+# song_list_format = {%a - }{%t}|{$8%f$9}$R{$3(%l)$9}
+alternative_header_first_line_format = $3$aqqu$/a$9 $3{%t}|{%f}$9 $3$atqq$/a$9
+alternative_header_second_line_format = {{$8%a$9}{ - $7%b$9}}|{%D}
+
+discard_colors_if_item_is_selected = "no"
+header_window_color = "black"
+volume_color = "cyan"
+state_line_color = "black"
+state_flags_color = "black"
+main_window_color = "white"
+color1 = "cyan"
+color2 = "black"
+main_window_highlight_color = "green"
 progressbar_color = "black"
-progressbar_elapsed_color = "green"
-discard_colors_if_item_is_selected = "yes"
-playlist_display_mode = "columns"
-search_engine_display_mode = "columns"
+statusbar_color = "black"
+active_column_color = "red"
+visualizer_color = "cyan"
 
 # Cheat sheet
 # %l - length
