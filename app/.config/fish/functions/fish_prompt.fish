@@ -1,25 +1,48 @@
+function prompt_pwd_full
+    # prompt_pwd is broken (https://stackoverflow.com/questions/33714385/how-do-you-change-fish-pwd-length-in-prompt-using-fish-prompt-pwd-dir-length)
+    set -q fish_prompt_pwd_dir_length; or set -l fish_prompt_pwd_dir_length 1
+
+    if [ $fish_prompt_pwd_dir_length -eq 0 ]
+        set -l fish_prompt_pwd_dir_length 99999
+    end
+
+    set -l realhome ~
+    echo $PWD | sed -e "s|^$realhome|~|" -e 's-\([^/.]{'"$fish_prompt_pwd_dir_length"'}\)[^/]*/-\1/-g'
+end
+
+
 function fish_prompt --description 'Write out the prompt'
-	#Save the return status of the previous command
+    #Save the return status of the previous command
     set stat $status
 
-	# Just calculate these once, to save a few cycles when displaying the prompt
+    set -l fish_prompt_pwd_dir_length 15
+
+    # Just calculate these once, to save a few cycles when displaying the prompt
     if not set -q __fish_prompt_hostname
         set -g __fish_prompt_hostname (hostname|cut -d . -f 1)
     end
 
-	if not set -q __fish_prompt_normal
+    if not set -q __fish_prompt_normal
         set -g __fish_prompt_normal (set_color normal)
     end
 
-	if not set -q __fish_color_blue
+    if not set -q __fish_color_green
+        set -g __fish_color_green (set_color green)
+    end
+
+    if not set -q __fish_color_blue
         set -g __fish_color_blue (set_color blue)
     end
 
-	if not set -q __fish_color_yellow
-        set -g __fish_color_yellow (set_color normal)
+    if not set -q __fish_color_cyan
+        set -g __fish_color_cyan (set_color cyan)
     end
 
-	#Set the color for the status depending on the value
+    if not set -q __fish_color_yellow
+        set -g __fish_color_yellow (set_color yellow)
+    end
+
+    # Set the color for the status depending on the value
     set __fish_color_status (set_color normal)
     if test $stat -gt 0
         set __fish_color_status (set_color red)
@@ -45,7 +68,8 @@ function fish_prompt --description 'Write out the prompt'
 	            set -g __fish_prompt_cwd (set_color $fish_color_cwd)
 	        end
 
-			printf '[%s] %s%s%s@%s%s %s%s %s[%s]%s \f\r$ ' (date "+%H:%M:%S") "$__fish_color_blue" $USER "$__fish_color_yellow" "$__fish_color_blue" $__fish_prompt_hostname "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_prompt_normal"
+			# printf '[%s] %s%s%s@%s%s %s%s %s[%s]%s \f\r$ ' (date "+%H:%M:%S") "$__fish_color_blue" $USER "$__fish_color_yellow" "$__fish_color_blue" $__fish_prompt_hostname "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_prompt_normal"
+			printf '[%s%s%s@%s%s%s]─[%s%s%s] $ ' "$__fish_color_blue" $USER "$__fish_color_cyan" "$__fish_color_blue" $__fish_prompt_hostname "$__fish_prompt_normal" "$__fish_color_green" (prompt_pwd_full) "$__fish_prompt_normal" 
 
 	end
 end
