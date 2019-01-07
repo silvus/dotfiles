@@ -1313,16 +1313,16 @@ client.connect_signal("manage", function (c)
 		awful.placement.no_offscreen(c)
 	end
 
-	if (c.class == "Firefox") then
-		-- if it's a Firefox we will connect a signal which will call if 'name' changing
-		c:connect_signal("property::name", function(c)
-			if (string.find(c.name, "(Private Browsing)")) then
-				-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tags[1][9]
-				local tags = root.tags()
-				c:tags({tags[9]})
-			end
-		end)
-	end
+	-- if (c.class == "Firefox") then
+	-- 	-- if it's a Firefox we will connect a signal which will call if 'name' changing
+	-- 	c:connect_signal("property::name", function(c)
+	-- 		if (string.find(c.name, "(Private Browsing)")) then
+	-- 			-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tags[1][9]
+	-- 			local tags = root.tags()
+	-- 			c:tags({tags[9]})
+	-- 		end
+	-- 	end)
+	-- end
 
 end)
 
