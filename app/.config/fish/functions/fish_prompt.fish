@@ -10,7 +10,7 @@ function prompt_pwd_full
     echo $PWD | sed -e "s|^$realhome|~|" -e 's-\([^/.]{'"$fish_prompt_pwd_dir_length"'}\)[^/]*/-\1/-g'
 end
 
-function fish_right_prompt --description 'Write out the left prompt'
+function fish_right_prompt --description 'Write out the right prompt'
     # Save the return status of the previous command
     set stat $status
      # Set the color for the status depending on the value
@@ -54,7 +54,7 @@ function fish_right_prompt --description 'Write out the left prompt'
 	printf '%s [%s%s%s]' "$__fish_git_status" "$__fish_color_status" "$stat" "$__fish_prompt_normal"
 end
 
-function fish_prompt --description 'Write out the right prompt'
+function fish_prompt --description 'Write out the left prompt'
     # Just calculate these once, to save a few cycles when displaying the prompt
     if not set -q __fish_prompt_hostname
         set -g __fish_prompt_hostname (hostname|cut -d . -f 1)

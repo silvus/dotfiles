@@ -70,7 +70,7 @@ export HISTSIZE=65536 # Lines in memory
 export HISTFILESIZE=65536 # Lines on disk
 export HISTCONTROL=ignoreboth # ignoredups + ignorespace
 # export HISTTIMEFORMAT="[%F %T] " # timestamps
-export HISTIGNORE="jrnl*:jnal*" # Ignore some commands
+# export HISTIGNORE="jrnl*:jnal*" # Ignore some commands
 
 # Fzf
 # -----------------------------------------------------------------------------

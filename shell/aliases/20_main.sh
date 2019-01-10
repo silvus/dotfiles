@@ -7,17 +7,12 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-alias dotreload="source ${HOME}/.bashrc"
+alias dotreload="source $HOME/.bashrc"
 alias dot="cd $SILVUSDOTFILES"
 alias d="cd $SILVUSDOC"
 alias t="cd $SILVUSTOOLS"
 alias s="cd $SILVUSHOME"
 alias m="cd $SILVUSMEDIA"
-
-mkcd() { mkdir -p "$@" && cd "$_"; }
-
-tmpfile() { $EDITOR $(mktemp); }
-tmpdir() { cd $(mktemp -d); }
 
 # from http://news.ycombinator.com/item?id=4492682
 alias tree1="tree --dirsfirst -ChFLQ 1"
@@ -80,25 +75,3 @@ alias mountshow='mount |column -t'
 # -----------------------------------------------------------------------------
 alias keymapazerty="setxkbmap -model pc105 -layout fr,us -variant oss"
 alias keymapqwerty="setxkbmap -model pc105 -layout us,fr -variant oss"
-
-# Set keyboard repeat delay and rate
-if [[ -x "$(which xset)" ]]; then
-	# If X is running
-	if xset q &>/dev/null; then
-		# Default: xset r rate 660 25
-		xset r rate 300 30
-
-		# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
-		if [[ -x "$(which setxkbmap)" ]]; then
-			setxkbmap -option "nbsp:none"
-		fi
-
-		# Disable beeps
-		xset b off
-	fi
-fi
-
-# Disable flow control (bind Ctrl+s in vim)
-stty -ixon
-# Stop backward-kill-word on directory delimiter (bind Ctrl+w in bash / zsh)
-stty werase undef

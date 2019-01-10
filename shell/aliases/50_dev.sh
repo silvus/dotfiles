@@ -54,3 +54,11 @@ dev() {
 		cd "${SILVUSPROJECT}"
 	fi
 }
+
+# Small utilities function
+# Must be here due to "cd" subshell usage
+# ------------------------------------------------------------
+mkcd() { mkdir -p "$@" && cd "$_"; }
+
+tmpfile() { $EDITOR $(mktemp); }
+tmpdir() { cd $(mktemp -d); }

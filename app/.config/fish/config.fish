@@ -1,18 +1,13 @@
 
-# if status --is-interactive
-# end
+if status --is-interactive
+	# Disable flow control (bind Ctrl+s in vim)
+	stty -ixon
+	# Stop backward-kill-word on directory delimiter (bind Ctrl+w in bash / zsh)
+	stty werase undef
+end
 
-alias cd..='cd ..'
-alias ..='cd ..'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
-alias ......='cd ../../../../../'
+# Source bash aliases
+source ~/.dotfiles/shell/aliases/20_main.sh
 
-alias l='LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'
-alias vi='vim'
-alias diskusage='ncdu'
-alias calculator='bc -l'
-alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
-alias keymapazerty="setxkbmap -model pc105 -layout fr,us -variant oss"
-alias keymapqwerty="setxkbmap -model pc105 -layout us,fr -variant oss"
+# Differents alias
+alias l='env LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'
