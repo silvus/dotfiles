@@ -80,6 +80,12 @@ function fish_prompt --description 'Write out the left prompt'
         set -g __fish_color_yellow (set_color yellow)
     end
 
+    # TODO:
+    # - PROMPT_DIRTRIM
+    # - Switch color on root
+    # - switch color on ssh
+    # - virtualenv
+
 	switch $USER
 
 		case root toor
