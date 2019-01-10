@@ -344,16 +344,6 @@ def main(dotfilespath, restarted):
         print_header('Dconf')
         dconf_load(os.path.join(dotfilespath, 'appconf'))
 
-    # Compile sshrc config
-    print_header('Sshrc')
-    generate_config(
-        os.path.expanduser("~/.sshrc"), [
-            os.path.join(dotfilespath, 'sshrc/sshrc_main'),
-            os.path.join(dotfilespath, 'shell/aliases/01_main.sh'),
-            os.path.join(dotfilespath, 'shell/bash/02_prompt.bash'),
-            os.path.join(dotfilespath, 'sshrc/sshrc_ascii'),
-        ])
-
     # ST3 Hidpi special case
     if X_is_installed() and is_hidpi():
         print_header('Sublime Text 3 HiDPI')

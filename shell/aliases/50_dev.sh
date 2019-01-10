@@ -1,54 +1,8 @@
-# Projects root folder (for Virtualenvwrapper, go, etc...)
-export SILVUSPROJECT="/data/dev"
-
-# Dotfiles
-export SILVUSDOC="/data/doc"
-export SILVUSTOOLS="/data/tools"
-export SILVUSHOME="/data/silvus"
-
-alias dotreload="source ${HOME}/.bashrc"
-alias dot="cd $SILVUSDOTFILES"
-alias d="cd $SILVUSDOC"
-alias t="cd $SILVUSTOOLS"
-alias s="cd $SILVUSHOME"
-
-# PATH
-# ------------------------------------------------------
-if [[ -d "${HOME}/bin" ]]; then
-	export PATH="${HOME}/bin:$PATH"
-fi
-
-if [[ -d "${SILVUSDOTFILES}/bin" ]]; then
-	export PATH="${SILVUSDOTFILES}/bin:$PATH"
-fi
-
-if [[ -d "${SILVUSDOC}/.bin" ]]; then
-	export PATH="${SILVUSDOC}/.bin:$PATH"
-fi
-if [[ -d "${SILVUSTOOLS}/.bin" ]]; then
-	export PATH="${SILVUSTOOLS}/.bin:$PATH"
-fi
-
-if [[ -d "${SILVUSPROJECT}/bin" ]]; then
-	export PATH="${SILVUSPROJECT}/bin:$PATH"
-fi
-
-# Golang
-# ------------------------------------------------------
-export GOPATH="$SILVUSPROJECT"
-
-if [[ -d "/usr/local/go/bin" ]]; then
-	export PATH="$PATH:/usr/local/go/bin"
-fi
 
 # Python
 # ------------------------------------------------------
 export PYTHONSTARTUP="$HOME/.pythonrc"
 # export PYTHONPATH="./.venv:$PYTHONPATH"
-
-if [[ -d "${HOME}/.local/bin" ]]; then
-	export PATH="$HOME/.local/bin:$PATH"
-fi
 
 # Pip
 export PIP_DOWNLOAD_CACHE="$HOME/.pip/cache"
@@ -56,11 +10,8 @@ pipvendor() {
    pip3 "$@" -t ".venv"
 }
 
-# Pipenv
-# export PIPENV_VENV_IN_PROJECT=true
-
-# Pew
-export WORKON_HOME="/data/dev/.venvs"
+# Pew / Virtualenvwrapper
+export WORKON_HOME="$SILVUSPROJECT/.venvs"
 
 # Virtualenv
 export VIRTUAL_ENV_DISABLE_PROMPT=true # Don't touch my PS1
@@ -72,8 +23,8 @@ alias pythonvenvpip=".venv/bin/pip3"
 # Pipsi
 export PIPSI_BIN_DIR="$HOME/bin"
 
-# Pyenv
-export PYENV_ROOT="$HOME/.pyenv"
+# Pyenv (Python version management)
+export PYENV_ROOT="$HOME/.config/pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
 	eval "$(pyenv init -)"

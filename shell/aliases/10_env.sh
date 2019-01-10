@@ -1,4 +1,5 @@
-
+# Programs
+# -----------------------------------------------------------------------------
 # Editor
 export EDITOR=vim
 
@@ -7,6 +8,51 @@ if [[ -n "$DISPLAY" ]]; then
     export BROWSER=firefox
 else
     export BROWSER=elinks
+fi
+
+# Customs paths
+# -----------------------------------------------------------------------------
+# Dotfiles path (if not set)
+export SILVUSDOTFILES=${SILVUSDOTFILES:="$HOME/.dotfiles"}
+
+# Projects root folder (for Virtualenvwrapper, etc...)
+export SILVUSPROJECT="/data/dev"
+
+# Dotfiles
+export SILVUSDOC="/data/doc"
+export SILVUSHOME="/data/silvus"
+export SILVUSMEDIA="/data/media"
+
+# PATH
+# ------------------------------------------------------
+if [[ -d "${HOME}/bin" ]]; then
+	export PATH="${HOME}/bin:$PATH"
+fi
+
+if [[ -d "${SILVUSDOTFILES}/bin" ]]; then
+	export PATH="${SILVUSDOTFILES}/bin:$PATH"
+fi
+
+if [[ -d "${SILVUSDOC}/.bin" ]]; then
+	export PATH="${SILVUSDOC}/.bin:$PATH"
+fi
+
+if [[ -d "${SILVUSPROJECT}/bin" ]]; then
+	export PATH="${SILVUSPROJECT}/bin:$PATH"
+fi
+
+if [[ -d "${HOME}/.local/bin" ]]; then
+	export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Man
+# -----------------------------------------------------------------------------
+if [[ -x "$(which most)" ]]; then
+	# Color pager
+	export MANPAGER="most";
+else
+	# Don’t clear the screen after quitting a manual page
+	export MANPAGER="less -X";
 fi
 
 # XDG
