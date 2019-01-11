@@ -336,16 +336,11 @@ myspaceseparator = wibox.widget.textbox('  ')
 
 -- Textclock widget with calendar
 local mytextclock = wibox.widget.textclock("%a %d %b  <span color='#ffffff'>%H:%M:%S</span>", 1)
--- TODO: icon doesn't show ?
 local myclockicon = wibox.widget.imagebox(beautiful.clock)
-lain.widget.calendar({
-	-- TODO: fix current day highlighted https://github.com/lcpz/lain/issues/300
-	cal = '/usr/bin/env TERM=linux ncal -M -b -3 -w',
-	attach_to = { mytextclock  },
-	notification_preset = {
-	   font = beautiful.font,
-   }
-})
+local calendar = require("calendar")
+-- attach it as popup to your text clock widget:
+calendar({}):attach(mytextclock)
+calendar({}):attach(myclockicon)
 
 -- Disks bar
 -- local fsicon = wibox.widget.imagebox(beautiful.hdd)
