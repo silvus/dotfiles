@@ -22,9 +22,9 @@ set --global -x FISH_IS_STARTED 1
 source ~/.dotfiles/shell/aliases/20_main.sh
 
 # Differents alias
-alias l='env LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'
+alias l='env LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'2
 
-# TODO
-# mkcd() { mkdir -p "$@" && cd "$_"; }
-# tmpfile() { $EDITOR $(mktemp); }
-# tmpdir() { cd $(mktemp -d); }
+function mkcd --description 'Create a folder and go into it'
+	mkdir -p "$argv"
+	cd "$argv"
+end
