@@ -111,7 +111,7 @@ naughty.config.defaults.ontop = true
 naughty.config.defaults.border_width = 1
 naughty.config.defaults.hover_timeout = nil
 naughty.config.defaults.fg = beautiful.fg_focus
-naughty.config.defaults.bg = beautiful.bg_Efocus
+naughty.config.defaults.bg = beautiful.bg_focus
 naughty.config.defaults.border_color = beautiful.border_focus
 
 naughty.config.presets.low.timeout = 10
@@ -648,19 +648,43 @@ local battery = lain.widget.bat({
 			else
 			-- 	baticon:set_image(beautiful.battery)
 			end
+			-- theme.bat                                       = theme.dir .. "/icons/bat.png"
+			-- theme.bat_low                                   = theme.dir .. "/icons/bat_low.png"
+			-- theme.bat_no                                    = theme.dir .. "/icons/bat_no.png"
+			-- theme.battery                                   = theme.dir .. "/icons/battery.png"
+			-- theme.battery_empty                             = theme.dir .. "/icons/battery_empty.png"
+			-- theme.battery_low                               = theme.dir .. "/icons/battery_low.png"
 		end
 	end,
+
+	-- Batterie notifications
+	bat_notification_charged_preset = {
+		-- title   = "Battery full",
+		-- text    = "You can unplug the cable",
+		timeout = naughty.config.presets.low.timeout,
+		fg      = naughty.config.presets.low.fg,
+		bg      = naughty.config.presets.low.bg,
+		preset  = naughty.config.presets.low
+	},
+	bat_notification_low_preset = {
+		-- title = "Battery low",
+		-- text = "Plug the cable!",
+		timeout = naughty.config.presets.critical.timeout,
+		fg = naughty.config.presets.critical.fg,
+		bg = naughty.config.presets.critical.bg,
+		preset = naughty.config.presets.critical
+	},
+	bat_notification_critical_preset = {
+		-- title = "Battery exhausted",
+		-- text = "Shutdown imminent",
+		timeout = naughty.config.presets.critical.timeout,
+		fg = naughty.config.presets.critical.fg,
+		bg = naughty.config.presets.critical.bg,
+		preset = naughty.config.presets.critical
+	},
 })
 local batbg = wibox.container.background(batbar, beautiful.info, gears.shape.rectangle)
 local mybatwidget = wibox.container.margin(batbg, 2, 7, 4, 4)
-
-
--- theme.bat                                       = theme.dir .. "/icons/bat.png"
--- theme.bat_low                                   = theme.dir .. "/icons/bat_low.png"
--- theme.bat_no                                    = theme.dir .. "/icons/bat_no.png"
--- theme.battery                                   = theme.dir .. "/icons/battery.png"
--- theme.battery_empty                             = theme.dir .. "/icons/battery_empty.png"
--- theme.battery_low                               = theme.dir .. "/icons/battery_low.png"
 
 -- Crypto
 -- TODO: Use icons
@@ -1248,9 +1272,9 @@ awful.rules.rules = {
 			floating = true,
 			ontop = true, -- Not compatible with fullscreen
 			callback = function(c)
-				-- 1/3 bottom right of focused screen
+				-- 2/5 bottom right of focused screen
 				sreen_geometry = awful.screen.focused().geometry
-				c:geometry( { width = sreen_geometry.width / 3 , height = sreen_geometry.height / 3 } )
+				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
 				awful.placement.bottom_right(c)
 			end
 
