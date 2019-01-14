@@ -18,8 +18,8 @@ function fish_right_prompt --description 'Write out the right prompt'
     if test $stat -gt 0
         set __fish_color_status (set_color red)
     end
-    if not set -q __fish_prompt_normal
-        set -g __fish_prompt_normal (set_color normal)
+    if not set -q __fish_color_normal
+        set -g __fish_color_normal (set_color normal)
     end
 
 	set -g __fish_git_prompt_show_informative_status 1
@@ -51,63 +51,61 @@ function fish_right_prompt --description 'Write out the right prompt'
         set __fish_git_status ""
     end
 
-	printf '%s [%s%s%s]' "$__fish_git_status" "$__fish_color_status" "$stat" "$__fish_prompt_normal"
+	printf '%s [%s%s%s]' "$__fish_git_status" "$__fish_color_status" "$stat" "$__fish_color_normal"
 end
 
 function fish_prompt --description 'Write out the left prompt'
+    # TODO:
+    # - PROMPT_DIRTRIM
+    # - virtualenv
+
     # Just calculate these once, to save a few cycles when displaying the prompt
-    if not set -q __fish_prompt_hostname
-        set -g __fish_prompt_hostname (hostname|cut -d . -f 1)
-    end
 
-    if not set -q __fish_prompt_normal
-        set -g __fish_prompt_normal (set_color normal)
+    # Colors
+    if not set -q __fish_color_normal
+        set -g __fish_color_normal (set_color normal)
     end
-
     if not set -q __fish_color_green
         set -g __fish_color_green (set_color green)
     end
-
+    if not set -q __fish_color_red
+        set -g __fish_color_red (set_color red)
+    end
     if not set -q __fish_color_blue
         set -g __fish_color_blue (set_color blue)
     end
-
     if not set -q __fish_color_cyan
         set -g __fish_color_cyan (set_color cyan)
     end
-
     if not set -q __fish_color_yellow
         set -g __fish_color_yellow (set_color yellow)
     end
 
-    # TODO:
-    # - PROMPT_DIRTRIM
-    # - Switch color on root
-    # - switch color on ssh
-    # - virtualenv
-
-	switch $USER
-
-		case root toor
-
-			if not set -q __fish_prompt_cwd
-		        if set -q fish_color_cwd_root
-		            set -g __fish_prompt_cwd (set_color $fish_color_cwd_root)
-		        else
-		            set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-		        end
-		    end
-
-			printf '%s@%s %s%s%s# ' $USER $__fish_prompt_hostname "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal"
-
-		case '*'
-
-			if not set -q __fish_prompt_cwd
-	            set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-	        end
-
-			# printf '[%s] %s%s%s@%s%s %s%s %s[%s]%s \f\r$ ' (date "+%H:%M:%S") "$__fish_color_blue" $USER "$__fish_color_yellow" "$__fish_color_blue" $__fish_prompt_hostname "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_prompt_normal"
-			printf '[%s%s%s@%s%s%s]─[%s%s%s] $ ' "$__fish_color_blue" $USER "$__fish_color_cyan" "$__fish_color_blue" $__fish_prompt_hostname "$__fish_prompt_normal" "$__fish_color_green" (prompt_pwd_full) "$__fish_prompt_normal"
-
+    # Switch user color if root
+    if not set -q __fish_prompt_color_username
+		switch $USER
+			case root toor
+		        set -g __fish_prompt_color_username (set_color red)
+			case '*'
+		        set -g __fish_prompt_color_username (set_color blue)
+		end
 	end
+
+	# Get Hostname
+	if not set -q __fish_prompt_hostname
+        set -g __fish_prompt_hostname (hostname|cut -d . -f 1)
+    end
+
+    # Switch hostname color on ssh
+    if not set -q __fish_color_hostname
+		if begin ; test -n "$SSH_CLIENT" ; or test -n "$SSH_TTY" ; end
+			set -g __fish_color_hostname (set_color red)
+		else
+			set -g __fish_color_hostname (set_color blue)
+		end
+	end
+
+	# printf '[%s] %s%s%s@%s%s %s%s %s[%s]%s \f\r$ ' (date "+%H:%M:%S") "$__fish_color_blue" $USER "$__fish_color_yellow" "$__fish_color_blue" $__fish_prompt_hostname "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_color_normal"
+	printf '[%s%s%s@%s%s%s]─[%s%s%s] $ ' "$__fish_prompt_color_username" $USER "$__fish_color_cyan" "$__fish_color_hostname" $__fish_prompt_hostname "$__fish_color_normal" "$__fish_color_green" (prompt_pwd_full) "$__fish_color_normal"
 end
+
