@@ -465,8 +465,12 @@ local mymemwidget = wibox.container.margin(membg, 2, 7, 4, 4)
 -- ALSA volume bar
 local volicon = wibox.widget.imagebox(beautiful.vol)
 local volume = lain.widget.alsabar({
-	width = 100, border_width = 0, ticks = false, ticks_size = 10,
-	timeout = 2, notification_preset = { font = beautiful.font },
+	width = 100,
+	border_width = 0,
+	ticks = false,
+	ticks_size = 10,
+	timeout = 2,
+	notification_preset = { font = beautiful.font },
 	--togglechannel = "IEC958,3",
 	settings = function()
 		if volume_now.status == "off" then
@@ -535,7 +539,14 @@ local musicicon = wibox.widget.imagebox(beautiful.music)
 musicicon.visible = false
 local moc = lain.widget.contrib.moc({
 	music_dir = "/data/media/music",
+	cover_size = 0,
 	settings  = function()
+		moc_notification_preset = {
+			title   = moc_now.artist .. " - " .. moc_now.title,
+			timeout = 6,
+			text    = string.format("%s (%s) - %s", moc_now.artist, moc_now.album, moc_now.title),
+			preset  = naughty.config.defaults
+		}
 		if moc_now.state == 'PLAY' or moc_now.state == 'PAUSE' then
 			musicicon.visible = true
 
@@ -575,10 +586,19 @@ local moc = lain.widget.contrib.moc({
 			mymocbarwidget.visible = false
 			-- mymocbar:set_value(0)
 		end
-	end
+	end,
 })
 local mocbg = wibox.container.background(moc.widget, beautiful.bg_normal, gears.shape.rectangle)
 local mymoc = wibox.container.margin(mocbg, 2, 7, 4, 4)
+mymocbarwidget:buttons(awful.util.table.join (
+	awful.button({}, 1, function()
+		-- TODO: doesn't work. PATH not set ?
+		awful.util.spawn("music --toggle-pause", false)
+	end),
+	awful.button({}, 3, function()
+		awful.util.spawn("music --next", false)
+	end)
+))
 
 -- VPN
 local vpnicon = wibox.widget.imagebox(beautiful.net_wired)
@@ -789,8 +809,8 @@ awful.screen.connect_for_each_screen(function(s)
 				-- layout = awful.widget.only_on_screen,
 				-- screen = "primary", -- Only display on primary screen
 				musicicon,
-				mymoc,
 				mymocbarwidget,
+				mymoc,
 				myspaceseparator,
 				vpnicon,
 				myvpn,
