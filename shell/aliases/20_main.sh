@@ -29,6 +29,7 @@ alias l='LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'
 alias distro='cat /etc/issue'
 alias shortcuts='bind -P'
 alias sudosu="sudo -Es"
+alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 
 # Vim
 # -----------------------------------------------------------------------------
@@ -55,6 +56,7 @@ alias calculator='bc -l'
 alias photo='eom' # Eye of Mate
 alias lynx="lynx -cfg=$HOME/.config/lynx/lynxrc -lss=$HOME/.config/lynx/lynx.lss"
 alias tmux="tmux -2" # Make 256 colors work in tmux
+alias g='git'
 
 # Screen
 # -----------------------------------------------------------------------------
