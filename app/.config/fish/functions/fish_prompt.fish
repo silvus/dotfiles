@@ -85,9 +85,9 @@ function fish_prompt --description 'Write out the left prompt'
     if not set -q __fish_prompt_color_username
 		switch $USER
 			case root toor
-		        set -g __fish_prompt_color_username (set_color red)
+		        set -g __fish_prompt_color_username $__fish_color_red
 			case '*'
-		        set -g __fish_prompt_color_username (set_color blue)
+		        set -g __fish_prompt_color_username $__fish_color_blue
 		end
 	end
 
@@ -99,13 +99,21 @@ function fish_prompt --description 'Write out the left prompt'
     # Switch hostname color on ssh
     if not set -q __fish_color_hostname
 		if begin ; test -n "$SSH_CLIENT" ; or test -n "$SSH_TTY" ; end
-			set -g __fish_color_hostname (set_color red)
+			set -g __fish_color_hostname $__fish_color_red
 		else
-			set -g __fish_color_hostname (set_color blue)
+			set -g __fish_color_hostname $__fish_color_blue
 		end
 	end
 
+	# Change $ color if the user hasn't write permissions on the current directory
+	if test -w "$PWD"
+		set -g __fish_color_permission $__fish_color_normal
+	else
+		set -g __fish_color_permission $__fish_color_yellow
+	end
+
 	# printf '[%s] %s%s%s@%s%s %s%s %s[%s]%s \f\r$ ' (date "+%H:%M:%S") "$__fish_color_blue" $USER "$__fish_color_yellow" "$__fish_color_blue" $__fish_prompt_hostname "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_color_normal"
-	printf '[%s%s%s@%s%s%s]─[%s%s%s] $ ' "$__fish_prompt_color_username" $USER "$__fish_color_cyan" "$__fish_color_hostname" $__fish_prompt_hostname "$__fish_color_normal" "$__fish_color_green" (prompt_pwd_full) "$__fish_color_normal"
+	printf '[%s%s%s@%s%s%s]─[%s%s%s] %s$%s ' "$__fish_prompt_color_username" $USER "$__fish_color_cyan" "$__fish_color_hostname" $__fish_prompt_hostname "$__fish_color_normal" "$__fish_color_green" (prompt_pwd_full) "$__fish_color_normal" "$__fish_color_permission" "$__fish_color_normal"
 end
+
 
