@@ -1205,10 +1205,12 @@ for i = 1, 9 do
 		awful.key({ modkey, "Shift" }, "#" .. i + 9,
 				  function ()
 					  if client.focus then
+						  local screen = awful.screen.focused()
 						  local tag = client.focus.screen.tags[i]
 						  if tag then
 							  client.focus:move_to_tag(tag)
 							  tag:view_only()
+							  set_wallpaper(screen)
 						  end
 					 end
 				  end,
