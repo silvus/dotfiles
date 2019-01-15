@@ -16,7 +16,7 @@ theme.error   									= "#D64937"
 theme.success  									= "#00A5FF"
 
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/thetheme"
-theme.wallpaper                                 = theme.dir .. "/wallpaper.png"
+theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
 theme.font                                      = "Monospace 9"
 
 theme.fg_normal                                 = theme.info

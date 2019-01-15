@@ -3,7 +3,7 @@
 -- ---------------------------------------------------------------------
 
 -- init random
-math.randomseed(os.time());
+-- math.randomseed(os.time());
 
 -- Standard lua
 local string = require("string")
@@ -150,38 +150,60 @@ function scanDir(directory)
 end
 
 -- Wallpaper
+-- First search in ~/.wallpaper.png
+-- Then search in ~/.wallpaper.jpg
+-- Then if ~/.wallpapers exist, use a different wallpaper by tag index (from default in ~/.config/awesome/wallpapers
+-- It can be customize with ~/.wallpapers/wallpaper_{tag_index}.{jpg|png}
+-- Final fallback to beautiful.wallpaper
 local function set_wallpaper(s)
-	if awful.util.file_readable(os.getenv("HOME") .. '/.wallpaper') then
+	local wallpaper_current = nil
+
+	if awful.util.file_readable(os.getenv("HOME") .. '/.wallpaper.png') then
 		-- if ~/.wallpaper is a file, use it
-		local wallpaper = os.getenv("HOME") .. '/.wallpaper'
-		gears.wallpaper.maximized(wallpaper, s, true)
-	elseif awful.util. dir_readable (os.getenv("HOME") .. '/.wallpaper') then
-		-- if ~/.wallpaper is a directory, pick one into it
-		local wallpapers = scanDir(os.getenv("HOME") .. '/.wallpaper')
-		-- If we got a tag and an associated wallpaper
+		wallpaper_current = os.getenv("HOME") .. '/.wallpaper.png'
+	elseif awful.util.file_readable(os.getenv("HOME") .. '/.wallpaper.jpg') then
+		-- if ~/.wallpaper is a file, use it
+		wallpaper_current = os.getenv("HOME") .. '/.wallpaper.jpg'
+
+	elseif awful.util.dir_readable (os.getenv("HOME") .. '/.wallpapers') then
+		-- if ~/.wallpapers is a directory, pick one into it (if name match pattern wallpaper_tagindex.ext)
+		local wallpapers_dir = os.getenv("HOME") .. '/.wallpapers'
+		-- else fallback to default wallpapers directory
+		local wallpaper_default_dir = os.getenv("HOME") .. '/.config/awesome/wallpapers'
+		-- Based on current tag
 		local tag = awful.screen.focused().selected_tag
-		if tag and wallpapers[tag.index] then
-			-- if on a tag, use his index to find a wallpaper
-			local wallpaper = wallpapers[tag.index]
-			gears.wallpaper.maximized(wallpaper, s, true)
-		else
-			-- Fallback to random one
-			-- local wallpaper = wallpapers[math.random(#wallpapers)]
-			-- Fallback to first one
-			local wallpaper = wallpapers[1]
-			gears.wallpaper.maximized(wallpaper, s, true)
+		local tag_index = 1
+		if tag then
+			tag_index = tag.index
 		end
 
-	else
-		-- Fallback to beautiful.wallpaper
-		if beautiful.wallpaper then
-			local wallpaper = beautiful.wallpaper
-			-- If wallpaper is a function, call it with the screen
-			if type(wallpaper) == "function" then
-				wallpaper = wallpaper(s)
-			end
-			gears.wallpaper.maximized(wallpaper, s, true)
+		if awful.util.file_readable(wallpapers_dir .. '/wallpaper_' .. tag_index .. '.jpg') then
+			-- Search in home jpg
+			wallpaper_current = wallpapers_dir .. '/wallpaper_' .. tag_index .. '.jpg'
+		elseif awful.util.file_readable(wallpapers_dir .. '/wallpaper_' .. tag_index .. '.png') then
+			-- Search in home png
+			wallpaper_current = wallpapers_dir .. '/wallpaper_' .. tag_index .. '.png'
+		elseif awful.util.file_readable(wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.jpg') then
+			-- Search in default directory jpg
+			wallpaper_current = wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.jpg'
+		elseif awful.util.file_readable(wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.png') then
+			-- Search in default directory png
+			wallpaper_current = wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.png'
 		end
+	end
+
+	-- Fallback to beautiful.wallpaper
+	if wallpaper_current == nil and beautiful.wallpaper then
+		wallpaper_current = beautiful.wallpaper
+		-- If wallpaper is a function, call it with the screen
+		if type(wallpaper) == "function" then
+			wallpaper_current = wallpaper(s)
+		end
+	end
+
+	-- Set wallpaper
+	if wallpaper_current ~= nil then
+		gears.wallpaper.maximized(wallpaper_current, s, true)
 	end
 end
 
@@ -290,46 +312,59 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- {{{ Wibar
 -- Create a wibox for each screen and add it
 local taglist_buttons = awful.util.table.join(
-					awful.button({ }, 1, function(t) t:view_only() end),
-					awful.button({ modkey }, 1, function(t)
-											  if client.focus then
-												  client.focus:move_to_tag(t)
-											  end
-										  end),
-					awful.button({ }, 3, awful.tag.viewtoggle),
-					awful.button({ modkey }, 3, function(t)
-											  if client.focus then
-												  client.focus:toggle_tag(t)
-											  end
-										  end),
-					awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
-					awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
-				)
+	awful.button({ }, 1, function(t)
+		t:view_only()
+		set_wallpaper(t.screen)
+	end),
+	awful.button({ modkey }, 1, function(t)
+		if client.focus then
+			client.focus:move_to_tag(t)
+		end
+	end),
+	awful.button({ }, 3, function(t)
+		awful.tag.viewtoggle(t)
+	end),
+	awful.button({ modkey }, 3, function(t)
+		if client.focus then
+			client.focus:toggle_tag(t)
+		end
+	end),
+	awful.button({ }, 4, function(t)
+		awful.tag.viewnext(t.screen)
+		set_wallpaper(t.screen)
+	end),
+	awful.button({ }, 5, function(t)
+		awful.tag.viewprev(t.screen)
+		set_wallpaper(t.screen)
+	end)
+)
 
+-- Apps list
 local tasklist_buttons = awful.util.table.join(
-					 awful.button({ }, 1, function (c)
-											if c == client.focus then
-												c.minimized = true
-											else
-												-- Without this, the following
-												-- :isvisible() makes no sense
-												c.minimized = false
-												if not c:isvisible() and c.first_tag then
-													c.first_tag:view_only()
-												end
-												-- This will also un-minimize
-												-- the client, if needed
-												client.focus = c
-												c:raise()
-											  end
-										  end),
-					 awful.button({ }, 3, client_menu_toggle_fn()))
-					-- awful.button({ }, 4, function ()
-					--						  awful.client.focus.byidx(1)
-					--					  end),
-					-- awful.button({ }, 5, function ()
-					--						  awful.client.focus.byidx(-1)
-					--					  end))
+	awful.button({ }, 1, function (c)
+		if c == client.focus then
+			c.minimized = true
+		else
+			-- Without this, the following
+			-- :isvisible() makes no sense
+			c.minimized = false
+			if not c:isvisible() and c.first_tag then
+				c.first_tag:view_only()
+			end
+			-- This will also un-minimize
+			-- the client, if needed
+			client.focus = c
+			c:raise()
+			end
+		end),
+	awful.button({ }, 3, client_menu_toggle_fn())
+)
+	-- awful.button({ }, 4, function ()
+	--						  awful.client.focus.byidx(1)
+	--					  end),
+	-- awful.button({ }, 5, function ()
+	--						  awful.client.focus.byidx(-1)
+	--					  end))
 
 -- Separator
 myspaceseparator = wibox.widget.textbox('  ')
