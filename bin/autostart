@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
+# Run in background if not already started
+# ------------------------------------------------------
 function run {
 	if ! pgrep $1;	then
 		$@ &
 	fi
 }
 
+# Keyboard config
+# ------------------------------------------------------
+setxkbmap -model pc105 -layout fr,us -variant oss
+
+# Auto start progs
+# ------------------------------------------------------
 run nm-applet
 # run guake -r tmux -e tmuxdev
 
@@ -17,16 +25,16 @@ fi
 
 # run dropbox start
 
-if [[ $GDMSESSION == 'i3' ]]; then
-	run feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/* &
-fi
+# if [[ $GDMSESSION == 'i3' ]]; then
+# 	run feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/*
+# fi
 
 # Environment specific configuration
 # ------------------------------------------------------
-if [[ $(hostname --short) == "mars" ]]; then
+if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" ]]; then
 	run firefox
 	# Dual screens configuration
-	xrandr --output HDMI-1 --mode 1920x1080 --pos 0x1080 --rotate normal --output DP-2 --primary --mode 3840x2160 --pos 1920x0 --rotate normal
+	# xrandr --output HDMI-1 --mode 1920x1080 --pos 0x1080 --rotate normal --output DP-2 --primary --mode 3840x2160 --pos 1920x0 --rotate normal
 	# xrandr --output DP-2 --primary --auto --output HDMI-1 --left-of DP-2 --off
 fi
 

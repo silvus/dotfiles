@@ -80,6 +80,12 @@ if awesome.hostname == 'mars' then
 end
 
 -- ---------------------------------------------------------------------
+-- Screen configuration
+-- ---------------------------------------------------------------------
+awful.spawn.with_shell("~/.dotfiles/bin/autostart_screen")
+
+
+-- ---------------------------------------------------------------------
 -- Config
 -- ---------------------------------------------------------------------
 
@@ -139,16 +145,6 @@ awful.layout.layouts = {
 	-- awful.layout.suit.corner.se,
 }
 -- }}}
-
--- Get the list of files from a directory
-function scanDir(directory)
-	local i, fileList, popen = 0, {}, io.popen
-	for filename in popen("find " .. directory .. " -type f | sort"):lines() do
-		i = i + 1
-		fileList[i] = filename
-	end
-	return fileList
-end
 
 -- Wallpaper
 -- First search in ~/.wallpaper.png
@@ -1357,7 +1353,7 @@ awful.rules.rules = {
 			--switchtotag = true
 		}
 	},
-	{ rule_any = { class = { "Code", "krita" }},
+	{ rule_any = { class = { "Code", "krita", "Sublime_text" }},
 		except = { type = "dialog" },
 		properties = {
 			tag = "2",
@@ -1450,14 +1446,6 @@ client.connect_signal("request::titlebars", function(c)
 	}
 end)
 
--- Enable sloppy focus, so that focus follows mouse.
--- client.connect_signal("mouse::enter", function(c)
---	 if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
---		 and awful.client.focus.filter(c) then
---		 client.focus = c
---	 end
--- end)
-
 -- No border for maximized clients
 -- function border_adjust(c)
 -- 	if c.maximized then
@@ -1487,7 +1475,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- ---------------------------------------------------------------------
 -- Auto start
 -- ---------------------------------------------------------------------
-
-awful.spawn.with_shell("setxkbmap -model pc105 -layout fr,us -variant oss")
 awful.spawn.with_shell("~/.dotfiles/bin/autostart")
-
