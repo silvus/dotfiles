@@ -356,8 +356,8 @@ local tasklist_buttons = awful.util.table.join(
 			client.focus = c
 			c:raise()
 			end
-		end),
-	awful.button({ }, 3, client_menu_toggle_fn())
+		end)
+	-- awful.button({ }, 3, client_menu_toggle_fn())
 )
 	-- awful.button({ }, 4, function ()
 	--						  awful.client.focus.byidx(1)
@@ -1052,6 +1052,14 @@ globalkeys = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
 			  {description = "refresh the menubar", group = "launcher"}),
 
+	-- Client menu
+	awful.key({ modkey,		   }, "e",	  function()
+		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
+		-- Default to mouse.coords()
+	    -- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
+	    awful.menu.clients({theme = { width = 500} })
+	end, {description="client menu", group="launcher"}),
+
 	-- awful.key({ modkey }, "e", function()
 	-- 	awful.util.spawn("subl", false)
 	-- end),
@@ -1071,9 +1079,9 @@ globalkeys = awful.util.table.join(
 	 	-- awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'sublime_text.Sublime_text' '/opt/sublime_text/sublime_text'")
 	-- 	awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'emacs.Emacs' 'emacs'")
 	--end, {description = "Toggle guake like editor", group = "launcher"}),
-	awful.key({ modkey }, "e", function()
-		awful.util.spawn("emacs", false)
-	end, {description = "launch editor", group = "launcher"}),
+	-- awful.key({ modkey }, "e", function()
+	-- 	awful.util.spawn("emacs", false)
+	-- end, {description = "launch editor", group = "launcher"}),
 
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function ()
@@ -1484,3 +1492,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 awful.spawn.with_shell("setxkbmap -model pc105 -layout fr,us -variant oss")
 awful.spawn.with_shell("~/.dotfiles/bin/autostart")
+
