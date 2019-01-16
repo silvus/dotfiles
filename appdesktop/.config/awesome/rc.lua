@@ -20,6 +20,7 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local lain	= require("lain")
 local menubar = require("menubar")
+local widget_common = require("awful.widget.common")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local os	  = { getenv = os.getenv, setlocale = os.setlocale }
 
@@ -802,15 +803,12 @@ awful.screen.connect_for_each_screen(function(s)
 	-- s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
 	-- Create a tasklist widget
-	s.mytasklist = awful.widget.tasklist(
-		s,
-		awful.widget.tasklist.filter.currenttags,
-		tasklist_buttons
-	)
-	-- screen = s,
-	--	filter = awful.widget.tasklist.filter.currenttags,
-		--uttons = tasklist_buttons
-	-- })
+	-- s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
+	-- Create a tasklist widget with a max width
+	s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons, nil, function(w, buttons, label, data, objects)
+		widget_common.list_update(w, buttons, label, data, objects)
+		w:set_max_widget_size(300)
+	end, wibox.layout.flex.horizontal())
 
 	-- Create the wibox
 	-- TODO: improve like this : https://github.com/awesomeWM/awesome/blob/dd5be865c3d00c580389c38ea41b6719ab567d3e/tests/_wibox_helper.lua
