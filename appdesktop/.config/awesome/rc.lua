@@ -1353,7 +1353,7 @@ awful.rules.rules = {
 			--switchtotag = true
 		}
 	},
-	{ rule_any = { class = { "Code", "krita", "Sublime_text" }},
+	{ rule_any = { class = { "Code", "krita", "Sublime_text", "jetbrains-phpstorm" }},
 		except = { type = "dialog" },
 		properties = {
 			tag = "2",
