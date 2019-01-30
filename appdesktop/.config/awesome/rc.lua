@@ -31,6 +31,7 @@ if awesome.startup_errors then
 	naughty.notify({ preset = naughty.config.presets.critical,
 					 title = "Oops, there were errors during startup!",
 					 text = awesome.startup_errors })
+	-- naughty.notify({text = 'notif text' })
 end
 
 -- Handle runtime errors after startup
@@ -83,7 +84,7 @@ end
 -- Screen configuration
 -- ---------------------------------------------------------------------
 awful.spawn.with_shell("~/.dotfiles/bin/autostart_screen")
-
+max_screen_count = screen:count()
 
 -- ---------------------------------------------------------------------
 -- Config
@@ -149,8 +150,8 @@ awful.layout.layouts = {
 -- Wallpaper
 -- First search in ~/.wallpaper.png
 -- Then search in ~/.wallpaper.jpg
--- Then if ~/.wallpapers exist, use a different wallpaper by tag index (from default in ~/.config/awesome/wallpapers
--- It can be customize with ~/.wallpapers/wallpaper_{tag_index}.{jpg|png}
+-- Then if ~/.wallpapers exist, use a different wallpaper by screen and tag index, then by tag index only, then from default in ~/.config/awesome/wallpapers
+-- It can be customize with ~/.wallpapers/wallpaper_{screen_index}_{tag_index}.{jpg|png}
 -- Final fallback to beautiful.wallpaper
 local function set_wallpaper(s)
 	local wallpaper_current = nil
@@ -173,19 +174,28 @@ local function set_wallpaper(s)
 		if tag then
 			tag_index = tag.index
 		end
+		local screen_index = 1
+		if max_screen_count > 1 and s.index then
+			screen_index = s.index
+		end
 
-		if awful.util.file_readable(wallpapers_dir .. '/wallpaper_' .. tag_index .. '.jpg') then
-			-- Search in home jpg
-			wallpaper_current = wallpapers_dir .. '/wallpaper_' .. tag_index .. '.jpg'
-		elseif awful.util.file_readable(wallpapers_dir .. '/wallpaper_' .. tag_index .. '.png') then
-			-- Search in home png
-			wallpaper_current = wallpapers_dir .. '/wallpaper_' .. tag_index .. '.png'
-		elseif awful.util.file_readable(wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.jpg') then
+		local wallpapers_possibilities = {
+			-- Search in home with a screen index
+			wallpapers_dir .. '/wallpaper_' .. screen_index .. '_' .. tag_index .. '.jpg',
+			wallpapers_dir .. '/wallpaper_' .. screen_index .. '_' .. tag_index .. '.png',
+			-- Search in home
+			wallpapers_dir .. '/wallpaper_' .. tag_index .. '.jpg',
+			wallpapers_dir .. '/wallpaper_' .. tag_index .. '.png',
 			-- Search in default directory jpg
-			wallpaper_current = wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.jpg'
-		elseif awful.util.file_readable(wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.png') then
-			-- Search in default directory png
-			wallpaper_current = wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.png'
+			wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.jpg',
+			wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.png'
+		}
+		-- take the first existing wallpaper
+		for _, wp in ipairs(wallpapers_possibilities) do
+			if awful.util.file_readable(wp) then
+				wallpaper_current = wp
+				break
+			end
 		end
 	end
 
@@ -1248,7 +1258,6 @@ root.keys(globalkeys)
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
-max_screen_count = screen:count()
 awful.rules.rules = {
 	-- All clients will match this rule.
 	{ rule = { },
