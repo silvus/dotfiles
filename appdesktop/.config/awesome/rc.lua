@@ -677,7 +677,7 @@ local batbar = wibox.widget {
 	color 			= beautiful.success,
 	background_color = beautiful.bg_normal,
 	border_color	= beautiful.info,
-	widget		   = wibox.widget.progressbar
+	widget		    = wibox.widget.progressbar
 }
 batbar.visible  = false
 baticon.visible = false
@@ -692,30 +692,26 @@ local battery = lain.widget.bat({
 			baticon.visible = true
 			batbar:set_value(bat_now.perc)
 
-			if bat_now.status == "Charging" then
-				batbar.color = beautiful.info
-			elseif bat_now.status == "Discharging" then
-				batbar.color = beautiful.success
-			elseif bat_now.status == "Full" then
-				batbar.color = beautiful.success
-			end
-
-			-- Change icon if low battery
-			if bat_now.perc <= 15 then
+			-- Change icon and color if full or low battery
+			if bat_now.perc >= 95 then
+				batbar.color = beautiful.success_alt
+			elseif bat_now.perc <= 15 then
 				baticon:set_image(beautiful.battery_low)
 				batbar.color = beautiful.error
 			elseif bat_now.perc <= 5 then
 				baticon:set_image(beautiful.battery_empty)
 				batbar.color = beautiful.error
 			else
-			-- 	baticon:set_image(beautiful.battery)
+				baticon:set_image(beautiful.battery)
+				if bat_now.status == "Full" then
+					batbar.color = beautiful.success_alt
+				elseif bat_now.status == "Discharging" then
+					batbar.color = beautiful.success
+				elseif bat_now.status == "Charging" then
+					batbar.color = beautiful.info
+
+				end
 			end
-			-- theme.bat                                       = theme.dir .. "/icons/bat.png"
-			-- theme.bat_low                                   = theme.dir .. "/icons/bat_low.png"
-			-- theme.bat_no                                    = theme.dir .. "/icons/bat_no.png"
-			-- theme.battery                                   = theme.dir .. "/icons/battery.png"
-			-- theme.battery_empty                             = theme.dir .. "/icons/battery_empty.png"
-			-- theme.battery_low                               = theme.dir .. "/icons/battery_low.png"
 		end
 	end,
 

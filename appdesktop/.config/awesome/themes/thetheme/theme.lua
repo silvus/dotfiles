@@ -12,8 +12,8 @@ local theme   = {}
 theme.info   									= "#494B4F"
 theme.error   									= "#D64937"
 -- theme.error   									= "#C10004"
--- theme.success  									= "#8bdd58"
 theme.success  									= "#00A5FF"
+theme.success_alt  								= "#02d31e"
 
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/thetheme"
 theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
