@@ -233,6 +233,8 @@ local quaketerm = lain.util.quake({
 	overlap = true,
 	-- always spawn on currently focused screen
 	followtag = false,
+	-- On primary screen
+	screen = screen.primary,
 	-- dropdown client height (float in [0,1] or exact pixels number)
 	height = 1,
 	-- dropdown client width (float in [0,1] or exact pixels number)
@@ -270,6 +272,8 @@ local quakeeditor = lain.util.quake({
 	overlap = false,
 	-- always spawn on currently focused screen
 	followtag = false,
+	-- On primary screen
+	screen = screen.primary,
 	-- dropdown client height (float in [0,1] or exact pixels number)
 	height = 1,
 	-- dropdown client width (float in [0,1] or exact pixels number)
