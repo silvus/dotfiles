@@ -54,8 +54,14 @@ end
 -- ---------------------------------------------------------------------
 -- Screen configuration
 -- ---------------------------------------------------------------------
-awful.spawn.with_shell("~/.dotfiles/bin/autostart_screen")
+local function set_screen()
+	max_screen_count = screen:count()
+	awful.spawn.with_shell("~/.dotfiles/bin/autostart_screen")
+end
 max_screen_count = screen:count()
+screen.connect_signal("added", set_screen)
+screen.connect_signal("removed", set_screen)
+set_screen()
 
 
 -- ---------------------------------------------------------------------
