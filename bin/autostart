@@ -25,9 +25,9 @@ else
 fi
 
 # Bluetooth applet if installed
-if [[ -x $(which blueman-applet) ]]; then
-	run blueman-applet
-fi
+# if [[ -x $(which blueman-applet) ]]; then
+# 	run blueman-applet
+# fi
 
 # run dropbox start
 
