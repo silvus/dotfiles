@@ -1,11 +1,6 @@
 ! Changes take effect after running: xrdb -merge ~/.Xresources
 
-! Hidpi on mars
-#ifdef SRVR_mars
-	Xft.dpi: 150
-#else
-	Xft.dpi: 96
-#endif
+Xft.dpi: 96
 Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
