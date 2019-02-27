@@ -7,13 +7,13 @@ if [[ $(hostname --short) == "mars" ]]; then
 	# xrandr --output HDMI-1 --mode 1920x1080 --pos 0x1080 --rotate normal --output DP-2 --primary --mode 3840x2160 --pos 1920x0 --rotate normal
 	# xrandr --output DP-2 --primary --auto --output HDMI-1 --left-of DP-2 --off
 
+	# Screen vertical
+	xrandr --output DVI-D-0 --auto --primary --pos 0x0 --output HDMI-0 --auto --rotate left --pos 1920x-600 --output HDMI-1 --off
+
 	# With projector
 	# xrandr --output HDMI-1 --auto --same-as DVI-D-0
 	# Without projector
 	# xrandr --output HDMI-1 --off
-
-	# Screen vertical
-	xrandr --output DVI-D-0 --auto --primary --pos 0x0 --output HDMI-0 --auto --rotate left --pos 1920x-600 --output HDMI-1 --off
 fi
 
 if [[ -f "$HOME/.dotfiles_custom/autostart_screen" ]]; then

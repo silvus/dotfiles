@@ -50,41 +50,13 @@ do
 end
 -- }}}
 
--- ---------------------------------------------------------------------
--- Include personal config
--- ---------------------------------------------------------------------
-function isModuleAvailable(name)
-  if package.loaded[name] then
-	return true
-  else
-	for _, searcher in ipairs(package.searchers or package.loaders) do
-	  local loader = searcher(name)
-	  if type(loader) == 'function' then
-		package.preload[name] = loader
-		return true
-	  end
-	end
-	return false
-  end
-end
-
-function requireSafe(lib)
-	if isModuleAvailable(lib) then
-		require(lib)
-	end
-end
-
--- require("mail")
--- only for mars
-if awesome.hostname == 'mars' then
-	requireSafe('mail')
-end
 
 -- ---------------------------------------------------------------------
 -- Screen configuration
 -- ---------------------------------------------------------------------
 awful.spawn.with_shell("~/.dotfiles/bin/autostart_screen")
 max_screen_count = screen:count()
+
 
 -- ---------------------------------------------------------------------
 -- Config
@@ -216,6 +188,7 @@ end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
+
 
 -- Quake like terminal (single instance for all screens)
 local quaketerm = lain.util.quake({
