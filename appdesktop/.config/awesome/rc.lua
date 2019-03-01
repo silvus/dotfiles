@@ -1238,7 +1238,7 @@ root.keys(globalkeys)
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
-	-- All clients will match this rule.
+	-- All clients will match this rule
 	{ rule = { },
 		properties = {
 			border_width = beautiful.border_width,
@@ -1253,7 +1253,7 @@ awful.rules.rules = {
 		}
 	},
 
-	-- Floating clients.
+	-- Floating clients
 	{ rule_any = {
 		instance = {
 		  "DTA",  -- Firefox addon DownThemAll.
@@ -1290,7 +1290,7 @@ awful.rules.rules = {
 		}
 	},
 
-	-- default normal client rules
+	-- Default normal client rules
 	{ rule_any = { type = { "normal" } },
 		properties = {
 			titlebars_enabled = true,
@@ -1300,17 +1300,19 @@ awful.rules.rules = {
 		}
 	},
 
-	-- Set Firefox to always map on the tag named "2" on screen 1.
-	-- { rule = { class = "Firefox" },
-	--   properties = { screen = 1, tag = "2" } },
-
+	-- Specifics rules
 	{ rule = { class = "mpv" },
 		properties = {
-			-- Full screen on second monitor
 			-- floating = false,
 			-- sticky = true,
 			-- fullscreen = false,
-			-- screen = max_screen_count -- Open on last screen
+			-- titlebars_enabled = false,
+			-- maximized_vertical = true,
+			-- maximized_horizontal = true
+			-- switchtotag = true
+
+			-- screen = max_screen_count, -- Open on last screen
+			screen = screen.primary, -- On primary screen
 
 			-- Sticky in corner
 			focus = false,
@@ -1319,47 +1321,41 @@ awful.rules.rules = {
 			floating = true,
 			ontop = true, -- Not compatible with fullscreen
 			callback = function(c)
-				-- 2/5 bottom right of focused screen
-				sreen_geometry = awful.screen.focused().geometry
+				-- 2/5 bottom right of primary screen
+				sreen_geometry = screen.primary.geometry
 				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
 				awful.placement.bottom_right(c)
 			end
-
-			-- maximized_vertical = true,
-			-- maximized_horizontal = true,
-			-- titlebars_enabled = false,
 		}
 	},
 	{ rule = { class = "Firefox" },
-		except = { type = "dialog" },
 		properties = {
 			tag = "1",
-			-- floating = false,
-			-- titlebars_enabled = false,
-			-- maximized_vertical = true,
-			-- maximized_horizontal = true
-			--switchtotag = true
+			screen = screen.primary,
 		}
 	},
-	{ rule_any = { class = { "Code", "krita", "Sublime_text", "jetbrains-phpstorm" }},
-		except = { type = "dialog" },
+	{ rule_any = { class = {
+			"Code",
+			"krita",
+			"Sublime_text",
+			"jetbrains-phpstorm" }
+		},
+		-- except = { type = "dialog" },
 		properties = {
 			tag = "2",
-			--floating = false,
-			--maximized_vertical = true,
-			--maximized_horizontal = true
+			screen = max_screen_count,
 		}
 	},
 	{ rule = { class = "Thunderbird" },
-		except = { type = "dialog" },
 		properties = {
-			tag = "3"
+			tag = "3",
+			screen = screen.primary,
 		}
 	},
 	{ rule = { class = "Steam" },
-		except = { type = "dialog" },
 		properties = {
-			tag = "8"
+			tag = "8",
+			screen = screen.primary,
 		}
 	}
 }
