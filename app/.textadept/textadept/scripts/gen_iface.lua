@@ -1,5 +1,5 @@
 #!/usr/bin/lua
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local constants, functions, properties = {}, {}, {}
 local const_patt = '^val ([%w_]+)=([-%dx%x]+)'
@@ -12,10 +12,11 @@ local types = {
 }
 local ignores = { -- constants to ignore
   '^INDIC[012S]_', '^INVALID_POSITION', '^KEYWORDSET_MAX', '^SC_AC_',
-  '^SC_CACHE_', '^SC_CHARSET_', '^SC_EFF_', '^SC_FONT_SIZE_MULTIPLIER',
-  '^SC_INDIC', '^SC_LINE_END_TYPE_', '^SC_PHASES_', '^SC_POPUP_', '^SC_PRINT_',
-  '^SC_STATUS_', '^SC_TECHNOLOGY_', '^SC_TYPE_', '^SC_WEIGHT_', '^SCE_',
-  '^SCEN_', '^SCFIND_POSIX', '^SCI_', '^SCK_', '^SCLEX_', '^UNDO_MAY_COALESCE'
+  '^SC_DOCUMENTOPTION_', '^SC_CACHE_', '^SC_CHARSET_', '^SC_EFF_',
+  '^SC_FONT_SIZE_MULTIPLIER', '^SC_INDIC', '^SC_LINE_END_TYPE_', '^SC_PHASES_',
+  '^SC_POPUP_', '^SC_PRINT_', '^SC_STATUS_', '^SC_TECHNOLOGY_', '^SC_TYPE_',
+  '^SC_WEIGHT_', '^SCE_', '^SCEN_', '^SCFIND_POSIX', '^SCI_', '^SCK_',
+  '^SCLEX_', '^UNDO_MAY_COALESCE'
 }
 local changed_setter = {} -- holds properties changed to setter functions
 local string_format, table_unpack = string.format, table.unpack
@@ -26,7 +27,7 @@ for line in io.lines('../src/scintilla/include/Scintilla.iface') do
     for i = 1, #ignores do if name:find(ignores[i]) then goto continue end end
     name = name:gsub('^SC_', ''):gsub('^SC([^N]%u+)', '%1')
     if name == 'FIND_REGEXP' then
-      value = tostring(tonumber(value) + 2^22) -- add SCFIND_POSIX
+      value = tostring(tonumber(value) + 2^23) -- add SCFIND_CXX11REGEX
     elseif name == 'MASK_FOLDERS' then
       value = '-33554432'
     end
@@ -77,7 +78,7 @@ for line in io.lines('../src/scintilla/include/Scintilla.iface') do
   ::continue::
 end
 
--- Add mouse events from Scinterm manually.
+-- Add mouse events from Scintilla curses manually.
 constants[#constants + 1] = 'MOUSE_PRESS=1'
 constants[#constants + 1] = 'MOUSE_DRAG=2'
 constants[#constants + 1] = 'MOUSE_RELEASE=3'
@@ -88,7 +89,7 @@ table.sort(properties)
 
 local f = io.open('../core/iface.lua', 'wb')
 f:write([=[
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local M = {}
 

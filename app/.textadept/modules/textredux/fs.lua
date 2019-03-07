@@ -140,7 +140,7 @@ end
 -- with a trailing separator
 local function normalize_dir_path(directory)
   local path = normalize_path(directory)
-  return string_sub(path, -1) == separator and path or path .. separator
+  return path:gsub("[\\/]?%.?[\\/]?$", separator)
 end
 
 local function parse_filters(filter)
@@ -241,14 +241,17 @@ end
 
 local function sort_items(items)
   table.sort(items, function (a, b)
+    local self_path = '.' .. separator
     local parent_path = '..' .. separator
-    if a.rel_path == parent_path then return true
+    if a.rel_path == self_path then return true
+    elseif b.rel_path == self_path then return false
+    elseif a.rel_path == parent_path then return true
     elseif b.rel_path == parent_path then return false
     elseif a.hidden ~= b.hidden then return b.hidden
     elseif b.mode == 'directory' and a.mode ~= 'directory' then return false
     elseif a.mode == 'directory' and b.mode ~= 'directory' then return true
     end
-    -- Strip trailing seperator from directories for correct sorting,
+    -- Strip trailing separator from directories for correct sorting,
     -- e.g. `foo` before `foo-bar`
     local trailing = separator.."$"
     return a.rel_path:gsub(trailing, "") < b.rel_path:gsub(trailing, "")
@@ -269,7 +272,7 @@ local function chdir(list, directory)
   end
   if not complete then
     local status = 'Number of entries limited to ' ..
-                   data.max_files .. ' as per io.SNAPOPEN_MAX'
+                   data.max_files .. ' as per io.quick_open_max'
     ui.statusbar_text = status
   else
     ui.statusbar_text = ''
@@ -443,6 +446,54 @@ function M.select_file(on_selection, start_directory, filter, depth, max_files)
   chdir(list, start_directory)
 end
 
+function M.select_directory(on_selection, start_directory, filter, depth, max_files)
+  start_directory = start_directory or get_initial_directory()
+  if not filter then filter = {}
+  elseif type(filter) == 'string' then filter = { filter } end
+  filter[#filter + 1] = '.'
+
+  filter.folders = filter.folders or {}
+
+  local list = create_list(start_directory, filter, depth or 1,
+                           max_files or 10000)
+
+  list.on_selection = function(list, item)
+    local path, mode = item.path, item.mode
+      if mode == 'link' then
+        mode = lfs.attributes(path, 'mode')
+      end
+      if mode == 'directory' then
+        if path:match("[/\\]%.$") then
+          return
+        end
+        chdir(list, path)
+      end
+  end
+
+  list.on_new_selection = function(list, name, shift, ctrl, alt, meta)
+    local path = list.data.directory .. separator .. name:gsub("[/\\]*", "")
+    on_selection(normalize_dir_path(path), false, list, shift, ctrl, alt, meta)
+  end
+
+  list.keys.right = function()
+    local selected_dir = list:get_current_selection()
+    if not selected_dir then
+      return
+    end
+
+    local path = selected_dir.path
+    if path:match("[/\\]%.$") then
+      path = path:sub(1, -2)
+    elseif path:match("[/\\]%..$") then
+      return
+    end
+
+    on_selection(normalize_dir_path(path), false, list, shift, ctrl, alt, meta)
+  end
+
+  chdir(list, start_directory)
+end
+
 --- Saves the current buffer under a new name.
 -- Open a browser and lets the user select a name.
 function M.save_buffer_as()
@@ -482,7 +533,7 @@ end
 -- @param start_directory The directory to open, in UTF-8 encoding
 function M.open_file(start_directory)
   local filter = { folders = { separator .. '%.$' } }
-  M.select_file(open_selected_file, start_directory, filter, 1, io.SNAPOPEN_MAX)
+  M.select_file(open_selected_file, start_directory, filter, 1, io.quick_open_max)
 end
 
 
@@ -528,7 +579,7 @@ function M.snapopen(directory, filter, exclude_FILTER, depth)
     end
   end
 
-  M.select_file(open_selected_file, directory, filter, depth, io.SNAPOPEN_MAX)
+  M.select_file(open_selected_file, directory, filter, depth, io.quick_open_max)
 end
 
 return M

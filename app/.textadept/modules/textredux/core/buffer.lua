@@ -202,7 +202,7 @@ local function set_keys_mode()
   elseif buffer._textredux then
     keys.MODE = buffer._textredux.keys_mode
   else
-    keys.MODE = nil
+    keys.MODE = M.DEFAULT_MODE
   end
 end
 events.connect(events.BUFFER_AFTER_SWITCH, set_keys_mode)
@@ -478,7 +478,6 @@ function reduxbuffer:_create_target()
   target.wrap_mode = target.WRAP_NONE
   target.margin_width_n[1] = not CURSES and target.margin_width_n[0] + 4 or 1
   target.margin_width_n[0] = 0
-  target.style_back[33] = target.caret_line_back
   target:set_save_point()
   target.undo_collection = false
   self.target = target

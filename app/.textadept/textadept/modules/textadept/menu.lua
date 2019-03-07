@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 -- Contributions from Robert Gieseke.
 
 local M = {}
@@ -20,7 +20,7 @@ local SEPARATOR = {''}
 local menu_buffer_functions = {
   'undo', 'redo', 'cut', 'copy', 'paste', 'line_duplicate', 'clear',
   'select_all', 'upper_case', 'lower_case', 'move_selected_lines_up',
-  'move_selected_lines_down', 'zoom_in', 'zoom_out', 'colourise'
+  'move_selected_lines_down', 'zoom_in', 'zoom_out'
 }
 for i = 1, #menu_buffer_functions do
   buffer[menu_buffer_functions[i]] = buffer[menu_buffer_functions[i]]
@@ -44,7 +44,7 @@ local function set_encoding(encoding)
 end
 local function open_page(url)
   local cmd = (WIN32 and 'start ""') or (OSX and 'open') or 'xdg-open'
-  spawn(string.format('%s "%s"', cmd, not OSX and url or 'file://'..url))
+  os.spawn(string.format('%s "%s"', cmd, not OSX and url or 'file://'..url))
 end
 
 ---
@@ -90,7 +90,10 @@ local default_menubar = {
     end},
     {_L['Select _All'], buffer.select_all},
     SEPARATOR,
-    {_L['_Match Brace'], textadept.editing.match_brace},
+    {_L['_Match Brace'], function()
+      local match_pos = buffer:brace_match(buffer.current_pos, 0)
+      if match_pos >= 0 then buffer:goto_pos(match_pos) end
+    end},
     {_L['Complete _Word'], function()
       textadept.editing.autocomplete('word')
     end},
@@ -103,16 +106,9 @@ local default_menubar = {
     end},
     {
       title = _L['_Select'],
-      {_L['Select to _Matching Brace'], function()
-        textadept.editing.match_brace('select')
-      end},
+      {_L['Select between _Matching Delimiters'], sel_enc},
       {_L['Select between _XML Tags'], function() sel_enc('>', '<') end},
       {_L['Select in XML _Tag'], function() sel_enc('<', '>') end},
-      {_L['Select in _Single Quotes'], function() sel_enc("'", "'") end},
-      {_L['Select in _Double Quotes'], function() sel_enc('"', '"') end},
-      {_L['Select in _Parentheses'], function() sel_enc('(', ')') end},
-      {_L['Select in _Brackets'], function() sel_enc('[', ']') end},
-      {_L['Select in B_races'], function() sel_enc('{', '}') end},
       {_L['Select _Word'], textadept.editing.select_word},
       {_L['Select _Line'], textadept.editing.select_line},
       {_L['Select Para_graph'], textadept.editing.select_paragraph}
@@ -183,7 +179,7 @@ local default_menubar = {
         -- file. The difference is any additional arguments set previously.
         base_commands[i] = commands[buffer.filename:match('[^.]+$')] or
                            commands[buffer:get_lexer()] or ''
-        local current_command = (commands[buffer.filename] or '')
+        local current_command = commands[buffer.filename] or ''
         local args = current_command:sub(#base_commands[i] + 2)
         utf8_args[i] = args:iconv('UTF-8', _CHARSET)
       end
@@ -218,6 +214,16 @@ local default_menubar = {
         textadept.bookmarks.goto_mark(false)
       end},
       {_L['_Goto Bookmark...'], textadept.bookmarks.goto_mark},
+    },
+    {
+      title = _L['_Macros'],
+      {_L['_Start Recording'], textadept.macros.start_recording},
+      {_L['Sto_p Recording'], textadept.macros.stop_recording},
+      SEPARATOR,
+      {_L['_Play'], textadept.macros.play},
+      SEPARATOR,
+      {_L['Sa_ve...'], textadept.macros.save},
+      {_L['_Load...'], textadept.macros.load},
     },
     {
       title = _L['Quick _Open'],
@@ -533,8 +539,8 @@ end)
 -- Prompts the user to select a menu command to run.
 -- @name select_command
 function M.select_command()
-  local items, commands = {}, {}
-  -- Builds the item and commands tables for the filtered list dialog.
+  local items = {}
+  -- Builds the item tables for the filtered list dialog.
   -- @param menu The menu to read from.
   local function build_command_tables(menu)
     for i = 1, #menu do
@@ -544,7 +550,6 @@ function M.select_command()
         local label = menu.title and menu.title..': '..menu[i][1] or menu[i][1]
         items[#items + 1] = label:gsub('_([^_])', '%1')
         items[#items + 1] = key_shortcuts[tostring(menu[i][2])] or ''
-        commands[#commands + 1] = menu[i][2]
       end
     end
   end
@@ -553,10 +558,7 @@ function M.select_command()
     title = _L['Run Command'], columns = {_L['Command'], _L['Key Binding']},
     items = items, width = CURSES and ui.size[1] - 2 or nil
   }
-  if button ~= 1 or not i then return end
-  assert(type(commands[i]) == 'function',
-         _L['Unknown command:']..' '..tostring(commands[i]))
-  commands[i]()
+  if button == 1 and i then events.emit(events.MENU_CLICKED, i) end
 end
 
 return setmetatable(M, {

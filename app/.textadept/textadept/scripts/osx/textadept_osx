@@ -1,10 +1,10 @@
 #!/bin/sh
-# Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+# Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 # Set the GTK environment variables of resources within Textadept.app.
 bundle=$(cd "$(dirname "$0")/../../" && pwd)
 bundle_res="$bundle/Contents/Resources"
-export DYLD_LIBRARY_PATH="$bundle_res/lib:$DYLD_LIBRARY_PATH"
+export DYLD_LIBRARY_PATH="$bundle_res/lib"
 export GTK_DATA_PREFIX="$bundle_res"
 export GTK_EXE_PREFIX="$bundle_res"
 export GTK_PATH="$bundle_res"
@@ -23,6 +23,4 @@ if [ x`echo "x$1" | sed -e "s/^x-psn_.*//"` == x ]; then shift 1; fi
 if [ -f $HOME/.textadept/osx_env.sh ]; then . $HOME/.textadept/osx_env.sh; fi
 
 # Run Textadept.
-textadept=textadept
-if [ ! -z $TEXTADEPTJIT ]; then textadept=textadeptjit; fi
-exec "$bundle/Contents/MacOS/$textadept" "$@"
+exec "$bundle/Contents/MacOS/textadept" "$@"

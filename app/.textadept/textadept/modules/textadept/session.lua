@@ -1,17 +1,12 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local M = {}
 
 --[[ This comment is for LuaDoc.
 ---
 -- Session support for Textadept.
--- @field default_session (string)
---   The path to the default session file, *`_USERHOME`/session*, or
---   *`_USERHOME`/session_term* if [`CURSES`]() is `true`.
 -- @field save_on_quit (bool)
 --   Save the session when quitting.
---   The session file saved is always `textadept.session.default_session`, even
---   if a different session was loaded with [`textadept.session.load()`]().
 --   The default value is `true` unless the user passed the command line switch
 --   `-n` or `--nosession` to Textadept.
 -- @field max_recent_files (number)
@@ -20,9 +15,10 @@ local M = {}
 --   The default value is `10`.
 module('textadept.session')]]
 
-M.default_session = _USERHOME..(not CURSES and '/session' or '/session_term')
 M.save_on_quit = true
 M.max_recent_files = 10
+
+local session_file = _USERHOME..(not CURSES and '/session' or '/session_term')
 
 ---
 -- Loads session file *filename* or the user-selected session, returning `true`
@@ -33,10 +29,9 @@ M.max_recent_files = 10
 --   the user is prompted for one.
 -- @return `true` if the session file was opened and read; `false` otherwise.
 -- @usage textadept.session.load(filename)
--- @see default_session
 -- @name load
 function M.load(filename)
-  local dir, name = M.default_session:match('^(.-[/\\]?)([^/\\]+)$')
+  local dir, name = session_file:match('^(.-[/\\]?)([^/\\]+)$')
   filename = filename or ui.dialogs.fileselect{
     title = _L['Load Session'], with_directory = dir, with_file = name
   }
@@ -58,6 +53,7 @@ function M.load(filename)
         end
       else
         buffer.new()._type = filename
+        buffer:set_save_point()
         events.emit(events.FILE_OPENED, filename) -- close initial untitled buf
       end
       -- Restore saved buffer selection and view.
@@ -106,12 +102,14 @@ function M.load(filename)
       icon = 'gtk-dialog-warning'
     }
   end
+  session_file = filename
   return true
 end
 -- Load session when no args are present.
-events.connect(events.ARG_NONE, function()
-  if M.save_on_quit then M.load(M.default_session) end
-end)
+local function load_default_session()
+  if M.save_on_quit then M.load(session_file) end
+end
+events.connect(events.ARG_NONE, load_default_session)
 
 ---
 -- Saves the session to file *filename* or the user-selected file.
@@ -120,10 +118,9 @@ end)
 -- @param filename Optional absolute path to the session file to save. If `nil`,
 --   the user is prompted for one.
 -- @usage textadept.session.save(filename)
--- @see default_session
 -- @name save
 function M.save(filename)
-  local dir, name = M.default_session:match('^(.-[/\\]?)([^/\\]+)$')
+  local dir, name = session_file:match('^(.-[/\\]?)([^/\\]+)$')
   filename = filename or ui.dialogs.filesave{
     title = _L['Save Session'], with_directory = dir,
     with_file = name:iconv('UTF-8', _CHARSET)
@@ -148,10 +145,11 @@ function M.save(filename)
                                                  filename)
       -- Write out bookmarks.
       local lines = {}
-      local line = buffer:marker_next(0, 2^textadept.bookmarks.MARK_BOOKMARK)
+      local line = buffer:marker_next(0, 1 << textadept.bookmarks.MARK_BOOKMARK)
       while line >= 0 do
         lines[#lines + 1] = line
-        line = buffer:marker_next(line + 1, 2^textadept.bookmarks.MARK_BOOKMARK)
+        line = buffer:marker_next(line + 1,
+                                  1 << textadept.bookmarks.MARK_BOOKMARK)
       end
       session[#session + 1] = 'bookmarks: '..table.concat(lines, ' ')
     end
@@ -195,10 +193,11 @@ function M.save(filename)
   -- Write the session.
   local f = io.open(filename, 'wb')
   if f then f:write(table.concat(session, '\n')):close() end
+  session_file = filename
 end
 -- Saves session on quit.
 events.connect(events.QUIT, function()
-  if M.save_on_quit then M.save(M.default_session) end
+  if M.save_on_quit then M.save(session_file) end
 end, 1)
 
 -- Does not save session on quit.
@@ -208,6 +207,7 @@ args.register('-n', '--nosession', 0,
 args.register('-s', '--session', 1, function(name)
   if not lfs.attributes(name) then name = _USERHOME..'/'..name end
   M.load(name)
+  events.disconnect(events.ARG_NONE, load_default_session)
 end, 'Load session')
 
 return M

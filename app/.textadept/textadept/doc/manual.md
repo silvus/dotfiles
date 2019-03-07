@@ -39,10 +39,7 @@ speed or succumbing to code bloat and featuritis.
 
 Textadept is _fast_. It starts up instantly and has a very responsive user
 interface. Even though the editor consists primarily of Lua, Lua is one of the
-fastest scripting languages available. With the optional [LuaJIT][] version,
-Textadept runs faster than ever before.
-
-[LuaJIT]: http://luajit.org
+fastest scripting languages available.
 
 ### Minimalist
 
@@ -89,7 +86,9 @@ When mentioning key bindings, the manual often shows the Mac OSX and curses
 equivalents in parenthesis. It may be tempting to assume that some Windows/Linux
 keys map to Mac OSX's (e.g. `Ctrl` to `⌘`) or curses' (e.g. `Ctrl` to `^`), but
 this is not always the case. In order to minimize confusion, view key
-equivalents as separate entities, not as translations of one another.
+equivalents as separate entities, not as translations of one another. It is also
+worth pointing out that for curses, the prefix `M-` represents the Alt (or Meta)
+modifier key.
 
 - - -
 
@@ -100,8 +99,8 @@ equivalents as separate entities, not as translations of one another.
 ## Requirements
 
 In its bid for minimalism, Textadept also depends on very little to run. The GUI
-version needs only [GTK+][], a cross-platform GUI toolkit, version 2.18 or later
-(circa late-2009) on Linux and BSD systems. The application already bundles a
+version needs only [GTK+][], a cross-platform GUI toolkit, version 2.24 or later
+(circa early-2011) on Linux and BSD systems. The application already bundles a
 GTK+ runtime into the Windows and Mac OSX packages. The terminal, or curses,
 version of Textadept only depends on a curses implementation like [ncurses][] on
 Linux, Mac OSX, and BSD systems. The Windows binary includes a precompiled
@@ -132,7 +131,7 @@ Ubuntu typically call the package "libncursesw5".
 
 ### Requirements for Mac OSX
 
-No requirements other than Mac OSX 10.5 (Leopard) or higher with an Intel CPU.
+No requirements other than Mac OSX 10.6 (Snow Leopard) or higher.
 
 ### Requirements for Windows
 
@@ -197,15 +196,8 @@ You can also create a symbolic link to the executable in a directory in your
 "$PATH" (e.g. */usr/local/bin/*) or make a GNOME, KDE, XFCE, etc. button or menu
 launcher.
 
-The package also contains a *textadeptjit* executable for running Textadept with
-[LuaJIT][]. Due to potential [compatibility issues](#LuaJIT), use the
-*textadept* executable wherever possible.
-
-The *textadept-curses* and *textadeptjit-curses* executables are the terminal
-versions of Textadept. Run them as you would run the *textadept* and
-*textadeptjit* executables, but from a terminal instead.
-
-[LuaJIT]: http://luajit.org
+The *textadept-curses* executable is the terminal version of Textadept. Run them
+as you would run the *textadept* executable, but from a terminal instead.
 
 #### Runtime Problems
 
@@ -225,15 +217,6 @@ painless even though it requires [recompiling](#Compiling) Textadept.
 Run Textadept by double-clicking *Textadept.app*. You can also pin it to your
 dock.
 
-*Textadept.app* also contains an executable for running Textadept with
-[LuaJIT][]. Enable it by setting a "TEXTADEPTJIT"
-[environment variable](#Mac.OSX.Environment.Variables) or by typing
-`export TEXTADEPTJIT=1` in the terminal. Due to potential
-[compatibility issues](#LuaJIT), use the non-LuaJIT executable wherever
-possible.
-
-[LuaJIT]: http://luajit.org
-
 #### Mac OSX Environment Variables
 
 By default, Mac OSX GUI apps like Textadept do not see shell environment
@@ -249,12 +232,6 @@ example:
 
 Run Textadept by double-clicking *textadept.exe*. You can also create shortcuts
 to the executable in your Start Menu, Quick Launch toolbar, Desktop, etc.
-
-The package also contains a *textadeptjit.exe* executable for running Textadept
-with [LuaJIT][]. Due to potential [compatibility issues](#LuaJIT), use the
-*textadept.exe* executable wherever possible.
-
-[LuaJIT]: http://luajit.org
 
 #### Portable Textadept
 
@@ -412,9 +389,9 @@ manually sets indentation size.
 #### Buffer Encodings
 
 Textadept has the ability to decode files encoded in many different encodings,
-but by default it only attempts to decode UTF-8, ASCII, and ISO-8859-1. If you
-work with files with encodings Textadept does not recognize, add those encodings
-to [`io.encodings`][] in your [preferences](#Preferences).
+but by default it only attempts to decode UTF-8, ASCII, ISO-8859-1, and UTF-16.
+If you work with files with encodings Textadept does not recognize, add those
+encodings to [`io.encodings`][] in your [preferences](#Preferences).
 
 UTF-8 is the recommended file encoding because of its wide support by other text
 editors and operating systems. The "Buffer -> Encoding" menu changes the file
@@ -643,19 +620,16 @@ manager may also consume `Alt+Mouse` in order to move windows. In that case, a
 normal text selection may be changed into a rectangular selection by tapping the
 `Alt` modifier key.
 
-### Select to Matching Brace
+### Select between Matching Braces and Other Entities
 
-Placing the caret over a brace character ('(', ')', '[', ']', '{', or '}') and
-pressing `Ctrl+Shift+M` (`^⇧M` on Mac OSX| `M-S-M` in curses) extends the
-selection to the brace character's matching brace.
+Placing the caret over a brace character ('(', ')', '[', ']', '{', or '}') or
+between matching pairs and then pressing `Ctrl+Shift+M` (`^⇧M` on Mac OSX |
+`M-S-M` in curses) selects all text between the pair. Repeated use of this key
+binding toggles the selection of the brace characters themselves. You can also
+use this feature within other entities like single and double quotes.
 
-### Entity Selection
-
-Textadept allows the selection of many different entities from the caret. For
-example, `Ctrl+"` (`^"` on Mac OSX | `M-"` in curses) selects all characters in
-a double-quoted range. Typing it again selects the double-quotes too. The
-"Edit -> Select In..." menu lists all selectable entities with their key
-bindings.
+The "Edit -> Select In..." menu lists other selectable entities like HTML/XML
+tags.
 
 ### Marks
 
@@ -726,7 +700,8 @@ Pressing `Esc` (`Esc` | `Esc`) hides the pane after you finish with it.
 
 By default, "Replace All" replaces all text in the buffer. Selecting a
 continuous block of text and then "Replace All" replaces all text in the
-selection.
+selection. "Replace All" within rectangular or multiple selections is currently
+not supported.
 
 ### Find in Files
 
@@ -989,11 +964,37 @@ order to configure Textadept.
 Textadept executes a *~/.textadept/init.lua*, your user-init file, on startup.
 If this file does not exist, Textadept creates it for you. This file allows you
 to write arbitrary Lua code that instructs Textadept what to do when the
-application starts. This includes (but is not limited to) changing the
-settings of existing modules, loading new modules, modifying key bindings,
-adding snippets, editing file associations, adding menu items, and changing the
-theme. This manual discusses these specific customizations, minus theming, in
-the sections below. Theming is covered in a later section.
+application starts. This includes (but is not limited to) changing editor
+preferences, changing the settings of existing modules, loading new modules,
+modifying key bindings, adding snippets, editing file associations, adding menu
+items, and changing the theme. This manual discusses these specific
+customizations, minus theming, in the sections below. Theming is covered in a
+later section.
+
+### Editor Preferences
+
+Editor preferences are stored in a [`buffer`][] object. Normally, each buffer
+can have its own individual preferences, but on startup, any preferences set
+apply to all subsequent buffers. For example, in order to override a setting
+like Textadept's default indentation setting of 2 spaces per indent, add the
+following to your *~/.textadept/init.lua*:
+
+  buffer.use_tabs = true
+  buffer.tab_width = 4
+
+(If you want to define per-language editor preferences, use the technique shown
+in the [Language Preferences](#Language.Preferences) section below.)
+
+Textadept's own *init.lua* contains the application's default editor settings
+(like 2 space indentation). This file is a good "quick reference" for
+configurable editor settings. It also has many commented out settings that
+you can copy to your *~/.textadept/init.lua* and uncomment in order to turn on
+(or change the value of before turning on). You can view a settings's
+documentation by pressing `Ctrl+H` (`^H` on Mac OSX | `M-H` or `M-S-H` in
+curses) or by reading the [buffer API documentation][].
+
+[`buffer`]: api.html#buffer
+[buffer API documentation]: api.html#buffer
 
 ### Module Preferences
 
@@ -1208,37 +1209,6 @@ Learn more about menus and how to customize them in the [menu documentation][].
 
 [menu documentation]: api.html#textadept.menu
 
-## Buffer Settings
-
-While your *~/.textadept/init.lua* is useful for configuring Textadept's general
-preferences, it is not adequate for configuring editor preferences (e.g. buffer
-indentation settings, scrolling and autocompletion behavior, etc.). Attempting
-to define such settings from *~/.textadept/init.lua* would only apply to the
-first buffer and view -- subsequent buffers and split views would not inherit
-those settings.
-
-For editor preferences, Textadept executes a *~/.textadept/properties.lua* each
-time Textadept loads a file for editing (either in the current view or in a new,
-split view). Therefore, in order to override a setting like Textadept's default
-indentation setting of 2 spaces per indent, add the following to your
-*~/.textadept/properties.lua*:
-
-    buffer.use_tabs = true
-    buffer.tab_width = 4
-
-(If you want to define per-language editor preferences, use the technique shown
-in the [Language Preferences](#Language.Preferences) section above.)
-
-Textadept's own *properties.lua* contains the application's default editor
-settings (like 2 space indentation). This file is a good "quick reference" for
-configurable editor properties. It also has many commented out properties that
-you can copy to your *~/.textadept/properties.lua* and uncomment in order to
-turn on (or change the value of before turning on). You can view a property's
-documentation by pressing `Ctrl+H` (`^H` on Mac OSX | `M-H` or `M-S-H` in
-curses) or by reading the [buffer API documentation][].
-
-[buffer API documentation]: api.html#buffer
-
 ## Locale Preference
 
 Textadept attempts to auto-detect your locale settings using the "$LANG"
@@ -1285,17 +1255,17 @@ display these standard colors (which may be completely different in the end).
 ## Setting Themes
 
 Override the default theme in your [*~/.textadept/init.lua*](#User.Init) using
-the [`ui.set_theme()`][] function. For example:
+the [`buffer.set_theme()`][] function. For example:
 
-    ui.set_theme(not CURSES and 'dark' or 'term')
+    buffer:set_theme(not CURSES and 'dark' or 'term')
 
-Either restart Textadept for changes to take effect or type [`reset()`][] in the
+Either restart Textadept for changes to take effect or type [`reset`][] in the
 [command entry](#Lua.Command.Entry).
 
-`ui.set_theme()` can also tweak theme properties like font face and font size
-without editing the theme file itself:
+`buffer.set_theme()` can also tweak theme properties like font face and font
+size without editing the theme file itself:
 
-    ui.set_theme('light', {font = 'Monospace', fontsize = 12})
+    buffer:set_theme('light', {font = 'Monospace', fontsize = 12})
 
 You can even tweak themes on a per-language basis. For example, in order to
 color Java functions black instead of the default orange, add the following to
@@ -1310,8 +1280,8 @@ color Java functions black instead of the default orange, add the following to
 For a full list of configurable properties, please consult the theme file you
 are using.
 
-[`ui.set_theme()`]: api.html#ui.set_theme
-[`reset()`]: api.html#reset
+[`buffer.set_theme()`]: api.html#buffer.set_theme
+[`reset`]: api.html#reset
 
 ## Creating Themes
 
@@ -1422,6 +1392,15 @@ follows:
 * If no text is selected, the entire buffer is used.
 
 The standard output (stdout) of the command replaces the input text.
+
+## Macros
+
+While Textadept can be completely scripted with Lua, it is sometimes desirable
+to quickly record a series of edits and play them back without writing a custom
+script. Pressing `F9` starts a recording session, and `Shift+F9` (`⇧F9` on Mac
+OSX | `F10` in curses) stops recording. `Alt+F9` (`⌥F9` | `F12`) plays back the
+most recently recorded macro. You can use the "Tools -> Macros" menu to save a
+macro to a file, or load one for subsequent playback.
 
 ## Remote Control
 
@@ -1555,15 +1534,6 @@ Textadept contains its own copy of [Lua 5.3][] which has the same configuration
 
 [Lua 5.3]: http://www.lua.org/manual/5.3/
 
-### LuaJIT
-
-Even though Textadept runs with [LuaJIT][], LuaJIT does not fully support
-Lua 5.3. Therefore, try to write your modules and scripts to be compatible with
-both versions. For the most part, LuaJIT only lacks Lua 5.2's `_ENV` and Lua
-5.3's new bitwise operators and some new integer operations.
-
-[LuaJIT]: http://luajit.org
-
 ## Scintilla
 
 Textadept uses the [Scintilla][] editing component. The [buffer][] part of
@@ -1623,8 +1593,9 @@ as running it.
 
 ### Requirements for Linux and BSD
 
-First, Linux and BSD systems need either the [GNU C compiler][] (*gcc*) or
-[Clang][] (*clang*), as well as [GNU Make][] (*make* or *gmake*). BSD users
+First, Linux and BSD systems need either the [GNU C compiler][] (*gcc*) version
+4.9 or later (circa early 2014) or [Clang][] (*clang*), [libstdc++][] 4.9 or
+later (circa early 2014), and [GNU Make][] (*make* or *gmake*). BSD users
 additionally need to have [pkg-config][] and [libiconv][] installed. All of
 these should be available for your distribution through a package manager. For
 example, Ubuntu includes these tools in the "build-essential" package.
@@ -1644,6 +1615,7 @@ users _also_ need "libncursesw5-dev".)
 
 [GNU C compiler]: http://gcc.gnu.org
 [Clang]: http://clang.llvm.org/
+[libstdc++]: http://gcc.gnu.org
 [GNU Make]: http://www.gnu.org/software/make/
 [pkg-config]: http://www.freedesktop.org/wiki/Software/pkg-config/
 [libiconv]: http://www.gnu.org/software/libiconv/
@@ -1654,26 +1626,32 @@ users _also_ need "libncursesw5-dev".)
 
 Compiling Textadept on Windows is no longer supported. The preferred way to
 compile for Windows is cross-compiling from Linux. In order to do so, you need
-[MinGW][] with the Windows header files. Your package manager should offer them.
+[MinGW][] or [mingw-w64][] version 4.9 or later with the Windows header files.
+Your package manager should offer them.
 
 Note: compiling on Windows requires a C compiler that supports the C99 standard,
-the [GTK+ for Windows bundle][] (2.24 is recommended), and
-[libiconv for Windows][] (the "Developer files" and "Binaries" zip files). The
-terminal (pdcurses) version requires my [win32curses bundle][] instead of GTK+
-and libiconv.
+a C++ compiler that supports the C++11 standard, and a C++ standard library that
+supports C++11, and my [win32gtk bundle][]. The terminal (pdcurses) version
+requires [libiconv for Windows][] and my [win32curses bundle][] instead of GTK+.
 
 [MinGW]: http://mingw.org
-[GTK+ for Windows bundle]: http://www.gtk.org/download/windows.php
+[mingw-w64]: http://mingw-w64.org/
+[win32gtk bundle]: download/win32gtk-2.24.32.zip
 [libiconv for Windows]: http://gnuwin32.sourceforge.net/packages/libiconv.htm
 [win32curses bundle]: download/win32curses.zip
 
 ### Requirements for Mac OSX
 
 Compiling Textadept on Mac OSX is no longer supported. The preferred way is
-cross-compiling from Linux. In order to do so, you need the
-[Apple Cross-compiler][] binaries.
+cross-compiling from Linux. In order to do so, you need install an [OSX cross
+toolchain][] _with GCC_ version 4.9 or later. You will need to run
+`./build_binutils.sh` _before_ `./build_gcc.sh`. OSX SDK tarballs like
+*MacOSX10.5.tar.gz* can be found readily on the internet.
 
-[Apple Cross-compiler]: https://launchpad.net/~flosoft/+archive/cross-apple
+Note that building an OSX toolchain can easily take 30 minutes or more and
+ultimately consume nearly 3.5GB of disk space.
+
+[OSX cross toolchain]: https://github.com/tpoechtrager/osxcross
 
 ## Compiling
 
@@ -1702,10 +1680,10 @@ Note: for BSD systems, replace the `make` commands below with `gmake`.
 For Linux and BSD systems, simply run `make deps` (or `make deps NIGHTLY=1` when
 compiling Textadept from the latest source rather than from a tagged release) in
 the *src/* directory to prepare the build environment, followed by `make` to
-build the *textadept* and *textadeptjit* executables in the root directory. Make
-a symlink from them to */usr/bin/* or elsewhere in your `PATH`.
+build the *textadept* executable in the root directory. Make a symlink from them
+to */usr/bin/* or elsewhere in your `PATH`.
 
-Similarly, `make curses` builds *textadept-curses* and *textadeptjit-curses*.
+Similarly, `make curses` builds *textadept-curses*.
 
 Note: you may have to run
 
@@ -1734,29 +1712,23 @@ Similarly, `make curses` and `make curses install` installs the curses version.
 
 When cross-compiling from within Linux, first make a note of your MinGW
 compiler names. You may have to either modify the `CROSS` variable in the
-"win32" block of *src/Makefile* or append something like "CROSS=i486-mingw32-"
-when running `make`. After considering your MinGW compiler names, run
-`make win32-deps` or `make CROSS=i486-mingw32- win32-deps` to prepare the build
-environment followed by `make win32` or `make CROSS=i486-mingw32- win32` to
-build *../textadept.exe* and *../textadeptjit.exe*. Finally, copy the dll files
-from *src/win32gtk/bin/* to the directory containing the Textadept executables.
+"win32" block of *src/Makefile* or append something like
+"CROSS=i586-mingw32msvc-" when running `make`. After considering your MinGW
+compiler names, run `make win32-deps` or
+`make CROSS=i586-mingw32msvc- win32-deps` to prepare the build environment
+followed by `make win32` or `make CROSS=i586-mingw32msvc- win32` to build
+*../textadept.exe*. Finally, copy the dll files from *src/win32gtk/bin/* to the
+directory containing the Textadept executables.
 
 Similarly for the terminal version, run `make win32-curses` or its variant as
-suggested above to build *../textadept-curses.exe* and
-*../textadeptjit-curses.exe*.
-
-Please note the build process produces a *lua51.dll* for _only_
-*textadeptjit.exe* and *textadeptjit-curses.exe* because limitations on external
-Lua library loading do not allow statically linking LuaJIT to Textadept.
+suggested above to build *../textadept-curses.exe*.
 
 ### Cross Compiling for Mac OSX
 
 When cross-compiling from within Linux, run `make osx-deps` to prepare the build
-environment followed by `make osx` to build *../textadept.osx* and
-*../textadeptjit.osx*.
+environment followed by `make osx` to build *../textadept.osx*.
 
-Similarly, `make osx-curses` builds *../textadept-curses.osx* and
-*../textadeptjit-curses.osx*.
+Similarly, `make osx-curses` builds *../textadept-curses.osx*.
 
 Build a new *Textadept.app* with `make osx-app`.
 
@@ -1768,9 +1740,7 @@ Note that the entire compiling process can easily take 30 minutes or more and
 ultimately consume nearly 1GB of disk space.
 
 After using *jhbuild*, GTK+ is in *~/gtk/* so make a symlink from *~/gtk/inst*
-to *src/gtkosx* in Textadept. Then open *src/Makefile* and uncomment the
-"Darwin" block. Finally, run `make osx` to build *../textadept.osx* and
-*../textadeptjit.osx*.
+to *src/gtkosx* in Textadept. Then run `make osx` to build *../textadept.osx*.
 
 Developer note: in order to build a GTK+ for OSX bundle, run the following from
 the *src/* directory before zipping up *gtkosx/include/* and *gtkosx/lib/*:
@@ -1781,22 +1751,10 @@ the *src/* directory before zipping up *gtkosx/include/* and *gtkosx/lib/*:
 where `username` is your username.
 
 Compiling the terminal version is not so expensive and requires no additional
-libraries. After uncommenting the "Darwin" block mentioned above, simply run
-`make osx-curses` to build *../textadept-curses.osx* and
-*../textadeptjit-curses.osx*.
+libraries. Simply run `make osx-curses` to build *../textadept-curses.osx*.
 
 [XCode]: http://developer.apple.com/TOOLS/xcode/
 [jhbuild]: https://wiki.gnome.org/Projects/GTK+/OSX/Building
-
-### Notes on LuaJIT
-
-[LuaJIT][] is a Just-In-Time Compiler for Lua and can boost the speed of Lua
-programs. LuaJIT offers no real benefit performance-wise to justify it being
-Textadept's default runtime. LuaJIT's [ffi library][], however, appears to be
-useful for interfacing with external, non-Lua, libraries.
-
-[LuaJIT]: http://luajit.org
-[ffi library]: http://luajit.org/ext_ffi.html
 
 ### Notes on CDK
 
@@ -1850,6 +1808,7 @@ Switch             |Arguments|Description
 `-e`, `--execute`  |    1    |Run Lua [code](#Lua.Command.Entry).
 `-f`, `--force`    |    0    |Forces [unique instance](#Single.Instance).
 `-h`, `--help`     |    0    |Shows this.
+`-l`, `--line`     |    1    |Jumps to a line in the previously opened file.
 `-n`, `--nosession`|    0    |No [session](#Sessions) functionality.
 `-s`, `--session`  |    1    |Loads [session](#Sessions) on startup.
 `-u`, `--userhome` |    1    |Sets alternate [`_USERHOME`][].
@@ -1874,210 +1833,16 @@ Textadept has a [mailing list][] and a [wiki][].
 
 ## Regular Expressions
 
-Textadept uses [TRE][] as its regular expression library. TRE is a "lightweight,
-robust, and efficient POSIX compliant regexp matching library".
+Textadept's regular expressions are based on the C++11 standard for ECMAScript.
+There are a number of references for this syntax on the internet, including:
 
-The following is from the [TRE Regexp Syntax][].
+* [ECMAScript syntax C++ reference](http://www.cplusplus.com/reference/regex/ECMAScript/)
+* [Modified ECMAScript regular expression grammar](http://en.cppreference.com/w/cpp/regex/ecmascript)
+* [Regular Expressions (C++)](https://docs.microsoft.com/en-us/cpp/standard-library/regular-expressions-cpp)
 
-This section describes the POSIX 1003.2 extended RE (ERE) syntax as implemented
-by TRE, and the TRE extensions to the ERE syntax. A simple Extended Backus-Naur
-Form (EBNF) style notation is used to describe the grammar.
-
-**Alternation operator**
-
-    extended-regexp ::= branch
-                    |   extended-regexp "|" branch
-
-An extended regexp (ERE) is one or more branches, separated by `|`. An ERE
-matches anything that matches one or more of the branches.
-
-**Catenation of REs**
-
-    branch ::= piece
-           |   branch piece
-
-A branch is one or more pieces concatenated. It matches a match for the first
-piece, followed by a match for the second piece, and so on.
-
-    piece ::= atom
-          |   atom repeat-operator
-          |   atom approx-settings
-
-A piece is an atom possibly followed by a repeat operator or an expression
-controlling approximate matching parameters for the atom.
-
-    atom ::= "(" extended-regexp ")"
-         |   bracket-expression
-         |   "."
-         |   assertion
-         |   literal
-         |   back-reference
-         |   "(?#" comment-text ")"
-         |   "(?" options ")" extended-regexp
-         |   "(?" options ":" extended-regexp ")"
-
-An atom is either an ERE enclosed in parenthesis, a bracket expression, a `.`
-(period), an assertion, or a literal.
-
-The dot (`.`) matches any single character.
-
-Comment-text can contain any characters except for a closing parenthesis `)`.
-The text in the comment is completely ignored by the regex parser and it used
-solely for readability purposes.
-
-**Repeat operators**
-
-    repeat-operator ::= "*"
-                    |   "+"
-                    |   "?"
-                    |   bound
-                    |   "*?"
-                    |   "+?"
-                    |   "??"
-                    |   bound ?
-
-An atom followed by `*` matches a sequence of 0 or more matches of the atom. `+`
-is similar to `*`, matching a sequence of 1 or more matches of the atom. An atom
-followed by `?` matches a sequence of 0 or 1 matches of the atom.
-
-A bound is one of the following, where *m* and *n* are unsigned decimal integers
-between 0 and `RE_DUP_MAX`:
-
-1. {*m*,*n*}
-2. {*m*,}
-3. {*m*}
-
-An atom followed by [1] matches a sequence of *m* through *n* (inclusive)
-matches of the atom. An atom followed by [2] matches a sequence of *m* or more
-matches of the atom. An atom followed by [3] matches a sequence of exactly *m*
-matches of the atom.
-
-Adding a `?` to a repeat operator makes the subexpression minimal, or
-non-greedy. Normally a repeated expression is greedy, that is, it matches as
-many characters as possible. A non-greedy subexpression matches as few
-characters as possible. Note that this does not (always) mean the same thing as
-matching as many or few repetitions as possible.
-
-**Bracket expressions**
-
-    bracket-expression ::= "[" item+ "]"
-                       |   "[^" item+ "]"
-
-A bracket expression specifies a set of characters by enclosing a nonempty list
-of items in brackets. Normally anything matching any item in the list is
-matched. If the list begins with `^` the meaning is negated; any character
-matching no item in the list is matched.
-
-An item is any of the following:
-
-* A single character, matching that character.
-* Two characters separated by `-`. This is shorthand for the full range of
-  characters between those two (inclusive) in the collating sequence. For
-  example, `[0-9]` in ASCII matches any decimal digit.
-* A collating element enclosed in `[.` and `.]`, matching the collating element.
-  This can be used to include a literal `-` or a multi-character collating
-  element in the list.
-* A collating element enclosed in `[=` and `=]` (an equivalence class), matching
-  all collating elements with the same primary collation weight as that element,
-  including the element itself.
-* The name of a character class enclosed in `[:` and `:]`, matching any
-  character belonging to the class. The set of valid names depends on the
-  `LC_CTYPE` category of the current locale, but the following names are valid
-  in all locales:
-  + `alnum` -- alphanumeric characters
-  + `alpha` -- alphabetic characters
-  + `blank` -- blank characters
-  + `cntrl` -- control characters
-  + `digit` -- decimal digits (0 through 9)
-  + `graph` -- all printable characters except space
-  + `lower` -- lower-case letters
-  + `print` -- printable characters including space
-  + `punct` -- printable characters not space or alphanumeric
-  + `space` -- white-space characters
-  + `upper` -- upper case letters
-  + `xdigit` -- hexadecimal digits
-
-To include a literal `-` in the list, make it either the first or last item, the
-second endpoint of a range, or enclose it in `[.` and `.]` to make it a
-collating element. To include a literal `]` in the list, make it either the
-first item, the second endpoint of a range, or enclose it in `[.` and `.]`. To
-use a literal `-` as the first endpoint of a range, enclose it in `[.` and `.].`
-
-**Assertions**
-
-    assertion ::= "^"
-              |   "$"
-              |   "\" assertion-character
-
-The expressions `^` and `$` are called "left anchor" and "right anchor",
-respectively. The left anchor matches the empty string at the beginning of the
-string. The right anchor matches the empty string at the end of the string.
-
-An assertion-character can be any of the following:
-
-* `<` -- Beginning of word
-* `>` -- End of word
-* `b` -- Word boundary
-* `B` -- Non-word boundary
-* `d` -- Digit character (equivalent to `[[:digit:]]`)
-* `D` -- Non-digit character (equivalent to `[^[:digit:]]`)
-* `s` -- Space character (equivalent to `[[:space:]]`)
-* `S` -- Non-space character (equivalent to `[^[:space:]]`)
-* `w` -- Word character (equivalent to `[[:alnum:]_]`)
-* `W` -- Non-word character (equivalent to `[^[:alnum:]_]`)
-
-**Literals**
-
-    literal ::= ordinary-character
-            |   "\x" ["1"-"9" "a"-"f" "A"-"F"]{0,2}
-            |   "\x{" ["1"-"9" "a"-"f" "A"-"F"]* "}"
-            |  "\" character
-
-A literal is either an ordinary character (a character that has no other
-significance in the context), an 8 bit hexadecimal encoded character (e.g.
-`\x1B`), a wide hexadecimal encoded character (e.g. `\x{263a}`), or an escaped
-character. An escaped character is a `\` followed by any character, and matches
-that character. Escaping can be used to match characters which have a special
-meaning in regexp syntax. A `\` cannot be the last character of an ERE. Escaping
-also allows you to include a few non-printable characters in the regular
-expression. These special escape sequences include:
-
-* `\a` -- Bell character (ASCII code 7)
-* `\e` -- Escape character (ASCII code 27)
-* `\f` -- Form-feed character (ASCII code 12)
-* `\n` -- New-line/line-feed character (ASCII code 10)
-* `\r` -- Carriage return character (ASCII code 13)
-* `\t` -- Horizontal tab character (ASCII code 9)
-
-An ordinary character is just a single character with no other significance, and
-matches that character. A `{` followed by something else than a digit is
-considered an ordinary character.
-
-**Back references**
-
-    back-reference ::= "\" ["1"-"9"]
-
-A back reference is a backslash followed by a single non-zero decimal digit *d*.
-It matches the same sequence of characters matched by the *d*th parenthesized
-subexpression.
-
-**Options**
-
-    options ::= ["i" "n" "r" "U"]* ("-" ["i" "n" "r" "U"]*)?
-
-Options allow compile time options to be turned on/off for particular parts of
-the regular expression. If the option is specified in the first section, it is
-turned on. If it is specified in the second section (after the `-`), it is
-turned off.
-
-* `i` -- Case insensitive.
-* `n` -- Forces special handling of the new line character.
-* `r` -- Causes the regex to be matched in a right associative manner rather than
-        the normal left associative manner.
-* `U` -- Forces repetition operators to be non-greedy unless a `?` is appended.
-
-[TRE]: https://github.com/laurikari/tre
-[TRE Regexp Syntax]: http://laurikari.net/tre/documentation/regex-syntax/
+Note that Textadept's editing component, Scintilla, does not allow for matching
+newline characters (`\r` and `\n`). Use Lua scripts and
+[Lua patterns](#Lua.Patterns) instead.
 
 ## Lua Patterns
 
@@ -2226,6 +1991,86 @@ terminal's constraints:
 
 ## Migration Guides
 
+### Textadept 9 to 10
+
+#### API Changes
+
+Old API                         |Change  |New API
+--------------------------------|:------:|-------
+**_G**                          |        |
+bit32                           |Removed |N/A _(use bitwise operators)_
+**buffer**                      |        |
+brace\_match(pos)               |Changed |[brace\_match][](pos, 0)
+**lexer**                       |        |
+\_foldsymbols                   |Replaced|[add\_fold\_point()][]
+\_rules                         |Replaced|[add\_rule()][]
+\_tokenstyles                   |Replaced|[add\_style()][]
+embed\_lexer(parent, child, ...)|Renamed |parent:[embed][](child, ...)
+\_RULES\[id\]                   |Replaced|[get\_rule][](id)
+\_RULES\[id\] = rule            |Replaced|[modify\_rule][](id, rule)
+N/A                             |Added   |[new()][]
+word\_match(list, wchars, icase)|Changed |[word\_match][](words, icase)
+**ui**                          |        |
+set\_theme                      |Renamed |[buffer.set\_theme()][]
+**textadept.editing**           |        |
+match\_brace                    |Replaced|N/A _(menu function)_
+N/A                             |Added   |paste()
+N/A                             |Added   |paste\_reindents
+**textadept.session**           |        |
+default\_session                |Removed |
+
+[brace\_match]: api.html#buffer.brace_match
+[add\_fold\_point()]: api.html#lexer.add_fold_point
+[add\_rule()]: api.html#lexer.add_rule
+[add\_style()]: api.html#lexer.add_style
+[embed]: api.html#lexer.embed
+[get\_rule]: api.html#lexer.get_rule
+[modify\_rule]: api.html#lexer.modify_rule
+[new()]: api.html#lexer.new
+[word\_match]: api.html#lexer.word_match
+[buffer.set\_theme()]: api.html#buffer.set_theme
+
+#### Configuration Changes
+
+Textadept 10 no longer uses a *~/.textadept/properties.lua* file. Instead, all
+`buffer` settings are made in *~/.textadept/init.lua*, and apply to the first
+and any subsequent buffers. (In Textadept 9, any `buffer` settings made in
+*~/.textadept/init.lua* only applied to the first buffer, so a
+*~/.textadept/properties.lua* was required in order to define `buffer` settings
+that would affect subsequent buffers.)
+
+Simply copying the contents of your *~/.textadept/properties.lua* into
+*~/.textadept/init.lua* should be sufficient.
+
+#### Lexer Changes
+
+Lexers are now written in a more object-oriented way. Legacy lexers are still
+supported, but it is recommended that you [migrate them][].
+
+[migrate them]: api.html#lexer.Migrating.Legacy.Lexers
+
+#### Key Bindings Changes
+
+The terminal version's key sequence for `Ctrl+Space` is now `'c '` instead of
+`'c@'`.
+
+#### Regex Changes
+
+Textadept now uses [C++11's ECMAScript regex syntax](#Regular.Expressions)
+instead of [TRE][].
+
+[TRE]: https://github.com/laurikari/tre
+
+#### Mac OSX System Requirements
+
+Textadept now requires Mac OSX 10.6 (Snow Leopard) at a minimum. The previous
+minimum version was 10.5 (Leopard).
+
+#### LuaJIT Changes
+
+The LuaJIT version of Textadept has been removed. Any LuaJIT-specific features
+used in external modules will no longer function.
+
 ### Textadept 8 to 9
 
 Textadept 9 introduces minor API changes (mostly renames of existing functions
@@ -2282,7 +2127,7 @@ syntax\_error\_patterns           |Removed |
 **textadept.snippets**            |        |
 N/A                               |Added   |[\_paths][]
 **textadept.session**             |        |
-DEFAULT\_SESSION                  |Renamed |[default\_session][]
+DEFAULT\_SESSION                  |Renamed |default\_session
 SAVE\_ON\_QUIT                    |Renamed |[save\_on\_quit][]
 MAX\_RECENT\_FILES                |Renamed |[max\_recent\_files][]
 
@@ -2315,7 +2160,6 @@ MAX\_RECENT\_FILES                |Renamed |[max\_recent\_files][]
 [build]: api.html#textadept.run.build
 [error\_patterns]: api.html#textadept.run.error_patterns
 [\_paths]: api.html#textadept.snippets._paths
-[default\_session]: api.html#textadept.session.default_session
 [save\_on\_quit]: api.html#textadept.session.save_on_quit
 [max\_recent\_files]: api.html#textadept.session.max_recent_files
 
@@ -2564,7 +2408,7 @@ find.goto\_file\_in\_list()       |Renamed |find.[goto\_file\_found()][]
 select\_theme                     |Removed |N/A
 N/A                               |New     |[dialogs][]
 filteredlist                      |Removed |N/A
-set\_theme(name, ...)             |Changed |[set\_theme][](name, table)
+set\_theme(name, ...)             |Changed |set\_theme(name, table)
 **io**                            |        |
 try\_encodings                    |Renamed |[encodings][]
 open\_file(string)                |Changed |[open\_file][](string or table)
@@ -2613,7 +2457,6 @@ close\_all()                      |Renamed |[close\_all\_buffers()][]
 [maximized]: api.html#ui.maximized
 [goto\_file\_found()]: api.html#ui.find.goto_file_found
 [dialogs]: api.html#ui.dialogs
-[set\_theme]: api.html#ui.set_theme
 [encodings]: api.html#io.encodings
 [open\_file]: api.html#io.open_file
 [snapopen]: api.html#io.snapopen
@@ -2714,9 +2557,9 @@ Notes:
 5. Set view properties related to colors directly in *theme.lua* now instead of
    a separate *view.lua*. You may use color properties defined earlier. Try to
    refrain from setting properties like `buffer.sel_eol_filled` which belong in
-   a [*properties.lua*](#Buffer.Settings) file.
-6. The separate *buffer.lua* is gone. Use [*properties.lua*](#Buffer.Settings)
-   or a [language module](#Language-Specific.Buffer.Settings).
+   a *properties.lua* file.
+6. The separate *buffer.lua* is gone. Use *properties.lua* or a
+   [language module](#Language-Specific.Buffer.Settings).
 
 ##### Theme Preference
 

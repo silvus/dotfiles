@@ -9,6 +9,441 @@
 [donate]: http://gum.co/textadept
 [book]: MEDIA.html#Book
 
+## 10.3 (01 Mar 2019)
+
+Download:
+
+* [Textadept 10.3 -- Win32][] | [PGP -- 10.3 Win32][]
+* [Textadept 10.3 -- Mac OSX 10.6+][] | [PGP -- 10.3 OSX][]
+* [Textadept 10.3 -- Linux][] | [PGP -- 10.3 Linux][]
+* [Textadept 10.3 -- Linux x86_64][] | [PGP -- 10.3 Linux x86_64][]
+* [Textadept 10.3 -- Modules][] | [PGP -- 10.3 Modules][]
+
+Bugfixes:
+
+* Fixed block comment support for Nim.
+* Fixed escaping of newlines (`\n`) in Lua and C API documentation.
+
+Changes:
+
+* Version control markers like `.git` are not limited to directories.
+* Allow redefinition of `WGET` in Makefile for
+* Updated to [Scintilla][] 3.10.2.
+
+[Textadept 10.3 -- Win32]: download/textadept_10.3.win32.zip
+[Textadept 10.3 -- Mac OSX 10.6+]: download/textadept_10.3.osx.zip
+[Textadept 10.3 -- Linux]: download/textadept_10.3.i386.tgz
+[Textadept 10.3 -- Linux x86_64]: download/textadept_10.3.x86_64.tgz
+[Textadept 10.3 -- Modules]: download/textadept_10.3.modules.zip
+[PGP -- 10.3 Win32]: download/textadept_10.3.win32.zip.asc
+[PGP -- 10.3 OSX]: download/textadept_10.3.osx.zip.asc
+[PGP -- 10.3 Linux]: download/textadept_10.3.i386.tgz.asc
+[PGP -- 10.3 Linux x86_64]: download/textadept_10.3.x86_64.tgz.asc
+[PGP -- 10.3 Modules]: download/textadept_10.3.modules.zip.asc
+[Scintilla]: http://scintilla.org
+
+## 10.3 beta (01 Jan 2019)
+
+Download:
+
+* [Textadept 10.3 beta -- Win32][] | [PGP -- 10.3 beta Win32][]
+* [Textadept 10.3 beta -- Mac OSX 10.6+][] | [PGP -- 10.3 beta OSX][]
+* [Textadept 10.3 beta -- Linux][] | [PGP -- 10.3 beta Linux][]
+* [Textadept 10.3 beta -- Linux x86_64][] | [PGP -- 10.3 beta Linux x86_64][]
+* [Textadept 10.3 beta -- Modules][] | [PGP -- 10.3 beta Modules][]
+
+Bugfixes:
+
+* Ensure `Esc` clears highlighted words.
+* Fixed behavior of `Home` and `Shift+Home` keys on non-OSX platforms.
+* Fixed some instances of snippet next/prev not working correctly.
+* Fixed Alt+Gr key handling in the Windows terminal version.
+* Only pass command entry text to function passed to
+  [`ui.command_entry.finish_mode()`][].
+* Fixed handling of escaped double-quotes in [`os.spawn()`][] in the terminal
+  version.
+* Ensure long filenames are visible in the reload dialog prompt in the terminal
+  version.
+
+Changes:
+
+* Added optional position argument to
+  [`textadept.editing.show_documentation()`][].
+* [`textadept.editing.highlight_word()`][] does not select the word by default
+  anymore.
+* Changed [file filter][] format to be more flat and intuitive.
+* Added `-l` and `--line` command line switches to jump to a buffer line.
+* Updated to [PDCurses][] 3.6 for the Windows terminal version.
+
+[Textadept 10.3 beta -- Win32]: download/textadept_10.3_beta.win32.zip
+[Textadept 10.3 beta -- Mac OSX 10.6+]: download/textadept_10.3_beta.osx.zip
+[Textadept 10.3 beta -- Linux]: download/textadept_10.3_beta.i386.tgz
+[Textadept 10.3 beta -- Linux x86_64]: download/textadept_10.3_beta.x86_64.tgz
+[Textadept 10.3 beta -- Modules]: download/textadept_10.3_beta.modules.zip
+[PGP -- 10.3 beta Win32]: download/textadept_10.3_beta.win32.zip.asc
+[PGP -- 10.3 beta OSX]: download/textadept_10.3_beta.osx.zip.asc
+[PGP -- 10.3 beta Linux]: download/textadept_10.3_beta.i386.tgz.asc
+[PGP -- 10.3 beta Linux x86_64]: download/textadept_10.3_beta.x86_64.tgz.asc
+[PGP -- 10.3 beta Modules]: download/textadept_10.3_beta.modules.zip.asc
+[`ui.command_entry.finish_mode()`]: api.html#ui.command_entry.finish_mode
+[`os.spawn()`]: api.html#os.spawn
+[`textadept.editing.show_documentation()`]: api.html#textadept.editing.show_documentation
+[`textadept.editing.highlight_word()`]: api.html#textadept.editing.highlight_word
+[file filter]: api.html#lfs.dir_foreach
+[PDCurses]: https://pdcurses.sourceforge.io/
+
+## 10.2 (01 Nov 2018)
+
+Download:
+
+* [Textadept 10.2 -- Win32][] | [PGP -- 10.2 Win32][]
+* [Textadept 10.2 -- Mac OSX 10.6+][] | [PGP -- 10.2 OSX][]
+* [Textadept 10.2 -- Linux][] | [PGP -- 10.2 Linux][]
+* [Textadept 10.2 -- Linux x86_64][] | [PGP -- 10.2 Linux x86_64][]
+* [Textadept 10.2 -- Modules][] | [PGP -- 10.2 Modules][]
+
+Bugfixes:
+
+* Fixed error when performing "select enclosed" on a non-ASCII character.
+* Fixed regression of Retina display support of Mac OSX.
+* Fixed key handling on some international keyboards.
+* Fixed tab labels not updating when loading message buffers from a session.
+* Fixed potential crashes in [`string.iconv()`][] with tiny strings.
+* Fixed inability to resize one split view configuration with the mouse in the
+  terminal version.
+
+Changes:
+
+* Renamed `spawn()` to [`os.spawn()`][].
+* [`os.spawn()`][] now allows omission of `cwd` and `env` parameters.
+* [`spawn_proc:wait()`][] returns the process' exit code.
+* [`textadept.editing.filter_through()`][] halts on non-zero status instead of
+  clobbering the buffer or selected text.
+* Removed `textadept.editing.paste()` and `textadept.editing.paste_reindents`
+  option; Textadept no longer reindents pasted text by default.
+* Experimentally added [`textadept.macros`][] module for recording, playing,
+  saving, and loading keyboard macros.
+* Scintilla: Improve efficiency of idle wrapping.
+* Scintilla: Updated case conversion and character categories to Unicode 11.
+* Scintilla: Updated ConTeXt, HTML, and Markdown lexers.
+* Updated to [Scintilla][] 3.10.1.
+
+[Textadept 10.2 -- Win32]: download/textadept_10.2.win32.zip
+[Textadept 10.2 -- Mac OSX 10.6+]: download/textadept_10.2.osx.zip
+[Textadept 10.2 -- Linux]: download/textadept_10.2.i386.tgz
+[Textadept 10.2 -- Linux x86_64]: download/textadept_10.2.x86_64.tgz
+[Textadept 10.2 -- Modules]: download/textadept_10.2.modules.zip
+[PGP -- 10.2 Win32]: download/textadept_10.2.win32.zip.asc
+[PGP -- 10.2 OSX]: download/textadept_10.2.osx.zip.asc
+[PGP -- 10.2 Linux]: download/textadept_10.2.i386.tgz.asc
+[PGP -- 10.2 Linux x86_64]: download/textadept_10.2.x86_64.tgz.asc
+[PGP -- 10.2 Modules]: download/textadept_10.2.modules.zip.asc
+[`string.iconv()`]: api.html#string.iconv
+[`os.spawn()`]: api.html#os.spawn
+[`spawn_proc:wait()`]: api.html#spawn_proc:wait
+[`textadept.editing.filter_through()`]: api.html#textadept.editing.filt
+[`textadept.macros`]: api.html#textadept.macros
+[Scintilla]: http://scintilla.org
+
+## 10.1 (01 Oct 2018)
+
+Download:
+
+* [Textadept 10.1 -- Win32][] | [PGP -- 10.1 Win32][]
+* [Textadept 10.1 -- Mac OSX 10.6+][] | [PGP -- 10.1 OSX][]
+* [Textadept 10.1 -- Linux][] | [PGP -- 10.1 Linux][]
+* [Textadept 10.1 -- Linux x86_64][] | [PGP -- 10.1 Linux x86_64][]
+* [Textadept 10.1 -- Modules][] | [PGP -- 10.1 Modules][]
+
+Bugfixes:
+
+* Fixed view focus synchronization issues when dropping files into split views.
+* Fixed potential crash with non-UTF-8 bytes copy-pasted into non-UTF-8 buffer.
+* [`spawn_proc:read()`][] correctly handles `\r\n` sequences.
+
+Changes:
+
+* Added ability to save/restore persistent data during a reset event via
+  [`events.RESET_BEFORE`][] and [`events.RESET_AFTER`][].
+* Replaced `ui.find.find_in_files_filter` with
+  [`ui.find.find_in_files_filters`][] table for project-specific filters.
+* Added Chinese localization.
+* Updated to GTK 2.24.32 on Windows, which fixes a number of various GTK-related
+  issues.
+
+[Textadept 10.1 -- Win32]: download/textadept_10.1.win32.zip
+[Textadept 10.1 -- Mac OSX 10.6+]: download/textadept_10.1.osx.zip
+[Textadept 10.1 -- Linux]: download/textadept_10.1.i386.tgz
+[Textadept 10.1 -- Linux x86_64]: download/textadept_10.1.x86_64.tgz
+[Textadept 10.1 -- Modules]: download/textadept_10.1.modules.zip
+[PGP -- 10.1 Win32]: download/textadept_10.1.win32.zip.asc
+[PGP -- 10.1 OSX]: download/textadept_10.1.osx.zip.asc
+[PGP -- 10.1 Linux]: download/textadept_10.1.i386.tgz.asc
+[PGP -- 10.1 Linux x86_64]: download/textadept_10.1.x86_64.tgz.asc
+[PGP -- 10.1 Modules]: download/textadept_10.1.modules.zip.asc
+[`spawn_proc:read()`]: api.html#spawn_proc:read
+[`events.RESET_BEFORE`]: api.html#events.RESET_BEFORE
+[`events.RESET_AFTER`]: api.html#events.RESET_AFTER
+[`ui.find.find_in_files_filters`]: api.html#ui.find.find_in_files_filters
+
+## 10.0 (01 Aug 2018)
+
+Please see the [9 to 10 migration guide][] for upgrading from Textadept 9 to
+Textadept 10.
+
+Download:
+
+* [Textadept 10.0 -- Win32][] | [PGP -- 10.0 Win32][]
+* [Textadept 10.0 -- Mac OSX 10.6+][] | [PGP -- 10.0 OSX][]
+* [Textadept 10.0 -- Linux][] | [PGP -- 10.0 Linux][]
+* [Textadept 10.0 -- Linux x86_64][] | [PGP -- 10.0 Linux x86_64][]
+* [Textadept 10.0 -- Modules][] | [PGP -- 10.0 Modules][]
+
+Bugfixes:
+
+* Fixed markdown lexer lists and C# lexer keywords.
+* Fixed child lexers that embed themselves into parents and fixed proxy lexers.
+* Fixed handling of custom fold functions in legacy lexers.
+* Fixed [`buffer:set_theme()`][] for lexers that have their own styles.
+* Scintilla: Fixed potential crash with newer versions of ncurses.
+* Scintilla: Fixed some regex searching corner-cases.
+
+Changes:
+
+* Updated German localization.
+* Scintilla: Added new `buffer.INDIC_GRADIENT` and `buffer.INDIC_GRADIENTCENTRE`
+  indicators.
+* Scintilla: Added `buffer.WRAPINDENT_DEEPINDENT` line wrapping option.
+* Updated to [Scintilla][] 3.10.0.
+* Updated to [Lua][] 5.3.5.
+
+[9 to 10 migration guide]: manual.html#Textadept.9.to.10
+[Textadept 10.0 -- Win32]: download/textadept_10.0.win32.zip
+[Textadept 10.0 -- Mac OSX 10.6+]: download/textadept_10.0.osx.zip
+[Textadept 10.0 -- Linux]: download/textadept_10.0.i386.tgz
+[Textadept 10.0 -- Linux x86_64]: download/textadept_10.0.x86_64.tgz
+[Textadept 10.0 -- Modules]: download/textadept_10.0.modules.zip
+[PGP -- 10.0 Win32]: download/textadept_10.0.win32.zip.asc
+[PGP -- 10.0 OSX]: download/textadept_10.0.osx.zip.asc
+[PGP -- 10.0 Linux]: download/textadept_10.0.i386.tgz.asc
+[PGP -- 10.0 Linux x86_64]: download/textadept_10.0.x86_64.tgz.asc
+[PGP -- 10.0 Modules]: download/textadept_10.0.modules.zip.asc
+[`buffer:set_theme()`]: api.html#buffer.set_theme
+[Scintilla]: http://scintilla.org
+[Lua]: http://lua.org
+
+## 10.0 beta 2 (01 Jun 2018)
+
+Download:
+
+* [Textadept 10.0 beta 2 -- Win32][] | [PGP -- 10.0 beta 2 Win32][]
+* [Textadept 10.0 beta 2 -- Mac OSX 10.6+][] | [PGP -- 10.0 beta 2 OSX][]
+* [Textadept 10.0 beta 2 -- Linux][] | [PGP -- 10.0 beta 2 Linux][]
+* [Textadept 10.0 beta 2 -- Linux x86_64][] | [PGP -- 10.0 beta 2 Linux x86_64][]
+* [Textadept 10.0 beta 2 -- Modules][] | [PGP -- 10.0 beta 2 Modules][]
+
+Bugfixes:
+
+* Fixed unset lexer bug upon splitting a newly created buffer.
+* Fixed a potential infinite loop with "replace in selection".
+* Fixed crash on Mac OSX with regex searches.
+* Fixed selection of "find in files" result if it's at the start of the line.
+* Properly handle abbreviated setting of write-only buffer properties via
+  command entry.
+
+Changes:
+
+* Removed `bit32` module in favor of Lua's bitwise operators.
+* Makefile can be used to build on case-insensitive filesystems.
+* Interpret `\uXXXX` sequences in regex replacement text.
+
+[Textadept 10.0 beta 2 -- Win32]: download/textadept_10.0_beta_2.win32.zip
+[Textadept 10.0 beta 2 -- Mac OSX 10.6+]: download/textadept_10.0_beta_2.osx.zip
+[Textadept 10.0 beta 2 -- Linux]: download/textadept_10.0_beta_2.i386.tgz
+[Textadept 10.0 beta 2 -- Linux x86_64]: download/textadept_10.0_beta_2.x86_64.tgz
+[Textadept 10.0 beta 2 -- Modules]: download/textadept_10.0_beta_2.modules.zip
+[PGP -- 10.0 beta 2 Win32]: download/textadept_10.0_beta_2.win32.zip.asc
+[PGP -- 10.0 beta 2 OSX]: download/textadept_10.0_beta_2.osx.zip.asc
+[PGP -- 10.0 beta 2 Linux]: download/textadept_10.0_beta_2.i386.tgz.asc
+[PGP -- 10.0 beta 2 Linux x86_64]: download/textadept_10.0_beta_2.x86_64.tgz.asc
+[PGP -- 10.0 beta 2 Modules]: download/textadept_10.0_beta_2.modules.zip.asc
+
+## 10.0 beta (01 May 2018)
+
+Download:
+
+* [Textadept 10.0 beta -- Win32][] | [PGP -- 10.0 beta Win32][]
+* [Textadept 10.0 beta -- Mac OSX 10.6+][] | [PGP -- 10.0 beta OSX][]
+* [Textadept 10.0 beta -- Linux][] | [PGP -- 10.0 beta Linux][]
+* [Textadept 10.0 beta -- Linux x86_64][] | [PGP -- 10.0 beta Linux x86_64][]
+* [Textadept 10.0 beta -- Modules][] | [PGP -- 10.0 beta Modules][]
+
+Bugfixes:
+
+* Fixed incorrect style settings when splitting views.
+* Fixed restoration of vertical scroll for buffers with different line heights.
+* Fixed potential crash in terminal version with newer versions of ncurses.
+
+Changes:
+
+* Change SQL comments to use `--` instead of `#`.
+* Updated Textadept icon.
+* Minimum required Mac OSX version is now 10.6 (Snow Leopard) or higher.
+* Removed LuaJIT version of Textadept.
+
+[Textadept 10.0 beta -- Win32]: download/textadept_10.0_beta.win32.zip
+[Textadept 10.0 beta -- Mac OSX 10.6+]: download/textadept_10.0_beta.osx.zip
+[Textadept 10.0 beta -- Linux]: download/textadept_10.0_beta.i386.tgz
+[Textadept 10.0 beta -- Linux x86_64]: download/textadept_10.0_beta.x86_64.tgz
+[Textadept 10.0 beta -- Modules]: download/textadept_10.0_beta.modules.zip
+[PGP -- 10.0 beta Win32]: download/textadept_10.0_beta.win32.zip.asc
+[PGP -- 10.0 beta OSX]: download/textadept_10.0_beta.osx.zip.asc
+[PGP -- 10.0 beta Linux]: download/textadept_10.0_beta.i386.tgz.asc
+[PGP -- 10.0 beta Linux x86_64]: download/textadept_10.0_beta.x86_64.tgz.asc
+[PGP -- 10.0 beta Modules]: download/textadept_10.0_beta.modules.zip.asc
+
+## 10.0 alpha 3 (01 Apr 2018)
+
+Download:
+
+* [Textadept 10.0 alpha 3 -- Win32][] | [PGP -- 10.0 alpha 3 Win32][]
+* [Textadept 10.0 alpha 3 -- Mac OSX Intel 10.5+][] | [PGP -- 10.0 alpha 3 OSX][]
+* [Textadept 10.0 alpha 3 -- Linux][] | [PGP -- 10.0 alpha 3 Linux][]
+* [Textadept 10.0 alpha 3 -- Linux x86_64][] | [PGP -- 10.0 alpha 3 Linux x86_64][]
+* [Textadept 10.0 alpha 3 -- Modules][] | [PGP -- 10.0 alpha 3 Modules][]
+
+Bugfixes:
+
+* Fixed hang in the terminal version on Windows.
+* Fixed accidental stripping of leading newlines in pasted text.
+* Fixed initialization errors not showing in the terminal version.
+
+Changes:
+
+* Textadept requires GCC 4.9 (circa early-2014) or later to _compile_ (not run).
+* C++11 regex replaces old TRE library.
+* Scintillua and Scinterm were merged into Scintilla and are no longer
+  dependencies.
+* Emacs-style `^K` for OSX and the terminal version joins lines at EOL.
+* Pasted text reindents an extra level after a fold header.
+* [`buffer.set_theme()`][] now takes an initial buffer argument like all other
+  buffer functions and does not have any call restrictions.
+* Scintilla: Added [`events.AUTO_C_SELECTION_CHANGE`][] event.
+* Updated to [Scintilla][] 3.8.0.
+
+[Textadept 10.0 alpha 3 -- Win32]: download/textadept_10.0_alpha_3.win32.zip
+[Textadept 10.0 alpha 3 -- Mac OSX Intel 10.5+]: download/textadept_10.0_alpha_3.osx.zip
+[Textadept 10.0 alpha 3 -- Linux]: download/textadept_10.0_alpha_3.i386.tgz
+[Textadept 10.0 alpha 3 -- Linux x86_64]: download/textadept_10.0_alpha_3.x86_64.tgz
+[Textadept 10.0 alpha 3 -- Modules]: download/textadept_10.0_alpha_3.modules.zip
+[PGP -- 10.0 alpha 3 Win32]: download/textadept_10.0_alpha_3.win32.zip.asc
+[PGP -- 10.0 alpha 3 OSX]: download/textadept_10.0_alpha_3.osx.zip.asc
+[PGP -- 10.0 alpha 3 Linux]: download/textadept_10.0_alpha_3.i386.tgz.asc
+[PGP -- 10.0 alpha 3 Linux x86_64]: download/textadept_10.0_alpha_3.x86_64.tgz.asc
+[PGP -- 10.0 alpha 3 Modules]: download/textadept_10.0_alpha_3.modules.zip.asc
+[`buffer.set_theme()`]: api.html#buffer.set_theme
+[`events.AUTO_C_SELECTION_CHANGE`]: api.html#events.AUTO_C_SELECTION_CHANGE
+[Scintilla]: http://scintilla.org
+
+## 10.0 alpha 2 (01 Mar 2018)
+
+Download:
+
+* [Textadept 10.0 alpha 2 -- Win32][] | [PGP -- 10.0 alpha 2 Win32][]
+* [Textadept 10.0 alpha 2 -- Mac OSX Intel 10.5+][] | [PGP -- 10.0 alpha 2 OSX][]
+* [Textadept 10.0 alpha 2 -- Linux][] | [PGP -- 10.0 alpha 2 Linux][]
+* [Textadept 10.0 alpha 2 -- Linux x86_64][] | [PGP -- 10.0 alpha 2 Linux x86_64][]
+* [Textadept 10.0 alpha 2 -- Modules][] | [PGP -- 10.0 alpha 2 Modules][]
+
+Bugfixes:
+
+* Fixed clang build warnings/errors regarding LuaJIT.
+* Fixed busy wait in second instance of Textadept on Windows.
+* Fixed bug in remote-controlled Textadept when no arguments were initially
+  given.
+* Fixed session loading when only it is provided as a command line argument.
+* Fixed copy-paste between views in the terminal version.
+* Fixed crash when attempting to show a badly-encoded filename in the titlebar.
+* Scintilla: Fixed double-click word selection on Windows 10.
+* Scintilla: Fixed rectangular and line modal selection movements.
+
+Changes:
+
+* Added `fold.compact` buffer property.
+* Added [`buffer.move_extends_selection`][] for enhanced modal keyboard
+  movement.
+* Auto-detect UTF-16-encoded files automatically.
+* Save to the loaded session on quit and removed the
+  `textadept.session.default_session` option.
+* Various Makefile improvements.
+* The terminal version can immediately focus on a clicked split view.
+* Textadept only minimally supports GTK3 now -- it still compiles, but
+  deprecated function calls have not been, and will not be migrated.
+* The terminal key sequence for `Ctrl+Space` is now `'c '` instead of `'c@'`.
+* The terminal version can now remap `^H` (which was previously locked to
+  `Backspace`).
+
+[Textadept 10.0 alpha 2 -- Win32]: download/textadept_10.0_alpha_2.win32.zip
+[Textadept 10.0 alpha 2 -- Mac OSX Intel 10.5+]: download/textadept_10.0_alpha_2.osx.zip
+[Textadept 10.0 alpha 2 -- Linux]: download/textadept_10.0_alpha_2.i386.tgz
+[Textadept 10.0 alpha 2 -- Linux x86_64]: download/textadept_10.0_alpha_2.x86_64.tgz
+[Textadept 10.0 alpha 2 -- Modules]: download/textadept_10.0_alpha_2.modules.zip
+[PGP -- 10.0 alpha 2 Win32]: download/textadept_10.0_alpha_2.win32.zip.asc
+[PGP -- 10.0 alpha 2 OSX]: download/textadept_10.0_alpha_2.osx.zip.asc
+[PGP -- 10.0 alpha 2 Linux]: download/textadept_10.0_alpha_2.i386.tgz.asc
+[PGP -- 10.0 alpha 2 Linux x86_64]: download/textadept_10.0_alpha_2.x86_64.tgz.asc
+[PGP -- 10.0 alpha 2 Modules]: download/textadept_10.0_alpha_2.modules.zip.asc
+[`buffer.move_extends_selection`]: api.html#buffer.move_extends_selection
+
+## 10.0 alpha (01 Jan 2018)
+
+Download:
+
+* [Textadept 10.0 alpha -- Win32][] | [PGP -- 10.0 alpha Win32][]
+* [Textadept 10.0 alpha -- Mac OSX Intel 10.5+][] | [PGP -- 10.0 alpha OSX][]
+* [Textadept 10.0 alpha -- Linux][] | [PGP -- 10.0 alpha Linux][]
+* [Textadept 10.0 alpha -- Linux x86_64][] | [PGP -- 10.0 alpha Linux x86_64][]
+* [Textadept 10.0 alpha -- Modules][] | [PGP -- 10.0 alpha Modules][]
+
+Bugfixes:
+
+* Scintilla: Fixed a couple of wrapped line drawing cases.
+* Scintilla: Ensure overtype caret is drawn when manually set.
+* Scintilla: Fixed some instances of incorrect scrollbar drawing and flickering.
+* Scintilla: Fixed line selection when clicking in the margin when scrolled.
+
+Changes:
+
+* Textadept requires GTK 2.24 (circa early-2011) or greater.
+* Pasted text is reindented by default via `textadept.editing.paste()`, and is
+  configured with `textadept.editing.paste_reindents`.
+* Replaced `textadept.editing.match_brace()` with a menu function, enhanced
+  [`textadept.editing.select_enclosed()`][] behavior, and removed redundant
+  "Select in ..." menu items.
+* Removed the need for *~/.textadept/properties.lua*. All `buffer` settings set
+  in *~/.textadept/init.lua* will apply to the first and subsequent buffers.
+* Renamed `ui.set_theme()` to [`buffer.set_theme()`][].
+* Enforce extra argument to [`buffer.brace_match()`][] added back in Scintilla
+  3.7.0.
+* Added [`events.ZOOM`][].
+* New, object-oriented way to [create lexers][].
+
+[Textadept 10.0 alpha -- Win32]: download/textadept_10.0_alpha.win32.zip
+[Textadept 10.0 alpha -- Mac OSX Intel 10.5+]: download/textadept_10.0_alpha.osx.zip
+[Textadept 10.0 alpha -- Linux]: download/textadept_10.0_alpha.i386.tgz
+[Textadept 10.0 alpha -- Linux x86_64]: download/textadept_10.0_alpha.x86_64.tgz
+[Textadept 10.0 alpha -- Modules]: download/textadept_10.0_alpha.modules.zip
+[PGP -- 10.0 alpha Win32]: download/textadept_10.0_alpha.win32.zip.asc
+[PGP -- 10.0 alpha OSX]: download/textadept_10.0_alpha.osx.zip.asc
+[PGP -- 10.0 alpha Linux]: download/textadept_10.0_alpha.i386.tgz.asc
+[PGP -- 10.0 alpha Linux x86_64]: download/textadept_10.0_alpha.x86_64.tgz.asc
+[PGP -- 10.0 alpha Modules]: download/textadept_10.0_alpha.modules.zip.asc
+[`textadept.editing.select_enclosed()`]: api.html#textadept.editing.select_enclosed
+[`buffer.set_theme()`]: api.html#buffer.set_theme
+[`buffer.brace_match()`]: api.html#buffer.brace_match
+[`events.ZOOM`]: api.html#events.ZOOM
+[create lexers]: api.html#lexer
+
 ## 9.6 (01 Nov 2017)
 
 Download:
@@ -590,7 +1025,7 @@ Changes:
 * Disabled `textadept.run.CHECK_SYNTAX` by default.
 * Updated to [lspawn][] 1.5.
 * Updated to [Scintilla][] 3.6.5.
-* Updated to [Scinterm][] 1.8.
+* Updated to Scinterm 1.8.
 
 [Textadept 8.7 -- Win32]: download/textadept_8.7.win32.zip
 [Textadept 8.7 -- Mac OSX Intel 10.5+]: download/textadept_8.7.osx.zip
@@ -612,7 +1047,6 @@ Changes:
 [`textadept.editing.enclose()`]: api.html#textadept.editing.enclose
 [lspawn]: http://foicica.com/hg/lspawn
 [Scintilla]: http://scintilla.org
-[Scinterm]: http://foicica.com/scinterm
 
 ## 8.6 (01 Mar 2016)
 
@@ -654,7 +1088,7 @@ Changes:
   [stateful lexers][].
 * Updated to [lspawn][] 1.4.
 * Updated to [Scintilla][] 3.6.3.
-* Updated to [Scinterm][] 1.7.
+* Updated to Scinterm 1.7.
 
 [Textadept 8.6 -- Win32]: download/textadept_8.6.win32.zip
 [Textadept 8.6 -- Mac OSX Intel 10.5+]: download/textadept_8.6.osx.zip
@@ -673,7 +1107,6 @@ Changes:
 [stateful lexers]: api.html#lexer.Lexers.with.Complex.State
 [lspawn]: http://foicica.com/hg/lspawn
 [Scintilla]: http://scintilla.org
-[Scinterm]: http://foicica.com/scinterm
 
 ## 8.5 (01 Jan 2016)
 
@@ -785,7 +1218,7 @@ Changes:
 
 * Improved API documentation lookup behind the caret.
 * [Refactored snippets][] to longer display placeholder text.
-* [`spawn()`][] can now optionally specify the child's environment.
+* [`os.spawn()`][] can now optionally specify the child's environment.
 * Added Gherkin lexer.
 * Updated to [Scintilla][] 3.6.1.
 
@@ -801,7 +1234,7 @@ Changes:
 [PGP -- 8.3 Modules]: download/textadept_8.3.modules.zip.asc
 [`buffer:count_characters()`]: api.html#buffer.count_characters
 [Refactored snippets]: http://foicica.com/lists/code/201509/2687.html
-[`spawn()`]: api.html#spawn
+[`os.spawn()`]: api.html#os.spawn
 [Scintilla]: http://scintilla.org
 
 ## 8.2 (01 Sep 2015)
@@ -992,7 +1425,7 @@ Changes:
 * Upgraded to Lua 5.3, LPeg 0.12.2, lfs 1.6.3, and lspawn 1.2.
 * Removed `keys.LANGUAGE_MODULE_PREFIX`, but left that prefix unused on all
   platforms.
-* [`textadept.editing.filter_through()`][] now uses [`spawn()`][].
+* [`textadept.editing.filter_through()`][] now uses [`os.spawn()`][].
 * Removed long-hand [compile and run macros][] in favor of shorter ones.
 * [`textadept.bookmarks.toggle()`][] accepts an optional line to bookmark.
 * Added support for Rust and TOML.
@@ -1012,7 +1445,7 @@ Changes:
 [PGP -- 8.0 alpha Linux x86_64]: download/textadept_8.0_alpha.x86_64.tgz.asc
 [PGP -- 8.0 alpha Modules]: download/textadept_8.0_alpha.modules.zip.asc
 [`textadept.editing.filter_through()`]: api.html#textadept.editing.filter_through
-[`spawn()`]: api.html#spawn
+[`os.spawn()`]: api.html#os.spawn
 [compile and run macros]: api.html#textadept.run.compile\_commands
 [`textadept.bookmarks.toggle()`]: api.html#textadept.bookmarks.toggle
 [`spawn_proc:kill()`]: api.html#spawn_proc:kill
@@ -1279,7 +1712,7 @@ Bugfixes:
 
 Changes:
 
-* Mac OSX GUI version can truly [`spawn()`][] processes now.
+* Mac OSX GUI version can truly [`os.spawn()`][] processes now.
 * Improved performance for lexers with no grammars and no fold rules.
 * Updated to [Scintilla][] 3.5.1.
 
@@ -1314,7 +1747,7 @@ Bugfixes:
 
 Changes:
 
-* Terminal version can truly [`spawn()`][] processes now.
+* Terminal version can truly [`os.spawn()`][] processes now.
 * Added Linux .desktop files for menus and launchers.
 * Indicate presence of a BOM in the statusbar.
 * Switch to previous buffer after closing a buffer.
@@ -1332,7 +1765,7 @@ Changes:
 [PGP -- 7.6 Linux x86_64]: download/textadept_7.6.x86_64.tgz.asc
 [PGP -- 7.6 Modules]: download/textadept_7.6.modules.zip.asc
 [`buffer:del_word_right()`]: api.html#buffer.del_word_right
-[`spawn()`]: api.html#spawn
+[`os.spawn()`]: api.html#os.spawn
 [`lfs.dir_foreach()`]: api.html#lfs.dir_foreach
 [Scintilla]: http://scintilla.org
 
@@ -1430,7 +1863,7 @@ Bugfixes:
 Changes:
 
 * Added reST and YAML lexers and official language modules for each.
-* Use [`spawn()`][] for launching help.
+* Use [`os.spawn()`][] for launching help.
 * Renamed `io.set_buffer_encoding()` to [`buffer:set_encoding()`][].
 * Removed Adeptsense in favor of [autocompleter functions][], but kept existing
   [api file format][].
@@ -1463,7 +1896,7 @@ Changes:
 [PGP -- 7.3 Linux]: download/textadept_7.3.i386.tgz.asc
 [PGP -- 7.3 Linux x86_64]: download/textadept_7.3.x86_64.tgz.asc
 [PGP -- 7.3 Modules]: download/textadept_7.3.modules.zip.asc
-[`spawn()`]: api.html#spawn
+[`os.spawn()`]: api.html#os.spawn
 [`buffer:set_encoding()`]: api.html#buffer.set_encoding
 [autocompleter functions]: api.html#textadept.editing.autocompleters
 [api file format]: api.html#textadept.editing.api_files
@@ -1580,7 +2013,7 @@ Changes:
 [PGP -- 7.2 beta 3 Modules]: download/textadept_7.2_beta_3.modules.zip.asc
 [optionselect]: api.html#ui.dialogs.optionselect
 [`ui.SILENT_PRINT`]: api.html#ui.silent_print
-[spawn processes]: api.html#spawn
+[spawn processes]: api.html#os.spawn
 [Snapopen]: manual.html#Quick.Open
 [building projects]: api.html#_M.Build.a.Project
 [LuaJIT]: http://luajit.org
@@ -3947,7 +4380,7 @@ Bugfixes:
 
 Changes:
 
-* Updated to the new [Scintillua][] that does not required patched Scintilla.
+* Updated to the new Scintillua that does not required patched Scintilla.
 * Updated to [Scintilla][] 2.21.
 
 [Textadept 3.2 -- Win32]: download/textadept_3.2.win32.zip
@@ -3960,7 +4393,6 @@ Changes:
 [PGP -- 3.2 Linux]: download/textadept_3.2.tgz.asc
 [PGP -- 3.2 Linux x86_64]: download/textadept_3.2.x86_64.tgz.asc
 [PGP -- 3.2 Source]: download/textadept_3.2.src.zip.asc
-[Scintillua]: http://foicica.com/scintillua
 [Scintilla]: http://scintilla.org
 
 ## 3.1 (21 Aug 2010)

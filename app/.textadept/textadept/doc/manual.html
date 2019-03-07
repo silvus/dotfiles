@@ -1,7 +1,7 @@
   <!doctype html>
   <html>
     <head>
-      <title>manual - Textadept</title>
+      <title>Textadept 10.3 Manual</title>
       <link rel="stylesheet" href="style.css" type="text/css" />
       <link rel="icon" href="icon.png" type="image/png" />
       <meta charset="utf-8" />
@@ -28,7 +28,7 @@
         </div>
         <div id="main">
           <a name="Textadept.Manual"></a>
-<h1>Textadept Manual</h1>
+<h1>Textadept 10.3 Manual</h1>
 
 <p><strong>Contents</strong></p>
 
@@ -73,8 +73,7 @@ speed or succumbing to code bloat and featuritis.</p>
 
 <p>Textadept is <em>fast</em>. It starts up instantly and has a very responsive user
 interface. Even though the editor consists primarily of Lua, Lua is one of the
-fastest scripting languages available. With the optional <a href="http://luajit.org">LuaJIT</a> version,
-Textadept runs faster than ever before.</p>
+fastest scripting languages available.</p>
 
 <a name="Minimalist"></a>
 <h3>Minimalist</h3>
@@ -124,7 +123,9 @@ immediately by &ldquo;Shift&rdquo; and &ldquo;N&rdquo;.</p>
 equivalents in parenthesis. It may be tempting to assume that some Windows/Linux
 keys map to Mac OSX&rsquo;s (e.g. <code>Ctrl</code> to <code>⌘</code>) or curses' (e.g. <code>Ctrl</code> to <code>^</code>), but
 this is not always the case. In order to minimize confusion, view key
-equivalents as separate entities, not as translations of one another.</p>
+equivalents as separate entities, not as translations of one another. It is also
+worth pointing out that for curses, the prefix <code>M-</code> represents the Alt (or Meta)
+modifier key.</p>
 
 <hr />
 
@@ -137,8 +138,8 @@ equivalents as separate entities, not as translations of one another.</p>
 <h2>Requirements</h2>
 
 <p>In its bid for minimalism, Textadept also depends on very little to run. The GUI
-version needs only <a href="http://gtk.org">GTK+</a>, a cross-platform GUI toolkit, version 2.18 or later
-(circa late-2009) on Linux and BSD systems. The application already bundles a
+version needs only <a href="http://gtk.org">GTK+</a>, a cross-platform GUI toolkit, version 2.24 or later
+(circa early-2011) on Linux and BSD systems. The application already bundles a
 GTK+ runtime into the Windows and Mac OSX packages. The terminal, or curses,
 version of Textadept only depends on a curses implementation like <a href="http://invisible-island.net/ncurses/ncurses.html">ncurses</a> on
 Linux, Mac OSX, and BSD systems. The Windows binary includes a precompiled
@@ -164,7 +165,7 @@ Ubuntu typically call the package &ldquo;libncursesw5&rdquo;.</p>
 <a name="Requirements.for.Mac.OSX"></a>
 <h3>Requirements for Mac OSX</h3>
 
-<p>No requirements other than Mac OSX 10.5 (Leopard) or higher with an Intel CPU.</p>
+<p>No requirements other than Mac OSX 10.6 (Snow Leopard) or higher.</p>
 
 <a name="Requirements.for.Windows"></a>
 <h3>Requirements for Windows</h3>
@@ -235,13 +236,8 @@ You can also create a symbolic link to the executable in a directory in your
 &ldquo;$PATH&rdquo; (e.g. <em>/usr/local/bin/</em>) or make a GNOME, KDE, XFCE, etc. button or menu
 launcher.</p>
 
-<p>The package also contains a <em>textadeptjit</em> executable for running Textadept with
-<a href="http://luajit.org">LuaJIT</a>. Due to potential <a href="#LuaJIT">compatibility issues</a>, use the
-<em>textadept</em> executable wherever possible.</p>
-
-<p>The <em>textadept-curses</em> and <em>textadeptjit-curses</em> executables are the terminal
-versions of Textadept. Run them as you would run the <em>textadept</em> and
-<em>textadeptjit</em> executables, but from a terminal instead.</p>
+<p>The <em>textadept-curses</em> executable is the terminal version of Textadept. Run them
+as you would run the <em>textadept</em> executable, but from a terminal instead.</p>
 
 <a name="Runtime.Problems"></a>
 <h4>Runtime Problems</h4>
@@ -264,13 +260,6 @@ painless even though it requires <a href="#Compiling">recompiling</a> Textadept.
 <p>Run Textadept by double-clicking <em>Textadept.app</em>. You can also pin it to your
 dock.</p>
 
-<p><em>Textadept.app</em> also contains an executable for running Textadept with
-<a href="http://luajit.org">LuaJIT</a>. Enable it by setting a &ldquo;TEXTADEPTJIT&rdquo;
-<a href="#Mac.OSX.Environment.Variables">environment variable</a> or by typing
-<code>export TEXTADEPTJIT=1</code> in the terminal. Due to potential
-<a href="#LuaJIT">compatibility issues</a>, use the non-LuaJIT executable wherever
-possible.</p>
-
 <a name="Mac.OSX.Environment.Variables"></a>
 <h4>Mac OSX Environment Variables</h4>
 
@@ -289,10 +278,6 @@ example:</p>
 
 <p>Run Textadept by double-clicking <em>textadept.exe</em>. You can also create shortcuts
 to the executable in your Start Menu, Quick Launch toolbar, Desktop, etc.</p>
-
-<p>The package also contains a <em>textadeptjit.exe</em> executable for running Textadept
-with <a href="http://luajit.org">LuaJIT</a>. Due to potential <a href="#LuaJIT">compatibility issues</a>, use the
-<em>textadept.exe</em> executable wherever possible.</p>
 
 <a name="Portable.Textadept"></a>
 <h4>Portable Textadept</h4>
@@ -464,9 +449,9 @@ manually sets indentation size.</p>
 <h4>Buffer Encodings</h4>
 
 <p>Textadept has the ability to decode files encoded in many different encodings,
-but by default it only attempts to decode UTF-8, ASCII, and ISO-8859-1. If you
-work with files with encodings Textadept does not recognize, add those encodings
-to <a href="api.html#io.encodings"><code>io.encodings</code></a> in your <a href="#Preferences">preferences</a>.</p>
+but by default it only attempts to decode UTF-8, ASCII, ISO-8859-1, and UTF-16.
+If you work with files with encodings Textadept does not recognize, add those
+encodings to <a href="api.html#io.encodings"><code>io.encodings</code></a> in your <a href="#Preferences">preferences</a>.</p>
 
 <p>UTF-8 is the recommended file encoding because of its wide support by other text
 editors and operating systems. The &ldquo;Buffer -> Encoding&rdquo; menu changes the file
@@ -714,21 +699,17 @@ manager may also consume <code>Alt+Mouse</code> in order to move windows. In tha
 normal text selection may be changed into a rectangular selection by tapping the
 <code>Alt</code> modifier key.</p>
 
-<a name="Select.to.Matching.Brace"></a>
-<h3>Select to Matching Brace</h3>
+<a name="Select.between.Matching.Braces.and.Other.Entities"></a>
+<h3>Select between Matching Braces and Other Entities</h3>
 
-<p>Placing the caret over a brace character (&lsquo;(&rsquo;, &lsquo;)&rsquo;, &lsquo;[&rsquo;, &lsquo;]&rsquo;, &lsquo;{&rsquo;, or &lsquo;}&rsquo;) and
-pressing <code>Ctrl+Shift+M</code> (<code>^⇧M</code> on Mac OSX| <code>M-S-M</code> in curses) extends the
-selection to the brace character&rsquo;s matching brace.</p>
+<p>Placing the caret over a brace character (&lsquo;(&rsquo;, &lsquo;)&rsquo;, &lsquo;[&rsquo;, &lsquo;]&rsquo;, &lsquo;{&rsquo;, or &lsquo;}&rsquo;) or
+between matching pairs and then pressing <code>Ctrl+Shift+M</code> (<code>^⇧M</code> on Mac OSX |
+<code>M-S-M</code> in curses) selects all text between the pair. Repeated use of this key
+binding toggles the selection of the brace characters themselves. You can also
+use this feature within other entities like single and double quotes.</p>
 
-<a name="Entity.Selection"></a>
-<h3>Entity Selection</h3>
-
-<p>Textadept allows the selection of many different entities from the caret. For
-example, <code>Ctrl+"</code> (<code>^"</code> on Mac OSX | <code>M-"</code> in curses) selects all characters in
-a double-quoted range. Typing it again selects the double-quotes too. The
-&ldquo;Edit -> Select In&hellip;&rdquo; menu lists all selectable entities with their key
-bindings.</p>
+<p>The &ldquo;Edit -> Select In&hellip;&rdquo; menu lists other selectable entities like HTML/XML
+tags.</p>
 
 <a name="Marks"></a>
 <h3>Marks</h3>
@@ -807,7 +788,8 @@ and <code>F1-F4</code> toggles find options.</p>
 
 <p>By default, &ldquo;Replace All&rdquo; replaces all text in the buffer. Selecting a
 continuous block of text and then &ldquo;Replace All&rdquo; replaces all text in the
-selection.</p>
+selection. &ldquo;Replace All&rdquo; within rectangular or multiple selections is currently
+not supported.</p>
 
 <a name="Find.in.Files"></a>
 <h3>Find in Files</h3>
@@ -1067,11 +1049,35 @@ order to configure Textadept.</p>
 <p>Textadept executes a <em>~/.textadept/init.lua</em>, your user-init file, on startup.
 If this file does not exist, Textadept creates it for you. This file allows you
 to write arbitrary Lua code that instructs Textadept what to do when the
-application starts. This includes (but is not limited to) changing the
-settings of existing modules, loading new modules, modifying key bindings,
-adding snippets, editing file associations, adding menu items, and changing the
-theme. This manual discusses these specific customizations, minus theming, in
-the sections below. Theming is covered in a later section.</p>
+application starts. This includes (but is not limited to) changing editor
+preferences, changing the settings of existing modules, loading new modules,
+modifying key bindings, adding snippets, editing file associations, adding menu
+items, and changing the theme. This manual discusses these specific
+customizations, minus theming, in the sections below. Theming is covered in a
+later section.</p>
+
+<a name="Editor.Preferences"></a>
+<h3>Editor Preferences</h3>
+
+<p>Editor preferences are stored in a <a href="api.html#buffer"><code>buffer</code></a> object. Normally, each buffer
+can have its own individual preferences, but on startup, any preferences set
+apply to all subsequent buffers. For example, in order to override a setting
+like Textadept&rsquo;s default indentation setting of 2 spaces per indent, add the
+following to your <em>~/.textadept/init.lua</em>:</p>
+
+<p>  buffer.use_tabs = true
+  buffer.tab_width = 4</p>
+
+<p>(If you want to define per-language editor preferences, use the technique shown
+in the <a href="#Language.Preferences">Language Preferences</a> section below.)</p>
+
+<p>Textadept&rsquo;s own <em>init.lua</em> contains the application&rsquo;s default editor settings
+(like 2 space indentation). This file is a good &ldquo;quick reference&rdquo; for
+configurable editor settings. It also has many commented out settings that
+you can copy to your <em>~/.textadept/init.lua</em> and uncomment in order to turn on
+(or change the value of before turning on). You can view a settings&rsquo;s
+documentation by pressing <code>Ctrl+H</code> (<code>^H</code> on Mac OSX | <code>M-H</code> or <code>M-S-H</code> in
+curses) or by reading the <a href="api.html#buffer">buffer API documentation</a>.</p>
 
 <a name="Module.Preferences"></a>
 <h3>Module Preferences</h3>
@@ -1294,37 +1300,6 @@ context_menu[#context_menu + 1] = tools[#tools]
 
 <p>Learn more about menus and how to customize them in the <a href="api.html#textadept.menu">menu documentation</a>.</p>
 
-<a name="Buffer.Settings"></a>
-<h2>Buffer Settings</h2>
-
-<p>While your <em>~/.textadept/init.lua</em> is useful for configuring Textadept&rsquo;s general
-preferences, it is not adequate for configuring editor preferences (e.g. buffer
-indentation settings, scrolling and autocompletion behavior, etc.). Attempting
-to define such settings from <em>~/.textadept/init.lua</em> would only apply to the
-first buffer and view &ndash; subsequent buffers and split views would not inherit
-those settings.</p>
-
-<p>For editor preferences, Textadept executes a <em>~/.textadept/properties.lua</em> each
-time Textadept loads a file for editing (either in the current view or in a new,
-split view). Therefore, in order to override a setting like Textadept&rsquo;s default
-indentation setting of 2 spaces per indent, add the following to your
-<em>~/.textadept/properties.lua</em>:</p>
-
-<pre><code>buffer.use_tabs = true
-buffer.tab_width = 4
-</code></pre>
-
-<p>(If you want to define per-language editor preferences, use the technique shown
-in the <a href="#Language.Preferences">Language Preferences</a> section above.)</p>
-
-<p>Textadept&rsquo;s own <em>properties.lua</em> contains the application&rsquo;s default editor
-settings (like 2 space indentation). This file is a good &ldquo;quick reference&rdquo; for
-configurable editor properties. It also has many commented out properties that
-you can copy to your <em>~/.textadept/properties.lua</em> and uncomment in order to
-turn on (or change the value of before turning on). You can view a property&rsquo;s
-documentation by pressing <code>Ctrl+H</code> (<code>^H</code> on Mac OSX | <code>M-H</code> or <code>M-S-H</code> in
-curses) or by reading the <a href="api.html#buffer">buffer API documentation</a>.</p>
-
 <a name="Locale.Preference"></a>
 <h2>Locale Preference</h2>
 
@@ -1370,18 +1345,18 @@ display these standard colors (which may be completely different in the end).</p
 <h2>Setting Themes</h2>
 
 <p>Override the default theme in your <a href="#User.Init"><em>~/.textadept/init.lua</em></a> using
-the <a href="api.html#ui.set_theme"><code>ui.set_theme()</code></a> function. For example:</p>
+the <a href="api.html#buffer.set_theme"><code>buffer.set_theme()</code></a> function. For example:</p>
 
-<pre><code>ui.set_theme(not CURSES and 'dark' or 'term')
+<pre><code>buffer:set_theme(not CURSES and 'dark' or 'term')
 </code></pre>
 
-<p>Either restart Textadept for changes to take effect or type <a href="api.html#reset"><code>reset()</code></a> in the
+<p>Either restart Textadept for changes to take effect or type <a href="api.html#reset"><code>reset</code></a> in the
 <a href="#Lua.Command.Entry">command entry</a>.</p>
 
-<p><code>ui.set_theme()</code> can also tweak theme properties like font face and font size
-without editing the theme file itself:</p>
+<p><code>buffer.set_theme()</code> can also tweak theme properties like font face and font
+size without editing the theme file itself:</p>
 
-<pre><code>ui.set_theme('light', {font = 'Monospace', fontsize = 12})
+<pre><code>buffer:set_theme('light', {font = 'Monospace', fontsize = 12})
 </code></pre>
 
 <p>You can even tweak themes on a per-language basis. For example, in order to
@@ -1506,6 +1481,16 @@ line are included as input. The rest of the line is excluded.</li>
 
 
 <p>The standard output (stdout) of the command replaces the input text.</p>
+
+<a name="Macros"></a>
+<h2>Macros</h2>
+
+<p>While Textadept can be completely scripted with Lua, it is sometimes desirable
+to quickly record a series of edits and play them back without writing a custom
+script. Pressing <code>F9</code> starts a recording session, and <code>Shift+F9</code> (<code>⇧F9</code> on Mac
+OSX | <code>F10</code> in curses) stops recording. <code>Alt+F9</code> (<code>⌥F9</code> | <code>F12</code>) plays back the
+most recently recorded macro. You can use the &ldquo;Tools -> Macros&rdquo; menu to save a
+macro to a file, or load one for subsequent playback.</p>
 
 <a name="Remote.Control"></a>
 <h2>Remote Control</h2>
@@ -1633,14 +1618,6 @@ environment variables.</li>
 </ul>
 
 
-<a name="LuaJIT"></a>
-<h3>LuaJIT</h3>
-
-<p>Even though Textadept runs with <a href="http://luajit.org">LuaJIT</a>, LuaJIT does not fully support
-Lua 5.3. Therefore, try to write your modules and scripts to be compatible with
-both versions. For the most part, LuaJIT only lacks Lua 5.2&rsquo;s <code>_ENV</code> and Lua
-5.3&rsquo;s new bitwise operators and some new integer operations.</p>
-
 <a name="Scintilla"></a>
 <h2>Scintilla</h2>
 
@@ -1707,8 +1684,9 @@ as running it.</p>
 <a name="Requirements.for.Linux.and.BSD"></a>
 <h3>Requirements for Linux and BSD</h3>
 
-<p>First, Linux and BSD systems need either the <a href="http://gcc.gnu.org">GNU C compiler</a> (<em>gcc</em>) or
-<a href="http://clang.llvm.org/">Clang</a> (<em>clang</em>), as well as <a href="http://www.gnu.org/software/make/">GNU Make</a> (<em>make</em> or <em>gmake</em>). BSD users
+<p>First, Linux and BSD systems need either the <a href="http://gcc.gnu.org">GNU C compiler</a> (<em>gcc</em>) version
+4.9 or later (circa early 2014) or <a href="http://clang.llvm.org/">Clang</a> (<em>clang</em>), <a href="http://gcc.gnu.org">libstdc++</a> 4.9 or
+later (circa early 2014), and <a href="http://www.gnu.org/software/make/">GNU Make</a> (<em>make</em> or <em>gmake</em>). BSD users
 additionally need to have <a href="http://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config</a> and <a href="http://www.gnu.org/software/libiconv/">libiconv</a> installed. All of
 these should be available for your distribution through a package manager. For
 example, Ubuntu includes these tools in the &ldquo;build-essential&rdquo; package.</p>
@@ -1731,20 +1709,25 @@ users <em>also</em> need &ldquo;libncursesw5-dev&rdquo;.)</p>
 
 <p>Compiling Textadept on Windows is no longer supported. The preferred way to
 compile for Windows is cross-compiling from Linux. In order to do so, you need
-<a href="http://mingw.org">MinGW</a> with the Windows header files. Your package manager should offer them.</p>
+<a href="http://mingw.org">MinGW</a> or <a href="http://mingw-w64.org/">mingw-w64</a> version 4.9 or later with the Windows header files.
+Your package manager should offer them.</p>
 
 <p>Note: compiling on Windows requires a C compiler that supports the C99 standard,
-the <a href="http://www.gtk.org/download/windows.php">GTK+ for Windows bundle</a> (2.24 is recommended), and
-<a href="http://gnuwin32.sourceforge.net/packages/libiconv.htm">libiconv for Windows</a> (the &ldquo;Developer files&rdquo; and &ldquo;Binaries&rdquo; zip files). The
-terminal (pdcurses) version requires my <a href="download/win32curses.zip">win32curses bundle</a> instead of GTK+
-and libiconv.</p>
+a C++ compiler that supports the C++11 standard, and a C++ standard library that
+supports C++11, and my <a href="download/win32gtk-2.24.32.zip">win32gtk bundle</a>. The terminal (pdcurses) version
+requires <a href="http://gnuwin32.sourceforge.net/packages/libiconv.htm">libiconv for Windows</a> and my <a href="download/win32curses.zip">win32curses bundle</a> instead of GTK+.</p>
 
 <a name="Requirements.for.Mac.OSX"></a>
 <h3>Requirements for Mac OSX</h3>
 
 <p>Compiling Textadept on Mac OSX is no longer supported. The preferred way is
-cross-compiling from Linux. In order to do so, you need the
-<a href="https://launchpad.net/~flosoft/+archive/cross-apple">Apple Cross-compiler</a> binaries.</p>
+cross-compiling from Linux. In order to do so, you need install an <a href="https://github.com/tpoechtrager/osxcross">OSX cross
+toolchain</a> <em>with GCC</em> version 4.9 or later. You will need to run
+<code>./build_binutils.sh</code> <em>before</em> <code>./build_gcc.sh</code>. OSX SDK tarballs like
+<em>MacOSX10.5.tar.gz</em> can be found readily on the internet.</p>
+
+<p>Note that building an OSX toolchain can easily take 30 minutes or more and
+ultimately consume nearly 3.5GB of disk space.</p>
 
 <a name="Compiling"></a>
 <h2>Compiling</h2>
@@ -1812,10 +1795,10 @@ including platform-specific rules and options.</p>
 <p>For Linux and BSD systems, simply run <code>make deps</code> (or <code>make deps NIGHTLY=1</code> when
 compiling Textadept from the latest source rather than from a tagged release) in
 the <em>src/</em> directory to prepare the build environment, followed by <code>make</code> to
-build the <em>textadept</em> and <em>textadeptjit</em> executables in the root directory. Make
-a symlink from them to <em>/usr/bin/</em> or elsewhere in your <code>PATH</code>.</p>
+build the <em>textadept</em> executable in the root directory. Make a symlink from them
+to <em>/usr/bin/</em> or elsewhere in your <code>PATH</code>.</p>
 
-<p>Similarly, <code>make curses</code> builds <em>textadept-curses</em> and <em>textadeptjit-curses</em>.</p>
+<p>Similarly, <code>make curses</code> builds <em>textadept-curses</em>.</p>
 
 <p>Note: you may have to run</p>
 
@@ -1847,30 +1830,24 @@ previous section) and then the usual <code>make</code> and <code>make install</c
 
 <p>When cross-compiling from within Linux, first make a note of your MinGW
 compiler names. You may have to either modify the <code>CROSS</code> variable in the
-&ldquo;win32&rdquo; block of <em>src/Makefile</em> or append something like &ldquo;CROSS=i486-mingw32-&rdquo;
-when running <code>make</code>. After considering your MinGW compiler names, run
-<code>make win32-deps</code> or <code>make CROSS=i486-mingw32- win32-deps</code> to prepare the build
-environment followed by <code>make win32</code> or <code>make CROSS=i486-mingw32- win32</code> to
-build <em>../textadept.exe</em> and <em>../textadeptjit.exe</em>. Finally, copy the dll files
-from <em>src/win32gtk/bin/</em> to the directory containing the Textadept executables.</p>
+&ldquo;win32&rdquo; block of <em>src/Makefile</em> or append something like
+&ldquo;CROSS=i586-mingw32msvc-&rdquo; when running <code>make</code>. After considering your MinGW
+compiler names, run <code>make win32-deps</code> or
+<code>make CROSS=i586-mingw32msvc- win32-deps</code> to prepare the build environment
+followed by <code>make win32</code> or <code>make CROSS=i586-mingw32msvc- win32</code> to build
+<em>../textadept.exe</em>. Finally, copy the dll files from <em>src/win32gtk/bin/</em> to the
+directory containing the Textadept executables.</p>
 
 <p>Similarly for the terminal version, run <code>make win32-curses</code> or its variant as
-suggested above to build <em>../textadept-curses.exe</em> and
-<em>../textadeptjit-curses.exe</em>.</p>
-
-<p>Please note the build process produces a <em>lua51.dll</em> for <em>only</em>
-<em>textadeptjit.exe</em> and <em>textadeptjit-curses.exe</em> because limitations on external
-Lua library loading do not allow statically linking LuaJIT to Textadept.</p>
+suggested above to build <em>../textadept-curses.exe</em>.</p>
 
 <a name="Cross.Compiling.for.Mac.OSX"></a>
 <h3>Cross Compiling for Mac OSX</h3>
 
 <p>When cross-compiling from within Linux, run <code>make osx-deps</code> to prepare the build
-environment followed by <code>make osx</code> to build <em>../textadept.osx</em> and
-<em>../textadeptjit.osx</em>.</p>
+environment followed by <code>make osx</code> to build <em>../textadept.osx</em>.</p>
 
-<p>Similarly, <code>make osx-curses</code> builds <em>../textadept-curses.osx</em> and
-<em>../textadeptjit-curses.osx</em>.</p>
+<p>Similarly, <code>make osx-curses</code> builds <em>../textadept-curses.osx</em>.</p>
 
 <p>Build a new <em>Textadept.app</em> with <code>make osx-app</code>.</p>
 
@@ -1883,9 +1860,7 @@ Note that the entire compiling process can easily take 30 minutes or more and
 ultimately consume nearly 1GB of disk space.</p>
 
 <p>After using <em>jhbuild</em>, GTK+ is in <em>~/gtk/</em> so make a symlink from <em>~/gtk/inst</em>
-to <em>src/gtkosx</em> in Textadept. Then open <em>src/Makefile</em> and uncomment the
-&ldquo;Darwin&rdquo; block. Finally, run <code>make osx</code> to build <em>../textadept.osx</em> and
-<em>../textadeptjit.osx</em>.</p>
+to <em>src/gtkosx</em> in Textadept. Then run <code>make osx</code> to build <em>../textadept.osx</em>.</p>
 
 <p>Developer note: in order to build a GTK+ for OSX bundle, run the following from
 the <em>src/</em> directory before zipping up <em>gtkosx/include/</em> and <em>gtkosx/lib/</em>:</p>
@@ -1897,17 +1872,7 @@ gtkosx/lib/pkgconfig/*.pc
 <p>where <code>username</code> is your username.</p>
 
 <p>Compiling the terminal version is not so expensive and requires no additional
-libraries. After uncommenting the &ldquo;Darwin&rdquo; block mentioned above, simply run
-<code>make osx-curses</code> to build <em>../textadept-curses.osx</em> and
-<em>../textadeptjit-curses.osx</em>.</p>
-
-<a name="Notes.on.LuaJIT"></a>
-<h3>Notes on LuaJIT</h3>
-
-<p><a href="http://luajit.org">LuaJIT</a> is a Just-In-Time Compiler for Lua and can boost the speed of Lua
-programs. LuaJIT offers no real benefit performance-wise to justify it being
-Textadept&rsquo;s default runtime. LuaJIT&rsquo;s <a href="http://luajit.org/ext_ffi.html">ffi library</a>, however, appears to be
-useful for interfacing with external, non-Lua, libraries.</p>
+libraries. Simply run <code>make osx-curses</code> to build <em>../textadept-curses.osx</em>.</p>
 
 <a name="Notes.on.CDK"></a>
 <h3>Notes on CDK</h3>
@@ -1985,6 +1950,11 @@ parameters.</p>
 <td>Shows this.</td>
 </tr>
 <tr>
+<td><code>-l</code>, <code>--line</code>     </td>
+<td align="center">    1    </td>
+<td>Jumps to a line in the previously opened file.</td>
+</tr>
+<tr>
 <td><code>-n</code>, <code>--nosession</code></td>
 <td align="center">    0    </td>
 <td>No <a href="#Sessions">session</a> functionality.</td>
@@ -2025,236 +1995,19 @@ parameters.</p>
 <a name="Regular.Expressions"></a>
 <h2>Regular Expressions</h2>
 
-<p>Textadept uses <a href="https://github.com/laurikari/tre">TRE</a> as its regular expression library. TRE is a &ldquo;lightweight,
-robust, and efficient POSIX compliant regexp matching library&rdquo;.</p>
-
-<p>The following is from the <a href="http://laurikari.net/tre/documentation/regex-syntax/">TRE Regexp Syntax</a>.</p>
-
-<p>This section describes the POSIX 1003.2 extended RE (ERE) syntax as implemented
-by TRE, and the TRE extensions to the ERE syntax. A simple Extended Backus-Naur
-Form (EBNF) style notation is used to describe the grammar.</p>
-
-<p><strong>Alternation operator</strong></p>
-
-<pre><code>extended-regexp ::= branch
-                |   extended-regexp "|" branch
-</code></pre>
-
-<p>An extended regexp (ERE) is one or more branches, separated by <code>|</code>. An ERE
-matches anything that matches one or more of the branches.</p>
-
-<p><strong>Catenation of REs</strong></p>
-
-<pre><code>branch ::= piece
-       |   branch piece
-</code></pre>
-
-<p>A branch is one or more pieces concatenated. It matches a match for the first
-piece, followed by a match for the second piece, and so on.</p>
-
-<pre><code>piece ::= atom
-      |   atom repeat-operator
-      |   atom approx-settings
-</code></pre>
-
-<p>A piece is an atom possibly followed by a repeat operator or an expression
-controlling approximate matching parameters for the atom.</p>
-
-<pre><code>atom ::= "(" extended-regexp ")"
-     |   bracket-expression
-     |   "."
-     |   assertion
-     |   literal
-     |   back-reference
-     |   "(?#" comment-text ")"
-     |   "(?" options ")" extended-regexp
-     |   "(?" options ":" extended-regexp ")"
-</code></pre>
-
-<p>An atom is either an ERE enclosed in parenthesis, a bracket expression, a <code>.</code>
-(period), an assertion, or a literal.</p>
-
-<p>The dot (<code>.</code>) matches any single character.</p>
-
-<p>Comment-text can contain any characters except for a closing parenthesis <code>)</code>.
-The text in the comment is completely ignored by the regex parser and it used
-solely for readability purposes.</p>
-
-<p><strong>Repeat operators</strong></p>
-
-<pre><code>repeat-operator ::= "*"
-                |   "+"
-                |   "?"
-                |   bound
-                |   "*?"
-                |   "+?"
-                |   "??"
-                |   bound ?
-</code></pre>
-
-<p>An atom followed by <code>*</code> matches a sequence of 0 or more matches of the atom. <code>+</code>
-is similar to <code>*</code>, matching a sequence of 1 or more matches of the atom. An atom
-followed by <code>?</code> matches a sequence of 0 or 1 matches of the atom.</p>
-
-<p>A bound is one of the following, where <em>m</em> and <em>n</em> are unsigned decimal integers
-between 0 and <code>RE_DUP_MAX</code>:</p>
-
-<ol>
-<li>{<em>m</em>,<em>n</em>}</li>
-<li>{<em>m</em>,}</li>
-<li>{<em>m</em>}</li>
-</ol>
-
-
-<p>An atom followed by [1] matches a sequence of <em>m</em> through <em>n</em> (inclusive)
-matches of the atom. An atom followed by [2] matches a sequence of <em>m</em> or more
-matches of the atom. An atom followed by [3] matches a sequence of exactly <em>m</em>
-matches of the atom.</p>
-
-<p>Adding a <code>?</code> to a repeat operator makes the subexpression minimal, or
-non-greedy. Normally a repeated expression is greedy, that is, it matches as
-many characters as possible. A non-greedy subexpression matches as few
-characters as possible. Note that this does not (always) mean the same thing as
-matching as many or few repetitions as possible.</p>
-
-<p><strong>Bracket expressions</strong></p>
-
-<pre><code>bracket-expression ::= "[" item+ "]"
-                   |   "[^" item+ "]"
-</code></pre>
-
-<p>A bracket expression specifies a set of characters by enclosing a nonempty list
-of items in brackets. Normally anything matching any item in the list is
-matched. If the list begins with <code>^</code> the meaning is negated; any character
-matching no item in the list is matched.</p>
-
-<p>An item is any of the following:</p>
+<p>Textadept&rsquo;s regular expressions are based on the C++11 standard for ECMAScript.
+There are a number of references for this syntax on the internet, including:</p>
 
 <ul>
-<li>A single character, matching that character.</li>
-<li>Two characters separated by <code>-</code>. This is shorthand for the full range of
-characters between those two (inclusive) in the collating sequence. For
-example, <code>[0-9]</code> in ASCII matches any decimal digit.</li>
-<li>A collating element enclosed in <code>[.</code> and <code>.]</code>, matching the collating element.
-This can be used to include a literal <code>-</code> or a multi-character collating
-element in the list.</li>
-<li>A collating element enclosed in <code>[=</code> and <code>=]</code> (an equivalence class), matching
-all collating elements with the same primary collation weight as that element,
-including the element itself.</li>
-<li>The name of a character class enclosed in <code>[:</code> and <code>:]</code>, matching any
-character belonging to the class. The set of valid names depends on the
-<code>LC_CTYPE</code> category of the current locale, but the following names are valid
-in all locales:
-
-<ul>
-<li><code>alnum</code> &ndash; alphanumeric characters</li>
-<li><code>alpha</code> &ndash; alphabetic characters</li>
-<li><code>blank</code> &ndash; blank characters</li>
-<li><code>cntrl</code> &ndash; control characters</li>
-<li><code>digit</code> &ndash; decimal digits (0 through 9)</li>
-<li><code>graph</code> &ndash; all printable characters except space</li>
-<li><code>lower</code> &ndash; lower-case letters</li>
-<li><code>print</code> &ndash; printable characters including space</li>
-<li><code>punct</code> &ndash; printable characters not space or alphanumeric</li>
-<li><code>space</code> &ndash; white-space characters</li>
-<li><code>upper</code> &ndash; upper case letters</li>
-<li><code>xdigit</code> &ndash; hexadecimal digits</li>
-</ul>
-</li>
+<li><a href="http://www.cplusplus.com/reference/regex/ECMAScript/">ECMAScript syntax C++ reference</a></li>
+<li><a href="http://en.cppreference.com/w/cpp/regex/ecmascript">Modified ECMAScript regular expression grammar</a></li>
+<li><a href="https://docs.microsoft.com/en-us/cpp/standard-library/regular-expressions-cpp">Regular Expressions (C++)</a></li>
 </ul>
 
 
-<p>To include a literal <code>-</code> in the list, make it either the first or last item, the
-second endpoint of a range, or enclose it in <code>[.</code> and <code>.]</code> to make it a
-collating element. To include a literal <code>]</code> in the list, make it either the
-first item, the second endpoint of a range, or enclose it in <code>[.</code> and <code>.]</code>. To
-use a literal <code>-</code> as the first endpoint of a range, enclose it in <code>[.</code> and <code>.].</code></p>
-
-<p><strong>Assertions</strong></p>
-
-<pre><code>assertion ::= "^"
-          |   "$"
-          |   "\" assertion-character
-</code></pre>
-
-<p>The expressions <code>^</code> and <code>$</code> are called &ldquo;left anchor&rdquo; and &ldquo;right anchor&rdquo;,
-respectively. The left anchor matches the empty string at the beginning of the
-string. The right anchor matches the empty string at the end of the string.</p>
-
-<p>An assertion-character can be any of the following:</p>
-
-<ul>
-<li><code>&lt;</code> &ndash; Beginning of word</li>
-<li><code>&gt;</code> &ndash; End of word</li>
-<li><code>b</code> &ndash; Word boundary</li>
-<li><code>B</code> &ndash; Non-word boundary</li>
-<li><code>d</code> &ndash; Digit character (equivalent to <code>[[:digit:]]</code>)</li>
-<li><code>D</code> &ndash; Non-digit character (equivalent to <code>[^[:digit:]]</code>)</li>
-<li><code>s</code> &ndash; Space character (equivalent to <code>[[:space:]]</code>)</li>
-<li><code>S</code> &ndash; Non-space character (equivalent to <code>[^[:space:]]</code>)</li>
-<li><code>w</code> &ndash; Word character (equivalent to <code>[[:alnum:]_]</code>)</li>
-<li><code>W</code> &ndash; Non-word character (equivalent to <code>[^[:alnum:]_]</code>)</li>
-</ul>
-
-
-<p><strong>Literals</strong></p>
-
-<pre><code>literal ::= ordinary-character
-        |   "\x" ["1"-"9" "a"-"f" "A"-"F"]{0,2}
-        |   "\x{" ["1"-"9" "a"-"f" "A"-"F"]* "}"
-        |  "\" character
-</code></pre>
-
-<p>A literal is either an ordinary character (a character that has no other
-significance in the context), an 8 bit hexadecimal encoded character (e.g.
-<code>\x1B</code>), a wide hexadecimal encoded character (e.g. <code>\x{263a}</code>), or an escaped
-character. An escaped character is a <code>\</code> followed by any character, and matches
-that character. Escaping can be used to match characters which have a special
-meaning in regexp syntax. A <code>\</code> cannot be the last character of an ERE. Escaping
-also allows you to include a few non-printable characters in the regular
-expression. These special escape sequences include:</p>
-
-<ul>
-<li><code>\a</code> &ndash; Bell character (ASCII code 7)</li>
-<li><code>\e</code> &ndash; Escape character (ASCII code 27)</li>
-<li><code>\f</code> &ndash; Form-feed character (ASCII code 12)</li>
-<li><code>\n</code> &ndash; New-line/line-feed character (ASCII code 10)</li>
-<li><code>\r</code> &ndash; Carriage return character (ASCII code 13)</li>
-<li><code>\t</code> &ndash; Horizontal tab character (ASCII code 9)</li>
-</ul>
-
-
-<p>An ordinary character is just a single character with no other significance, and
-matches that character. A <code>{</code> followed by something else than a digit is
-considered an ordinary character.</p>
-
-<p><strong>Back references</strong></p>
-
-<pre><code>back-reference ::= "\" ["1"-"9"]
-</code></pre>
-
-<p>A back reference is a backslash followed by a single non-zero decimal digit <em>d</em>.
-It matches the same sequence of characters matched by the <em>d</em>th parenthesized
-subexpression.</p>
-
-<p><strong>Options</strong></p>
-
-<pre><code>options ::= ["i" "n" "r" "U"]* ("-" ["i" "n" "r" "U"]*)?
-</code></pre>
-
-<p>Options allow compile time options to be turned on/off for particular parts of
-the regular expression. If the option is specified in the first section, it is
-turned on. If it is specified in the second section (after the <code>-</code>), it is
-turned off.</p>
-
-<ul>
-<li><code>i</code> &ndash; Case insensitive.</li>
-<li><code>n</code> &ndash; Forces special handling of the new line character.</li>
-<li><code>r</code> &ndash; Causes the regex to be matched in a right associative manner rather than
-      the normal left associative manner.</li>
-<li><code>U</code> &ndash; Forces repetition operators to be non-greedy unless a <code>?</code> is appended.</li>
-</ul>
-
+<p>Note that Textadept&rsquo;s editing component, Scintilla, does not allow for matching
+newline characters (<code>\r</code> and <code>\n</code>). Use Lua scripts and
+<a href="#Lua.Patterns">Lua patterns</a> instead.</p>
 
 <a name="Lua.Patterns"></a>
 <h2>Lua Patterns</h2>
@@ -2411,6 +2164,173 @@ color variant.</li>
 <a name="Migration.Guides"></a>
 <h2>Migration Guides</h2>
 
+<a name="Textadept.9.to.10"></a>
+<h3>Textadept 9 to 10</h3>
+
+<a name="API.Changes"></a>
+<h4>API Changes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Old API                         </th>
+<th align="center">Change  </th>
+<th>New API</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>_G</strong>                          </td>
+<td align="center">        </td>
+<td></td>
+</tr>
+<tr>
+<td>bit32                           </td>
+<td align="center">Removed </td>
+<td>N/A <em>(use bitwise operators)</em></td>
+</tr>
+<tr>
+<td><strong>buffer</strong>                      </td>
+<td align="center">        </td>
+<td></td>
+</tr>
+<tr>
+<td>brace_match(pos)               </td>
+<td align="center">Changed </td>
+<td><a href="api.html#buffer.brace_match">brace_match</a>(pos, 0)</td>
+</tr>
+<tr>
+<td><strong>lexer</strong>                       </td>
+<td align="center">        </td>
+<td></td>
+</tr>
+<tr>
+<td>_foldsymbols                   </td>
+<td align="center">Replaced</td>
+<td><a href="api.html#lexer.add_fold_point">add_fold_point()</a></td>
+</tr>
+<tr>
+<td>_rules                         </td>
+<td align="center">Replaced</td>
+<td><a href="api.html#lexer.add_rule">add_rule()</a></td>
+</tr>
+<tr>
+<td>_tokenstyles                   </td>
+<td align="center">Replaced</td>
+<td><a href="api.html#lexer.add_style">add_style()</a></td>
+</tr>
+<tr>
+<td>embed_lexer(parent, child, &hellip;)</td>
+<td align="center">Renamed </td>
+<td>parent:<a href="api.html#lexer.embed">embed</a>(child, &hellip;)</td>
+</tr>
+<tr>
+<td>_RULES[id]                   </td>
+<td align="center">Replaced</td>
+<td><a href="api.html#lexer.get_rule">get_rule</a>(id)</td>
+</tr>
+<tr>
+<td>_RULES[id] = rule            </td>
+<td align="center">Replaced</td>
+<td><a href="api.html#lexer.modify_rule">modify_rule</a>(id, rule)</td>
+</tr>
+<tr>
+<td>N/A                             </td>
+<td align="center">Added   </td>
+<td><a href="api.html#lexer.new">new()</a></td>
+</tr>
+<tr>
+<td>word_match(list, wchars, icase)</td>
+<td align="center">Changed </td>
+<td><a href="api.html#lexer.word_match">word_match</a>(words, icase)</td>
+</tr>
+<tr>
+<td><strong>ui</strong>                          </td>
+<td align="center">        </td>
+<td></td>
+</tr>
+<tr>
+<td>set_theme                      </td>
+<td align="center">Renamed </td>
+<td><a href="api.html#buffer.set_theme">buffer.set_theme()</a></td>
+</tr>
+<tr>
+<td><strong>textadept.editing</strong>           </td>
+<td align="center">        </td>
+<td></td>
+</tr>
+<tr>
+<td>match_brace                    </td>
+<td align="center">Replaced</td>
+<td>N/A <em>(menu function)</em></td>
+</tr>
+<tr>
+<td>N/A                             </td>
+<td align="center">Added   </td>
+<td>paste()</td>
+</tr>
+<tr>
+<td>N/A                             </td>
+<td align="center">Added   </td>
+<td>paste_reindents</td>
+</tr>
+<tr>
+<td><strong>textadept.session</strong>           </td>
+<td align="center">        </td>
+<td></td>
+</tr>
+<tr>
+<td>default_session                </td>
+<td align="center">Removed </td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<a name="Configuration.Changes"></a>
+<h4>Configuration Changes</h4>
+
+<p>Textadept 10 no longer uses a <em>~/.textadept/properties.lua</em> file. Instead, all
+<code>buffer</code> settings are made in <em>~/.textadept/init.lua</em>, and apply to the first
+and any subsequent buffers. (In Textadept 9, any <code>buffer</code> settings made in
+<em>~/.textadept/init.lua</em> only applied to the first buffer, so a
+<em>~/.textadept/properties.lua</em> was required in order to define <code>buffer</code> settings
+that would affect subsequent buffers.)</p>
+
+<p>Simply copying the contents of your <em>~/.textadept/properties.lua</em> into
+<em>~/.textadept/init.lua</em> should be sufficient.</p>
+
+<a name="Lexer.Changes"></a>
+<h4>Lexer Changes</h4>
+
+<p>Lexers are now written in a more object-oriented way. Legacy lexers are still
+supported, but it is recommended that you <a href="api.html#lexer.Migrating.Legacy.Lexers">migrate them</a>.</p>
+
+<a name="Key.Bindings.Changes"></a>
+<h4>Key Bindings Changes</h4>
+
+<p>The terminal version&rsquo;s key sequence for <code>Ctrl+Space</code> is now <code>'c '</code> instead of
+<code>'c@'</code>.</p>
+
+<a name="Regex.Changes"></a>
+<h4>Regex Changes</h4>
+
+<p>Textadept now uses <a href="#Regular.Expressions">C++11&rsquo;s ECMAScript regex syntax</a>
+instead of <a href="https://github.com/laurikari/tre">TRE</a>.</p>
+
+<a name="Mac.OSX.System.Requirements"></a>
+<h4>Mac OSX System Requirements</h4>
+
+<p>Textadept now requires Mac OSX 10.6 (Snow Leopard) at a minimum. The previous
+minimum version was 10.5 (Leopard).</p>
+
+<a name="LuaJIT.Changes"></a>
+<h4>LuaJIT Changes</h4>
+
+<p>The LuaJIT version of Textadept has been removed. Any LuaJIT-specific features
+used in external modules will no longer function.</p>
+
 <a name="Textadept.8.to.9"></a>
 <h3>Textadept 8 to 9</h3>
 
@@ -2493,7 +2413,7 @@ commands, menu commands, and language module handling.</p>
 <tr>
 <td>SILENT_PRINT                     </td>
 <td align="center">Renamed </td>
-<td><a href="api.html#ui.SILENT_PRINT">silent_print</a></td>
+<td><a href="api.html#ui.silent_print">silent_print</a></td>
 </tr>
 <tr>
 <td>goto_view(n, relative)           </td>
@@ -2593,7 +2513,7 @@ commands, menu commands, and language module handling.</p>
 <tr>
 <td>RUN_IN_BACKGROUND               </td>
 <td align="center">Renamed </td>
-<td><a href="api.html#textadept.run.RUN_IN_BACKGROUND">run_in_background</a></td>
+<td><a href="api.html#textadept.run.run_in_background">run_in_background</a></td>
 </tr>
 <tr>
 <td>CHECK_SYNTAX                     </td>
@@ -2663,7 +2583,7 @@ commands, menu commands, and language module handling.</p>
 <tr>
 <td>DEFAULT_SESSION                  </td>
 <td align="center">Renamed </td>
-<td><a href="api.html#textadept.session.default_session">default_session</a></td>
+<td>default_session</td>
 </tr>
 <tr>
 <td>SAVE_ON_QUIT                    </td>
@@ -3034,7 +2954,7 @@ for compile and run commands, which are described in the sections below.</p>
 <tr>
 <td>N/A                        </td>
 <td align="center">Added   </td>
-<td><a href="api.html#textadept.run.RUN_IN_BACKGROUND">RUN_IN_BACKGROUND</a>             </td>
+<td><a href="api.html#textadept.run.run_in_background">RUN_IN_BACKGROUND</a>             </td>
 <td>8.0</td>
 </tr>
 <tr>
@@ -3052,7 +2972,7 @@ for compile and run commands, which are described in the sections below.</p>
 <tr>
 <td>N/A                        </td>
 <td align="center">Added   </td>
-<td><a href="api.html#ui.SILENT_PRINT">SILENT_PRINT</a>                   </td>
+<td><a href="api.html#ui.silent_print">SILENT_PRINT</a>                   </td>
 <td>7.2</td>
 </tr>
 <tr>
@@ -3438,7 +3358,7 @@ encodings, and a completely new theme implementation.</p>
 <tr>
 <td>set_theme(name, &hellip;)             </td>
 <td align="center">Changed </td>
-<td><a href="api.html#ui.set_theme">set_theme</a>(name, table)</td>
+<td>set_theme(name, table)</td>
 </tr>
 <tr>
 <td><strong>io</strong>                            </td>
@@ -3579,9 +3499,9 @@ example.</li>
 <li>Set view properties related to colors directly in <em>theme.lua</em> now instead of
 a separate <em>view.lua</em>. You may use color properties defined earlier. Try to
 refrain from setting properties like <code>buffer.sel_eol_filled</code> which belong in
-a <a href="#Buffer.Settings"><em>properties.lua</em></a> file.</li>
-<li>The separate <em>buffer.lua</em> is gone. Use <a href="#Buffer.Settings"><em>properties.lua</em></a>
-or a <a href="#Language-Specific.Buffer.Settings">language module</a>.</li>
+a <em>properties.lua</em> file.</li>
+<li>The separate <em>buffer.lua</em> is gone. Use <em>properties.lua</em> or a
+<a href="#Language-Specific.Buffer.Settings">language module</a>.</li>
 </ol>
 
 
@@ -4314,7 +4234,7 @@ compatible and need to be upgraded.</p>
 
         </div>
         <div id="footer">
-          <p style="text-align:center;"> &copy; 2007-2017 <a href="http://foicica.com">Mitchell</a> mitchell.att.foicica.com</p>
+          <p style="text-align:center;"> &copy; 2007-2019 <a href="http://foicica.com">Mitchell</a> mitchell.att.foicica.com</p>
 
         </div>
       </div>

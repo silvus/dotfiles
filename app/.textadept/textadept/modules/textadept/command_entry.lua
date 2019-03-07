@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 -- Abbreviated environment and commands from Jay Gould.
 
 local M = ui.command_entry
@@ -103,7 +103,7 @@ end
 function M.finish_mode(f)
   if M:auto_c_active() then return false end -- allow Enter to autocomplete
   M.enter_mode(nil)
-  if f then f(M:get_text()) end
+  if f then f((M:get_text())) end
 end
 
 -- Environment for abbreviated Lua commands.
@@ -120,7 +120,10 @@ local env = setmetatable({}, {
     return f
   end,
   __newindex = function(self, k, v)
-    if buffer[k] ~= nil then buffer[k] = v return end
+    local ok, value = pcall(function() return buffer[k] end)
+    if ok and value ~= nil or not ok and value:find('write-only property') then
+      buffer[k] = v return
+    end
     if view[k] ~= nil then view[k] = v return end
     if ui[k] ~= nil then ui[k] = v return end
     rawset(self, k, v)
@@ -163,7 +166,7 @@ args.register('-e', '--execute', 1, run_lua, 'Execute Lua code')
 local function complete_lua()
   local line, pos = M:get_cur_line()
   local symbol, op, part = line:sub(1, pos):match('([%w_.]-)([%.:]?)([%w_]*)$')
-  local ok, result = pcall((load('return ('..symbol..')', nil, 'bt', env)))
+  local ok, result = pcall((load('return ('..symbol..')', nil, 't', env)))
   if (not ok or type(result) ~= 'table') and symbol ~= '' then return end
   local cmpls = {}
   part = '^'..part

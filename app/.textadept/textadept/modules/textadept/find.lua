@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local M = ui.find
 
@@ -89,38 +89,11 @@ events.FIND_WRAPPED = 'find_wrapped'
 local preferred_view
 
 ---
--- The table of Lua patterns matching files and directories to exclude when
--- finding in files.
--- The filter table contains:
---
---   + Lua patterns that match filenames to exclude.
---   + Optional `folders` sub-table that contains patterns matching directories
---     to exclude.
---   + Optional `extensions` sub-table that contains raw file extensions to
---     exclude.
---   + Optional `symlink` flag that when `true`, excludes symlinked files (but
---     not symlinked directories).
---   + Optional `folders.symlink` flag that when `true`, excludes symlinked
---     directories.
---
--- Any patterns starting with '!' exclude files and directories that do not
--- match the pattern that follows.
--- The default value is `lfs.default_filter`, a filter for common binary file
--- extensions and version control directories.
+-- Map of file paths to filters used in `ui.find.find_in_files()`.
+-- @class table
+-- @name find_in_files_filters
 -- @see find_in_files
--- @see lfs.default_filter
--- @class table
--- @name find_in_files_filter
-M.find_in_files_filter = lfs.default_filter
-
--- Text escape sequences with their associated characters and vice-versa.
--- @class table
--- @name escapes
-local escapes = {
-  ['\\a'] = '\a', ['\\b'] = '\b', ['\\f'] = '\f', ['\\n'] = '\n',
-  ['\\r'] = '\r', ['\\t'] = '\t', ['\\v'] = '\v', ['\\\\'] = '\\'
-}
-for k, v in pairs(escapes) do escapes[v] = k end
+M.find_in_files_filters = {}
 
 -- Keep track of find text and found text so that "replace all" works as
 -- expected during a find session ("replace all" with selected text normally
@@ -199,7 +172,10 @@ local function find_incremental(text, next, anchor)
                                                  next and 1 or -1)
   end
   buffer:goto_pos(incremental_start or 0)
-  find(text, next, M.match_case and buffer.FIND_MATCHCASE or 0)
+  -- Note: even though `events.FIND` does not support a flags parameter, the
+  -- default handler has one, so make use of it.
+  events.emit(events.FIND, text, next,
+              M.match_case and buffer.FIND_MATCHCASE or 0)
 end
 
 ---
@@ -230,11 +206,21 @@ end
 -- prints the results to a buffer titled "Files Found", highlighting found text.
 -- Use the `find_text`, `match_case`, `whole_word`, and `regex` fields to set
 -- the search text and option flags, respectively.
+-- A filter determines which files to search in, with the default filter being
+-- `lfs.default_filter`. A filter consists of Lua patterns that match filenames
+-- to include or exclude. Exclusive patterns begin with a '!'. If no inclusive
+-- patterns are given, any filename is initially considered. As a convenience,
+-- file extensions can be specified literally instead of as a Lua pattern (e.g.
+-- '.lua' vs. '%.lua$'), and '/' also matches the Windows directory separator
+-- ('[/\\]' is not needed).
+-- If *filter* is `nil`, the filter from the `ui.find.find_in_files_filters`
+-- table is used. If that filter does not exist, `lfs.default_filter` is used.
 -- @param dir Optional directory path to search. If `nil`, the user is prompted
 --   for one.
 -- @param filter Optional filter for files and directories to exclude. The
---   default value is `ui.find.find_in_files_filter`.
--- @see find_in_files_filter
+--   default value is `lfs.default_filter` unless a filter for *dir* is defined
+--   in `ui.find.find_in_files_filters`.
+-- @see find_in_files_filters
 -- @name find_in_files
 function M.find_in_files(dir, filter)
   dir = dir or ui.dialogs.fileselect{
@@ -263,7 +249,7 @@ function M.find_in_files(dir, filter)
     buffer:empty_undo_buffer()
     local f = io.open(filename, 'rb')
     while f:read(0) do buffer:append_text(f:read(1048576)) end
-    --buffer:set_text(f:read('*a'))
+    --buffer:set_text(f:read('a'))
     f:close()
     local binary = nil -- determine lazily for performance reasons
     buffer:target_whole_document()
@@ -300,7 +286,7 @@ function M.find_in_files(dir, filter)
       end
       ref_time = os.time()
     end
-  end, filter or M.find_in_files_filter)
+  end, filter or M.find_in_files_filters[dir] or lfs.default_filter)
   if not found then ff_buffer:append_text(_L['No results found']) end
   buffer:delete() -- delete temporary buffer
   ui._print(_L['[Files Found Buffer]'], '') -- goto end, set save pos, etc.
@@ -316,6 +302,12 @@ end
 local function replace(rtext)
   if buffer.selection_empty then return end
   if M.in_files then M.in_files = false end
+  if M.regex then
+    -- Interpret \uXXXX sequences, just like with \n, \t, etc.
+    rtext = rtext:gsub('%f[\\]\\u(%x%x%x%x)', function(code)
+      return utf8.char(tonumber(code, 16))
+    end)
+  end
   buffer:target_from_selection()
   buffer[not M.regex and 'replace_target' or 'replace_target_re'](buffer, rtext)
   buffer:set_sel(buffer.target_start, buffer.target_end)
@@ -351,6 +343,7 @@ local function replace_all(ftext, rtext)
     buffer:goto_pos(s)
     local pos = find(ftext, true, nil, true)
     while pos ~= -1 and (pos < buffer:indicator_end(INDIC_REPLACE, s) or EOF) do
+      if buffer.selection_empty then break end -- prevent infinite loops
       replace(rtext)
       count = count + 1
       pos = find(ftext, true, nil, true)
@@ -409,7 +402,7 @@ function M.goto_file_found(line_num, next)
   if not utf8_filename then return end
   textadept.editing.select_line()
   pos = buffer.anchor + pos - 1 -- absolute position of result text on line
-  local s = buffer:indicator_end(M.INDIC_FIND, pos)
+  local s = buffer:indicator_end(M.INDIC_FIND, pos - 1)
   local e = buffer:indicator_end(M.INDIC_FIND, s + 1)
   if buffer:line_from_position(s) == buffer:line_from_position(pos) then
     s, e = s - pos, e - pos -- relative to line start

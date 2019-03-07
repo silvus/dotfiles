@@ -3,6 +3,7 @@
 local textredux = require('textredux')
 textredux.hijack()
 
+
 events.connect(events.LEXER_LOADED, function(lexer)
 	-- Tabs
 	buffer.tab_width = 4
@@ -24,7 +25,7 @@ end)
 -- Theme
 -- ui.set_theme(not CURSES and 'dark' or 'term')
 -- From https://github.com/rgieseke/textadept-themes
-ui.set_theme(not CURSES and 'base16-default-dark' or 'term')
+buffer:set_theme(not CURSES and 'base16-default-dark' or 'term')
 --ui.set_theme(not CURSES and 'base16-ocean-dark' or 'term')
 -- ui.set_theme(not CURSES and 'base16-solarized-dark' or 'term')
 --ui.set_theme(not CURSES and 'base16-monokai-dark' or 'term')
@@ -36,10 +37,10 @@ textadept.editing.strip_trailing_spaces = true
 textadept.run.run_commands.python = 'python3 "%f"'
 
 -- Keymap
-keys['cP'] = textadept.menu.select_command
+-- keys['cP'] = textadept.menu.select_command
 keys['ct'] = buffer.new
 keys['cd'] = buffer.line_delete
-keys['cg'] = textadept.editing.goto_line -- ctrl + g
+keys['cg'] = textadept.editing.goto_line
 
 local m_buffer = textadept.menu.menubar[_L['_Buffer']]
 keys['cpgdn'] = m_buffer[_L['_Next Buffer']][2]
@@ -54,6 +55,8 @@ keys['cX'] = m_tools[_L['Command _Entry']][2]
 -- Already on default
 -- keys['cE'] = Command Selection
 keys['cp'] = io.open_recent_file
+keys['cP'] = function() io.quick_open(io.get_project_root(), '!__pycache__') end
+
 -- shows buffers by their z-order (most recently viewed to least recently viewed
 -- keys['ce'] = function() ui.switch_buffer(true) end
 keys['ce'] = textredux.buffer_list.show

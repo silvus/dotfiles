@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 --[[ This comment is for LuaDoc.
 ---
@@ -78,10 +78,10 @@ io.recent_files = {}
 --     UTF-16BE, UTF-16LE, UTF-32, UTF-32BE, UTF-32LE, UTF-7, C99, JAVA.
 --
 -- [GNU iconv's encodings]: http://www.gnu.org/software/libiconv/
--- @usage io.encodings[#io.encodings + 1] = 'UTF-16'
+-- @usage io.encodings[#io.encodings + 1] = 'UTF-32'
 -- @class table
 -- @name encodings
-io.encodings = {'UTF-8', 'ASCII', 'ISO-8859-1'}
+io.encodings = {'UTF-8', 'ASCII', 'ISO-8859-1', 'UTF-16'}
 
 ---
 -- Opens *filenames*, a string filename or list of filenames, or the
@@ -116,7 +116,7 @@ function io.open_file(filenames, encodings)
     local text = ''
     local f, err = io.open(filename, 'rb')
     if f then
-      text = f:read('*a')
+      text = f:read('a')
       f:close()
       if not text then goto continue end -- filename exists, but cannot read it
     elseif lfs.attributes(filename) then
@@ -172,7 +172,7 @@ function io.reload_file()
   if not buffer.filename then return end
   local pos, first_visible_line = buffer.current_pos, buffer.first_visible_line
   local f = assert(io.open(buffer.filename, 'rb'))
-  local text = f:read('*a')
+  local text = f:read('a')
   f:close()
   if buffer.encoding then text = text:iconv('UTF-8', buffer.encoding) end
   buffer:clear_all()
@@ -313,7 +313,8 @@ events_connect(events.FILE_CHANGED, function()
     informative_text = string.format('"%s"\n%s',
                                      buffer.filename:iconv('UTF-8', _CHARSET),
                                      _L['has been modified. Reload it?']),
-    icon = 'gtk-dialog-question', button1 = _L['_Yes'], button2 = _L['_No']
+    icon = 'gtk-dialog-question', button1 = _L['_Yes'], button2 = _L['_No'],
+    width = CURSES and #buffer.filename > 40 and ui.size[1] - 2 or nil
   }
   if button == 1 then io.reload_file() end
 end)
@@ -361,9 +362,7 @@ function io.get_project_root(path)
   local dir = path or (buffer.filename or lfs.currentdir()):match('^(.+)[/\\]')
   while dir do
     for i = 1, #vcs do
-      if lfs_attributes(dir..'/'..vcs[i], 'mode') == 'directory' then
-        return dir
-      end
+      if lfs_attributes(dir..'/'..vcs[i], 'mode') then return dir end
     end
     dir = dir:match('^(.+)[/\\]')
   end
@@ -382,23 +381,14 @@ io.quick_open_filters = {}
 -- directory path or list of directory paths, using a filtered list dialog.
 -- If *paths* is `nil`, uses the current project's root directory, which is
 -- obtained from `io.get_project_root()`.
--- Files shown in the dialog do not match any pattern in either string or table
--- *filter* (or `lfs.default_filter` if *filter* is `nil`). A filter table
--- contains:
---
---   + Lua patterns that match filenames to exclude.
---   + Optional `folders` sub-table that contains patterns matching directories
---     to exclude.
---   + Optional `extensions` sub-table that contains raw file extensions to
---     exclude.
---   + Optional `symlink` flag that when `true`, excludes symlinked files (but
---     not symlinked directories).
---   + Optional `folders.symlink` flag that when `true`, excludes symlinked
---     directories.
---
--- Any filter patterns starting with '!' exclude files and directories that do
--- not match the pattern that follows. The number of files in the list is capped
--- at `quick_open_max`.
+-- String or list *filter* determines which files to show in the dialog, with
+-- the default filter being `lfs.default_filter`. A filter consists of Lua
+-- patterns that match file and directory paths to include or exclude. Exclusive
+-- patterns begin with a '!'. If no inclusive patterns are given, any path is
+-- initially considered. As a convenience, file extensions can be specified
+-- literally instead of as a Lua pattern (e.g. '.lua' vs. '%.lua$'), and '/'
+-- also matches the Windows directory separator ('[/\\]' is not needed).
+-- The number of files in the list is capped at `quick_open_max`.
 -- If *filter* is `nil` and *paths* is ultimately a string, the filter from the
 -- `io.quick_open_filters` table is used in place of `lfs.default_filter` if the
 -- former exists.
@@ -414,10 +404,10 @@ io.quick_open_filters = {}
 --   `ui.dialogs.filteredlist()`.
 -- @usage io.quick_open(buffer.filename:match('^.+/')) -- list all files in the
 --   current file's directory, subject to the default filter
--- @usage io.quick_open(io.get_current_project(), '!%.lua$') -- list all Lua
+-- @usage io.quick_open(io.get_current_project(), '%.lua$') -- list all Lua
 --    files in the current project
--- @usage io.quick_open(io.get_current_project(), {folders = {'build'}}) -- list
---   all non-built files in the current project
+-- @usage io.quick_open(io.get_current_project(), '![/\\]build') -- list all
+--   files in the current project except those in the build directory
 -- @see io.quick_open_filters
 -- @see lfs.default_filter
 -- @see quick_open_max

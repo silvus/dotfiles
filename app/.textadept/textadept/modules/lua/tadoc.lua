@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 -- Textadept autocompletions and API documentation doclet for LuaDoc.
 -- This module is used by LuaDoc to create Lua autocompletion and API
@@ -104,7 +104,7 @@ local function write_apidoc(file, m, b)
     end
   end
   -- Format the block documentation.
-  doc = table.concat(doc, '\n'):gsub('\n', '\\n')
+  doc = table.concat(doc, '\n'):gsub('\\n', '\\\\n'):gsub('\n', '\\n')
   file[#file + 1] = name:match('[^%.:]+$')..' '..doc
 end
 

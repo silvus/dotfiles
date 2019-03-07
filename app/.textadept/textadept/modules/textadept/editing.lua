@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local M = {}
 
@@ -66,7 +66,7 @@ for _ = 1, #M.XPM_IMAGES do _SCINTILLA.next_image_type() end -- sync
 -- @class table
 -- @name comment_string
 -- @see block_comment
-M.comment_string = {actionscript='//',ada='--',apdl='!',ansi_c='/*|*/',antlr='//',apl='#',applescript='--',asp='\'',autoit=';',awk='#',b_lang='//',bash='#',batch=':',bibtex='%',boo='#',chuck='//',cmake='#',coffeescript='#',context='%',cpp='//',crystal='#',csharp='//',css='/*|*/',cuda='//',desktop='#',django='{#|#}',dmd='//',dockerfile='#',dot='//',eiffel='--',elixir='#',erlang='%',faust='//',fish='#',forth='|\\',fortran='!',fsharp='//',gap='#',gettext='#',gherkin='#',glsl='//',gnuplot='#',go='//',groovy='//',gtkrc='#',haskell='--',html='<!--|-->',icon='#',idl='//',inform='!',ini='#',Io='#',java='//',javascript='//',json='/*|*/',jsp='//',latex='%',ledger='#',less='//',lilypond='%',lisp=';',logtalk='%',lua='--',makefile='#',matlab='#',moonscript='--',myrddin='//',nemerle='//',nsis='#',objective_c='//',pascal='//',perl='#',php='//',pico8='//',pike='//',pkgbuild='#',prolog='%',props='#',protobuf='//',ps='%',pure='//',python='#',rails='#',rc='#',rebol=';',rest='.. ',rexx='--',rhtml='<!--|-->',rstats='#',ruby='#',rust='//',sass='//',scala='//',scheme=';',smalltalk='"|"',sml='(*)',snobol4='#',sql='#',tcl='#',tex='%',text='',toml='#',vala='//',vb='\'',vbscript='\'',verilog='//',vhdl='--',wsf='<!--|-->',xml='<!--|-->',yaml='#'}
+M.comment_string = {actionscript='//',ada='--',apdl='!',ansi_c='/*|*/',antlr='//',apl='#',applescript='--',asp='\'',autoit=';',awk='#',b_lang='//',bash='#',batch=':',bibtex='%',boo='#',chuck='//',cmake='#',coffeescript='#',context='%',cpp='//',crystal='#',csharp='//',css='/*|*/',cuda='//',desktop='#',django='{#|#}',dmd='//',dockerfile='#',dot='//',eiffel='--',elixir='#',erlang='%',faust='//',fish='#',forth='|\\',fortran='!',fsharp='//',gap='#',gettext='#',gherkin='#',glsl='//',gnuplot='#',go='//',groovy='//',gtkrc='#',haskell='--',html='<!--|-->',icon='#',idl='//',inform='!',ini='#',Io='#',java='//',javascript='//',json='/*|*/',jsp='//',latex='%',ledger='#',less='//',lilypond='%',lisp=';',logtalk='%',lua='--',makefile='#',matlab='#',moonscript='--',myrddin='//',nemerle='//',nim='#',nsis='#',objective_c='//',pascal='//',perl='#',php='//',pico8='//',pike='//',pkgbuild='#',prolog='%',props='#',protobuf='//',ps='%',pure='//',python='#',rails='#',rc='#',rebol=';',rest='.. ',rexx='--',rhtml='<!--|-->',rstats='#',ruby='#',rust='//',sass='//',scala='//',scheme=';',smalltalk='"|"',sml='(*)',snobol4='#',sql='--',tcl='#',tex='%',text='',toml='#',vala='//',vb='\'',vbscript='\'',verilog='//',vhdl='--',wsf='<!--|-->',xml='<!--|-->',yaml='#'}
 
 ---
 -- Map of auto-paired characters like parentheses, brackets, braces, and quotes.
@@ -143,9 +143,9 @@ end)
 
 -- Highlights matching braces.
 events.connect(events.UPDATE_UI, function(updated)
-  if updated and bit32.band(updated, 3) == 0 then return end -- ignore scrolling
+  if updated and updated & 3 == 0 then return end -- ignore scrolling
   if M.brace_matches[buffer.char_at[buffer.current_pos]] then
-    local match = buffer:brace_match(buffer.current_pos)
+    local match = buffer:brace_match(buffer.current_pos, 0)
     if match ~= -1 then
       buffer:brace_highlight(buffer.current_pos, match)
     else
@@ -226,25 +226,6 @@ events.connect(events.FILE_BEFORE_SAVE, function()
 end)
 
 ---
--- Goes to the current character's matching brace, selecting the text in between
--- if *select* is `true`.
--- @param select Optional flag indicating whether or not to select the text
---   between matching braces. The default value is `false`.
--- @name match_brace
-function M.match_brace(select)
-  local pos = buffer.current_pos
-  local match_pos = buffer:brace_match(pos)
-  if match_pos == -1 then return end
-  if not select then
-    buffer:goto_pos(match_pos)
-  elseif match_pos > pos then
-    buffer:set_sel(pos, match_pos + 1)
-  else
-    buffer:set_sel(pos + 1, match_pos)
-  end
-end
-
----
 -- Comments or uncomments the selected lines based on the current language.
 -- As long as any part of a line is selected, the entire line is eligible for
 -- commenting/uncommenting.
@@ -306,6 +287,7 @@ function M.goto_line(line)
   buffer:ensure_visible_enforce_policy(line)
   buffer:goto_line(line)
 end
+args.register('-l', '--line', 1, function(line) M.goto_line(line - 1) end)
 
 ---
 -- Transposes characters intelligently.
@@ -368,14 +350,42 @@ end
 -- Selects the text between strings *left* and *right* that enclose the caret.
 -- If that range is already selected, toggles between selecting *left* and
 -- *right* as well.
--- @param left The left part of the enclosure.
--- @param right The right part of the enclosure.
+-- If *left* and *right* are not provided, they are assumed to be one of the
+-- delimiter pairs specified in `auto_pairs` and are inferred from the current
+-- position or selection.
+-- @param left Optional left part of the enclosure.
+-- @param right Optional right part of the enclosure.
+-- @see auto_pairs
 -- @name select_enclosed
 function M.select_enclosed(left, right)
-  local anchor, pos = buffer.anchor, buffer.current_pos
-  if anchor ~= pos then buffer:goto_pos(pos - #right) end
-  buffer:search_anchor()
-  local s, e = buffer:search_prev(0, left), buffer:search_next(0, right)
+  local s, e, anchor, pos = -1, -1, buffer.anchor, buffer.current_pos
+  if left and right then
+    if anchor ~= pos then buffer:goto_pos(pos - #right) end
+    buffer:search_anchor()
+    s, e = buffer:search_prev(0, left), buffer:search_next(0, right)
+  elseif M.auto_pairs then
+    s = buffer.selection_start
+    local char_at, style_at = buffer.char_at, buffer.style_at
+    while s >= 0 do
+      local match = M.auto_pairs[char_at[s]]
+      if match then
+        left, right = string.char(char_at[s]), match
+        if buffer:brace_match(s, 0) >= buffer.selection_end - 1 then
+          e = buffer:brace_match(s, 0)
+          break
+        elseif M.brace_matches[char_at[s]] or
+               style_at[s] == style_at[buffer.selection_start] then
+          buffer.search_flags = 0
+          buffer:set_target_range(s + 1, buffer.length)
+          if buffer:search_in_target(match) >= buffer.selection_end - 1 then
+            e = buffer.target_end - 1
+            break
+          end
+        end
+      end
+      s = s - 1
+    end
+  end
   if s >= 0 and e >= 0 then
     if s + #left == anchor and e == pos then s, e = s - #left, e + #right end
     buffer:set_sel(s + #left, e)
@@ -436,8 +446,7 @@ function M.convert_indentation()
     local e = buffer.line_indent_position[line]
     local current_indentation, new_indentation = buffer:text_range(s, e), nil
     if buffer.use_tabs then
-      -- Need integer division and LuaJIT does not have // operator.
-      local tabs = math.floor(indent / buffer.tab_width)
+      local tabs = indent // buffer.tab_width
       local spaces = math.fmod(indent, buffer.tab_width)
       new_indentation = string.rep('\t', tabs)..string.rep(' ', spaces)
     else
@@ -458,7 +467,7 @@ local function clear_highlighted_words()
 end
 events.connect(events.KEYPRESS, function(code)
   if keys.KEYSYMS[code] == 'esc' then clear_highlighted_words() end
-end)
+end, 1)
 
 ---
 -- Highlights all occurrences of the selected text or all occurrences of the
@@ -482,13 +491,12 @@ function M.highlight_word()
                                 buffer.target_end - buffer.target_start)
     buffer:set_target_range(buffer.target_end, buffer.length)
   end
-  buffer:set_sel(s, e)
 end
 
 ---
 -- Passes the selected text or all buffer text to string shell command *command*
 -- as standard input (stdin) and replaces the input text with the command's
--- standard output (stdout).
+-- standard output (stdout). *command* may contain pipes.
 -- Standard input is as follows:
 --
 -- 1. If text is selected and spans multiple lines, all text on the lines that
@@ -499,7 +507,7 @@ end
 -- used.
 -- 3. If no text is selected, the entire buffer is used.
 -- @param command The Linux, BSD, Mac OSX, or Windows shell command to filter
---   text through.
+--   text through. May contain pipes.
 -- @name filter_through
 function M.filter_through(command)
   local s, e = buffer.selection_start, buffer.selection_end
@@ -523,10 +531,15 @@ function M.filter_through(command)
   }), command)
   local output = buffer.target_text
   for i = 1, #commands do
-    local p = assert(spawn(commands[i]))
+    local p = assert(os.spawn(commands[i]))
     p:write(output)
     p:close()
-    output = p:read('*a') or ''
+    output = p:read('a') or ''
+    if p:wait() ~= 0 then
+      ui.statusbar_text = string.format('"%s" %s', commands[i],
+                                        _L['returned non-zero status'])
+      return
+    end
   end
   buffer:replace_target(output:iconv('UTF-8', _CHARSET))
   if s ~= e then
@@ -588,22 +601,25 @@ end
 local api_docs
 ---
 -- Displays a call tip with documentation for the symbol under or directly
--- behind the caret.
+-- behind position *pos* or the caret position.
 -- Documentation is read from API files in the `api_files` table.
 -- If a call tip is already shown, cycles to the next one if it exists.
 -- Symbols are determined by using `buffer.word_chars`.
+-- @param pos Optional position of the symbol to show documentation for. If
+--   omitted, the caret position is used.
 -- @name show_documentation
 -- @see api_files
 -- @see buffer.word_chars
-function M.show_documentation()
+function M.show_documentation(pos)
   if buffer:call_tip_active() then events.emit(events.CALL_TIP_CLICK) return end
   local lang = buffer:get_lexer(true)
   if not M.api_files[lang] then return end
-  local s = buffer:word_start_position(buffer.current_pos, true)
-  local e = buffer:word_end_position(buffer.current_pos, true)
+  if not pos then pos = buffer.current_pos end
+  local s = buffer:word_start_position(pos, true)
+  local e = buffer:word_end_position(pos, true)
   local symbol = buffer:text_range(s, e)
 
-  api_docs = {}
+  api_docs = {pos = pos, i = 1}
   ::lookup::
   if symbol ~= '' then
     local symbol_patt = '^'..symbol:gsub('(%p)', '%%%1')
@@ -621,8 +637,8 @@ function M.show_documentation()
   -- that function as well.
   local char_at = buffer.char_at
   while s >= 0 and char_at[s] ~= 40 do s = s - 1 end
-  e = buffer:brace_match(s)
-  if s > 0 and (e == -1 or e >= buffer.current_pos) then
+  e = buffer:brace_match(s, 0)
+  if s > 0 and (e == -1 or e >= pos) then
     s, e = buffer:word_start_position(s - 1, true), s - 1
     symbol = buffer:text_range(s, e + 1)
     goto lookup
@@ -637,19 +653,18 @@ function M.show_documentation()
     end
     api_docs[i] = doc
   end
-  if not api_docs.pos then api_docs.pos = 1 end
-  buffer:call_tip_show(buffer.current_pos, api_docs[api_docs.pos])
+  buffer:call_tip_show(pos, api_docs[api_docs.i])
 end
 -- Cycle through apidoc calltips.
 events.connect(events.CALL_TIP_CLICK, function(position)
   if not api_docs then return end
-  api_docs.pos = api_docs.pos + (position == 1 and -1 or 1)
-  if api_docs.pos > #api_docs then
-    api_docs.pos = 1
-  elseif api_docs.pos < 1 then
-    api_docs.pos = #api_docs
+  api_docs.i = api_docs.i + (position == 1 and -1 or 1)
+  if api_docs.i > #api_docs then
+    api_docs.i = 1
+  elseif api_docs.i < 1 then
+    api_docs.i = #api_docs
   end
-  buffer:call_tip_show(buffer.current_pos, api_docs[api_docs.pos])
+  buffer:call_tip_show(api_docs.pos, api_docs[api_docs.i])
 end)
 
 return M

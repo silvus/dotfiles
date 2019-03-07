@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local M = {}
 
@@ -41,14 +41,9 @@ local M = {}
 -- Ctrl+T                  |^T       |^T            |Transpose characters
 -- Ctrl+Shift+J            |^J       |M-J           |Join lines
 -- Ctrl+&#124;             |⌘&#124;  |^\            |Filter text through
--- Ctrl+Shift+M            |^⇧M      |M-S-M         |Select to matching brace
+-- Ctrl+Shift+M            |^⇧M      |M-S-M         |Select between delimiters
 -- Ctrl+<                  |⌘<       |M-<           |Select between XML tags
 -- Ctrl+>                  |⌘>       |None          |Select in XML tag
--- Ctrl+"                  |⌘"       |M-"           |Select in double quotes
--- Ctrl+'                  |⌘'       |M-'           |Select in single quotes
--- Ctrl+(                  |⌘(       |M-(           |Select in parentheses
--- Ctrl+[                  |⌘[       |M-[           |Select in brackets
--- Ctrl+{                  |⌘{       |M-{           |Select in braces
 -- Ctrl+Shift+D            |⌘⇧D      |M-S-W         |Select word
 -- Ctrl+Shift+N            |⌘⇧N      |M-S-N         |Select line
 -- Ctrl+Shift+P            |⌘⇧P      |M-S-P         |Select paragraph
@@ -95,6 +90,9 @@ local M = {}
 -- F2              |F2     |F2           |Next bookmark
 -- Shift+F2        |⇧F2    |F3           |Previous bookmark
 -- Alt+F2          |⌥F2    |F4           |Goto bookmark...
+-- F9              |F9     |F9           |Start recording macro
+-- Shift+F9        |⇧F9    |F10          |Stop recording macro
+-- Alt+F9          |⌥F9    |F12          |Play recorded macro
 -- Ctrl+U          |⌘U     |^U           |Quickly open `_USERHOME`
 -- None            |None   |None         |Quickly open `_HOME`
 -- Ctrl+Alt+Shift+O|^⌘⇧O   |M-S-O        |Quickly open current directory
@@ -212,7 +210,7 @@ local M = {}
 -- N/A            |N/A            |F3          |Toggle "Regex"
 -- N/A            |N/A            |F4          |Toggle "Find in Files"
 --
--- †: Some terminals interpret ^Z as suspend.
+-- †: Some terminals interpret ^Z as suspend; see FAQ for workaround.
 --
 -- ‡: Ctrl+Enter in Win32 curses.
 module('textadept.keys')]]
@@ -252,13 +250,14 @@ module('textadept.keys')]]
 -- Key bindings available depend on your implementation of curses.
 --
 -- For ncurses (Linux, Mac OSX, BSD):
---   * The only Control keys recognized are 'ca'-'cz', 'c@', 'c\\', 'c]', 'c^',
+--   * The only Control keys recognized are 'ca'-'cz', 'c ', 'c\\', 'c]', 'c^',
 --     and 'c_'.
 --   * Control+Shift and Control+Meta+Shift keys are not recognized.
 --   * Modifiers for function keys F1-F12 are not recognized.
 -- For pdcurses (Win32):
 --   * Control+Shift+Letter keys are not recognized. Other Control+Shift keys
 --     are.
+--   * Ctrl+Meta+Symbol keys are not recognized.
 --
 -- Unassigned keys (~ denotes keys reserved by the operating system):
 -- c:        g~~   ~            ~
@@ -303,7 +302,7 @@ keys.del = buffer.clear
 keys[not OSX and (GUI and 'adel' or 'mdel')
              or 'cdel'] = m_edit[_L['D_elete Word']][2]
 keys[not OSX and GUI and 'ca' or 'ma'] = buffer.select_all
-keys[GUI and 'cm' or 'mm'] = textadept.editing.match_brace
+keys[GUI and 'cm' or 'mm'] = m_edit[_L['_Match Brace']][2]
 keys[not OSX and ((GUI or WIN32) and 'c\n' or 'cmj')
              or 'cesc'] = m_edit[_L['Complete _Word']][2]
 if GUI then
@@ -316,19 +315,12 @@ keys[not OSX and (GUI and 'c|' or 'c\\')
              or 'm|'] = m_edit[_L['_Filter Through']][2]
 -- Select.
 local m_sel = m_edit[_L['_Select']]
-keys[GUI and 'cM' or 'mM'] = m_sel[_L['Select to _Matching Brace']][2]
+keys[GUI and 'cM' or 'mM'] = m_sel[_L['Select between _Matching Delimiters']][2]
 keys[not OSX and GUI and 'c<'
                      or 'm<'] = m_sel[_L['Select between _XML Tags']][2]
 if GUI then
   keys[not OSX and 'c>' or 'm>'] = m_sel[_L['Select in XML _Tag']][2]
 end
-keys[not OSX and GUI and "c'"
-                     or "m'"] = m_sel[_L['Select in _Single Quotes']][2]
-keys[not OSX and GUI and 'c"'
-                     or 'm"'] = m_sel[_L['Select in _Double Quotes']][2]
-keys[not OSX and GUI and 'c(' or 'm('] = m_sel[_L['Select in _Parentheses']][2]
-keys[not OSX and GUI and 'c[' or 'm['] = m_sel[_L['Select in _Brackets']][2]
-keys[not OSX and GUI and 'c{' or 'm{'] = m_sel[_L['Select in B_races']][2]
 keys[not OSX and (GUI and 'cD' or 'mW') or 'mD'] = textadept.editing.select_word
 keys[not OSX and GUI and 'cN' or 'mN'] = textadept.editing.select_line
 keys[not OSX and GUI and 'cP' or 'mP'] = textadept.editing.select_paragraph
@@ -402,6 +394,10 @@ keys[not OSX and (GUI and 'csf2' or 'f6') or 'msf2'] = textadept.bookmarks.clear
 keys.f2 = m_bookmark[_L['_Next Bookmark']][2]
 keys[GUI and 'sf2' or 'f3'] = m_bookmark[_L['_Previous Bookmark']][2]
 keys[GUI and 'af2' or 'f4'] = textadept.bookmarks.goto_mark
+-- Macros.
+keys.f9 = textadept.macros.start_recording
+keys[GUI and 'sf9' or 'f10'] = textadept.macros.stop_recording
+keys[GUI and 'af9' or 'f12'] = textadept.macros.play
 -- Quick Open.
 local m_quick_open = m_tools[_L['Quick _Open']]
 keys[not OSX and 'cu' or 'mu'] = m_quick_open[_L['Quickly Open _User Home']][2]
@@ -415,8 +411,7 @@ keys['\t'] = textadept.snippets._insert
 keys['s\t'] = textadept.snippets._previous
 keys.esc = textadept.snippets._cancel_current
 -- Other.
-keys[not OSX and ((GUI or WIN32) and 'c ' or 'c@')
-             or 'aesc'] = m_tools[_L['_Complete Symbol']][2]
+keys[not OSX and 'c ' or 'aesc'] = m_tools[_L['_Complete Symbol']][2]
 keys[GUI and 'ch' or 'mh'] = textadept.editing.show_documentation
 if CURSES then keys.mH = keys.mh end -- mh is used by some GUI terminals
 keys[not OSX and (GUI and 'ci' or 'mI') or 'mi'] = m_tools[_L['Show St_yle']][2]
@@ -511,7 +506,7 @@ if OSX then
   keys.cd = buffer.clear
   keys.ck = function()
     buffer:line_end_extend()
-    buffer:cut()
+    if not buffer.selection_empty then buffer:cut() else buffer:clear() end
   end
   keys.cl = buffer.vertical_centre_caret
   -- GTK-OSX reports Fn-key as a single keycode which confuses Scintilla. Do
@@ -526,12 +521,36 @@ elseif CURSES then
   keys.mA, keys.mE = buffer.vc_home_extend, buffer.line_end_extend
   keys.mU, keys.mD = buffer.page_up_extend, buffer.page_down_extend
   keys.cma, keys.cme = buffer.document_start, buffer.document_end
-  keys.cd, keys.md = buffer.clear, keys.mdel
+  keys.cd, keys.md, keys.ch = buffer.clear, keys.mdel, buffer.delete_back
   keys.ck = function()
     buffer:line_end_extend()
-    buffer:cut()
+    if not buffer.selection_empty then buffer:cut() else buffer:clear() end
   end
 end
+
+-- Unbound keys are handled by Scintilla, but when playing back a macro, this is
+-- not possible. Define useful default keybindings so Scintilla does not have to
+-- handle them.
+keys.left, keys.sleft = buffer.char_left, buffer.char_left_extend
+keys.cleft, keys.csleft  = buffer.word_left, buffer.word_left_extend
+keys.right, keys.sright = buffer.char_right, buffer.char_right_extend
+keys.cright, keys.csright = buffer.word_right, buffer.word_right_extend
+if OSX then
+  keys.mleft, keys.msleft = buffer.vc_home, buffer.vc_home_extend
+  keys.mright, keys.msright = buffer.line_end, buffer.line_end_extend
+end
+keys.down, keys.sdown = buffer.line_down, buffer.line_down_extend
+keys.up, keys.sup = buffer.line_up, buffer.line_up_extend
+if not OSX then
+  keys.home, keys.shome = buffer.vc_home, buffer.vc_home_extend
+  keys['end'], keys.send = buffer.line_end, buffer.line_end_extend
+end
+keys.del, keys.sdel = buffer.clear, buffer.cut
+keys[not OSX and 'cdel' or 'mdel'] = buffer.del_word_right
+keys[not OSX and 'csdel' or 'msdel'] = buffer.del_line_right
+keys['\b'], keys['s\b'] = buffer.delete_back, buffer.delete_back
+keys[not OSX and 'c\b' or 'm\b'] = buffer.del_word_left
+keys[not OSX and 'cs\b' or 'ms\b'] = buffer.del_line_left
 
 -- Modes.
 keys.filter_through = {

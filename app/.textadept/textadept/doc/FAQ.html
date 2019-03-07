@@ -31,15 +31,18 @@
 <h1>FAQ</h1>
 
 <p><strong>Q:</strong>
-What is the difference between <em>textadept</em> and <em>textadeptjit</em>? Which one should
-I use?</p>
+If Textadept is so minimalist, why are the downloads around 10MB in size and the
+unzipped folders 10s of MBs in size?</p>
 
 <p><strong>A:</strong>
-<em>textadept</em> uses Lua 5.3 while <em>textadeptjit</em> uses <a href="http://luajit.org">LuaJIT</a>, which is based on
-Lua 5.1. Other than access to the <a href="http://luajit.org/ext_ffi.html">FFI Library</a>, <em>textadeptjit</em> does not
-provide any noteworthy benefits. It used to be the case that <em>textadeptjit</em> was
-slightly faster when loading large files, but Textadept 6.1 was the last version
-that had a noticible difference between the two. <em>textadept</em> is recommended.</p>
+Each download contains 2 executables: a GUI version and a terminal version.
+Furthermore, the Windows and OSX packages bundle in GTK+ runtimes, accounting
+for some &frac34; of the total application size. (GTK+ is the cross-platform GUI
+toolkit Textadept uses.) Then, starting in version 10, in order to be able to
+run on older Linux systems whose libstdc++ does not support newer C++11 symbols,
+the Linux executables statically link in a newer version of libstdc++. Finally,
+nightly builds are compiled with debug symbols enabled in order to aid debugging
+of various issues.</p>
 
 <hr />
 
@@ -67,8 +70,8 @@ is this a false-positive?</p>
 
 <p><strong>A:</strong>
 Textadept does not contain any viruses and it certainly is a false positive.
-The likely culprits are the <code>textadept-curses.exe</code> and <code>textadeptjit-curses.exe</code>
-executables, which run in the Windows command prompt.</p>
+The likely culprit is the <code>textadept-curses.exe</code> executable, which runs in the
+Windows command prompt.</p>
 
 <hr />
 
@@ -196,7 +199,7 @@ configuration, as stated by the error message. Then try cloning again.</p>
 
         </div>
         <div id="footer">
-          <p style="text-align:center;"> &copy; 2007-2017 <a href="http://foicica.com">Mitchell</a> mitchell.att.foicica.com</p>
+          <p style="text-align:center;"> &copy; 2007-2019 <a href="http://foicica.com">Mitchell</a> mitchell.att.foicica.com</p>
 
         </div>
       </div>

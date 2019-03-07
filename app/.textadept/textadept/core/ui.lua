@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local ui = ui
 
@@ -37,11 +37,6 @@ module('ui')]]
 
 ui.silent_print = false
 
-local theme = package.searchpath(not CURSES and 'light' or 'term',
-                                 _USERHOME..'/themes/?.lua;'..
-                                 _HOME..'/themes/?.lua')
-local theme_props = {}
-
 -- Helper function for printing messages to buffers.
 -- @see ui._print
 local function _print(buffer_type, ...)
@@ -79,6 +74,8 @@ end
 -- buffer is already open in a view, the message is printed to that view.
 -- Otherwise the view is split (unless `ui.tabs` is `true`) and the message
 -- buffer is displayed before being printed to.
+-- At this time, `ui.print()` cannot be used until Textadept is fully
+-- initialized. (That is, not until `events.INITIALIZED` is emitted.)
 -- @param buffer_type String type of message buffer.
 -- @param ... Message strings.
 -- @usage ui._print(_L['[Message Buffer]'], message)
@@ -192,6 +189,12 @@ events.connect(events.BUFFER_AFTER_SWITCH, function()
   table.insert(buffers_zorder, 1, buffer)
 end)
 
+-- Saves and restores buffer zorder data during a reset.
+events.connect(events.RESET_BEFORE,
+               function(persist) persist.buffers_zorder = buffers_zorder end)
+events.connect(events.RESET_AFTER,
+               function(persist) buffers_zorder = persist.buffers_zorder end)
+
 ---
 -- Prompts the user to select a buffer to switch to.
 -- Buffers are listed in the order they were opened unless `zorder` is `true`,
@@ -265,89 +268,10 @@ function ui.goto_file(filename, split, preferred_view, sloppy)
   io.open_file(filename)
 end
 
----
--- Switches the editor theme to string *name* and (optionally) assigns the
--- properties contained in table *props*.
--- User themes override Textadept's default themes when they have the same name.
--- If *name* contains slashes, it is assumed to be an absolute path to a theme
--- instead of a theme name.
--- @param name The name or absolute path of a theme to set.
--- @param props Optional table of theme property assignments that override the
---   theme's defaults.
--- @usage ui.set_theme('light', {font = 'Monospace', fontsize = 12})
--- @name set_theme
-function ui.set_theme(name, props)
-  name = name:find('[/\\]') and name or
-         package.searchpath(name, _USERHOME..'/themes/?.lua;'..
-                                  _HOME..'/themes/?.lua')
-  if not name or not lfs.attributes(name) then return end
-  props = props or {}
-  local current_buffer, current_view = buffer, view
-  for i = 1, #_BUFFERS do
-    view:goto_buffer(_BUFFERS[i])
-    dofile(name)
-    for prop, value in pairs(props) do buffer.property[prop] = value end
-  end
-  view:goto_buffer(current_buffer)
-  for i = 1, #_VIEWS do
-    ui.goto_view(_VIEWS[i])
-    dofile(name)
-    for prop, value in pairs(props) do buffer.property[prop] = value end
-  end
-  ui.goto_view(current_view)
-  theme, theme_props = name, props
-end
-
 local events, events_connect = events, events.connect
 
--- Loads the theme and properties files.
-local function load_theme_and_settings()
-  dofile(theme)
-  for prop, value in pairs(theme_props) do buffer.property[prop] = value end
-  dofile(_HOME..'/properties.lua')
-  if lfs.attributes(_USERHOME..'/properties.lua') then
-    dofile(_USERHOME..'/properties.lua')
-  end
-end
-
--- Sets default properties for a Scintilla window.
-events_connect(events.VIEW_NEW, function()
-  local buffer = buffer
-  -- Allow redefinitions of these Scintilla key commands.
-  local ctrl_keys = {
-    '[', ']', '/', '\\', 'Z', 'Y', 'X', 'C', 'V', 'A', 'L', 'T', 'D', 'U'
-  }
-  local ctrl_shift_keys = {'L', 'T', 'U', 'Z'}
-  for i = 1, #ctrl_keys do
-    buffer:clear_cmd_key(string.byte(ctrl_keys[i]) +
-                         bit32.lshift(buffer.MOD_CTRL, 16))
-  end
-  for i = 1, #ctrl_shift_keys do
-    buffer:clear_cmd_key(string.byte(ctrl_shift_keys[i]) +
-                         bit32.lshift(buffer.MOD_CTRL + buffer.MOD_SHIFT, 16))
-  end
-  -- Since BUFFER_NEW loads themes and settings on startup, only load them for
-  -- subsequent views.
-  if #_VIEWS > 1 then load_theme_and_settings() end
-end)
+-- Ensure title, statusbar, etc. are updated for new views.
 events_connect(events.VIEW_NEW, function() events.emit(events.UPDATE_UI) end)
-
-local SETDIRECTFUNCTION = _SCINTILLA.properties.direct_function[1]
-local SETDIRECTPOINTER = _SCINTILLA.properties.doc_pointer[2]
-local SETLUASTATE = _SCINTILLA.functions.change_lexer_state[1]
-local SETLEXERLANGUAGE = _SCINTILLA.properties.lexer_language[2]
--- Sets default properties for a Scintilla document.
-events_connect(events.BUFFER_NEW, function()
-  buffer.code_page = buffer.CP_UTF8
-  buffer.lexer_language = 'lpeg'
-  buffer:private_lexer_call(SETDIRECTFUNCTION, buffer.direct_function)
-  buffer:private_lexer_call(SETDIRECTPOINTER, buffer.direct_pointer)
-  buffer:private_lexer_call(SETLUASTATE, _LUA)
-  buffer.property['lexer.lpeg.home'] = _USERHOME..'/lexers/?.lua;'..
-                                       _HOME..'/lexers'
-  load_theme_and_settings()
-  buffer:private_lexer_call(SETLEXERLANGUAGE, 'text')
-end)
 
 -- Switches between buffers when a tab is clicked.
 events_connect(events.TAB_CLICKED,
@@ -356,7 +280,9 @@ events_connect(events.TAB_CLICKED,
 -- Sets the title of the Textadept window to the buffer's filename.
 local function set_title()
   local filename = buffer.filename or buffer._type or _L['Untitled']
-  if buffer.filename then filename = filename:iconv('UTF-8', _CHARSET) end
+  if buffer.filename then
+    filename = select(2, pcall(string.iconv, filename, 'UTF-8', _CHARSET))
+  end
   local basename = buffer.filename and filename:match('[^/\\]+$') or filename
   ui.title = string.format('%s %s Textadept (%s)', basename,
                            buffer.modify and '*' or '-', filename)
@@ -381,6 +307,7 @@ events_connect(events.URI_DROPPED, function(utf8_uris)
       if mode and mode ~= 'directory' then io.open_file(uri) end
     end
   end
+  ui.goto_view(view) -- work around any view focus synchronization issues
 end)
 events_connect(events.APPLEEVENT_ODOC, function(uri)
   return events.emit(events.URI_DROPPED, 'file://'..uri)
@@ -389,7 +316,7 @@ end)
 local GETLEXERLANGUAGE = _SCINTILLA.properties.lexer_language[1]
 -- Sets buffer statusbar text.
 events_connect(events.UPDATE_UI, function(updated)
-  if updated and bit32.band(updated, 3) == 0 then return end -- ignore scrolling
+  if updated and updated & 3 == 0 then return end -- ignore scrolling
   local pos = buffer.current_pos
   local line, max = buffer:line_from_position(pos) + 1, buffer.line_count
   local col = buffer.column[pos] + 1
@@ -435,6 +362,7 @@ end)
 -- Updates titlebar and statusbar.
 local function update_bars()
   set_title()
+  local SETDIRECTPOINTER = _SCINTILLA.properties.doc_pointer[2]
   buffer:private_lexer_call(SETDIRECTPOINTER, buffer.direct_pointer)
   events.emit(events.UPDATE_UI)
 end
@@ -505,9 +433,15 @@ events_connect(events.BUFFER_DELETED, function()
   end
 end)
 
--- Enables and disables mouse mode in curses and focuses and resizes views based
--- on mouse events.
+-- Properly handle clipboard text between views in curses, enables and disables
+-- mouse mode, and focuses and resizes views based on mouse events.
 if CURSES then
+  local clipboard_text
+  events.connect(events.VIEW_BEFORE_SWITCH,
+                 function() clipboard_text = ui.clipboard_text end)
+  events.connect(events.VIEW_AFTER_SWITCH,
+                 function() ui.clipboard_text = clipboard_text end)
+
   if not WIN32 then
     local function enable_mouse() io.stdout:write("\x1b[?1002h"):flush() end
     local function disable_mouse() io.stdout:write("\x1b[?1002l"):flush() end
@@ -545,12 +479,14 @@ if CURSES then
         resize = nil
       else
         resize = function(y2, x2)
-          view[1].size = view.size + (view.vertical and x2 - x or y2 - y)
+          local i = getmetatable(view[1]) == getmetatable(_G.view) and 1 or 2
+          view[i].size = view.size + (view.vertical and x2 - x or y2 - y)
         end
       end
     elseif resize then
       resize(y, x)
     end
+    return resize ~= nil -- false resends mouse event to current view
   end)
 end
 

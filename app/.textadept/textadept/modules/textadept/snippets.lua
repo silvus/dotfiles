@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local M = {}
 
@@ -164,8 +164,8 @@ local function new_snippet(text, trigger)
       -- snippet. (If so, pos will point to the correct position.)
       local pos = buffer:indicator_end(INDIC_CURRENTPLACEHOLDER, self.start_pos)
       if pos == 0 then pos = self.start_pos end
-      return bit32.band(buffer:indicator_all_on_for(pos),
-                        2^INDIC_CURRENTPLACEHOLDER) > 0 and pos + 1 or pos
+      return buffer:indicator_all_on_for(pos) &
+             1 << INDIC_CURRENTPLACEHOLDER > 0 and pos + 1 or pos
     else
       return M._snippet_mt[k]
     end
@@ -184,8 +184,7 @@ local function new_snippet(text, trigger)
   if #lines > 1 then
     -- Match indentation on all lines after the first.
     local line = buffer:line_from_position(buffer.current_pos)
-    -- Need integer division and LuaJIT does not have // operator.
-    local level = math.floor(buffer.line_indentation[line] / buffer.tab_width)
+    local level = buffer.line_indentation[line] // buffer.tab_width
     local additional_indent = indent[use_tabs]:rep(level)
     for i = 2, #lines do lines[i] = additional_indent..lines[i] end
   end
@@ -340,7 +339,7 @@ function M._insert(text)
           if first == lexer and second == trigger or
              first == trigger and second == '' and not text then
             local f = io.open(M._paths[i]..'/'..basename)
-            text = f:read('*a')
+            text = f:read('a')
             f:close()
           end
         end
@@ -394,7 +393,7 @@ function M._select()
       local first, second = basename:match('^([^.]+)%.?([^.]*)')
       if second == '' or first == lexer then
         local f = io.open(M._paths[i]..'/'..basename)
-        list[#list + 1] = (second ~= '' and second or first)..'|'..f:read('*a')
+        list[#list + 1] = (second ~= '' and second or first)..'|'..f:read('a')
         f:close()
       end
     end
@@ -543,8 +542,7 @@ M._snippet_mt = {
     return function()
       local s = buffer:indicator_end(M.INDIC_PLACEHOLDER, i)
       while s > 0 and s <= self.end_pos do
-        if bit32.band(buffer:indicator_all_on_for(i),
-                      2^M.INDIC_PLACEHOLDER) > 0 then
+        if buffer:indicator_all_on_for(i) & 1 << M.INDIC_PLACEHOLDER > 0 then
           -- This next indicator comes directly after the previous one; adjust
           -- start and end positions to compensate.
           s, i = buffer:indicator_start(M.INDIC_PLACEHOLDER, i), s
@@ -553,7 +551,8 @@ M._snippet_mt = {
         end
         local id = buffer:indicator_value_at(M.INDIC_PLACEHOLDER, s)
         local ph = snapshot.placeholders[id]
-        if (not index or ph.index == index) and (not type or ph[type]) then
+        if ph and (not index or ph.index == index) and
+           (not type or ph[type]) then
           return s, ph
         end
         s = buffer:indicator_end(M.INDIC_PLACEHOLDER, i)
@@ -577,7 +576,7 @@ M._snippet_mt = {
       -- Note: cannot use spawn since $env variables are not expanded.
       local command = placeholder.sh_code:gsub('%f[%%]%%%f[^%%]', text)
       local p = io.popen(command)
-      local result = p:read('*a'):sub(1, -2) -- chop '\n'
+      local result = p:read('a'):sub(1, -2) -- chop '\n'
       p:close()
       return result
     end
@@ -617,8 +616,7 @@ M._snippet_mt = {
 
 -- Update snippet transforms when text is added or deleted.
 events.connect(events.UPDATE_UI, function(updated)
-  if #snippet_stack > 0 and updated and
-     bit32.band(updated, buffer.UPDATE_CONTENT) > 0 then
+  if #snippet_stack > 0 and updated and updated & buffer.UPDATE_CONTENT > 0 then
     snippet_stack[#snippet_stack]:update_transforms()
   end
 end)

@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local M = {}
 
@@ -52,6 +52,14 @@ local M = {}
 --
 --   * _`text`_: The selection's text.
 --   * _`position`_: The autocompleted word's beginning position.
+-- @field AUTO_C_SELECTION_CHANGE (string)
+--   Emitted as items are highlighted in an autocompletion or user list.
+--   Arguments:
+--
+--   * _`id`_: Either the *id* from [`buffer.user_list_show()`]() or `0` for an
+--     autocompletion list.
+--   * _`text`_: The current selection's text.
+--   * _`position`_: The position the list was displayed at.
 -- @field BUFFER_AFTER_SWITCH (string)
 --   Emitted right after switching to another buffer.
 --   Emitted by [`view.goto_buffer()`]().
@@ -173,6 +181,10 @@ local M = {}
 --     [`ui.menu()`]().
 -- @field MOUSE (string)
 --   Emitted by the terminal version for an unhandled mouse event.
+--   A handler should return `true` if it handled the event. Otherwise Textadept
+--   will try again. (This side effect for a `false` or `nil` return is useful
+--   for sending the original mouse event to a different view that a handler
+--   has switched to.)
 --   Arguments:
 --
 --   * _`event`_: The mouse event: `buffer.MOUSE_PRESS`, `buffer.MOUSE_DRAG`, or
@@ -205,9 +217,17 @@ local M = {}
 -- @field RESET_AFTER (string)
 --   Emitted after resetting the Lua state.
 --   Emitted by [`reset()`]().
+--   Arguments:
+--
+--   * _`persist`_: Table of data persisted by `events.RESET_BEFORE`. All
+--     handlers will have access to this same table.
 -- @field RESET_BEFORE (string)
 --   Emitted before resetting the Lua state.
 --   Emitted by [`reset()`]().
+--   Arguments:
+--
+--   * _`persist`_: Table to store persistent data in for use by
+--     `events.RESET_AFTER`. All handlers will have access to this same table.
 -- @field RESUME (string)
 --   Emitted when resuming Textadept from a suspended state.
 --   This event is only emitted by the terminal version.
@@ -261,6 +281,9 @@ local M = {}
 -- @field VIEW_AFTER_SWITCH (string)
 --   Emitted right after switching to another view.
 --   Emitted by [`ui.goto_view()`]().
+-- @field ZOOM (string)
+--   Emitted after changing [`buffer.zoom`]().
+--   Emitted by [`buffer.zoom_in()`]() and [`buffer.zoom_out()`]().
 module('events')]]
 
 local handlers = {}
@@ -349,10 +372,14 @@ local scnotifications = {
   [c.SCN_URIDROPPED] = {'uri_dropped', 'text'},
   [c.SCN_DWELLSTART] = {'dwell_start', 'position', 'x', 'y'},
   [c.SCN_DWELLEND] = {'dwell_end', 'position', 'x', 'y'},
-  [c.SCN_CALLTIPCLICK] = {'call_tip_click', 'position'},
-  [c.SCN_AUTOCSELECTION] = {'auto_c_selection', 'text', 'position'},
+  [c.SCN_ZOOM] = {'zoom'},
   [c.SCN_INDICATORCLICK] = {'indicator_click', 'position', 'modifiers'},
   [c.SCN_INDICATORRELEASE] = {'indicator_release', 'position'},
+  [c.SCN_CALLTIPCLICK] = {'call_tip_click', 'position'},
+  [c.SCN_AUTOCSELECTION] = {'auto_c_selection', 'text', 'position'},
+  [c.SCN_AUTOCSELECTIONCHANGE] = {
+    'auto_c_selection_change', 'id', 'text', 'position'
+  },
   [c.SCN_AUTOCCANCELLED] = {'auto_c_cancelled'},
   [c.SCN_AUTOCCHARDELETED] = {'auto_c_char_deleted'},
   [c.SCN_AUTOCCOMPLETED] = {'auto_c_completed', 'text', 'position'},

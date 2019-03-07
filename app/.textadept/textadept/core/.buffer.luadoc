@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2018 Mitchell mitchell.att.foicica.com. See LICENSE.
 -- This is a DUMMY FILE used for making LuaDoc for Buffers.
 
 ---
@@ -448,6 +448,12 @@
 --   * `buffer.INDIC_POINTCHARACTER`
 --     A triangle below the centre of the first character of the indicator
 --     range.
+--   * `buffer.INDIC_GRADIENT`
+--     A box with a vertical gradient from solid on top to transparent on
+--     bottom.
+--   * `buffer.INDIC_GRADIENTCENTRE`
+--     A box with a centered gradient from solid in the middle to transparent on
+--     the top and bottom.
 --
 --   Use [`_SCINTILLA.next_indic_number()`]() for custom indicators.
 --   Changing an indicator's style resets that indicator's hover style.
@@ -507,8 +513,8 @@
 --   default).
 --   Bit-masks are 32-bit values whose bits correspond to the 32 available
 --   markers.
---   The default values are `0`, `bit32.bnot(buffer.MASK_FOLDERS)`, `0`, `0`,
---   and `0`, for a line margin and logical marker margin.
+--   The default values are `0`, `~buffer.MASK_FOLDERS`, `0`, `0`, and `0`, for
+--   a line margin and logical marker margin.
 -- @field margin_options (number)
 --   A bit-mask of margin option settings.
 --
@@ -585,6 +591,8 @@
 --   The default value is `false`.
 -- @field modify (bool)
 --   Whether or not the buffer has unsaved changes.
+-- @field move_extends_selection (bool)
+--   Whether or not regular caret movement alters the selected text.
 -- @field multi_paste (number)
 --   The multiple selection paste mode.
 --
@@ -852,7 +860,8 @@
 --   * `buffer.VS_NOWRAPLINESTART`
 --     Prevent the caret from wrapping to the previous line via
 --     `buffer:char_left()` and `buffer:char_left_extend()`. This option is not
---     restricted to virtual space.
+--     restricted to virtual space and should be added to any of the above
+--     options.
 --
 --   When virtual space is enabled, the caret may move into the space past end
 --   of line characters.
@@ -879,6 +888,8 @@
 --     Indent wrapped lines the same amount as the first line.
 --   * `buffer.WRAPINDENT_INDENT`
 --     Indent wrapped lines one more level than the level of the first line.
+--   * `buffer.WRAPINDENT_DEEPINDENT`
+--     Indent wrapped lines two more levels than the level of the first line.
 --
 --   The default value is `buffer.WRAPINDENT_FIXED`.
 -- @field wrap_mode (number)
@@ -1437,8 +1448,9 @@ function brace_highlight_indicator(buffer, use_indicator, indicator) end
 -- '>' and must have the same style.
 -- @param buffer A buffer.
 -- @param pos The position of the brace in *buffer* to match.
+-- @param max_re_style Must be `0`. Reserved for expansion.
 -- @return number
-function brace_match(buffer, pos) end
+function brace_match(buffer, pos, max_re_style) end
 
 ---
 -- Returns whether or not a call tip is visible.
@@ -2845,7 +2857,7 @@ function toggle_fold(buffer, line) end
 -- @param line The line number in *buffer* to toggle the fold on and display
 --   *text* after.
 -- @param text The text to display after the line.
-function toggle_fold_display_text(buffer, line, text) end
+function toggle_fold_show_text(buffer, line, text) end
 
 ---
 -- Undoes the most recent action.
@@ -3112,7 +3124,22 @@ function get_lexer(buffer, current) end
 -- @usage buffer:set_lexer('lexer_name')
 function set_lexer(buffer, lexer) end
 
+---
+-- Declares the editor theme to be string *name* and (optionally) assigns the
+-- properties contained in table *props*.
+-- User themes override Textadept's default themes when they have the same name.
+-- If *name* contains slashes, it is assumed to be an absolute path to a theme
+-- instead of a theme name.
+-- @param buffer A buffer.
+-- @param name The name or absolute path of a theme to set.
+-- @param props Optional table of theme property assignments that override the
+--   theme's defaults.
+-- @usage buffer:set_theme('light', {font = 'Monospace', fontsize = 12})
+-- @name set_theme
+function set_theme(buffer, name, props) end
+
 -- Unused Fields.
+--   * accessibility
 --   * annotation_style_offset
 --   * annotation_styles
 --   * automatic_fold
@@ -3120,6 +3147,7 @@ function set_lexer(buffer, lexer) end
 --   * call_tip_fore
 --   * character_pointer
 --   * code_page
+--   * command_events
 --   * control_char_symbol
 --   * direct_function
 --   * direct_pointer
@@ -3139,6 +3167,7 @@ function set_lexer(buffer, lexer) end
 --   * layout_cache
 --   * lexer
 --   * lexer_language
+--   * line_character_index
 --   * line_end_types_active
 --   * line_end_types_allowed
 --   * line_end_types_supported
@@ -3157,8 +3186,6 @@ function set_lexer(buffer, lexer) end
 --   * print_magnification
 --   * print_wrap_mode
 --   * status
---   * style_bits
---   * style_bits_needed
 --   * style_character_set
 --   * style_from_sub_style
 --   * style_hotspot
@@ -3199,13 +3226,13 @@ function set_lexer(buffer, lexer) end
 --   * STYLE_LASTPREDEFINED
 
 -- Unused Functions.
---   * accessibility
 --   * add_ref_document
 --   * add_styled_text
 --   * add_tab_stop
 --   * add_undo_action
 --   * allocate
 --   * allocate_extended_styles
+--   * allocate_line_character_index
 --   * allocate_sub_styles
 --   * assign_cmd_key
 --   * buffered_draw
@@ -3217,10 +3244,12 @@ function set_lexer(buffer, lexer) end
 --   * clear_cmd_key
 --   * clear_all_cmd_keys
 --   * clear_tab_stops
+--   * count_code_units
 --   * create_document
 --   * create_loader
 --   * describe_key_word_sets
 --   * describe_property
+--   * description_of_style
 --   * encoded_from_utf8
 --   * expand_children
 --   * find_indicator_flash
@@ -3237,24 +3266,31 @@ function set_lexer(buffer, lexer) end
 --   * get_styled_text
 --   * grab_focus
 --   * hide_selection
+--   * index_position_from_line
 --   * indicator_value_at
+--   * line_from_index_position
 --   * load_lexer_library
 --   * mouse_wheel_captures
+--   * name_of_style
+--   * named_styles
 --   * null
 --   * point_x_from_position
 --   * point_y_from_position
 --   * position_from_point
 --   * position_from_point_close
+--   * position_relative_code_units
 --   * private_lexer_call
 --   * property_names
 --   * property_type
 --   * release_all_extended_styles
 --   * release_document
+--   * release_line_character_index
 --   * set_hotspot_active_back
 --   * set_hotspot_active_fore
 --   * set_length_for_encode
 --   * set_styling_ex
 --   * start_record
 --   * stop_record
+--   * tags_of_style
 --   * target_as_utf8
 --   * use_pop_up

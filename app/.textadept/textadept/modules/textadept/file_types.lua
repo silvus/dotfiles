@@ -1,4 +1,4 @@
--- Copyright 2007-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2007-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
 
 local M = {}
 
@@ -30,7 +30,7 @@ M.extensions = {--[[Actionscript]]as='actionscript',asc='actionscript',--[[Ada]]
 -- Each pattern is matched against the first line in the file.
 -- @class table
 -- @name patterns
-M.patterns = {['^#!.+[/ ][gm]?awk']='awk',['^#!.+[/ ]lua']='lua',['^#!.+[/ ]octave']='matlab',['^#!.+[/ ]perl']='perl',['^#!.+[/ ]php']='php',['^#!.+[/ ]python']='python',['^#!.+[/ ]ruby']='ruby',['^#!.+[/ ]bash']='bash',['^#!.+/sh']='bash',['^%s*class%s+%S+%s*<%s*ApplicationController']='rails',['^%s*class%s+%S+%s*<%s*ActionController::Base']='rails',['^%s*class%s+%S+%s*<%s*ActiveRecord::Base']='rails',['^%s*class%s+%S+%s*<%s*ActiveRecord::Migration']='rails',['^%s*<%?xml%s']='xml'}
+M.patterns = {['^#!.+[/ ][gm]?awk']='awk',['^#!.+[/ ]lua']='lua',['^#!.+[/ ]octave']='matlab',['^#!.+[/ ]perl']='perl',['^#!.+[/ ]php']='php',['^#!.+[/ ]python']='python',['^#!.+[/ ]ruby']='ruby',['^#!.+[/ ]bash']='bash',['^#!.+/sh']='bash',['^%s*class%s+%S+%s*<%s*ApplicationController']='rails',['^%s*class%s+%S+%s*<%s*ActionController::Base']='rails',['^%s*class%s+%S+%s*<%s*ActiveRecord::Base']='rails',['^%s*class%s+%S+%s*<%s*ActiveRecord::Migration']='rails',['^%s*<%?xml%s']='xml',['^#cloud%-config']='yaml'}
 
 ---
 -- List of available lexer names.
@@ -102,7 +102,7 @@ end)
 -- Restores the buffer's lexer, primarily for the side-effect of emitting
 -- `events.LEXER_LOADED`.
 local function restore_lexer() buffer:set_lexer(buffer._lexer) end
-events.connect(events.BUFFER_AFTER_SWITCH, restore_lexer)
+events.connect(events.BUFFER_AFTER_SWITCH, restore_lexer, 1)
 events.connect(events.VIEW_AFTER_SWITCH, restore_lexer)
 events.connect(events.VIEW_NEW, restore_lexer)
 events.connect(events.RESET_AFTER, restore_lexer)
