@@ -1,0 +1,10 @@
+{
+	"CtrlD":          "CutLine",
+	"CtrlW":          "DeleteWordLeft",
+	"CtrlLeft":       "WordLeft",
+	"CtrlRight":      "WordRight",
+	"CtrlShiftLeft":  "SelectWordLeft",
+	"CtrlShiftRight": "SelectWordRight",
+	"CtrlShiftUp":    "SelectUp",
+	"CtrlShiftDown":  "SelectDown"
+}
