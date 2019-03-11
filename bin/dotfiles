@@ -296,27 +296,6 @@ def main(dotfilespath, restarted):
             # Reload .Xresources
             exec_command(['xrdb', os.path.expanduser('~/.Xresources')])
 
-    # ST3 Hidpi special case
-    if X_is_installed() and is_hidpi():
-        print_header('Sublime Text 3 HiDPI')
-        st_preference_file = os.path.expanduser('~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')
-        # Replace symlink by original file
-        if os.path.islink(st_preference_file):
-            os.unlink(st_preference_file)
-        # Copy te file and replace line with the dpi setting
-        with open(
-                os.path.join(
-                    dotfilespath,
-                    'appdesktop/.config/sublime-text-3/Packages/User/Preferences.sublime-settings')) as oldfile, open(
-                        st_preference_file, 'w') as newfile:
-            for line in oldfile:
-                if 'dpi_scale' in line:
-                    newfile.write('    "dpi_scale": 1.5,\n')
-                else:
-                    newfile.write(line)
-        print_success('Generated: ' + st_preference_file)
-    print()
-
 
 if __name__ == '__main__':
 
