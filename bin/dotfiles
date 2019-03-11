@@ -200,23 +200,6 @@ def symlink(src, dest):
 #####################################################################
 
 
-def dconf_load(appconf):
-    """ Load dconf settings """
-    for confname in os.listdir(appconf):
-        p = Popen('dconf load / < {}'.format(os.path.join(appconf, confname)), shell=True, stdout=PIPE, stderr=PIPE)
-        output, errors = p.communicate()
-
-        if p.returncode != 0:
-            print_error(errors.decode('UTF-8'))
-        else:
-            print_success('Load {}'.format(confname))
-
-
-#####################################################################
-# Compile
-#####################################################################
-
-
 def generate_config(outfilename, filenames, comment='#'):
     """ Generate config from multiple files """
     with open(outfilename, 'w') as fout:
@@ -312,10 +295,6 @@ def main(dotfilespath, restarted):
 
             # Reload .Xresources
             exec_command(['xrdb', os.path.expanduser('~/.Xresources')])
-
-    if shutil.which('dconf'):
-        print_header('Dconf')
-        dconf_load(os.path.join(dotfilespath, 'appconf'))
 
     # ST3 Hidpi special case
     if X_is_installed() and is_hidpi():
