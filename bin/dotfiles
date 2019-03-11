@@ -216,7 +216,7 @@ def generate_config(outfilename, filenames, comment='#'):
 
 def git_clone(url, destination):
     print_info('Clone ' + destination)
-    return exec_command(['git', 'clone', url, destination])
+    return exec_command(['git', 'clone', '--recursive', url, destination])
 
 
 def git_pull(destination):
