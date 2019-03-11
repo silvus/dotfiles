@@ -1,9 +1,0 @@
-
-_p() {
-	if [[ -d "$SILVUSDOC/.data/p" ]]; then
-		local files_p=("$SILVUSDOC/.data/p/$2"*)
-		[[ -f ${files_p[0]} ]] && COMPREPLY+=( "$COMPREPLY${files_p[@]##*/}" )
-	fi
-}
-
-complete -F _p p

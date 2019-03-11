@@ -145,11 +145,11 @@ def count_files(rootFolder):
 #####################################################################
 
 
-def symlink_arbo(rootSource, rootDestination, with_sudo=False):
+def symlink_arbo(rootSource, rootDestination):
     """
     Scan "app" directory and create an equivalent symlink
     in home for each file.
-    If X is running, scan also "appdesktop"
+    If X server is installed, scan also "appdesktop"
     """
     count = 0
     total = count_files(rootSource)
@@ -166,12 +166,8 @@ def symlink_arbo(rootSource, rootDestination, with_sudo=False):
             destination = os.path.join(rootDestination, relativeFile)
 
             count += 1
-            if with_sudo:
-                if not symlink_root(source, destination):
-                    return False
-            else:
-                if not symlink(source, destination):
-                    return False
+            if not symlink(source, destination):
+                return False
 
             # Update the same line each time
             print_progress(count, total)
@@ -194,25 +190,6 @@ def symlink(src, dest):
         # Make symlink
         os.symlink(src, dest)
         return True
-    else:
-        print_error(src + " doesn't exist")
-        return False
-
-
-def symlink_root(src, dest):
-    """
-    Make a symlink with sudo (no update if it already exists)
-    """
-    # Check if source exist
-    if os.path.exists(src):
-        # Check if destination already exist
-        if os.path.exists(dest):
-            # print_info('Symlink (sudo) exist: ' + os.path.basename(dest))
-            return True
-        # Create directories if necessary
-        assure_dir_exist(dest)
-        # Make symlink
-        return exec_command(['sudo', 'ln', '-s', src, dest])
     else:
         print_error(src + " doesn't exist")
         return False
@@ -319,9 +296,6 @@ def main(dotfilespath, restarted):
     print_header('Symlinks apps')
     if symlink_arbo(os.path.join(dotfilespath, 'app'), os.path.expanduser('~')):
 
-        print_header('Symlinks root apps')
-        symlink_arbo(os.path.join(dotfilespath, 'approot'), '/', True)
-
         # Host specifics app files
         if os.path.isdir(os.path.join(dotfilespath, 'app_{}'.format(hostname))):
             print_header('Symlinks {} specifics apps'.format(hostname))
@@ -339,7 +313,6 @@ def main(dotfilespath, restarted):
             # Reload .Xresources
             exec_command(['xrdb', os.path.expanduser('~/.Xresources')])
 
-    # import dconf settings
     if shutil.which('dconf'):
         print_header('Dconf')
         dconf_load(os.path.join(dotfilespath, 'appconf'))
