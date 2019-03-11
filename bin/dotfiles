@@ -215,14 +215,28 @@ def generate_config(outfilename, filenames, comment='#'):
 
 
 def git_clone(url, destination):
-    print_info('Clone ' + destination)
     return exec_command(['git', 'clone', '--recursive', url, destination])
 
 
+def git_fetch(destination):
+    return exec_command(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'fetch', 'origin', 'master'])
+
+
 def git_pull(destination):
-    print_info('Update ' + destination)
-    return exec_command(
-        ['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'pull', 'origin', 'master'])
+    return exec_command(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'pull', 'origin', 'master'])
+
+
+def git_changelog(destination):
+    """ Get changelog from git commits """
+    p = Popen(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'log', '--oneline', 'HEAD..origin/master'],
+              stdout=PIPE,
+              stderr=PIPE)
+    changelog, errors = p.communicate()
+    if p.returncode != 0:
+        print_error(errors.decode('UTF-8'))
+        return False
+    else:
+        return changelog.decode('UTF-8').strip().split('\n')
 
 
 def git_version(destination):
@@ -235,7 +249,7 @@ def git_version(destination):
         print_error(errors.decode('UTF-8'))
         return False
     else:
-        return version
+        return version.decode('UTF-8')
 
 
 def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
@@ -243,19 +257,27 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
     print_header('Dotfiles updated' if restarted else 'Dotfiles')
 
     if not os.path.exists(dotfilespath):
+        print_info('Clone {}'.format(dotfilespath))
         # dotfiles directory doesn't exist? Clone it
         git_clone(dotfilesurl, dotfilespath)
 
     else:
-        # Get current commit
+        # Get previous commit
         dot_version_prev = git_version(dotfilespath)
 
         # Update
+        print_info('Update {}'.format(dotfilespath))
+        # Fetch
+        git_fetch(dotfilespath)
+        # Build changelog
+        changelog_val = git_changelog(dotfilespath)
+        for line in changelog_val:
+            print_success(line)
+        # Pull
         git_pull(dotfilespath)
 
-        # Get current commit
+        # Get next commit
         dot_version_next = git_version(dotfilespath)
-
         if dot_version_prev != dot_version_next:
             # Restart current script if version change
             os.execl(sys.executable, sys.executable, sys.argv[0], '--restart', *sys.argv[1:])
@@ -315,3 +337,4 @@ if __name__ == '__main__':
         sys.exit(1)
 
     sys.exit(0)
+
