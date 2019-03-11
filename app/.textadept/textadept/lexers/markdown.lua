@@ -17,7 +17,7 @@ lex:add_rule('header',
              token('h1', lexer.starts_line('#') * lexer.nonnewline^0))
 local font_size = lexer.property_int['fontsize'] > 0 and
                   lexer.property_int['fontsize'] or 10
-local hstyle = 'fore:$(color.red)'
+local hstyle = 'fore:$(color.green)'
 lex:add_style('h6', hstyle)
 lex:add_style('h5', hstyle)
 lex:add_style('h4', hstyle)
