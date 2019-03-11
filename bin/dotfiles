@@ -272,7 +272,8 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
         # Build changelog
         changelog_val = git_changelog(dotfilespath)
         for line in changelog_val:
-            print_success(line)
+            if line:
+                print_success(line)
         # Pull
         git_pull(dotfilespath)
 
