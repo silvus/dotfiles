@@ -18,6 +18,9 @@
 # ($FISH_VERSION doesn't work outside of fish ?)
 set --global -x FISH_IS_STARTED 1
 
+# Stop changing clipboard content on kill
+# https://github.com/fish-shell/fish-shell/issues/772
+set --global -x FISH_CLIPBOARD_CMD "cat"
 
 # Fish style
 # https://fishshell.com/docs/current/index.html#variables-color
