@@ -1340,7 +1340,7 @@ awful.rules.rules = {
 			"Sublime_text",
 			"jetbrains-phpstorm" }
 		},
-		-- except = { type = "dialog" },
+		except = { type = "dialog" },
 		properties = {
 			tag = "2",
 			screen = max_screen_count,
