@@ -238,9 +238,11 @@ local quaketerm = lain.util.quake({
 -- Quake like editor (single instance for all screens)
 local quakeeditor = lain.util.quake({
 	-- client name
-	name = "guakeeditor",
+	name = "textadept",
 	-- client to spawn
-	app = 'emacs',
+	app = os.getenv("HOME") .. '/.dotfiles/app/.textadept/textadept/textadept',
+	-- how to specify client name
+	argname = '',  -- cannot set client name on textadept ?
 	-- extra app arguments
 	extra = "",
 	-- border width
@@ -248,7 +250,7 @@ local quakeeditor = lain.util.quake({
 	-- initially visible
 	-- visible = false,
 	-- Overlap the wibox or not
-	overlap = false,
+	overlap = true,
 	-- always spawn on currently focused screen
 	followtag = false,
 	-- On primary screen
@@ -262,14 +264,17 @@ local quakeeditor = lain.util.quake({
 	-- horizontal position (string, possible values: "left", "right", "center")
 	horiz = "center",
 	-- settings is a function which takes the client as input, and can be used to customize its properties
-	-- settings is a function which takes the client as input, and can be used to customize its properties
 	settings = function(c)
-		c.ontop = true -- Not compatible with fullscreen
-		c.sticky = true
+		-- c.ontop = true -- Not compatible with fullscreen
+		-- c.sticky = true
+		-- c.titlebars_enabled = true
+		-- c.floating = true
+		-- c.maximized_vertical = true
+		-- c.maximized_horizontal = true
+
 		c.titlebars_enabled = true
 		c.floating = true
-		c.maximized_vertical = true
-		c.maximized_horizontal = true
+		c.fullscreen = true
 	end
 })
 
