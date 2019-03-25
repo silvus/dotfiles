@@ -37,6 +37,7 @@ alias vi='vim'
 alias vim.sec="vim -x -u $HOME/.vim/vimrc_sec"
 alias vim.min="vim --cmd 'let load_plugins = 0'"
 alias vim.max="vim --cmd 'let load_plugins = 1'"
+alias v="vim -u $HOME/.vim/vimrc_v"
 
 # Find
 # -----------------------------------------------------------------------------

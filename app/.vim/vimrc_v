@@ -1,0 +1,332 @@
+" Base conf
+set nocompatible          " Get rid of Vi compatibility mode
+
+" Misc
+" ------------------------------------------------------------------------------------
+set wildmenu              " Show list instead of just completing
+set backspace=2           " Backspace in insert mode works like other editors
+set encoding=utf-8        " Encoding
+set cm=blowfish2          " Cryptmethod
+set hidden                " Switch between buffers without saving
+set splitright            " New vsplit windows to the right of the current
+set splitbelow            " New split windows to the bottom of the current
+set spelllang=fr,en
+
+" Use whole words when opening URLs. This avoids cutting off parameters (after '?') and anchors (after '#')
+let g:netrw_gx="<cWORD>"
+
+" File explorer
+let g:netrw_banner=0
+let g:netrw_liststyle=3
+
+" Wrap
+" set nowrap                " Don't wrap text
+set showbreak=↪           " Line wraps character
+set display=lastline      " Show as much as possible of a wrapped last line, not just "@"
+
+" Jump to the last position when reopening a file
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" GUI : by default, hide gui menus
+set guioptions=i
+
+" Timeout for key sequences
+" Fix for exit insert mode
+" Fix for vim-airline pause when leaving insert mode but without breaking leader key
+if ! has('gui_running')
+	set ttimeoutlen=10
+	augroup FastEscape
+		autocmd!
+		au InsertEnter * set timeoutlen=50
+		au InsertLeave * set timeoutlen=1000
+	augroup END
+endif
+
+" Spaces - Tabs - Indent - Fold
+" ------------------------------------------------------------------------------------
+filetype on
+filetype plugin on
+" filetype indent on        " Load filetype-specific indent files
+
+set list                  " Show special characters
+set listchars=tab:\ \ ,trail:•,extends:#,nbsp:.
+
+set tabstop=4             " Number of visual spaces per TAB
+set softtabstop=4         " Number of spaces in tab when editing
+set shiftwidth=4          " When indenting with '>', use x spaces width
+" set expandtab           " Tabs are spaces
+
+" Tabs (default)
+autocmd FileType * setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+
+" Spaces
+autocmd FileType python,xml setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+
+" Specific
+autocmd FileType make setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
+autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+
+" Fold
+set foldmethod=indent     " Fold based on indent
+set foldlevel=1
+set foldlevelstart=1
+set foldnestmax=1         " Deepest fold level
+" set foldcolumn=1        " See the folds
+set nofoldenable          " Don't fold by default
+
+" Scroll
+" ------------------------------------------------------------------------------------
+set sidescroll=1          " Scroll one character at a time to reveal more text
+set scrolloff=10          " Places a line between the current line and the screen edge
+set sidescrolloff=10      " Places a couple columns between the current column and the screen edge
+
+" Search
+" ------------------------------------------------------------------------------------
+set incsearch             " Find as you type search
+set hlsearch              " Highlight search terms
+set ignorecase            " Make searches case-insensitive.
+
+" Backups and undo
+" ------------------------------------------------------------------------------------
+" Swap files out of the project root
+set backup
+set backupdir=~/.vim/backup/
+set directory=~/.vim/swap/
+" Persistent undo history
+set undofile
+set undodir=~/.vim/undo/
+
+function! EnsureDirExists (dir)
+	if !isdirectory(a:dir)
+		call mkdir(a:dir,'p')
+	endif
+endfunction
+
+let myVimDir = expand("$HOME/.vim")
+let myBackupDir = myVimDir . '/backup'
+let mySwapDir = myVimDir . '/swap'
+call EnsureDirExists(myVimDir)
+call EnsureDirExists(myBackupDir)
+call EnsureDirExists(mySwapDir)
+
+" Clipboard
+" ------------------------------------------------------------------------------------
+" use + buffer (the system clipboard) if +xterm_clipboard
+if has('unnamedplus')
+	set clipboard=unnamed,unnamedplus
+endif
+
+" Insert mode
+" ------------------------------------------------------------------------------------
+" Makes Vim work in a way that Insert mode is the default mode. Useful if you want to use Vim as a modeless editor.
+" Use CTRL-O to execute one Normal mode command. When this is a mapping, it is executed as if 'insertmode' was off. Normal mode remains active until the mapping is finished.
+" Use CTRL-L to execute a number of Normal mode commands, then use Esc to get back to Insert mode. Note that CTRL-L moves the cursor left, like does when 'insertmode' isn't set.
+set insertmode
+" set noinsertmode
+" Or use tombh/novim-mode to keep vim-startify ?
+" Set normal mode at start (Doesn't work with tombh/novim-mode
+" autocmd BufRead,BufNewFile * "<C-l>"
+
+" Keymaps
+" ------------------------------------------------------------------------------------
+let mapleader="!"
+let maplocalleader="!"
+
+" Edit vimrc
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+" Reload .vimrc
+nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>r :source $MYVIMRC<CR>
+
+" Navigate in autocomplete (before wrapped line remap)
+inoremap <expr> <Down> ((pumvisible())?("\<C-n>"):("\<Down>"))
+inoremap <expr> <Up> ((pumvisible())?("\<C-p>"):("\<Up>"))
+
+" Move through wrapped lines
+nnoremap <silent> <Up> gk
+inoremap <silent> <Up> <C-o>gk
+nnoremap <silent> <Down> gj
+inoremap <silent> <Down> <C-o>gj
+nnoremap <silent> <home> g<home>
+inoremap <silent> <home> <C-o>g<home>
+nnoremap <silent> <End> g<End>
+inoremap <silent> <End> <C-o>g<End>
+
+" Splits
+nnoremap <C-w>h :new<CR>
+" nnoremap <C-w>v :vnew<CR>
+
+" Ctrl + arrow: move quickly
+nnoremap <silent> <C-Up> {
+inoremap <silent> <C-Up> <Esc>{i
+nnoremap <silent> <C-Down> }
+inoremap <silent> <C-Down> <Esc>}i
+
+" Delete in insert mode
+inoremap <silent> <C-d> <Esc>ddi
+
+" Paste in insert mode
+inoremap <silent> <C-p> <Esc>pi
+
+" Paste from yank register
+noremap <leader>p "0p
+noremap <leader>P "0P
+
+" Shift + arrow: select text
+nmap <S-Up> v<Up>
+nmap <S-Down> v<Down>
+nmap <S-Left> v<Left>
+nmap <S-Right> v<Right>
+vmap <S-Up> <Up>
+vmap <S-Down> <Down>
+vmap <S-Left> <Left>
+vmap <S-Right> <Right>
+imap <S-Up> <Esc>v<Up>
+imap <S-Down> <Esc>v<Down>
+imap <S-Left> <Esc>v<Left>
+imap <S-Right> <Esc>v<Right>
+
+" Simulate shift-arrows (select block in windows) with control-arrows
+inoremap <Esc>[A <C-O>vk
+vnoremap <Esc>[A k
+inoremap <Esc>[B <C-O>vj
+vnoremap <Esc>[B j
+inoremap <Esc>[C <C-O>vl
+vnoremap <Esc>[C l
+inoremap <Esc>[D <C-O>vh
+vnoremap <Esc>[D h
+noremap <ESC>[1;2D <C-S-Left>
+noremap! <ESC>[1;2D <C-S-Left>
+noremap <ESC>[1;2C <C-S-Right>
+noremap! <ESC>[1;2C <C-S-Right>
+
+" Escape insert mode
+inoremap <C-!> <C-l>
+inoremap <C-!> <C-l>
+inoremap <C-:> <C-l>:
+inoremap <ESC> <C-l>
+" inoremap <ESC><ESC> <C-l>
+" inoremap <ESC><ESC><ESC> <C-l>
+" inoremap <ESC><ESC><ESC><ESC> <C-l>
+
+" Cycling through buffers
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-b> :bprevious<CR>
+" nnoremap <C-q> :bd<CR>
+
+" Save with Ctrl + s
+nmap <C-s> :w<CR>
+imap <C-s> <Esc>:w<CR>a
+vmap <C-s> <Esc>:w<CR>v
+
+" Toggle folds
+nnoremap <space> za
+
+" Toggle line numbers
+nmap <silent> <F10> :set invnumber<bar>:set invrelativenumber<CR>
+
+" Redraws the screen and removes any search highlighting.
+nnoremap <silent> <C-l> :nohl<CR><C-l>
+
+" Indentation on paste
+set pastetoggle=<F9>
+" nnoremap p ]p
+" nnoremap P p
+
+" Spellchecking
+nnoremap <F12> :setlocal spell! spell?<CR>
+
+" Open file explorer
+nnoremap <leader>e :Explore<CR>
+map <F4> :Explore<CR>
+nmap <C-p> :Explore<CR>
+imap <C-p> <Esc>:Explore<CR>
+
+" Buffers
+nmap <C-e> :ls<CR>:buffer<Space>
+imap <C-e> <Esc>:ls<CR>:buffer<Space>
+
+" Change paste motion cp{motion}
+nmap <silent> cp :set opfunc=ChangePaste<CR>g@
+function! ChangePaste(type, ...)
+	silent exe "normal! `[v`]\"_c"
+	silent exe "normal! p"
+endfunction
+
+" Autocomplete with C-Space
+if has("gui_running")
+	" C-Space seems to work under gVim on both Linux and win32
+	inoremap <C-Space> <C-n>
+else " no gui
+	if has("unix")
+		inoremap <Nul> <C-n>
+	endif
+endif
+
+" Commands
+" ------------------------------------------------------------------------------------
+" Trim trailing spaces
+function! StripTrailingWhitespaces()
+	" Preparation: save last search, and cursor position.
+	let _s=@/
+	let l = line(".")
+	let c = col(".")
+	" Do the business:
+	%s/\s\+$//e
+	" Clean up: restore previous search history, and cursor position
+	let @/=_s
+	call cursor(l, c)
+endfunction
+command! StripTrailingWhitespaces call StripTrailingWhitespaces()
+
+" :W - To write with root rights
+command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+
+" Insert lorem ipsum
+command! Lorem :read !lorem --words 50 --cols 2000<CR>
+nnoremap <leader>lo :read !lorem --words 50 --cols 2000<CR>
+
+" Status line
+" ------------------------------------------------------------------------------------
+set laststatus=2          " Last window always has a statusline
+
+set statusline+=\ %n\                               " Buffer number
+set statusline+=%1*\ %<%f\ %*                       " File name
+set statusline+=\ %y\                               " File type
+" set statusline+=\ %{&fileencoding?&fileencoding:&encoding} " Encoding -
+" TODO: only if not utf-8. Need a an autoload command (https://stackoverflow.com/questions/25178484/how-to-change-color-in-statusline-if-current-file-has-no-utf8-fileencoding) ?
+set statusline+=\ %h%m%r%w\                         " Modified? Readonly?
+set statusline+=%=                                  " Switch to the right side
+set statusline+=\ %c\                               " Col number
+" set statusline+=\ %P\                             " Percent through file
+set statusline+=%1*
+set statusline+=\ %l/%L\ %*
+" Current line / Total lines
+
+" Theme
+" ------------------------------------------------------------------------------------
+set t_Co=256              " Enable 256-color mode.
+syntax enable             " Enable syntax highlighting (previously syntax on).
+colorscheme delek
+" set background=dark
+
+set ruler                 " Always show info along bottom.
+set rulerformat=''
+
+" Vertical separator
+set fillchars+=vert:│
+
+set number                " Show line numbers
+set relativenumber        " Show relative line numbers
+set showmode              " Current mode in status line
+set showcmd               " Display the number of (characters|lines) in visual mode, also cur command
+set showmatch             " Show matching brackets when text indicator is over them
+" set cursorline            " Highlights the current line
+
+" Highlights the current line on insert
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
+
+hi StatusLine          ctermbg=DarkGreen  ctermfg=0
+hi LineNr              ctermfg=8          ctermbg=NONE
+hi CursorLineNr        ctermfg=7          ctermbg=NONE
