@@ -19,6 +19,8 @@ events.connect(events.LEXER_LOADED, function(lexer)
 		-- No auto pairing in markdown
 		-- textadept.editing.auto_pairs = nil
 		textadept.editing.brace_matches = {}
+		-- Contract folds
+		buffer:fold_all(buffer.FOLDACTION_CONTRACT)
 	end
 end)
 
@@ -26,9 +28,9 @@ end)
 -- ui.set_theme(not CURSES and 'dark' or 'term')
 -- From https://github.com/rgieseke/textadept-themes
 buffer:set_theme(not CURSES and 'base16-default-dark' or 'term')
---ui.set_theme(not CURSES and 'base16-ocean-dark' or 'term')
+-- ui.set_theme(not CURSES and 'base16-ocean-dark' or 'term')
 -- ui.set_theme(not CURSES and 'base16-solarized-dark' or 'term')
---ui.set_theme(not CURSES and 'base16-monokai-dark' or 'term')
+-- ui.set_theme(not CURSES and 'base16-monokai-dark' or 'term')
 
 -- Strip trailing whitespace on save
 textadept.editing.strip_trailing_spaces = true
@@ -54,8 +56,8 @@ keys['cX'] = m_tools[_L['Command _Entry']][2]
 
 -- Already on default
 -- keys['cE'] = Command Selection
-keys['cp'] = io.open_recent_file
-keys['cP'] = function() io.quick_open(io.get_project_root(), '!__pycache__') end
+keys['cP'] = io.open_recent_file
+keys['cp'] = function() io.quick_open(io.get_project_root(), '!__pycache__') end
 
 -- shows buffers by their z-order (most recently viewed to least recently viewed
 -- keys['ce'] = function() ui.switch_buffer(true) end

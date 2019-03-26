@@ -5,7 +5,7 @@ local lexer = require('lexer')
 local token, word_match = lexer.token, lexer.word_match
 local P, R, S = lpeg.P, lpeg.R, lpeg.S
 
-local lex = lexer.new('markdown')
+local lex = lexer.new('markdown', {fold_by_indentation = true})
 
 -- Block elements.
 lex:add_rule('header',
@@ -98,10 +98,10 @@ lex:add_rule('em', token('em', lexer.delimited_range('*', true, true) +
 lex:add_style('em', 'italics')
 
 -- Embedded HTML.
-local html = lexer.load('html')
-local start_rule = lexer.starts_line(S(' \t')^0) * #P('<') *
-                   html:get_rule('element')
-local end_rule = token(lexer.DEFAULT, P('\n')) -- TODO: lexer.WHITESPACE errors
-lex:embed(html, start_rule, end_rule)
+--local html = lexer.load('html')
+--local start_rule = lexer.starts_line(S(' \t')^0) * #P('<') *
+                   --html:get_rule('element')
+--local end_rule = token(lexer.DEFAULT, P('\n')) -- TODO: lexer.WHITESPACE errors
+--lex:embed(html, start_rule, end_rule)
 
 return lex
