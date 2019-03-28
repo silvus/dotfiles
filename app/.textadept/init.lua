@@ -5,6 +5,11 @@ textredux.hijack()
 
 
 events.connect(events.LEXER_LOADED, function(lexer)
+	-- Multiple Cussor
+	buffer.multiple_selection = true
+	-- Paste into all selections
+	buffer.multi_paste = buffer.MULTIPASTE_EACH
+
 	-- Tabs
 	buffer.tab_width = 4
 	buffer.use_tabs = true
@@ -63,6 +68,7 @@ keys['cp'] = function() io.quick_open(io.get_project_root(), '!__pycache__') end
 -- keys['ce'] = function() ui.switch_buffer(true) end
 keys['ce'] = textredux.buffer_list.show
 
+keys['cl'] = textadept.editing.select_word
 
 -- highlight trailing whitespace
 -- from: https://foicica.com/wiki/highlight-trailing-whitespace
