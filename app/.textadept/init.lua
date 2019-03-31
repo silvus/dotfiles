@@ -100,3 +100,8 @@ keys['cl'] = textadept.editing.select_word
 -- Fold
 local m_view = textadept.menu.menubar[_L['_View']]
 keys['c\n'] = m_view[_L['Toggle Current _Fold']][2]
+
+-- Autocomplete
+local m_edit = textadept.menu.menubar[_L['_Edit']]
+keys['c '] = m_edit[_L['Complete _Word']][2]
+-- keys['c '] = m_tools[_L['_Complete Symbol']][2]
