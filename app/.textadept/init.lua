@@ -84,7 +84,8 @@ keys['cpgdn'] = m_buffer[_L['_Next Buffer']][2]
 keys['cpgup'] = m_buffer[_L['_Previous Buffer']][2]
 
 -- Files
-keys['cp'] = function() io.quick_open(io.get_project_root(), '!__pycache__') end
+io.quick_open_max = 10000
+keys['cp'] = function() io.quick_open(io.get_project_root()) end
 -- keys['cP'] = io.open_recent_file
 -- keys['co'] = Open
 keys['cO'] = io.open_recent_file
