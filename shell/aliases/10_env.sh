@@ -64,6 +64,9 @@ export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
 # Elinks
 export ELINKS_CONFDIR="$XDG_CONFIG_HOME"/elinks
 
+# GPG
+export GNUPGHOME="$XDG_CONFIG_HOME"/gnupg
+
 # History
 # -----------------------------------------------------------------------------
 export HISTSIZE=65536 # Lines in memory
