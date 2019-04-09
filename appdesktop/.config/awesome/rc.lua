@@ -238,11 +238,11 @@ local quaketerm = lain.util.quake({
 -- Quake like editor (single instance for all screens)
 local quakeeditor = lain.util.quake({
 	-- client name
-	name = "textadept",
+	name = "vnote",
 	-- client to spawn
-	app = os.getenv("HOME") .. '/.dotfiles/app/.textadept/textadept/textadept',
+	app = os.getenv("HOME") .. '/bin/vnote',
 	-- how to specify client name
-	argname = '',  -- cannot set client name on textadept ?
+	argname = '',  -- cannot set client name ?
 	-- extra app arguments
 	extra = "",
 	-- border width
