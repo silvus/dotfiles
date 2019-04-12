@@ -250,7 +250,7 @@ local quakeeditor = lain.util.quake({
 	-- initially visible
 	-- visible = false,
 	-- Overlap the wibox or not
-	overlap = true,
+	overlap = false,
 	-- always spawn on currently focused screen
 	followtag = false,
 	-- On primary screen
