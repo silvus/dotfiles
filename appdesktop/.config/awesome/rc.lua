@@ -147,26 +147,30 @@ local function set_wallpaper(s)
 		-- else fallback to default wallpapers directory
 		local wallpaper_default_dir = os.getenv("HOME") .. '/.config/awesome/wallpapers'
 		-- Based on current tag
-		local tag = awful.screen.focused().selected_tag
-		local tag_index = 1
+		local tag = s.selected_tag
+		local tag_name = "1"
 		if tag then
-			tag_index = tag.index
+			tag_name = tag.name
 		end
+
+		-- get screen index on multi screen
 		local screen_index = 1
 		if max_screen_count > 1 and s.index then
 			screen_index = s.index
 		end
 
+		-- naughty.notify({title = "tag_name", text = tostring(tag_name) })
+
 		local wallpapers_possibilities = {
 			-- Search in home with a screen index
-			wallpapers_dir .. '/wallpaper_' .. screen_index .. '_' .. tag_index .. '.jpg',
-			wallpapers_dir .. '/wallpaper_' .. screen_index .. '_' .. tag_index .. '.png',
+			wallpapers_dir .. '/wallpaper_' .. screen_index .. '_' .. tag_name .. '.jpg',
+			wallpapers_dir .. '/wallpaper_' .. screen_index .. '_' .. tag_name .. '.png',
 			-- Search in home
-			wallpapers_dir .. '/wallpaper_' .. tag_index .. '.jpg',
-			wallpapers_dir .. '/wallpaper_' .. tag_index .. '.png',
+			wallpapers_dir .. '/wallpaper_' .. tag_name .. '.jpg',
+			wallpapers_dir .. '/wallpaper_' .. tag_name .. '.png',
 			-- Search in default directory jpg
-			wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.jpg',
-			wallpaper_default_dir .. '/wallpaper_' .. tag_index .. '.png'
+			wallpaper_default_dir .. '/wallpaper_' .. tag_name .. '.jpg',
+			wallpaper_default_dir .. '/wallpaper_' .. tag_name .. '.png'
 		}
 		-- take the first existing wallpaper
 		for _, wp in ipairs(wallpapers_possibilities) do
@@ -236,47 +240,47 @@ local quaketerm = lain.util.quake({
 })
 
 -- Quake like editor (single instance for all screens)
-local quakeeditor = lain.util.quake({
-	-- client name
-	name = "zim",
-	-- client to spawn
-	app = "zim",
-	-- how to specify client name
-	argname = '',  -- cannot set client name ?
-	-- extra app arguments
-	extra = "",
-	-- border width
-	border = 0,
-	-- initially visible
-	-- visible = false,
-	-- Overlap the wibox or not
-	overlap = false,
-	-- always spawn on currently focused screen
-	followtag = false,
-	-- On primary screen
-	screen = screen.primary,
-	-- dropdown client height (float in [0,1] or exact pixels number)
-	height = 1,
-	-- dropdown client width (float in [0,1] or exact pixels number)
-	width = 1,
-	-- vertical position (string, possible values: "top", "bottom", "center")
-	vert = "top",
-	-- horizontal position (string, possible values: "left", "right", "center")
-	horiz = "center",
-	-- settings is a function which takes the client as input, and can be used to customize its properties
-	settings = function(c)
-		c.ontop = true -- Not compatible with fullscreen
-		c.sticky = true
-		-- c.titlebars_enabled = true
-		-- c.floating = true
-		c.maximized_vertical = true
-		c.maximized_horizontal = true
-
-		c.titlebars_enabled = true
-		c.floating = true
-		-- c.fullscreen = true
-	end
-})
+-- local quakeeditor = lain.util.quake({
+-- 	-- client name
+-- 	name = "zim",
+-- 	-- client to spawn
+-- 	app = "zim",
+-- 	-- how to specify client name
+-- 	argname = '',  -- cannot set client name ?
+-- 	-- extra app arguments
+-- 	extra = "",
+-- 	-- border width
+-- 	border = 0,
+-- 	-- initially visible
+-- 	-- visible = false,
+-- 	-- Overlap the wibox or not
+-- 	overlap = false,
+-- 	-- always spawn on currently focused screen
+-- 	followtag = false,
+-- 	-- On primary screen
+-- 	screen = screen.primary,
+-- 	-- dropdown client height (float in [0,1] or exact pixels number)
+-- 	height = 1,
+-- 	-- dropdown client width (float in [0,1] or exact pixels number)
+-- 	width = 1,
+-- 	-- vertical position (string, possible values: "top", "bottom", "center")
+-- 	vert = "top",
+-- 	-- horizontal position (string, possible values: "left", "right", "center")
+-- 	horiz = "center",
+-- 	-- settings is a function which takes the client as input, and can be used to customize its properties
+-- 	settings = function(c)
+-- 		c.ontop = true -- Not compatible with fullscreen
+-- 		c.sticky = true
+-- 		-- c.titlebars_enabled = true
+-- 		-- c.floating = true
+-- 		c.maximized_vertical = true
+-- 		c.maximized_horizontal = true
+--
+-- 		c.titlebars_enabled = true
+-- 		c.floating = true
+-- 		-- c.fullscreen = true
+-- 	end
+-- })
 
 -- ---------------------------------------------------------------------
 -- Status bar
@@ -767,6 +771,15 @@ local mybatwidget = wibox.container.margin(batbg, 2, 7, 4, 4)
 --  	end
 -- })
 
+-- To keep the primary screen
+screen_primary = nil
+
+-- Filter used by tags widgets
+function taglist_filter(t)
+	-- No empty and not 0 (the scratchpad)
+    return (#t:clients() > 0 or t.selected) and t.name ~= "0"
+end
+
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
 	set_wallpaper(s)
@@ -776,10 +789,16 @@ awful.screen.connect_for_each_screen(function(s)
 	-- local l = awful.layout.suit  -- Just to save some typing: use an alias.
 	-- local layouts = { l.floating, l.tile, l.floating, l.fair, l.max, l.floating, l.tile.left, l.floating, l.floating }
 	-- awful.tag(names, s, layouts)
-	awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+	if s == screen.primary then
+		-- Tag 0 is a Scratchpad !
+		-- Scratchpad is a special tag, filtered from widget and bind to a key
+		-- Bettter than "lain.guake" to manage multi windows apps
+		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" }, s, awful.layout.layouts[1])
+	else
+		-- secondary screen are mostly vertical so adapt layout
+		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[4])
+	end
 
-	-- Create a promptbox for each screen
-	s.mypromptbox = awful.widget.prompt()
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
 	-- We need one layoutbox per screen.
 	s.mylayoutbox = awful.widget.layoutbox(s)
@@ -789,7 +808,7 @@ awful.screen.connect_for_each_screen(function(s)
 						   awful.button({ }, 4, function () awful.layout.inc( 1) end),
 						   awful.button({ }, 5, function () awful.layout.inc(-1) end)))
 	-- Create a taglist widget
-	s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.noempty, taglist_buttons)
+	s.mytaglist = awful.widget.taglist(s, taglist_filter, taglist_buttons)
 	-- s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
 	-- Create a tasklist widget
@@ -809,6 +828,11 @@ awful.screen.connect_for_each_screen(function(s)
 	})
 
 	if s == screen.primary then
+		-- Create a promptbox
+		s.mypromptbox = awful.widget.prompt()
+
+		-- keep primary screen
+		screen_primary = s
 		-- Add widgets to the wibox
 		s.mywibox:setup {
 			layout = wibox.layout.align.horizontal,
@@ -877,7 +901,6 @@ awful.screen.connect_for_each_screen(function(s)
 			{ -- Left widgets
 				layout = wibox.layout.fixed.horizontal,
 				s.mytaglist,
-				s.mypromptbox,
 			},
 			s.mytasklist,
 			{
@@ -1021,7 +1044,7 @@ globalkeys = awful.util.table.join(
 	--		   {description = "restore minimized", group = "client"}),
 
 	-- Prompt
-	awful.key({ modkey },			"x",	 function () awful.screen.focused().mypromptbox:run() end,
+	awful.key({ modkey },			"x",	 function () screen_primary.mypromptbox:run() end,
 			  {description = "run prompt", group = "launcher"}),
 
 	-- awful.key({ modkey }, "x",
@@ -1035,7 +1058,7 @@ globalkeys = awful.util.table.join(
 	--		   end,
 	--		   {description = "lua execute prompt", group = "awesome"}),
 	-- Menubar
-	awful.key({ modkey,		    }, "d", function() menubar.show() end,
+	awful.key({ modkey,		    }, "d", function() menubar.show(screen_primary) end,
 			  {description = "show the menubar", group = "launcher"}),
 	awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
 			  {description = "refresh the menubar", group = "launcher"}),
@@ -1058,9 +1081,9 @@ globalkeys = awful.util.table.join(
 	end, {description = "Toggle guake like terminal", group = "launcher"}),
 
 	-- quake-like editor
-	awful.key({}, "F1", function ()
-		quakeeditor:toggle()
-	end, {description = "Toggle guake like editor", group = "launcher"}),
+	-- awful.key({}, "F1", function ()
+	-- 	quakeeditor:toggle()
+	-- end, {description = "Toggle guake like editor", group = "launcher"}),
 
 	-- Text Editor
 	-- awful.key({}, "F1", function()
@@ -1179,8 +1202,6 @@ for i = 1, 9 do
 								tag:view_only()
 							end
 							-- change wallpaper
-							-- TODO: Should be during tag creation
-							-- TODO: here, it doesn't handle mouse event
 							set_wallpaper(screen)
 						end
 				  end,
@@ -1226,6 +1247,33 @@ for i = 1, 9 do
 				  {description = "toggle focused client on tag", group = "tag"})
 	)
 end
+
+globalkeys = awful.util.table.join(globalkeys,
+	-- Toggle scratchpad tag
+	awful.key({ }, "F1",
+		function ()
+			local screen = screen_primary
+			local tag_scratch = screen.tags[10]
+			local tag_current = screen_primary.selected_tag
+
+			if tag_scratch then
+				if tag_scratch == tag_current then
+					-- On scratchpad, go to previous tag
+					awful.tag.history.restore(screen)
+				else
+					-- Update history (need for fist move, when history is empty)
+					 awful.tag.history.update(screen)
+					-- Go to the scratchpad
+					tag_scratch:view_only()
+					-- Focus primary screen
+					-- awful.screen.focus(screen)
+				end
+				-- change wallpaper
+				set_wallpaper(screen)
+			end
+		end,
+		{description = "toggle scratchpad tag", group = "tag"})
+)
 
 clientbuttons = awful.util.table.join(
 	awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
@@ -1362,7 +1410,14 @@ awful.rules.rules = {
 			tag = "8",
 			screen = screen.primary,
 		}
-	}
+	},
+	-- Scratchpad
+	{ rule = { class = "Zim" },
+		properties = {
+			tag = "0",
+			screen = screen.primary,
+		}
+	},
 }
 -- }}}
 
