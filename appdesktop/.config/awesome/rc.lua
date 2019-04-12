@@ -238,9 +238,9 @@ local quaketerm = lain.util.quake({
 -- Quake like editor (single instance for all screens)
 local quakeeditor = lain.util.quake({
 	-- client name
-	name = "vnote",
+	name = "zim",
 	-- client to spawn
-	app = os.getenv("HOME") .. '/bin/vnote',
+	app = "zim"
 	-- how to specify client name
 	argname = '',  -- cannot set client name ?
 	-- extra app arguments
