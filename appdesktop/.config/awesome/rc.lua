@@ -1416,6 +1416,7 @@ awful.rules.rules = {
 		properties = {
 			tag = "0",
 			screen = screen.primary,
+			floating = false,  -- Task list is too small in popup
 		}
 	},
 }
