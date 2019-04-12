@@ -240,7 +240,7 @@ local quakeeditor = lain.util.quake({
 	-- client name
 	name = "zim",
 	-- client to spawn
-	app = "zim"
+	app = "zim",
 	-- how to specify client name
 	argname = '',  -- cannot set client name ?
 	-- extra app arguments
@@ -265,16 +265,16 @@ local quakeeditor = lain.util.quake({
 	horiz = "center",
 	-- settings is a function which takes the client as input, and can be used to customize its properties
 	settings = function(c)
-		-- c.ontop = true -- Not compatible with fullscreen
-		-- c.sticky = true
+		c.ontop = true -- Not compatible with fullscreen
+		c.sticky = true
 		-- c.titlebars_enabled = true
 		-- c.floating = true
-		-- c.maximized_vertical = true
-		-- c.maximized_horizontal = true
+		c.maximized_vertical = true
+		c.maximized_horizontal = true
 
 		c.titlebars_enabled = true
 		c.floating = true
-		c.fullscreen = true
+		-- c.fullscreen = true
 	end
 })
 
