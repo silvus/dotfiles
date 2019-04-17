@@ -4,6 +4,7 @@
 { "keys": ["ctrl+shift+t"], "command": "reopen_last_file" },
 { "keys": ["ctrl+d"], "command": "run_macro_file", "args": {"file": "res://Packages/Default/Delete Line.sublime-macro"} },
 { "keys": ["ctrl+e"], "command": "find_under_expand"},
+{ "keys": ["ctrl+shift+e"], "command": "find_all_under" },
 { "keys": ["ctrl+u"], "command": "lower_case" },
 { "keys": ["ctrl+shift+u"], "command": "upper_case" },
 { "keys": ["ctrl+t"], "command": "new_file" },
@@ -12,6 +13,10 @@
 { "keys": ["ctrl+<"], "command": "indent" },
 { "keys": ["ctrl+>"], "command": "unindent" },
 { "keys": ["ctrl+shift+="], "command": "reindent" },
+{ "keys": ["ctrl+shift+k"], "command": "fold" },
+{ "keys": ["ctrl+k"], "command": "unfold" },
+{ "keys": ["ctrl+l"], "command": "fold_by_level", "args": {"level": 1} },
+{ "keys": ["ctrl+shift+l"], "command": "unfold_all" },
 { "keys": ["ctrl+!"], "command": "show_panel", "args": {"panel": "console", "toggle": true} },
 { "keys": ["f2"], "command": "toggle_menu" },
 { "keys": ["f3"], "command": "toggle_side_bar" },
@@ -21,8 +26,8 @@
 { "keys": ["ctrl+shift+f4"], "command": "clear_bookmarks" },
 { "keys": ["alt+f4"], "command": "select_all_bookmarks" },
 { "keys": ["f5"], "command": "build" },
+{ "keys": ["f6"], "command": "insert_date", "args": {"format": "%Y-%m-%d %X"} },
 { "keys": ["f12"], "command": "toggle_setting", "args": {"setting": "spell_check"} },
-{ "keys": ["ctrl+l"], "command": "insert_date", "args": {"format": "%Y-%m-%d %X"} },
 {
 	"keys": ["ctrl+space"],
 	"command": "auto_complete"
