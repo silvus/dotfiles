@@ -52,16 +52,33 @@ end
 
 
 -- ---------------------------------------------------------------------
--- Screen configuration
+-- DEBUG
 -- ---------------------------------------------------------------------
-local function set_screen()
-	max_screen_count = screen:count()
-	awful.spawn.with_shell("~/.dotfiles/bin/autostart_screen")
+
+local function debug_log(text)
+	naughty.notify({
+		title = 'Debug',
+		text = text,
+		ontop = true,
+		preset = naughty.config.presets.critical
+	})
+	-- local log = io.open('/tmp/awesomewm_debug.log', 'aw')
+	-- log:write(text)
+	-- log:flush()
+	-- log:close()
 end
-max_screen_count = screen:count()
-screen.connect_signal("added", set_screen)
-screen.connect_signal("removed", set_screen)
-set_screen()
+
+
+-- ---------------------------------------------------------------------
+-- Screens
+-- ---------------------------------------------------------------------
+local screens = require('screens')
+screen.connect_signal("added", screens.update)
+screen.connect_signal("removed", screens.update)
+screens.update()
+
+-- Set focused tag to the one with a mouse or an active client ?
+-- awful.screen.default_focused_args = {client = true, mouse = true}
 
 
 -- ---------------------------------------------------------------------
@@ -89,7 +106,7 @@ modkey = "Mod4"
 
 -- Notifications
 naughty.config.defaults.timeout = 30
-naughty.config.defaults.screen = screen.primary
+naughty.config.defaults.screen = screens.get_primary()
 naughty.config.defaults.position = "top_right"
 naughty.config.defaults.margin = 10
 naughty.config.defaults.gap = 35
@@ -155,7 +172,7 @@ local function set_wallpaper(s)
 
 		-- get screen index on multi screen
 		local screen_index = 1
-		if max_screen_count > 1 and s.index then
+		if screens.count() > 1 and s.index then
 			screen_index = s.index
 		end
 
@@ -217,7 +234,7 @@ local quaketerm = lain.util.quake({
 	-- always spawn on currently focused screen
 	followtag = false,
 	-- On primary screen
-	screen = screen.primary,
+	screen = screens.get_primary(),
 	-- dropdown client height (float in [0,1] or exact pixels number)
 	height = 1,
 	-- dropdown client width (float in [0,1] or exact pixels number)
@@ -258,7 +275,7 @@ local quaketerm = lain.util.quake({
 -- 	-- always spawn on currently focused screen
 -- 	followtag = false,
 -- 	-- On primary screen
--- 	screen = screen.primary,
+-- 	screen = screens.get_primary(),
 -- 	-- dropdown client height (float in [0,1] or exact pixels number)
 -- 	height = 1,
 -- 	-- dropdown client width (float in [0,1] or exact pixels number)
@@ -287,18 +304,18 @@ local quaketerm = lain.util.quake({
 -- ---------------------------------------------------------------------
 
 -- {{{ Helper functions
-local function client_menu_toggle_fn()
-	local instance = nil
+-- local function client_menu_toggle_fn()
+-- 	local instance = nil
 
-	return function ()
-		if instance and instance.wibox.visible then
-			instance:hide()
-			instance = nil
-		else
-			instance = awful.menu.clients({ theme = { width = 250 } })
-		end
-	end
-end
+-- 	return function ()
+-- 		if instance and instance.wibox.visible then
+-- 			instance:hide()
+-- 			instance = nil
+-- 		else
+-- 			instance = awful.menu.clients({ theme = { width = 250 } })
+-- 		end
+-- 	end
+-- end
 -- }}}
 
 -- Menubar configuration
@@ -652,7 +669,6 @@ local vpn = awful.widget.watch(
 )
 local myvpn = wibox.container.margin(vpn, 2, 7, 4, 4)
 
-
 -- Battery
 local baticon = wibox.widget.imagebox(beautiful.battery)
 local batbar = wibox.widget {
@@ -771,9 +787,6 @@ local mybatwidget = wibox.container.margin(batbg, 2, 7, 4, 4)
 --  	end
 -- })
 
--- To keep the primary screen
-screen_primary = nil
-
 -- Filter used by tags widgets
 function taglist_filter(t)
 	-- No empty and not 0 (the scratchpad)
@@ -789,7 +802,7 @@ awful.screen.connect_for_each_screen(function(s)
 	-- local l = awful.layout.suit  -- Just to save some typing: use an alias.
 	-- local layouts = { l.floating, l.tile, l.floating, l.fair, l.max, l.floating, l.tile.left, l.floating, l.floating }
 	-- awful.tag(names, s, layouts)
-	if s == screen.primary then
+	if s == screens.get_primary() then
 		-- Tag 0 is a Scratchpad !
 		-- Scratchpad is a special tag, filtered from widget and bind to a key
 		-- Bettter than "lain.guake" to manage multi windows apps
@@ -827,12 +840,10 @@ awful.screen.connect_for_each_screen(function(s)
 		--height = 25
 	})
 
-	if s == screen.primary then
+	if s == screens.get_primary() then
 		-- Create a promptbox
 		s.mypromptbox = awful.widget.prompt()
 
-		-- keep primary screen
-		screen_primary = s
 		-- Add widgets to the wibox
 		s.mywibox:setup {
 			layout = wibox.layout.align.horizontal,
@@ -875,11 +886,11 @@ awful.screen.connect_for_each_screen(function(s)
 				myvolumewidget,
 				-- Widget for main screen only
 				-- TODO: Should use awful.widget.only_on_screen after upgrade
-				-- s == screen.primary and myspaceseparator,
-				-- s == screen.primary and myimapcheckdev,
-				-- s == screen.primary and mailicondev,
-				-- s == screen.primary and myimapcheckpers,
-				-- s == screen.primary and mailiconpers,
+				-- s == screens.get_primary() and myspaceseparator,
+				-- s == screens.get_primary() and myimapcheckdev,
+				-- s == screens.get_primary() and mailicondev,
+				-- s == screens.get_primary() and myimapcheckpers,
+				-- s == screens.get_primary() and mailiconpers,
 				-- myspaceseparator,
 				-- mycrypto,
 				myspaceseparator,
@@ -1044,7 +1055,7 @@ globalkeys = awful.util.table.join(
 	--		   {description = "restore minimized", group = "client"}),
 
 	-- Prompt
-	awful.key({ modkey },			"x",	 function () screen_primary.mypromptbox:run() end,
+	awful.key({ modkey },			"x",	 function () screens.get_primary().mypromptbox:run() end,
 			  {description = "run prompt", group = "launcher"}),
 
 	-- awful.key({ modkey }, "x",
@@ -1058,7 +1069,7 @@ globalkeys = awful.util.table.join(
 	--		   end,
 	--		   {description = "lua execute prompt", group = "awesome"}),
 	-- Menubar
-	awful.key({ modkey,		    }, "d", function() menubar.show(screen_primary) end,
+	awful.key({ modkey,		    }, "d", function() menubar.show(screens.get_primary()) end,
 			  {description = "show the menubar", group = "launcher"}),
 	awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
 			  {description = "refresh the menubar", group = "launcher"}),
@@ -1252,9 +1263,9 @@ globalkeys = awful.util.table.join(globalkeys,
 	-- Toggle scratchpad tag
 	awful.key({ }, "F1",
 		function ()
-			local screen = screen_primary
+			local screen = screens.get_primary()
 			local tag_scratch = screen.tags[10]
-			local tag_current = screen_primary.selected_tag
+			local tag_current = screen.selected_tag
 
 			if tag_scratch then
 				if tag_scratch == tag_current then
@@ -1354,37 +1365,10 @@ awful.rules.rules = {
 	},
 
 	-- Specifics rules
-	{ rule = { class = "mpv" },
-		properties = {
-			-- floating = false,
-			-- sticky = true,
-			-- fullscreen = false,
-			-- titlebars_enabled = false,
-			-- maximized_vertical = true,
-			-- maximized_horizontal = true
-			-- switchtotag = true
-
-			-- screen = max_screen_count, -- Open on last screen
-			screen = screen.primary, -- On primary screen
-
-			-- Sticky in corner
-			focus = false,
-			sticky = true,
-			fullscreen = false,
-			floating = true,
-			ontop = true, -- Not compatible with fullscreen
-			callback = function(c)
-				-- 2/5 bottom right of primary screen
-				sreen_geometry = screen.primary.geometry
-				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
-				awful.placement.bottom_right(c)
-			end
-		}
-	},
 	{ rule = { class = "Firefox" },
 		properties = {
 			tag = "1",
-			screen = screen.primary,
+			screen = screens.get_primary(),
 		}
 	},
 	{ rule_any = { class = {
@@ -1396,31 +1380,68 @@ awful.rules.rules = {
 		except = { type = "dialog" },
 		properties = {
 			tag = "2",
-			screen = max_screen_count,
+			screen = screens.get_vertical(),
 		}
 	},
 	{ rule = { class = "Thunderbird" },
 		properties = {
 			tag = "3",
-			screen = screen.primary,
+			screen = screens.get_primary(),
 		}
 	},
 	{ rule = { class = "Steam" },
 		properties = {
 			tag = "8",
-			screen = screen.primary,
+			screen = screens.get_primary(),
 		}
 	},
 	-- Scratchpad
 	{ rule = { class = "Zim" },
 		properties = {
 			tag = "0",
-			screen = screen.primary,
+			screen = screens.get_primary(),
 			floating = false,  -- Task list is too small in popup
 		}
 	},
 }
 -- }}}
+
+-- Specific for multi screens
+if screens.count() > 1 then
+	-- On dual screens
+	table.insert(awful.rules.rules, { rule = { class = "mpv" },
+		properties = {
+			-- Fullscreen on secondary screen
+			floating = false,
+			fullscreen = true,
+			maximized_vertical = true,
+			maximized_horizontal = true,
+			screen = screens.count()
+			-- switchtotag = true,
+			-- titlebars_enabled = false,
+			-- sticky = true,
+		}
+	})
+else
+	-- Single screen
+	table.insert(awful.rules.rules, { rule = { class = "mpv" },
+		properties = {
+			-- Sticky in corner on main screen
+			focus = false,
+			sticky = true,
+			fullscreen = false,
+			floating = true,
+			ontop = true, -- Not compatible with fullscreen
+			screen = screens.get_primary(), -- On primary screen
+			callback = function(c)
+				-- 2/5 bottom right of primary screen
+				sreen_geometry = screens.get_primary().geometry
+				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
+				awful.placement.bottom_right(c)
+			end
+		}
+	})
+end
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
@@ -1498,7 +1519,7 @@ end)
 -- 		c.border_color = beautiful.border_focus .. "00"
 -- 	else
 -- 		-- c.border_width = beautiful.border_width
--- 		if max_screen_count > 1 then
+-- 		if screens.count() > 1 then
 -- 			-- dual screen
 -- 			c.border_color = beautiful.border_focus
 -- 		elseif #awful.screen.focused().clients > 1 then
