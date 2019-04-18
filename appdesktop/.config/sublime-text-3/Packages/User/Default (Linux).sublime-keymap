@@ -15,8 +15,6 @@
 { "keys": ["ctrl+shift+="], "command": "reindent" },
 { "keys": ["ctrl+shift+k"], "command": "fold" },
 { "keys": ["ctrl+k"], "command": "unfold" },
-{ "keys": ["ctrl+l"], "command": "fold_by_level", "args": {"level": 1} },
-{ "keys": ["ctrl+shift+l"], "command": "unfold_all" },
 { "keys": ["ctrl+!"], "command": "show_panel", "args": {"panel": "console", "toggle": true} },
 { "keys": ["f2"], "command": "toggle_menu" },
 { "keys": ["f3"], "command": "toggle_side_bar" },
