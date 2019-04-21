@@ -1416,10 +1416,20 @@ if screens.count() > 1 then
 			fullscreen = true,
 			maximized_vertical = true,
 			maximized_horizontal = true,
-			screen = screens.count()
+			screen = screens.count(),
 			-- switchtotag = true,
 			-- titlebars_enabled = false,
 			-- sticky = true,
+		}
+	})
+	table.insert(awful.rules.rules, { rule = { instance = "www.netflix.com__browse" },
+		properties = {
+			-- Fullscreen on secondary screen
+			floating = false,
+			fullscreen = true,
+			maximized_vertical = true,
+			maximized_horizontal = true,
+			screen = screens.count()
 		}
 	})
 else
@@ -1427,6 +1437,22 @@ else
 	table.insert(awful.rules.rules, { rule = { class = "mpv" },
 		properties = {
 			-- Sticky in corner on main screen
+			focus = false,
+			sticky = true,
+			fullscreen = false,
+			floating = true,
+			ontop = true, -- Not compatible with fullscreen
+			screen = screens.get_primary(), -- On primary screen
+			callback = function(c)
+				-- 2/5 bottom right of primary screen
+				sreen_geometry = screens.get_primary().geometry
+				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
+				awful.placement.bottom_right(c)
+			end
+		}
+	})
+	table.insert(awful.rules.rules, { rule = { instance = "www.netflix.com__browse" },
+		properties = {
 			focus = false,
 			sticky = true,
 			fullscreen = false,
