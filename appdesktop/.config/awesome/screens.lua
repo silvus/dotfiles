@@ -23,10 +23,18 @@ screens_configuration['mars']['DP-0'] = '--above DVI-D-0'
 -- Without projector
 -- xrandr --output HDMI-1 --off
 
+-- Dual screen - VGA (vertical) on right
+screens_configuration['pcldlc001'] = {}
+screens_configuration['pcldlc001']['HDMI1'] = '--primary --pos 0x0'
+screens_configuration['pcldlc001']['VGA1'] = '--rotate left --pos 1920x-500 --right-of HDMI1'
+
+
 -- Keep screens orders (lua doesn't keep array declaration order)
 local screens_index = {
 	'DVI-D-0',
 	'HDMI-0',
+	'HDMI1',
+	'VGA1',
 	'DP-0'
 }
 
@@ -61,6 +69,7 @@ local function count()
 		return screen:count()
 	end
 
+	-- Fallback to at least one screen
 	return 1
 end
 
