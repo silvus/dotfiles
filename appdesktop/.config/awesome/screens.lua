@@ -1,9 +1,10 @@
 local screens = {}
 
 local awful = require("awful")
-local screen = require("screen")
 local io = require("io")
 
+-- Set global screen variable to a local one
+local screen = screen
 
 -- Xrandr commands based on current hostname
 local screens_configuration = {}
@@ -56,10 +57,11 @@ end
 
 -- Count numbers of screens
 local function count()
-	if screen:count() then
+	if screen.count() then
 		return screen:count()
 	end
-	return 0
+
+	return 1
 end
 
 -- Get primary screen
@@ -77,7 +79,7 @@ local function get_vertical()
 	end
 
 	-- Fallback
-	return screen[screen:count()]
+	return screen[screen.count()]
 
 end
 

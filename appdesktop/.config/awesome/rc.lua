@@ -7,22 +7,32 @@
 
 -- Standard lua
 local string = require("string")
+local os = { getenv = os.getenv, setlocale = os.setlocale }
 
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+
+-- Makes sure that there's always a client that will have focus on events such as tag switching, client unmanaging, etc
 require("awful.autofocus")
+
 -- Widget and layout library
 local wibox = require("wibox")
--- Theme handling library
-local beautiful = require("beautiful")
--- Notification library
-local naughty = require("naughty")
-local lain	= require("lain")
-local menubar = require("menubar")
 local widget_common = require("awful.widget.common")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
-local os	  = { getenv = os.getenv, setlocale = os.setlocale }
+
+-- Theme handling library
+local beautiful = require("beautiful")
+
+-- Notification library
+local naughty = require("naughty")
+
+-- Menubar (dmenu like)
+local menubar = require("menubar")
+
+-- Contrib utilities
+local lain	= require("lain")
+
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
