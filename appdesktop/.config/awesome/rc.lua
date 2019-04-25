@@ -20,7 +20,6 @@ require("awful.autofocus")
 local wibox = require("wibox")
 local widget_common = require("awful.widget.common")
 
-
 -- Theme handling library
 local beautiful = require("beautiful")
 
@@ -151,6 +150,9 @@ screen.connect_signal("property::geometry", wallpaper.update)
 -- ---------------------------------------------------------------------
 
 -- {{{ Wibar
+
+local widgets = require("widgets")
+
 -- Create a wibox for each screen and add it
 local taglist_buttons = awful.util.table.join(
 	awful.button({ }, 1, function(t)
@@ -207,8 +209,6 @@ local tasklist_buttons = awful.util.table.join(
 	--						  awful.client.focus.byidx(-1)
 	--					  end))
 
--- Separator
-myspaceseparator = wibox.widget.textbox('  ')
 
 -- Textclock widget with calendar
 local mytextclock = wibox.widget.textclock("%a %d %b  <span color='#ffffff'>%H:%M:%S</span>", 1)
@@ -390,218 +390,10 @@ volume.bar:buttons(awful.util.table.join (
 local volumebg = wibox.container.background(volume.bar, beautiful.info, gears.shape.rectangle)
 local myvolumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
 
--- Moc
-local mymocbar = wibox.widget {
-	forced_height	= 1,
-	forced_width	= 100,
-	margins			= 1,
-	paddings		= 1,
-	ticks			= false,
-	ticks_size		= 10,
-	step_width		= 5,
-	max_value		= 100,
-	min_value		= 0,
-	value			= 0,
-	color 			= beautiful.success,
-	background_color = beautiful.bg_normal,
-	border_color	= beautiful.info,
-	widget		   = wibox.widget.progressbar
-}
-local mymocbarbg = wibox.container.background(mymocbar, beautiful.info, gears.shape.rectangle)
-local mymocbarwidget = wibox.container.margin(mymocbarbg, 2, 7, 4, 4)
-mymocbarwidget.visible = false
-
-local musicicon = wibox.widget.imagebox(beautiful.music)
-musicicon.visible = false
-local moc = lain.widget.contrib.moc({
-	music_dir = "/data/media/music",
-	cover_size = 0,
-	settings  = function()
-		moc_notification_preset = {
-			title   = moc_now.artist .. " - " .. moc_now.title,
-			timeout = 6,
-			text    = string.format("%s (%s) - %s", moc_now.artist, moc_now.album, moc_now.title),
-			preset  = naughty.config.defaults
-		}
-		if moc_now.state == 'PLAY' or moc_now.state == 'PAUSE' then
-			musicicon.visible = true
-
-			if moc_now.total == 'N/A' then
-				-- Remote m3a (Like Rainwave)
-				if moc_now.title == nil or moc_now.title == '' then
-					widget:set_markup("<span color='#ffffff'>" .. moc_now.state .. "</span>")
-				else
-					widget:set_markup("<span color='#ffffff'>" .. moc_now.title .. "</span>")
-				end
-			else
-				-- Local file
-				widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. "</span>")
-				-- widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. ' | ' .. moc_now.elapsed .. ' / ' .. moc_now.total .. "</span>")
-
-				local time_pattern = "(%d+):(%d+)"
-				local totalminute, totalseconds = moc_now.total:match(time_pattern)
-
-				local total_time = (totalminute * 60) + totalseconds
-				local nowminute, nowseconds = moc_now.elapsed:match(time_pattern)
-				local now_time = (nowminute * 60) + nowseconds
-
-				-- Build current song progress bar
-				if total_time > 0 then
-					mymocbarwidget.visible = true
-					if now_time > 0 then
-						mymocbar:set_value(now_time * 100 / total_time)
-					else
-						mymocbar:set_value(0)
-					end
-				end
-			end
-		else
-			-- No music, hide bar and icon
-			widget:set_markup("")
-			musicicon.visible = false
-			mymocbarwidget.visible = false
-			-- mymocbar:set_value(0)
-		end
-	end,
-})
-local mocbg = wibox.container.background(moc.widget, beautiful.bg_normal, gears.shape.rectangle)
-local mymoc = wibox.container.margin(mocbg, 2, 7, 4, 4)
-mymocbarwidget:buttons(awful.util.table.join (
-	awful.button({}, 1, function()
-		-- TODO: doesn't work. PATH not set ?
-		awful.util.spawn("music --toggle-pause", false)
-	end),
-	awful.button({}, 3, function()
-		awful.util.spawn("music --next", false)
-	end)
-))
-
--- VPN
-local vpnicon = wibox.widget.imagebox(beautiful.net_wired)
-vpnicon.visible = false
-local vpn = awful.widget.watch(
-	"ip addr show tun0",
-	5,
-	function(widget, stdout, stderr, exitreason, exitcode)
-		if exitcode == 0 then
-			widget:set_markup("<span color='" .. beautiful.success .. "'>VPN: ON</span>")
-			vpnicon.visible = true
-		else
-			widget:set_markup("")
-			vpnicon.visible = false
-		end
-	end
-)
-local myvpn = wibox.container.margin(vpn, 2, 7, 4, 4)
-
--- Battery
-local baticon = wibox.widget.imagebox(beautiful.battery)
-local batbar = wibox.widget {
-	forced_height	= 1,
-	forced_width	= 100,
-	margins			= 1,
-	paddings		= 1,
-	ticks			= true,
-	ticks_size		= 10,
-	step_width		= 10,
-	max_value		= 100,
-	min_value		= 0,
-	value			= 0,
-	color 			= beautiful.success,
-	background_color = beautiful.bg_normal,
-	border_color	= beautiful.info,
-	widget		    = wibox.widget.progressbar
-}
-batbar.visible  = false
-baticon.visible = false
-local battery = lain.widget.bat({
-	settings = function()
-		if bat_now.status == "N/A" then
-			-- No battery
-			batbar.visible  = false
-			baticon.visible = false
-		else
-			batbar.visible  = true
-			baticon.visible = true
-			batbar:set_value(bat_now.perc)
-
-			-- Change icon and color if full or low battery
-			if bat_now.perc >= 95 then
-				batbar.color = beautiful.success_alt
-			elseif bat_now.perc <= 15 then
-				baticon:set_image(beautiful.battery_low)
-				batbar.color = beautiful.error
-			elseif bat_now.perc <= 5 then
-				baticon:set_image(beautiful.battery_empty)
-				batbar.color = beautiful.error
-			else
-				baticon:set_image(beautiful.battery)
-				if bat_now.status == "Full" then
-					batbar.color = beautiful.success_alt
-				elseif bat_now.status == "Discharging" then
-					batbar.color = beautiful.success
-				elseif bat_now.status == "Charging" then
-					batbar.color = beautiful.info
-
-				end
-			end
-		end
-	end,
-
-	-- Batterie notifications
-	bat_notification_charged_preset = {
-		-- title   = "Battery full",
-		-- text    = "You can unplug the cable",
-		timeout = naughty.config.presets.low.timeout,
-		fg      = naughty.config.presets.low.fg,
-		bg      = naughty.config.presets.low.bg,
-		preset  = naughty.config.presets.low
-	},
-	bat_notification_low_preset = {
-		-- title = "Battery low",
-		-- text = "Plug the cable!",
-		timeout = naughty.config.presets.critical.timeout,
-		fg = naughty.config.presets.critical.fg,
-		bg = naughty.config.presets.critical.bg,
-		preset = naughty.config.presets.critical
-	},
-	bat_notification_critical_preset = {
-		-- title = "Battery exhausted",
-		-- text = "Shutdown imminent",
-		timeout = naughty.config.presets.critical.timeout,
-		fg = naughty.config.presets.critical.fg,
-		bg = naughty.config.presets.critical.bg,
-		preset = naughty.config.presets.critical
-	},
-})
-local batbg = wibox.container.background(batbar, beautiful.info, gears.shape.rectangle)
-local mybatwidget = wibox.container.margin(batbg, 2, 7, 4, 4)
-
--- -- Mail - in mail.lua
--- local mailicondev = wibox.widget.imagebox()
--- mailicondev:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mail) end)))
--- local myimapcheckdev = lain.widget.imap({
--- 	timeout  = 180,
---  	is_plain = true,
---  	password = "nope",
---  	server = "mail.nope.net",
---  	mail = "nope@nope.fr",
---  	icon = beautiful.mail,
---  	settings = function()
---  		if mailcount > 0 then
---  			widget:set_markup("Dev <span color='#ffffff'>" .. mailcount .. '</span>')
---  			mailicondev:set_image(beautiful.mail_on)
---  		else
---  			widget:set_markup("")
---  			mailicondev:set_image(beautiful.mail)
---  		end
---  	end
--- })
-
 -- Filter used by tags widgets
 function taglist_filter(t)
 	-- No empty and not 0 (the scratchpad)
-    return (#t:clients() > 0 or t.selected) and t.name ~= "0"
+	return (#t:clients() > 0 or t.selected) and t.name ~= "0"
 end
 
 awful.screen.connect_for_each_screen(function(s)
@@ -651,6 +443,7 @@ awful.screen.connect_for_each_screen(function(s)
 		--height = 25
 	})
 
+	-- Widget for main screen only
 	if s == screens.get_primary() then
 		-- Create a promptbox
 		s.mypromptbox = awful.widget.prompt()
@@ -677,12 +470,12 @@ awful.screen.connect_for_each_screen(function(s)
 				layout = wibox.layout.fixed.horizontal,
 				-- layout = awful.widget.only_on_screen,
 				-- screen = "primary", -- Only display on primary screen
-				musicicon,
-				mymocbarwidget,
-				mymoc,
-				myspaceseparator,
-				vpnicon,
-				myvpn,
+				widgets.musicicon,
+				widgets.mocbarwidget,
+				widgets.mocwidget,
+				widgets.spaceseparator,
+				widgets.vpnicon,
+				widgets.vpn,
 				neticon,
 				mynetwidget,
 				-- fsicon,
@@ -691,28 +484,20 @@ awful.screen.connect_for_each_screen(function(s)
 				mycpuwidget,
 				memicon,
 				mymemwidget,
-				baticon,
-				mybatwidget,
+				widgets.baticon,
+				widgets.batwidget,
 				volicon,
 				myvolumewidget,
-				-- Widget for main screen only
-				-- TODO: Should use awful.widget.only_on_screen after upgrade
-				-- s == screens.get_primary() and myspaceseparator,
-				-- s == screens.get_primary() and myimapcheckdev,
-				-- s == screens.get_primary() and mailicondev,
-				-- s == screens.get_primary() and myimapcheckpers,
-				-- s == screens.get_primary() and mailiconpers,
-				-- myspaceseparator,
 				-- mycrypto,
-				myspaceseparator,
+				widgets.spaceseparator,
 				awful.widget.keyboardlayout(),
 				wibox.widget.systray(),
-				myspaceseparator,
-				myspaceseparator,
+				widgets.spaceseparator,
+				widgets.spaceseparator,
 				myclockicon,
-				myspaceseparator,
+				widgets.spaceseparator,
 				mytextclock,
-				myspaceseparator,
+				widgets.spaceseparator,
 				s.mylayoutbox,
 			},
 		}
@@ -724,10 +509,12 @@ awful.screen.connect_for_each_screen(function(s)
 				layout = wibox.layout.fixed.horizontal,
 				s.mytaglist,
 			},
+			-- Middle widget
 			s.mytasklist,
 			{
+				-- Right widgets
 				layout = wibox.layout.fixed.horizontal,
-				myspaceseparator,
+				widgets.spaceseparator,
 				s.mylayoutbox,
 			},
 		}
