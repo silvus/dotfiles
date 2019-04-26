@@ -74,18 +74,6 @@ local rules = {
 			screen = screens.get_primary(),
 		}
 	},
-	{ rule_any = { class = {
-			"Code",
-			"krita",
-			"Sublime_text",
-			"jetbrains-phpstorm" }
-		},
-		except = { type = "dialog" },
-		properties = {
-			tag = "2",
-			screen = screens.get_vertical(),
-		}
-	},
 	{ rule = { class = "Thunderbird" },
 		properties = {
 			tag = "3",
@@ -125,6 +113,18 @@ if screens.count() > 1 then
 			-- sticky = true,
 		}
 	})
+	table.insert(rules, { rule_any = { class = {
+			"Code",
+			"krita",
+			"Sublime_text",
+			"jetbrains-phpstorm" }
+		},
+		except = { type = "dialog" },
+		properties = {
+			tag = "1",
+			screen = screens.get_vertical(),
+		}
+	})
 	table.insert(rules, { rule = { instance = "www.netflix.com__browse" },
 		properties = {
 			-- Fullscreen on secondary screen
@@ -152,6 +152,18 @@ else
 				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
 				awful.placement.bottom_right(c)
 			end
+		}
+	})
+	table.insert(rules, { rule_any = { class = {
+			"Code",
+			"krita",
+			"Sublime_text",
+			"jetbrains-phpstorm" }
+		},
+		except = { type = "dialog" },
+		properties = {
+			tag = "2",
+			screen = screens.get_vertical(),
 		}
 	})
 	table.insert(rules, { rule = { instance = "www.netflix.com__browse" },
