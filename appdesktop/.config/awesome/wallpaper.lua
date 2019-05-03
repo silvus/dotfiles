@@ -1,6 +1,7 @@
 local os = require("os")
 local awful = require("awful")
 local gears = require("gears")
+local beautiful = require("beautiful")
 local screens = require("screens")
 
 local wallpaper = {}
