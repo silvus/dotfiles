@@ -219,16 +219,23 @@ def git_clone(url, destination):
 
 
 def git_fetch(destination):
-    return exec_command(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'fetch', 'origin', 'master'])
+    return exec_command(
+        ['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'fetch', 'origin', 'master'])
 
 
 def git_pull(destination):
-    return exec_command(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'pull', 'origin', 'master'])
+    return exec_command([
+        'git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'pull', '--recurse-submodules',
+        'origin', 'master'
+    ])
 
 
 def git_changelog(destination):
     """ Get changelog from git commits """
-    p = Popen(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'log', '--oneline', 'HEAD..origin/master'],
+    p = Popen([
+        'git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'log', '--oneline',
+        'HEAD..origin/master'
+    ],
               stdout=PIPE,
               stderr=PIPE)
     changelog, errors = p.communicate()
@@ -338,4 +345,3 @@ if __name__ == '__main__':
         sys.exit(1)
 
     sys.exit(0)
-
