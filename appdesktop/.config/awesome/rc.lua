@@ -410,9 +410,12 @@ awful.screen.connect_for_each_screen(function(s)
 		-- Scratchpad is a special tag, filtered from widget and bind to a key
 		-- Bettter than "lain.guake" to manage multi windows apps
 		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" }, s, awful.layout.layouts[1])
+	elseif s.geometry.height > s.geometry.width then
+		-- vertical screen with adapted layout
+		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[4])
 	else
 		-- secondary screen are mostly vertical so adapt layout
-		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[4])
+		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 	end
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using.

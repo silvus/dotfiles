@@ -196,15 +196,16 @@ keybindings.globalkeys = awful.util.table.join(
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function ()
 		awful.util.spawn("amixer -q sset Master 5%-", false)
-		volume.update()
+		-- TODO: trigger widget update from here ?
+		--volume.update()
 	end, {description = "Volume UP", group = "audio"}),
 	awful.key({}, "XF86AudioRaiseVolume", function ()
 		awful.util.spawn("amixer -q sset Master 5%+", false)
-		volume.update()
+		--volume.update()
 	end, {description = "Volume down", group = "audio"}),
 	awful.key({}, "XF86AudioMute", function ()
 		awful.util.spawn("amixer set Master 1+ toggle", false)
-		volume.update()
+		--volume.update()
 	end, {description = "volume mute", group = "audio"}),
 
 	-- Media Keys
