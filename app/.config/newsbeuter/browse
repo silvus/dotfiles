@@ -4,7 +4,12 @@ if [[ -n "$DISPLAY" ]]; then
 	# Desktop
 	if echo "$1" | cut -d'/' -f3 | grep -q -e youtube.com$ -e dailymotion.com -e vimeo.com$ ; then
 		# video
-		tmux split-window -d -l 10 -v "mpv '$1'"
+		# tmux split-window -d -l 10 -v "mpv '$1'"
+		if [[ -d "${HOME}/bin" ]]; then
+			# Fix youtube-dl path with urlview
+			export PATH="${HOME}/bin:$PATH"
+		fi
+		${HOME}/.dotfiles/bin/video "$1"
 	elif [[ -x $(which firefox) ]]; then
 		"$(which firefox)" "$1"
 	else
