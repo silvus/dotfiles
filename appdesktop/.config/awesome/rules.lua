@@ -103,10 +103,11 @@ if screens.count() > 1 then
 	table.insert(rules, { rule = { class = "mpv" },
 		properties = {
 			-- Fullscreen on secondary screen
+			focus = false,
 			floating = false,
 			fullscreen = true,
-			maximized_vertical = true,
-			maximized_horizontal = true,
+			-- maximized_vertical = true,
+			-- maximized_horizontal = true,
 			screen = screens.count(),
 			-- switchtotag = true,
 			-- titlebars_enabled = false,
@@ -128,10 +129,9 @@ if screens.count() > 1 then
 	table.insert(rules, { rule = { instance = "www.netflix.com__browse" },
 		properties = {
 			-- Fullscreen on secondary screen
+			focus = false,
 			floating = false,
 			fullscreen = true,
-			maximized_vertical = true,
-			maximized_horizontal = true,
 			screen = screens.count()
 		}
 	})
