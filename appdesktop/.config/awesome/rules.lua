@@ -74,22 +74,23 @@ local rules = {
 			screen = screens.get_primary(),
 		}
 	},
-	{ rule = { class = "Thunderbird" },
-		properties = {
-			tag = "3",
-			screen = screens.get_primary(),
-		}
-	},
 	{ rule = { class = "Steam" },
 		properties = {
 			tag = "8",
 			screen = screens.get_primary(),
 		}
 	},
+	-- Mail special tag
+	{ rule = { class = "Thunderbird" },
+		properties = {
+			tag = "M",
+			screen = screens.get_primary(),
+		}
+	},
 	-- Scratchpad
 	{ rule = { class = "Zim" },
 		properties = {
-			tag = "0",
+			tag = "S",
 			screen = screens.get_primary(),
 			floating = false,  -- Task list is too small in popup
 		}

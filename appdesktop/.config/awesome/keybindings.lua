@@ -235,11 +235,34 @@ keybindings.globalkeys = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "v", function()
 		awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_vpn", false)
 	end, {description = "launch vpn", group = "launcher"}),
-	-- Toggle scratchpad tag
+	-- Toggle mail tag
 	awful.key({ }, "F1",
 		function ()
 			local screen = screens.get_primary()
-			local tag_scratch = screen.tags[10]
+			local tag_mail = awful.tag.find_by_name(screen, "M")
+			local tag_current = screen.selected_tag
+
+			if tag_mail then
+				if tag_mail == tag_current then
+					-- On mail tag, go to previous tag
+					awful.tag.history.restore(screen)
+				else
+					-- Update history (need for fist move, when history is empty)
+					 awful.tag.history.update(screen)
+					-- Go to the mail tag
+					tag_mail:view_only()
+					-- Focus primary screen
+					-- awful.screen.focus(screen)
+				end
+				-- change wallpaper
+				wallpaper.update(screen)
+			end
+	end, {description = "toggle scratchpad tag", group = "tag"}),
+	-- Toggle scratchpad tag
+	awful.key({ modkey }, "²",
+		function ()
+			local screen = screens.get_primary()
+			local tag_scratch = awful.tag.find_by_name(screen, "S")
 			local tag_current = screen.selected_tag
 
 			if tag_scratch then

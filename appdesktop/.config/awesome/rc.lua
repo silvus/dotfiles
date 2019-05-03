@@ -393,7 +393,7 @@ local myvolumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
 -- Filter used by tags widgets
 function taglist_filter(t)
 	-- No empty and not 0 (the scratchpad)
-	return (#t:clients() > 0 or t.selected) and t.name ~= "0"
+	return (#t:clients() > 0 or t.selected) and t.name ~= "S"
 end
 
 awful.screen.connect_for_each_screen(function(s)
@@ -405,16 +405,32 @@ awful.screen.connect_for_each_screen(function(s)
 	-- local l = awful.layout.suit  -- Just to save some typing: use an alias.
 	-- local layouts = { l.floating, l.tile, l.floating, l.fair, l.max, l.floating, l.tile.left, l.floating, l.floating }
 	-- awful.tag(names, s, layouts)
+
 	if s == screens.get_primary() then
 		-- Tag 0 is a Scratchpad !
 		-- Scratchpad is a special tag, filtered from widget and bind to a key
-		-- Bettter than "lain.guake" to manage multi windows apps
-		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" }, s, awful.layout.layouts[1])
+		-- Better than "lain.guake" to manage multi windows apps
+		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", }, s, awful.layout.layouts[1])
+		-- Scratchpad
+		awful.tag.add("S", {
+			icon = beautiful.disk,
+			layout = awful.layout.suit.max,
+			screen = s,
+			icon_only = true,
+			-- 	selected = true,
+		})
+		-- Mail tag
+		awful.tag.add("M", {
+			icon = beautiful.mail,
+			layout = awful.layout.suit.max,
+			screen = s,
+			icon_only = true,
+		})
 	elseif s.geometry.height > s.geometry.width then
 		-- vertical screen with adapted layout
 		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[4])
 	else
-		-- secondary screen are mostly vertical so adapt layout
+		-- secondary screens
 		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 	end
 
