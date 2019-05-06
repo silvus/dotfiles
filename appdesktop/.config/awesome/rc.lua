@@ -33,6 +33,9 @@ local menubar = require("menubar")
 local lain	= require("lain")
 
 
+-- ---------------------------------------------------------------------
+-- Errors and DEBUG
+-- ---------------------------------------------------------------------
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -59,6 +62,19 @@ do
 end
 -- }}}
 
+local function debug_log(text)
+	naughty.notify({
+		title = 'Debug',
+		text = text,
+		ontop = true,
+		preset = naughty.config.presets.critical
+	})
+	-- local log = io.open('/tmp/awesomewm_debug.log', 'aw')
+	-- log:write(text)
+	-- log:flush()
+	-- log:close()
+end
+
 
 -- ---------------------------------------------------------------------
 -- Screens
@@ -79,7 +95,7 @@ screens.update()
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 -- beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
-beautiful.init("~/.config/awesome/themes/thetheme/theme.lua")
+beautiful.init("~/.config/awesome/themes/custom/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "x-terminal-emulator"

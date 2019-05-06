@@ -2,6 +2,7 @@
 -- Init
 -- ---------------------------------------------------------------------
 
+local awful  = require("awful")
 local os      = { getenv = os.getenv, setlocale = os.setlocale }
 local theme   = {}
 
@@ -15,7 +16,7 @@ theme.error   									= "#D64937"
 theme.success  									= "#00A5FF"
 theme.success_alt  								= "#02d31e"
 
-theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/thetheme"
+theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/custom"
 theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
 theme.font                                      = "Monospace 9"
 
@@ -131,7 +132,15 @@ theme.vol_no                                    = theme.dir .. "/icons/vol_no.pn
 
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
-theme.icon_theme = nil
+if awful.util.is_dir("/usr/share/icons/Numix") then
+	theme.icon_theme = "Numix"
+elseif awful.util.is_dir("/usr/share/icons/Faba") then
+	theme.icon_theme = "Faba"
+elseif awful.util.is_dir("/usr/share/icons/menta") then
+	theme.icon_theme = "menta"
+else
+	theme.icon_theme = nil
+end
 
 -- Awesome >= 4.1
 -- theme.tasklist_disable_task_name = true
