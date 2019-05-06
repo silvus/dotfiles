@@ -115,6 +115,8 @@ naughty.config.presets.low.timeout = 10
 naughty.config.presets.critical.bg = beautiful.error
 naughty.config.presets.critical.border_color = beautiful.fg_urgent
 
+-- Tags names
+awful.util.tagnames = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.tile,
@@ -392,8 +394,8 @@ local myvolumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
 
 -- Filter used by tags widgets
 function taglist_filter(t)
-	-- No empty and not 0 (the scratchpad)
-	return (#t:clients() > 0 or t.selected) and t.name ~= "S"
+	-- No empty and not the scratchpad (except if selected)
+	return (#t:clients() > 0 or t.selected) and (t.name ~= "S" or t.selected)
 end
 
 awful.screen.connect_for_each_screen(function(s)
@@ -410,7 +412,14 @@ awful.screen.connect_for_each_screen(function(s)
 		-- Tag 0 is a Scratchpad !
 		-- Scratchpad is a special tag, filtered from widget and bind to a key
 		-- Better than "lain.guake" to manage multi windows apps
-		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", }, s, awful.layout.layouts[1])
+		awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
+		-- Mail tag
+		awful.tag.add("M", {
+			icon = beautiful.mail,
+			layout = awful.layout.suit.max,
+			screen = s,
+			icon_only = true,
+		})
 		-- Scratchpad
 		awful.tag.add("S", {
 			icon = beautiful.disk,
@@ -419,19 +428,12 @@ awful.screen.connect_for_each_screen(function(s)
 			icon_only = true,
 			-- 	selected = true,
 		})
-		-- Mail tag
-		awful.tag.add("M", {
-			icon = beautiful.mail,
-			layout = awful.layout.suit.max,
-			screen = s,
-			icon_only = true,
-		})
 	elseif s.geometry.height > s.geometry.width then
 		-- vertical screen with adapted layout
-		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[4])
+		awful.tag(awful.util.tagnames, s, awful.layout.layouts[4])
 	else
 		-- secondary screens
-		awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+		awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
 	end
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
