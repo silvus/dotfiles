@@ -121,8 +121,8 @@ awful.util.tagnames = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
 awful.layout.layouts = {
 	awful.layout.suit.tile,
 	awful.layout.suit.tile.left,
-	-- awful.layout.suit.tile.bottom,
-	-- awful.layout.suit.tile.top,
+	awful.layout.suit.tile.bottom,
+	awful.layout.suit.tile.top,
 	-- awful.layout.suit.spiral,
 	-- awful.layout.suit.spiral.dwindle,
 	awful.layout.suit.fair,
@@ -412,7 +412,7 @@ awful.screen.connect_for_each_screen(function(s)
 		-- Tag 0 is a Scratchpad !
 		-- Scratchpad is a special tag, filtered from widget and bind to a key
 		-- Better than "lain.guake" to manage multi windows apps
-		awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
+		awful.tag(awful.util.tagnames, s, awful.layout.suit.tile)
 		-- Mail tag
 		awful.tag.add("M", {
 			icon = beautiful.mail,
@@ -430,10 +430,10 @@ awful.screen.connect_for_each_screen(function(s)
 		})
 	elseif s.geometry.height > s.geometry.width then
 		-- vertical screen with adapted layout
-		awful.tag(awful.util.tagnames, s, awful.layout.layouts[4])
+		awful.tag(awful.util.tagnames, s, awful.layout.suit.tile.bottom)
 	else
 		-- secondary screens
-		awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
+		awful.tag(awful.util.tagnames, s, awful.layout.suit.tile)
 	end
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
