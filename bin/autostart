@@ -15,33 +15,25 @@ setxkbmap -model pc105 -layout fr,us -variant oss
 # Auto start progs
 # ------------------------------------------------------
 # Network applet
-run nm-applet
-# run guake -r tmux -e tmuxdev
-
-if [[ $(hostname --short) == "somnus" ]]; then
-	run redshift-gtk -b1.0:0.2
-else
-	run redshift-gtk
+if [[ -x $(which nm-applet) ]]; then
+	run nm-applet
 fi
+
+run redshift-gtk
 
 # Bluetooth applet if installed
 # if [[ -x $(which blueman-applet) ]]; then
 # 	run blueman-applet
 # fi
 
-# run dropbox start
-
-# if [[ $GDMSESSION == 'i3' ]]; then
-# 	run feh --bg-fill --randomize ~/.dotfiles/wallpaper/* --bg-fill --randomize ~/.dotfiles/wallpaper/*
-# fi
-
 # Environment specific configuration
 # ------------------------------------------------------
 if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" ]]; then
 	run firefox
-	# Dual screens configuration
-	# xrandr --output HDMI-1 --mode 1920x1080 --pos 0x1080 --rotate normal --output DP-2 --primary --mode 3840x2160 --pos 1920x0 --rotate normal
-	# xrandr --output DP-2 --primary --auto --output HDMI-1 --left-of DP-2 --off
+	run thunderbird
+	if [[ -x $(which keepassxrc) ]]; then
+		run keepassxrc
+	fi
 fi
 
 if [[ -f "$HOME/.dotfiles_custom/autostart" ]]; then
