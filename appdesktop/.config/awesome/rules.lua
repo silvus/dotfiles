@@ -88,7 +88,10 @@ local rules = {
 		}
 	},
 	-- Scratchpad
-	{ rule = { class = "Zim" },
+	{ rule_any = { class = {
+			"VSCodium",
+			"Zim" 
+		}},
 		properties = {
 			tag = "S",
 			screen = screens.get_primary(),
@@ -117,11 +120,10 @@ if screens.count() > 1 then
 	})
 	table.insert(rules, { rule_any = { class = {
 			"Code",
-			"VSCodium",
 			"krita",
 			"Sublime_text",
-			"jetbrains-phpstorm" }
-		},
+			"jetbrains-phpstorm" 
+		}},
 		except = { type = "dialog" },
 		properties = {
 			tag = "1",
@@ -158,11 +160,10 @@ else
 	})
 	table.insert(rules, { rule_any = { class = {
 			"Code",
-			"VSCodium",
 			"krita",
 			"Sublime_text",
-			"jetbrains-phpstorm" }
-		},
+			"jetbrains-phpstorm"
+		}},
 		except = { type = "dialog" },
 		properties = {
 			tag = "2",
