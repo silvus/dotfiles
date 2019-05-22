@@ -10,11 +10,11 @@ local theme   = {}
 -- Config
 -- ---------------------------------------------------------------------
 
-theme.info   									= "#494B4F"
-theme.error   									= "#D64937"
--- theme.error   									= "#C10004"
-theme.success  									= "#00A5FF"
-theme.success_alt  								= "#02d31e"
+theme.info                                      = "#494B4F"
+theme.error                                     = "#D64937"
+theme.success                                   = "#00A5FF"
+theme.success_alt                               = "#003859"
+-- theme.success_alt                               = "#02d31e"
 
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/custom"
 theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
@@ -24,7 +24,7 @@ theme.fg_normal                                 = theme.info
 theme.bg_normal                                 = "#111111"
 
 theme.fg_focus                                  = "#BBBBBB"
-theme.bg_focus                                  = "#00141a"
+theme.bg_focus                                  = theme.success_alt
 
 theme.fg_urgent                                 = "#FFFFFF"
 theme.bg_urgent                                 = theme.error
@@ -34,7 +34,7 @@ theme.taglist_fg_focus                          = "#FFFFFF"
 theme.taglist_bg_normal                         = theme.bg_normal
 theme.taglist_bg_focus                          = theme.success
 
-theme.tasklist_spacing 							= 10
+theme.tasklist_spacing                          = 10
 
 theme.titlebar_bg_normal                        = "#333333"
 theme.titlebar_bg_focus                         = "#00141a"
@@ -65,6 +65,7 @@ theme.battery_low                               = theme.dir .. "/icons/battery_l
 theme.bottom_bar                                = theme.dir .. "/icons/bottom_bar.png"
 theme.calendar                                  = theme.dir .. "/icons/cal.png"
 theme.clock                                     = theme.dir .. "/icons/clock.png"
+theme.code                                      = theme.dir .. "/icons/code.png"
 theme.cpu                                       = theme.dir .. "/icons/cpu.png"
 theme.disk                                      = theme.dir .. "/icons/disk.png"
 theme.hdd                                       = theme.dir .. "/icons/hdd.png"
@@ -105,6 +106,7 @@ theme.stop                                      = theme.dir .. "/icons/stop.png"
 theme.taglist_squares_sel                       = theme.dir .. "/icons/square_sel.png"
 theme.taglist_squares_unsel                     = theme.dir .. "/icons/square_unsel.png"
 theme.temp                                      = theme.dir .. "/icons/temp.png"
+theme.terminal                                  = theme.dir .. "/icons/terminal.png"
 theme.titlebar_close_button_focus               = theme.dir .. "/icons/close_focus.png"
 theme.titlebar_close_button_normal              = theme.dir .. "/icons/close_normal.png"
 theme.titlebar_floating_button_focus_active     = theme.dir .. "/icons/floating_focus_active.png"
