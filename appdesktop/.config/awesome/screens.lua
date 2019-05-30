@@ -10,18 +10,26 @@ local screen = screen
 local screens_configuration = {}
 screens_configuration['mars'] = {}
 -- Triple Screen
-screens_configuration['mars']['DVI-D-0'] = '--primary --pos 0x0'
-screens_configuration['mars']['HDMI-0'] = '--rotate left --pos 1920x-600'
-screens_configuration['mars']['DP-0'] = '--above DVI-D-0'
+-- screens_configuration['mars']['DVI-D-0'] = '--primary --pos 0x0'
+-- screens_configuration['mars']['HDMI-0'] = '--rotate left --pos 1920x-600'
+-- screens_configuration['mars']['DP-0'] = '--above DVI-D-0'
 -- Screen vertical
 -- xrandr --output DVI-D-0 --auto --primary --pos 0x0 --output HDMI-0 --auto --rotate left --pos 1920x-600 --output HDMI-1 --off
 -- Triple Screen
 -- xrandr --output DVI-D-0 --auto --primary --pos 0x0 --output HDMI-0 --auto --rotate left --pos 1920x-600 --output DP-0 --auto --above DVI-D-0 --output HDMI-1 --off
+-- Simple big screen
+screens_configuration['mars']['DP-0'] = '--primary'
 
 -- With projector
 -- xrandr --output HDMI-1 --auto --same-as DVI-D-0
 -- Without projector
 -- xrandr --output HDMI-1 --off
+
+-- Dual screen - VGA (vertical) on right
+screens_configuration['orcus'] = {}
+screens_configuration['orcus']['DVI-D-0'] = '--primary --pos 0x0'
+screens_configuration['orcus']['VGA-1'] = '--rotate left --pos 1920x-600'
+-- screens_configuration['orcus']['HDMI-1'] = '--above DVI-D-0'
 
 -- Dual screen - VGA (vertical) on right
 screens_configuration['pcldlc001'] = {}
@@ -31,10 +39,15 @@ screens_configuration['pcldlc001']['VGA1'] = '--rotate left --pos 1920x-500 --ri
 
 -- Keep screens orders (lua doesn't keep array declaration order)
 local screens_index = {
+	'DVI-D0',
 	'DVI-D-0',
+	'HDMI0',
 	'HDMI-0',
 	'HDMI1',
+	'HDMI-1',
 	'VGA1',
+	'VGA-1',
+	'DP0',
 	'DP-0'
 }
 
