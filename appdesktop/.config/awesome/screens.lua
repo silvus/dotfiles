@@ -27,7 +27,7 @@ screens_configuration['mars']['DP-0'] = '--primary'
 
 -- Dual screen - VGA (vertical) on right
 screens_configuration['orcus'] = {}
-screens_configuration['orcus']['DVI-D-0'] = '--primary --pos 0x0'
+screens_configuration['orcus']['DVI-D-1'] = '--primary --pos 0x0'
 screens_configuration['orcus']['VGA-1'] = '--rotate left --pos 1920x-600'
 -- screens_configuration['orcus']['HDMI-1'] = '--above DVI-D-0'
 
