@@ -28,12 +28,9 @@ run redshift-gtk
 
 # Environment specific configuration
 # ------------------------------------------------------
-if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" ]]; then
+if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" || $(hostname --short) == "orcus" ]]; then
 	run firefox
-	run thunderbird
-	if [[ -x $(which keepassxrc) ]]; then
-		run keepassxrc
-	fi
+	# run thunderbird
 fi
 
 if [[ -f "$HOME/.dotfiles_custom/autostart" ]]; then
