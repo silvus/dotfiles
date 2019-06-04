@@ -24,7 +24,7 @@ alias tree6="tree --dirsfirst -ChFLQ 6"
 
 # Misc
 # -----------------------------------------------------------------------------
-alias l='LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'
+alias l='LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 # alias rm='rm -I' # prompt if deleting more than 3 files at a time
 alias distro='cat /etc/issue'
 alias shortcuts='bind -P'
