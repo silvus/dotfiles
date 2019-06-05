@@ -1,9 +1,17 @@
 {
 	"Datetime": {
-		"prefix": "datetime",
+		"prefix": "date",
 		"description": "Output current datetime",
 		"body": [
 			"$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
 		]
 	},
+	"Log": {
+		"prefix": "log",
+		"description": "Output formated datetime as a list item",
+		"body": [
+			"- _[$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND]_ ",
+		]
+	},
 }
+
