@@ -22,6 +22,10 @@ function fish_right_prompt --description 'Write out the right prompt'
         set -g __fish_color_normal (set_color normal)
     end
 
+    # Current time
+    set __fish_time_status (date +%H:%M:%S)
+
+    # Git prompt
 	set -g __fish_git_prompt_show_informative_status 1
 	set -g __fish_git_prompt_showdirtystate 1
 	set -g __fish_git_prompt_showstashstate 1
@@ -51,7 +55,7 @@ function fish_right_prompt --description 'Write out the right prompt'
         set __fish_git_status ""
     end
 
-	printf '%s [%s%s%s]' "$__fish_git_status" "$__fish_color_status" "$stat" "$__fish_color_normal"
+	printf '%s [%s%s%s]─[%s%s%s]' "$__fish_git_status" "$__fish_color_status" "$stat" "$__fish_color_normal" "$__fish_color_blue" "$__fish_time_status" "$__fish_color_normal"
 end
 
 function fish_prompt --description 'Write out the left prompt'
@@ -115,5 +119,3 @@ function fish_prompt --description 'Write out the left prompt'
 	# printf '[%s] %s%s%s@%s%s %s%s %s[%s]%s \f\r$ ' (date "+%H:%M:%S") "$__fish_color_blue" $USER "$__fish_color_yellow" "$__fish_color_blue" $__fish_prompt_hostname "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_color_normal"
 	printf '[%s%s%s@%s%s%s]─[%s%s%s] %s$%s ' "$__fish_prompt_color_username" $USER "$__fish_color_cyan" "$__fish_color_hostname" $__fish_prompt_hostname "$__fish_color_normal" "$__fish_color_green" (prompt_pwd_full) "$__fish_color_normal" "$__fish_color_permission" "$__fish_color_normal"
 end
-
-
