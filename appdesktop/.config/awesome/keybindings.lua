@@ -157,6 +157,9 @@ keybindings.globalkeys = awful.util.table.join(
 			awful.util.spawn("music --previous", false)
 		end, {description = "music previous", group = "audio"}),
 
+	-- Print screen
+	awful.key({}, "Print", function () awful.util.spawn("ksnip") end),
+
 	-- Reload
 	awful.key({ modkey, "Shift" }, "r", awesome.restart, {description = "reload awesome", group = "awesome"}),
 	-- awful.key({ modkey, "Shift" }, "s", awesome.quit, {description = "quit awesome", group = "awesome"}),

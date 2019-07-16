@@ -80,6 +80,12 @@ local rules = {
 			screen = screens.get_primary(),
 		}
 	},
+	{ rule = { class = "ksnip" },
+		properties = {
+			floating = true,
+			screen = screens.count(),
+		}
+	},
 	-- Mail special tag
 	{ rule = { class = "Thunderbird" },
 		properties = {
