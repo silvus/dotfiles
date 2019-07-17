@@ -59,7 +59,7 @@ set --global fish_color_search_match --background='green'
 source ~/.dotfiles/shell/aliases/20_main.sh
 
 # Differents alias
-alias l='env LC_COLLATE=C ls -lhaF --color=auto --group-directories-first'
+alias l='env LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 
 function mkcd --description 'Create a folder and go into it'
 	mkdir -p "$argv"
