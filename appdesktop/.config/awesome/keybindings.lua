@@ -7,13 +7,15 @@ local wallpaper = require("wallpaper")
 -- Quake like terminal (single instance for all screens)
 local quake = require("quake")
 
-
 local keybindings = {
 	globalkeys = {},
 	clientkeys = {},
 	clientbuttons = {},
 }
 
+-- Used to launch programms on tag fist navigation
+local is_launched_editor = false
+local is_launched_mail = false
 
 -- Global keys
 -- ----------------------------------------------------------------------------
@@ -104,7 +106,7 @@ keybindings.globalkeys = awful.util.table.join(
 
 	-- Prompt
 	awful.key({ modkey, }, "x", function()
-			screens.get_primary().mypromptbox:run()
+			screens.get_primary().promptbox:run()
 		end, {description = "run prompt", group = "launcher"}),
 
 	-- Menubar
@@ -183,11 +185,21 @@ keybindings.globalkeys = awful.util.table.join(
 
 	-- Toggle mail special tag
 	awful.key({}, "F1", function()
+		if is_launched_mail == false then
+			-- Launch thunderbird the first time on the tag
+			is_launched_mail = true
+			awful.util.spawn("thunderbird", false)
+		end
 			toggle_special_tag("M")
 		end, {description = "toggle mail tag", group = "tag"}),
 
 	-- Toggle scratchpad special tag (²)
 	awful.key({ modkey }, "#49", function ()
+			if is_launched_editor == false then
+				-- Launch editor the first time on the tag
+				is_launched_editor = true
+				awful.util.spawn("vscodium", false)
+			end
 			toggle_special_tag("S")
 		end, {description = "toggle scratchpad tag", group = "tag"})
 )

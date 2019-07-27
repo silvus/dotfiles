@@ -201,6 +201,130 @@ local battery = lain.widget.bat({
 local batbg = wibox.container.background(batbar, beautiful.info, gears.shape.rectangle)
 widgets.batwidget = wibox.container.margin(batbg, 2, 7, 4, 4)
 
+-- Net bar
+-- ----------------------------------------------------------------------------
+widgets.neticon = wibox.widget.imagebox(beautiful.net)
+local netbar = wibox.widget {
+	forced_height 	= 1,
+	forced_width 	= 100,
+	margins 		= 1,
+	paddings 		= 1,
+	ticks 			= true,
+	ticks_size 		= 10,
+	step_width 		= 3,
+	max_value 		= 1000,
+	value 			= 0,
+	color 			= beautiful.success,
+	background_color = beautiful.bg_normal,
+	border_color 	= beautiful.info,
+	-- widget 			= wibox.widget.progressbar
+	widget 			= wibox.widget.graph,
+	-- TODO: not autodetected ?
+	iface = 'enp2s0'
+}
+local net = lain.widget.net({
+	-- width = 100, border_width = 0, ticks = true, ticks_size = 100,
+	settings = function()
+		-- netbar:set_value(net_now.received)
+		netbar:add_value(tonumber(net_now.received))
+	end
+})
+local netbg = wibox.container.background(netbar, beautiful.info, gears.shape.rectangle)
+widgets.netwidget = wibox.container.margin(netbg, 2, 7, 4, 4)
+
+-- Disks bar
+-- ----------------------------------------------------------------------------
+-- local fsicon = wibox.widget.imagebox(beautiful.hdd)
+-- fsbar = wibox.widget {
+--	 forced_height	= 1,
+--	 forced_width	 = 100,
+--	 margins		  = 1,
+--	 paddings		 = 1,
+--	 ticks			= true,
+--	 ticks_size	   = 6,
+--	 max_value 		 = 100,
+--	 value			= 0,
+--	 color 			 = beautiful.success,
+--	 background_color = beautiful.info,
+--	 border_color	 = beautiful.info,
+--	 widget		   = wibox.widget.progressbar
+-- }
+-- fs = lain.widget.fs({
+--	 partition = "/",
+--	 -- options = "--exclude-type=tmpfs",
+--	 settings  = function()
+--		 if tonumber(fs_now.used) < 90 then
+--			 fsbar:set_color(beautiful.success)
+--		 else
+--			 fsbar:set_color(beautiful.error)
+--		 end
+--		 fsbar:set_value(fs_now.used)
+--	 end
+-- })
+-- local fsbg = wibox.container.background(fsbar, beautiful.info, gears.shape.rectangle)
+-- local myfswidget = wibox.container.margin(fsbg, 2, 7, 4, 4)
+
+-- CPU bar
+-- ----------------------------------------------------------------------------
+widgets.cpuicon = wibox.widget.imagebox(beautiful.cpu)
+local cpubar = wibox.widget {
+	forced_height 	= 1,
+	forced_width 	= 100,
+	margins 		= 1,
+	paddings 		= 1,
+	ticks 			= true,
+	ticks_size 		= 10,
+	step_width 		= 3,
+	max_value 		= 100,
+	min_value 		= 0,
+	value 			= 0,
+	color 			= beautiful.success,
+	background_color = beautiful.bg_normal,
+	border_color 	= beautiful.info,
+	-- widget		   = wibox.widget.progressbar
+	widget 			= wibox.widget.graph
+}
+local cpu = lain.widget.cpu({
+	width = 100, border_width = 0, ticks = true, ticks_size = 10,
+	settings = function()
+		-- cpubar:set_value(cpu_now.usage)
+		cpubar:add_value(cpu_now.usage)
+		-- cpubar:set_value(cpu_now.used)
+	end
+})
+local cpubg = wibox.container.background(cpubar, beautiful.info, gears.shape.rectangle)
+widgets.cpuwidget = wibox.container.margin(cpubg, 2, 7, 4, 4)
+
+-- Ram bar
+-- ----------------------------------------------------------------------------
+widgets.memicon = wibox.widget.imagebox(beautiful.mem)
+local membar = wibox.widget {
+	forced_height	= 1,
+	forced_width	= 100,
+	margins			= 1,
+	paddings		= 1,
+	ticks			= true,
+	ticks_size		= 10,
+	step_width		= 10,
+	max_value		= 100,
+	min_value		= 0,
+	value			= 0,
+	color 			= beautiful.success,
+	background_color = beautiful.bg_normal,
+	border_color	= beautiful.info,
+	widget		   = wibox.widget.progressbar
+	-- widget			= wibox.widget.graph
+}
+local mem = lain.widget.mem({
+	width = 100, border_width = 0, ticks = true, ticks_size = 10,
+	settings = function()
+		membar:set_value(mem_now.perc)
+		-- membar:add_value(mem_now.perc)
+	end
+})
+local membg = wibox.container.background(membar, beautiful.info, gears.shape.rectangle)
+widgets.memwidget = wibox.container.margin(membg, 2, 7, 4, 4)
+
 -- Mail
 -- in mail.lua
 -- ----------------------------------------------------------------------------
@@ -223,6 +347,80 @@ widgets.batwidget = wibox.container.margin(batbg, 2, 7, 4, 4)
 --  		end
 --  	end
 -- })
+
+-- ALSA volume bar
+-- ----------------------------------------------------------------------------
+widgets.volicon = wibox.widget.imagebox(beautiful.vol)
+local volume = lain.widget.alsabar({
+	width = 100,
+	border_width = 0,
+	ticks = false,
+	ticks_size = 10,
+	timeout = 2,
+	notification_preset = { font = beautiful.font },
+	--togglechannel = "IEC958,3",
+	settings = function()
+		if volume_now.status == "off" then
+			widgets.volicon:set_image(beautiful.vol_mute)
+		elseif volume_now.level == 0 then
+			widgets.volicon:set_image(beautiful.vol_no)
+		elseif volume_now.level <= 50 then
+			widgets.volicon:set_image(beautiful.vol_low)
+		else
+			widgets.volicon:set_image(beautiful.vol)
+		end
+	end,
+	colors = {
+		background 	= beautiful.bg_normal,
+		mute 		= beautiful.error,
+		unmute 		= beautiful.fg_normal
+	}
+})
+volume.tooltip.wibox.fg = beautiful.fg_focus
+volume.bar:buttons(awful.util.table.join (
+		  awful.button({}, 1, function()
+		  	awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
+		  end),
+		  awful.button({}, 2, function()
+			awful.spawn(string.format("%s set %s 100%%", volume.cmd, volume.channel))
+			volume.update()
+		  end),
+		  awful.button({}, 3, function()
+			awful.spawn(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
+			volume.update()
+		  end),
+		  awful.button({}, 4, function()
+			awful.spawn(string.format("%s set %s 5%%+", volume.cmd, volume.channel))
+			volume.update()
+		  end),
+		  awful.button({}, 5, function()
+			awful.spawn(string.format("%s set %s 5%%-", volume.cmd, volume.channel))
+			volume.update()
+		  end)
+))
+local volumebg = wibox.container.background(volume.bar, beautiful.info, gears.shape.rectangle)
+widgets.volumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
+
+-- Keyboard Layout
+-- ----------------------------------------------------------------------------
+widgets.promptbox = awful.widget.prompt()
+
+-- Keyboard Layout
+-- ----------------------------------------------------------------------------
+widgets.systraykeyboardlayout = awful.widget.keyboardlayout()
+
+-- Systray
+-- ----------------------------------------------------------------------------
+widgets.systray = wibox.widget.systray()
+
+-- Textclock widget with calendar
+-- ----------------------------------------------------------------------------
+widgets.textclock = wibox.widget.textclock("%a %d %b  <span color='#ffffff'>%H:%M:%S</span>", 1)
+widgets.clockicon = wibox.widget.imagebox(beautiful.clock)
+local calendar = require("calendar")
+-- attach it as popup to your text clock widget:
+calendar({}):attach(widgets.textclock)
+calendar({}):attach(widgets.clockicon)
 
 
 return widgets

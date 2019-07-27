@@ -18,7 +18,7 @@ screens_configuration['mars'] = {}
 -- Triple Screen
 -- xrandr --output DVI-D-0 --auto --primary --pos 0x0 --output HDMI-0 --auto --rotate left --pos 1920x-600 --output DP-0 --auto --above DVI-D-0 --output HDMI-1 --off
 -- Simple big screen
-screens_configuration['mars']['DP-0'] = '--primary'
+-- screens_configuration['mars']['DP-0'] = '--primary'
 
 -- With projector
 -- xrandr --output HDMI-1 --auto --same-as DVI-D-0
@@ -27,9 +27,9 @@ screens_configuration['mars']['DP-0'] = '--primary'
 
 -- Dual screen - VGA (vertical) on right
 screens_configuration['orcus'] = {}
-screens_configuration['orcus']['DVI-D-0'] = '--primary --pos 0x0'
+-- screens_configuration['orcus']['DVI-D-0'] = '--primary --pos 0x0'
 -- screens_configuration['orcus']['HDMI-0'] = '--rotate left --pos 1920x-600'
-screens_configuration['orcus']['HDMI-0'] = '--above DVI-D-0'
+-- screens_configuration['orcus']['HDMI-0'] = '--above DVI-D-0'
 
 -- Dual screen - VGA (vertical) on right
 screens_configuration['pcldlc001'] = {}
