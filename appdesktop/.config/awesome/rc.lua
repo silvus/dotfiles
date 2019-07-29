@@ -467,6 +467,8 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
+-- Force ontop on client fullscreen exit (fullscreen unsets ontop)
+client.connect_signal("property::fullscreen", function(c) if not c.fullscreen then c.ontop = true end end)
 
 -- ---------------------------------------------------------------------
 -- Auto start
