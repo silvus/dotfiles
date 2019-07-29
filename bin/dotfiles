@@ -303,7 +303,7 @@ def launch(dotfilespath, restarted):
 
     # Self update
     git_clone_or_update_dotfiles(
-        "https://github.com/Silvus/dotfiles.git", dotfilespath, restarted
+        "https://github.com/silvus/dotfiles.git", dotfilespath, restarted
     )
 
     # Make symlinks
