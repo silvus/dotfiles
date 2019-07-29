@@ -4,5 +4,6 @@
     "editor.insertSpaces": false,
     "editor.dragAndDrop": false,
     "editor.minimap.enabled": false,
-    "files.autoSave": "off"
+    "files.autoSave": "off",
+    "python.formatting.provider": "black"
 }
