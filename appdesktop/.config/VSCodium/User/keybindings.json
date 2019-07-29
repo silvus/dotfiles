@@ -15,7 +15,19 @@
 		"command": "workbench.action.files.saveAll"
 	},
 	{
+		"key": "ctrl+e",
+		"command": "workbench.action.quickOpen"
+	},
+	{
 		"key": "ctrl+s",
 		"command": "-workbench.action.files.save"
+	},
+	{
+		"key": "alt+left",
+		"command": "workbench.action.navigateBack"
+	},
+	{
+		"key": "alt+right",
+		"command": "workbench.action.navigateForward"
 	}
 ]
