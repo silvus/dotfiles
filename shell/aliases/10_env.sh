@@ -67,6 +67,9 @@ export ELINKS_CONFDIR="$XDG_CONFIG_HOME"/elinks
 # GPG
 export GNUPGHOME="$XDG_CONFIG_HOME"/gnupg
 
+# Atom
+export ATOM_HOME="$XDG_DATA_HOME"/atom
+
 # History
 # -----------------------------------------------------------------------------
 export HISTSIZE=65536 # Lines in memory
