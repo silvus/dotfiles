@@ -11,58 +11,57 @@ import fileinput
 import argparse
 from subprocess import Popen, PIPE
 
-#####################################################################
-# Prints (with colors)
-#####################################################################
 
-COLOR_RESET = '\033[0m'
-COLOR_RED = '\033[31m'
-COLOR_GREEN = '\033[32m'
-COLOR_YELLOW = '\033[33m'
-COLOR_BLUE = '\033[34m'
+# --------------------------------------------------------------------
+# Prints (with colors)
+# --------------------------------------------------------------------
+
+COLOR_RESET = "\033[0m"
+COLOR_RED = "\033[31m"
+COLOR_GREEN = "\033[32m"
+COLOR_YELLOW = "\033[33m"
+COLOR_BLUE = "\033[34m"
 
 
 def print_header(message):
-    print('\n' + COLOR_BLUE + '▶ ' + COLOR_RESET + message)
+    print("\n" + COLOR_BLUE + "▶ " + COLOR_RESET + message)
 
 
 def print_success(message):
-    print(COLOR_GREEN + '    ✔ ' + COLOR_RESET + message)
+    print(COLOR_GREEN + "    ✔ " + COLOR_RESET + message)
 
 
 def print_progress(count, total):
     barLength = 40
     percent = int(round((count / total) * 100))
     nb_bar_fill = int(round((barLength * percent) / 100))
-    bar_fill = '=' * nb_bar_fill
-    bar_empty = ' ' * (barLength - nb_bar_fill)
-    symbol = COLOR_BLUE + '➤' + COLOR_RESET
+    bar_fill = "=" * nb_bar_fill
+    bar_empty = " " * (barLength - nb_bar_fill)
+    symbol = COLOR_BLUE + "➤" + COLOR_RESET
     if count == total:
-        symbol = COLOR_GREEN + '✔' + COLOR_RESET
+        symbol = COLOR_GREEN + "✔" + COLOR_RESET
 
-    sys.stdout.write("\r    {} [{}] {}/{}".format(symbol, str(bar_fill + bar_empty), count, total))
+    sys.stdout.write(
+        "\r    {} [{}] {}/{}".format(symbol, str(bar_fill + bar_empty), count, total)
+    )
     sys.stdout.flush()
 
 
 def print_info(message):
-    print(COLOR_BLUE + '    ➤ ' + COLOR_RESET + message)
+    print(COLOR_BLUE + "    ➤ " + COLOR_RESET + message)
 
 
 def print_warning(message):
-    print(COLOR_YELLOW + '    ⚠ ' + COLOR_RESET + message)
+    print(COLOR_YELLOW + "    ⚠ " + COLOR_RESET + message)
 
 
 def print_error(message):
-    print(COLOR_RED + '    ✖ ' + COLOR_RESET + message)
+    print(COLOR_RED + "    ✖ " + COLOR_RESET + message)
 
 
-def print_question(question):
-    return input('\n' + COLOR_YELLOW + '➜ ' + COLOR_RESET + question + ' ')
-
-
-#####################################################################
+# --------------------------------------------------------------------
 # Helpers
-#####################################################################
+# --------------------------------------------------------------------
 
 
 def assure_dir_exist(path):
@@ -81,7 +80,7 @@ def exec_command(command, show_errors=True):
     output, errors = p.communicate()
 
     if p.returncode != 0 and show_errors:
-        print_error(errors.decode('UTF-8'))
+        print_error(errors.decode("UTF-8"))
 
     return p.returncode == 0
 
@@ -91,18 +90,18 @@ def check_requirements():
     Exit if git isn't installed or Github isn't reachable
     """
     # Need git
-    if not shutil.which('git'):
-        print_error('Git is missing. Aborting.')
+    if not shutil.which("git"):
+        print_error("Git is missing. Aborting.")
         sys.exit(2)
 
     # Github access
     try:
         # DNS listening
-        host = socket.gethostbyname('github.com')
+        host = socket.gethostbyname("github.com")
         # Host is actually reachable
         socket.create_connection((host, 80), 2)
     except:
-        print_error('Github can\'t be reach')
+        print_error("Github can't be reach")
         sys.exit(3)
 
 
@@ -110,24 +109,7 @@ def X_is_installed():
     """
     Try to guess if x is installed
     """
-    return shutil.which('startx')
-
-
-def is_hidpi():
-    """
-    Get screen width resolution. If it's looks big, return true
-    """
-    output = Popen(
-        'xrandr | grep "\*" | sort -nr | head -n 1 | cut -d" " -f4', shell=True, stdout=PIPE,
-        stderr=PIPE).communicate()
-    try:
-        resolution = output[0].decode('UTF-8').split()[0].split('x')
-        width = int(resolution[0])
-        height = int(resolution[1])
-        return (width > 2600 and height > 1600)
-    except IndexError:
-        # Without display
-        return False
+    return shutil.which("startx")
 
 
 def count_files(rootFolder):
@@ -140,9 +122,9 @@ def count_files(rootFolder):
     return total
 
 
-#####################################################################
+# --------------------------------------------------------------------
 # Symlinks
-#####################################################################
+# --------------------------------------------------------------------
 
 
 def symlink_arbo(rootSource, rootDestination):
@@ -195,76 +177,91 @@ def symlink(src, dest):
         return False
 
 
-#####################################################################
-# Compile
-#####################################################################
-
-
-def generate_config(outfilename, filenames, comment='#'):
-    """ Generate config from multiple files """
-    with open(outfilename, 'w') as fout:
-        fout.write('{0} DO NOT EDIT THIS FILE BY HAND.\n{0} YOUR CHANGES WILL BE OVERWRITTEN !\n\n'.format(comment))
-        for line in fileinput.input(filenames):
-            fout.write(line)
-    print_success('Generated: ' + outfilename)
-
-
-#####################################################################
+# --------------------------------------------------------------------
 # Git
-#####################################################################
+# --------------------------------------------------------------------
 
 
 def git_clone(url, destination):
-    return exec_command(['git', 'clone', '--recursive', url, destination])
+    return exec_command(["git", "clone", "--recursive", url, destination])
 
 
 def git_fetch(destination):
     return exec_command(
-        ['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'fetch', 'origin', 'master'])
+        [
+            "git",
+            "--work-tree=" + destination,
+            "--git-dir=" + destination + "/.git",
+            "fetch",
+            "origin",
+            "master",
+        ]
+    )
 
 
 def git_pull(destination):
-    return exec_command([
-        'git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'pull', '--recurse-submodules',
-        'origin', 'master'
-    ])
+    return exec_command(
+        [
+            "git",
+            "--work-tree=" + destination,
+            "--git-dir=" + destination + "/.git",
+            "pull",
+            "--recurse-submodules",
+            "origin",
+            "master",
+        ]
+    )
 
 
 def git_changelog(destination):
     """ Get changelog from git commits """
-    p = Popen([
-        'git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'log', '--oneline',
-        'HEAD..origin/master'
-    ],
-              stdout=PIPE,
-              stderr=PIPE)
+    p = Popen(
+        [
+            "git",
+            "--work-tree=" + destination,
+            "--git-dir=" + destination + "/.git",
+            "log",
+            "--oneline",
+            "HEAD..origin/master",
+        ],
+        stdout=PIPE,
+        stderr=PIPE,
+    )
     changelog, errors = p.communicate()
     if p.returncode != 0:
-        print_error(errors.decode('UTF-8'))
+        print_error(errors.decode("UTF-8"))
         return False
     else:
-        return changelog.decode('UTF-8').strip().split('\n')
+        return changelog.decode("UTF-8").strip().split("\n")
 
 
 def git_version(destination):
     """ Get current commit """
-    p = Popen(['git', '--work-tree=' + destination, '--git-dir=' + destination + '/.git', 'rev-parse', 'HEAD'],
-              stdout=PIPE,
-              stderr=PIPE)
+    p = Popen(
+        [
+            "git",
+            "--work-tree=" + destination,
+            "--git-dir=" + destination + "/.git",
+            "rev-parse",
+            "HEAD",
+        ],
+        stdout=PIPE,
+        stderr=PIPE,
+    )
     version, errors = p.communicate()
     if p.returncode != 0:
-        print_error(errors.decode('UTF-8'))
+        print_error(errors.decode("UTF-8"))
         return False
     else:
-        return version.decode('UTF-8')
+        return version.decode("UTF-8")
 
 
 def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
     """ Clone or update dotfiles """
-    print_header('Dotfiles updated' if restarted else 'Dotfiles')
+    print_header("Dotfiles updated" if restarted else "Dotfiles")
 
     if not os.path.exists(dotfilespath):
-        print_info('Clone {}'.format(dotfilespath))
+        print_info("Clone {}".format(dotfilespath))
         # dotfiles directory doesn't exist? Clone it
         git_clone(dotfilesurl, dotfilespath)
 
@@ -273,7 +270,7 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
         dot_version_prev = git_version(dotfilespath)
 
         # Update
-        print_info('Update {}'.format(dotfilespath))
+        print_info("Update {}".format(dotfilespath))
         # Fetch
         git_fetch(dotfilespath)
         # Build changelog
@@ -288,60 +285,88 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
         dot_version_next = git_version(dotfilespath)
         if dot_version_prev != dot_version_next:
             # Restart current script if version change
-            os.execl(sys.executable, sys.executable, sys.argv[0], '--restart', *sys.argv[1:])
+            os.execl(
+                sys.executable, sys.executable, sys.argv[0], "--restart", *sys.argv[1:]
+            )
 
 
-#####################################################################
+# --------------------------------------------------------------------
 # Main
-#####################################################################
+# --------------------------------------------------------------------
 
 
-def main(dotfilespath, restarted):
+def launch(dotfilespath, restarted):
     hostname = socket.gethostname()
 
     # Requirements
     check_requirements()
 
     # Self update
-    git_clone_or_update_dotfiles('https://github.com/Silvus/dotfiles.git', dotfilespath, restarted)
+    git_clone_or_update_dotfiles(
+        "https://github.com/Silvus/dotfiles.git", dotfilespath, restarted
+    )
 
     # Make symlinks
-    print_header('Symlinks apps')
-    if symlink_arbo(os.path.join(dotfilespath, 'app'), os.path.expanduser('~')):
+    print_header("Symlinks apps")
+    if symlink_arbo(os.path.join(dotfilespath, "app"), os.path.expanduser("~")):
 
         # Host specifics app files
-        if os.path.isdir(os.path.join(dotfilespath, 'app_{}'.format(hostname))):
-            print_header('Symlinks {} specifics apps'.format(hostname))
-            symlink_arbo(os.path.join(dotfilespath, 'app_{}'.format(hostname)), os.path.expanduser('~'))
+        if os.path.isdir(os.path.join(dotfilespath, "app_{}".format(hostname))):
+            print_header("Symlinks {} specifics apps".format(hostname))
+            symlink_arbo(
+                os.path.join(dotfilespath, "app_{}".format(hostname)),
+                os.path.expanduser("~"),
+            )
 
         if X_is_installed():
-            print_header('Symlinks desktop apps')
-            symlink_arbo(os.path.join(dotfilespath, 'appdesktop'), os.path.expanduser('~'))
+            print_header("Symlinks desktop apps")
+            symlink_arbo(
+                os.path.join(dotfilespath, "appdesktop"), os.path.expanduser("~")
+            )
 
             # Host specifics desktop app files
-            if os.path.isdir(os.path.join(dotfilespath, 'appdesktop_{}'.format(hostname))):
-                print_header('Symlinks {} specifics desktop apps'.format(hostname))
-                symlink_arbo(os.path.join(dotfilespath, 'appdesktop_{}'.format(hostname)), os.path.expanduser('~'))
+            if os.path.isdir(
+                os.path.join(dotfilespath, "appdesktop_{}".format(hostname))
+            ):
+                print_header("Symlinks {} specifics desktop apps".format(hostname))
+                symlink_arbo(
+                    os.path.join(dotfilespath, "appdesktop_{}".format(hostname)),
+                    os.path.expanduser("~"),
+                )
 
             # Reload .Xresources
-            exec_command(['xrdb', os.path.expanduser('~/.Xresources')])
+            exec_command(["xrdb", os.path.expanduser("~/.Xresources")])
 
 
-if __name__ == '__main__':
-
-    # Read arguments
-    parser = argparse.ArgumentParser(prog='dotfiles')
+def init_cli_arg():
+    parser = argparse.ArgumentParser(prog="dotfiles")
     parser.add_argument(
-        "-p", "--path", help="Dotfiles base path. Default ~/.dotfiles", default=os.path.expanduser('~/.dotfiles'))
-    parser.add_argument("-r", "--restart", help=argparse.SUPPRESS, action="store_true", default=False)
+        "-p",
+        "--path",
+        help="Dotfiles base path. Default ~/.dotfiles",
+        default=os.path.expanduser("~/.dotfiles"),
+    )
+    parser.add_argument(
+        "-r", "--restart", help=argparse.SUPPRESS, action="store_true", default=False
+    )
 
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main():
+
+    # Parse args
+    args = init_cli_arg()
 
     try:
-        main(args.path, args.restart)
+        launch(args.path, args.restart)
 
     except KeyboardInterrupt:
-        print_error('Aborting...')
+        print_error("Aborting...")
         sys.exit(1)
 
     sys.exit(0)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
