@@ -109,7 +109,7 @@ def X_is_installed():
     """
     Try to guess if x is installed
     """
-    return shutil.which("startx")
+    return shutil.which("startx") or shutil.which("lightdm")
 
 
 def count_files(rootFolder):
