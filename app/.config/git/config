@@ -28,7 +28,7 @@
 [difftool]
 	prompt = false
 [credential]
-	helper = cache --timeout=3600
+	helper = cache
 [merge]
 	tool = vimdiff
 	conflictstyle = diff3
