@@ -8,7 +8,7 @@ local screen = screen
 
 -- Xrandr commands based on current hostname
 local screens_configuration = {}
-screens_configuration['mars'] = {}
+-- screens_configuration['mars'] = {}
 -- Triple Screen
 -- screens_configuration['mars']['DVI-D-0'] = '--primary --pos 0x0'
 -- screens_configuration['mars']['HDMI-0'] = '--rotate left --pos 1920x-600'
@@ -26,15 +26,15 @@ screens_configuration['mars'] = {}
 -- xrandr --output HDMI-1 --off
 
 -- Dual screen - VGA (vertical) on right
-screens_configuration['orcus'] = {}
+-- screens_configuration['orcus'] = {}
 -- screens_configuration['orcus']['DVI-D-0'] = '--primary --pos 0x0'
 -- screens_configuration['orcus']['HDMI-0'] = '--rotate left --pos 1920x-600'
 -- screens_configuration['orcus']['HDMI-0'] = '--above DVI-D-0'
 
 -- Dual screen - VGA (vertical) on right
-screens_configuration['pcldlc001'] = {}
-screens_configuration['pcldlc001']['HDMI1'] = '--primary --pos 0x0'
-screens_configuration['pcldlc001']['VGA1'] = '--rotate left --pos 1920x-500 --right-of HDMI1'
+screens_configuration['pc190701'] = {}
+screens_configuration['pc190701']['HDMI-2'] = '--primary --pos 0x500'
+screens_configuration['pc190701']['DP-1'] = '--rotate left --pos 1920x0 --right-of HDMI-2'
 
 
 -- Keep screens orders (lua doesn't keep array declaration order)
@@ -45,12 +45,16 @@ local screens_index = {
 	'HDMI-0',
 	'HDMI1',
 	'HDMI-1',
+	'HDMI2',
+	'HDMI-2',
 	'VGA0',
 	'VGA-0',
 	'VGA1',
 	'VGA-1',
 	'DP0',
-	'DP-0'
+	'DP-0',
+	'DP1',
+	'DP-1',
 }
 
 -- Setup screens from config
