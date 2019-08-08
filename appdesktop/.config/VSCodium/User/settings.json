@@ -8,5 +8,6 @@
     "python.formatting.provider": "black",
     "workbench.tree.indent": 16,
     "workbench.list.horizontalScrolling": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.copyWithSyntaxHighlighting": false
 }
