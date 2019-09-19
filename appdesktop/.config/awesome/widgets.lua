@@ -378,27 +378,28 @@ local volume = lain.widget.alsabar({
 })
 volume.tooltip.wibox.fg = beautiful.fg_focus
 volume.bar:buttons(awful.util.table.join (
-		  awful.button({}, 1, function()
-		  	awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
-		  end),
-		  awful.button({}, 2, function()
+		awful.button({}, 1, function()
+			awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
+		end),
+		awful.button({}, 2, function()
 			awful.spawn(string.format("%s set %s 100%%", volume.cmd, volume.channel))
 			volume.update()
-		  end),
-		  awful.button({}, 3, function()
+		end),
+		awful.button({}, 3, function()
 			awful.spawn(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
 			volume.update()
-		  end),
-		  awful.button({}, 4, function()
+		end),
+		awful.button({}, 4, function()
 			awful.spawn(string.format("%s set %s 5%%+", volume.cmd, volume.channel))
 			volume.update()
-		  end),
-		  awful.button({}, 5, function()
+		end),
+		awful.button({}, 5, function()
 			awful.spawn(string.format("%s set %s 5%%-", volume.cmd, volume.channel))
 			volume.update()
-		  end)
+		end)
 ))
 local volumebg = wibox.container.background(volume.bar, beautiful.info, gears.shape.rectangle)
+widgets.volume = volume
 widgets.volumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
 
 -- Keyboard Layout
