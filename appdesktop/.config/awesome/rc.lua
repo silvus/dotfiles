@@ -44,6 +44,9 @@ local screens = require('screens')
 -- Wallpapers utilities
 local wallpaper = require("wallpaper")
 
+-- Set a global variable, a local one
+local globaltag = tag
+
 
 -- ---------------------------------------------------------------------
 -- Errors and DEBUG
@@ -143,7 +146,7 @@ naughty.config.presets.critical.bg = beautiful.error
 naughty.config.presets.critical.border_color = beautiful.fg_urgent
 
 -- Tags names
-awful.util.tagnames = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
+tags_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.tile,
@@ -167,13 +170,6 @@ awful.layout.layouts = {
 
 
 -- ---------------------------------------------------------------------
--- Wallpaper
--- ---------------------------------------------------------------------
--- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-screen.connect_signal("property::geometry", wallpaper.update)
-
-
--- ---------------------------------------------------------------------
 -- Status bar
 -- ---------------------------------------------------------------------
 
@@ -181,7 +177,6 @@ screen.connect_signal("property::geometry", wallpaper.update)
 local taglist_buttons = awful.util.table.join(
 	awful.button({ }, 1, function(t)
 		t:view_only()
-		wallpaper.update(t.screen)
 	end),
 	awful.button({ modkey }, 1, function(t)
 		if client.focus then
@@ -198,11 +193,9 @@ local taglist_buttons = awful.util.table.join(
 	end),
 	awful.button({ }, 4, function(t)
 		awful.tag.viewnext(t.screen)
-		wallpaper.update(t.screen)
 	end),
 	awful.button({ }, 5, function(t)
 		awful.tag.viewprev(t.screen)
-		wallpaper.update(t.screen)
 	end)
 )
 
@@ -256,7 +249,7 @@ awful.screen.connect_for_each_screen(function(s)
 		-- Tag 0 is a Scratchpad !
 		-- Scratchpad is a special tag, filtered from widget and bind to a key
 		-- Better than "lain.guake" to manage multi windows apps
-		awful.tag(awful.util.tagnames, s, awful.layout.suit.tile)
+		awful.tag(tags_names, s, awful.layout.suit.tile)
 		-- Mail tag
 		awful.tag.add("M", {
 			icon = beautiful.mail,
@@ -274,10 +267,10 @@ awful.screen.connect_for_each_screen(function(s)
 		})
 	elseif s.geometry.height > s.geometry.width then
 		-- vertical screen with adapted layout
-		awful.tag(awful.util.tagnames, s, awful.layout.suit.tile.bottom)
+		awful.tag(tags_names, s, awful.layout.suit.tile.bottom)
 	else
 		-- secondary screens
-		awful.tag(awful.util.tagnames, s, awful.layout.suit.tile)
+		awful.tag(tags_names, s, awful.layout.suit.tile)
 	end
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
@@ -390,7 +383,6 @@ end)
 
 -- Used to launch programms on tag fist navigation
 local is_launched_editor = false
-local is_launched_mail = false
 
 -- Global keys
 -- ----------------------------------------------------------------------------
@@ -559,20 +551,20 @@ local globalkeys = awful.util.table.join(
 
 	-- Toggle mail special tag
 	awful.key({}, "F1", function()
-		if is_launched_mail == false then
-			-- Launch thunderbird the first time on the tag
-			is_launched_mail = true
-			awful.util.spawn("thunderbird", false)
-		end
+			awful.spawn.single_instance("thunderbird", {}, function(c) return c.instance == "thunderbird" end)
 			toggle_special_tag("M")
 		end, {description = "toggle mail tag", group = "tag"}),
 
 	-- Toggle scratchpad special tag (²)
 	awful.key({ modkey }, "#49", function ()
+			-- Signal cannot be managed...
 			if is_launched_editor == false then
 				-- Launch editor the first time on the tag
-				is_launched_editor = true
-				awful.util.spawn("vscodium", false)
+			 	is_launched_editor = true
+				awful.spawn.single_instance("vscodium", awful.rules.rules, function(c) return c.instance == "vscodium" end, 'myvscode')
+				 -- awful.spawn.single_instance("xterm", awful.rules.rules, function(c) return c.instance == "xterm" end, 'myxterm')
+				 -- awful.spawn.single_instance("google-chrome-stable", awful.rules.rules, function(c) return c.instance == "google-chrome" end, 'mygooglechrome')
+				 -- awful.spawn.single_instance("pcmanfm", awful.rules.rules, function(c) return c.instance == "pcmanfm" end, 'mypcmanfm')
 			end
 			toggle_special_tag("S")
 		end, {description = "toggle scratchpad tag", group = "tag"})
@@ -586,47 +578,44 @@ for i = 1, 9 do
 		-- View tag only.
 		awful.key({ modkey }, "#" .. i + 9, function ()
 				local screen = awful.screen.focused()
-				local tag = screen.tags[i]
+				local tag_next = screen.tags[i]
 				local tag_current = awful.screen.focused().selected_tag
 
-				if tag then
-					if tag == tag_current then
+				if tag_next then
+					if tag_next == tag_current then
 						-- If already on focused screen, go to previous one
 						awful.tag.history.restore()
 					else
 						-- Just go to the screen
-						tag:view_only()
+						tag_next:view_only()
 					end
-					-- change wallpaper
-					wallpaper.update(screen)
 				end
 			end, {description = "view tag", group = "tag"}),
 		-- Toggle tag display.
 		awful.key({ modkey, "Control" }, "#" .. i + 9, function ()
 				local screen = awful.screen.focused()
-				local tag = screen.tags[i]
-				if tag then
-					awful.tag.viewtoggle(tag)
+				local tag_next = screen.tags[i]
+				if tag_next then
+					awful.tag.viewtoggle(tag_next)
 				end
 			end, {description = "toggle tag", group = "tag"}),
 		-- Move client to tag.
 		awful.key({ modkey, "Shift" }, "#" .. i + 9, function ()
 				if client.focus then
 					local screen = awful.screen.focused()
-					local tag = client.focus.screen.tags[i]
-					if tag then
-						client.focus:move_to_tag(tag)
-						tag:view_only()
-						wallpaper.update(screen)
+					local tag_next = client.focus.screen.tags[i]
+					if tag_next then
+						client.focus:move_to_tag(tag_next)
+						tag_next:view_only()
 					end
 				end
 			end, {description = "move focused client to tag", group = "tag"}),
 		-- Toggle tag on focused client.
 		awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9, function ()
 				if client.focus then
-					local tag = client.focus.screen.tags[i]
-					if tag then
-						client.focus:toggle_tag(tag)
+					local tag_next = client.focus.screen.tags[i]
+					if tag_next then
+						client.focus:toggle_tag(tag_next)
 					end
 				end
 			end, {description = "toggle focused client on tag", group = "tag"})
@@ -702,8 +691,6 @@ function toggle_special_tag(tagname)
 			-- Focus primary screen
 			-- awful.screen.focus(screen)
 		end
-		-- change wallpaper
-		wallpaper.update(screen)
 	end
 end
 
@@ -779,13 +766,19 @@ local rules = {
 	-- Specifics rules
 	{ rule = { class = "Firefox" },
 		properties = {
-			tag = "1",
+			tag = tags_names[1],
+			screen = screens.get_primary(),
+		}
+	},
+	{ rule = { class = "Pcmanfm" },
+		properties = {
+			tag = tags_names[4],
 			screen = screens.get_primary(),
 		}
 	},
 	{ rule = { class = "Steam" },
 		properties = {
-			tag = "8",
+			tag = tags_names[8],
 			screen = screens.get_primary(),
 		}
 	},
@@ -844,7 +837,7 @@ if screens.count() > 1 then
 		}},
 		except = { type = "dialog" },
 		properties = {
-			tag = "1",
+			tag = tags_names[1],
 			screen = screens.get_vertical(),
 		}
 	})
@@ -867,7 +860,7 @@ else
 		}},
 		except = { type = "dialog" },
 		properties = {
-			tag = "2",
+			tag = tags_names[2],
 			screen = screens.get_vertical(),
 		}
 	})
@@ -891,7 +884,20 @@ end
 -- set rules
 awful.rules.rules = rules
 
--- {{{ Signals
+-- ---------------------------------------------------------------------
+-- Signals
+-- ---------------------------------------------------------------------
+
+-- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
+screen.connect_signal("property::geometry", function (s)
+	wallpaper.update(s)
+end)
+
+-- Re-set wallpaper when a new tag is selected
+globaltag.connect_signal("property::selected", function (t)
+	wallpaper.update()
+end)
+
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c)
 	-- Set the windows at the slave,
@@ -915,8 +921,19 @@ client.connect_signal("manage", function (c)
 	-- 		end
 	-- 	end)
 	-- end
-
 end)
+
+-- -- Try to fix electron signals
+-- local awfulrules = require("awful.rules")
+-- client.connect_signal("manage", function (c)
+-- 	-- Some applications (like Spotify) does not respect ICCCM rules correctly and redefine the window class property.
+-- 	-- This leads to having window which does *NOT* follow the user rules defined in the table `awful.rules.rules`.
+-- 	c:connect_signal("property::class", awfulrules.apply)
+-- 	awfulrules.apply(c)
+-- end)
+-- client.connect_signal("unmanage", function (c)
+-- 	c:disconnect_signal("property::class", awfulrules.apply)
+-- end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)

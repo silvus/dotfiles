@@ -15,6 +15,11 @@ local wallpaper = {}
 local function update(s)
 	local wallpaper_current = nil
 
+	-- Default to focused screen
+	if not s then
+		s = awful.screen.focused()
+	end
+
 	if awful.util.file_readable(os.getenv("HOME") .. '/.wallpaper.png') then
 		-- if ~/.wallpaper is a file, use it
 		wallpaper_current = os.getenv("HOME") .. '/.wallpaper.png'
