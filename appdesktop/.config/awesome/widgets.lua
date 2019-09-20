@@ -402,7 +402,7 @@ local volumebg = wibox.container.background(volume.bar, beautiful.info, gears.sh
 widgets.volume = volume
 widgets.volumewidget = wibox.container.margin(volumebg, 2, 7, 4, 4)
 
--- Keyboard Layout
+-- Prompt box
 -- ----------------------------------------------------------------------------
 widgets.promptbox = awful.widget.prompt()
 

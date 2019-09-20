@@ -90,6 +90,16 @@ local function debug_log(text)
 	-- log:close()
 end
 
+-- ---------------------------------------------------------------------
+-- Utilities
+-- ---------------------------------------------------------------------
+-- This function will run once every time Awesome is started (https://github.com/lcpz/awesome-copycats/blob/master/rc.lua.template)
+local function run_once(cmd_arr)
+    for _, cmd in ipairs(cmd_arr) do
+        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
+    end
+end
+
 
 -- ---------------------------------------------------------------------
 -- Screens
@@ -147,6 +157,7 @@ naughty.config.presets.critical.border_color = beautiful.fg_urgent
 
 -- Tags names
 tags_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.tile,
@@ -226,12 +237,6 @@ local tasklist_buttons = awful.util.table.join(
 	--					  end))
 )
 
--- Filter used by tags widgets
-function taglist_filter(t)
-	-- No empty and not the scratchpad (except if selected)
-	return (#t:clients() > 0 or t.selected) and (t.name ~= "S" or t.selected)
-end
-
 -- Customs widgets definitions (need to be loaded after naughty configurations)
 local widgets_custom = require("widgets")
 
@@ -249,28 +254,26 @@ awful.screen.connect_for_each_screen(function(s)
 		-- Tag 0 is a Scratchpad !
 		-- Scratchpad is a special tag, filtered from widget and bind to a key
 		-- Better than "lain.guake" to manage multi windows apps
-		awful.tag(tags_names, s, awful.layout.suit.tile)
+		awful.tag(tags_names, s, awful.layout.layouts[1])
 		-- Mail tag
 		awful.tag.add("M", {
-			icon = beautiful.mail,
-			layout = awful.layout.suit.max,
+			layout = awful.layout.layouts[1],
 			screen = s,
 			icon_only = true,
+			icon = beautiful.mail,
 		})
 		-- Scratchpad
 		awful.tag.add("S", {
-			icon = beautiful.code,
-			layout = awful.layout.suit.max,
+			layout = awful.layout.layouts[1],
 			screen = s,
 			icon_only = true,
+			-- icon = beautiful.code,
+			icon = beautiful.firefox,
 			-- 	selected = true,
 		})
-	elseif s.geometry.height > s.geometry.width then
-		-- vertical screen with adapted layout
-		awful.tag(tags_names, s, awful.layout.suit.tile.bottom)
 	else
-		-- secondary screens
-		awful.tag(tags_names, s, awful.layout.suit.tile)
+		-- secondary screens (Vertical layout)
+		awful.tag(tags_names, s, awful.layout.suit.tile.bottom)
 	end
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
@@ -281,8 +284,12 @@ awful.screen.connect_for_each_screen(function(s)
 						   awful.button({ }, 3, function () awful.layout.inc(-1) end),
 						   awful.button({ }, 4, function () awful.layout.inc( 1) end),
 						   awful.button({ }, 5, function () awful.layout.inc(-1) end)))
-	-- Create a taglist widget
-	s.mytaglist = awful.widget.taglist(s, taglist_filter, taglist_buttons)
+	-- Create a taglist widget (https://awesomewm.org/doc/api/classes/awful.widget.taglist.html)
+	s.mytaglist = awful.widget.taglist({
+		screen  = s,
+		filter  = awful.widget.taglist.filter.noempty,
+		buttons = taglist_buttons,
+	})
 	-- s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
 	-- Create a tasklist widget
@@ -390,10 +397,10 @@ local globalkeys = awful.util.table.join(
 	awful.key({ modkey, }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
 
 	-- Next/previous tag
-	-- PageUp doesn't work: https://github.com/awesomeWM/awesome/issues/2147
-	-- awful.key({ modkey, }, "PageUp",   awful.tag.viewprev ), {description = "view previous", group = "tag"}),
-	-- awful.key({ modkey, }, "PageDown", awful.tag.viewnext ), {description = "view next", group = "tag"}),
-	-- awful.key({ modkey, }, "Escape", awful.tag.history.restore, {description = "go back", group = "tag"}),
+	awful.key({ modkey, }, "Page_Up",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
+	awful.key({ modkey, }, "Page_Down", awful.tag.viewnext, {description = "view next", group = "tag"}),
+	-- Go back to previous tag
+	awful.key({ modkey, }, "Tab", awful.tag.history.restore, {description = "go back", group = "tag"}),
 
 	-- awful.key({ modkey, }, "Right", function ()
 	--		 awful.client.focus.byidx(1)
@@ -551,21 +558,24 @@ local globalkeys = awful.util.table.join(
 
 	-- Toggle mail special tag
 	awful.key({}, "F1", function()
-			awful.spawn.single_instance("thunderbird", {}, function(c) return c.instance == "thunderbird" end)
+			run_once({"thunderbird"})
+			-- awful.spawn.single_instance("thunderbird", {}, function(c) return c.instance == "thunderbird" end)
 			toggle_special_tag("M")
 		end, {description = "toggle mail tag", group = "tag"}),
 
 	-- Toggle scratchpad special tag (²)
 	awful.key({ modkey }, "#49", function ()
-			-- Signal cannot be managed...
-			if is_launched_editor == false then
-				-- Launch editor the first time on the tag
-			 	is_launched_editor = true
-				awful.spawn.single_instance("vscodium", awful.rules.rules, function(c) return c.instance == "vscodium" end, 'myvscode')
-				 -- awful.spawn.single_instance("xterm", awful.rules.rules, function(c) return c.instance == "xterm" end, 'myxterm')
-				 -- awful.spawn.single_instance("google-chrome-stable", awful.rules.rules, function(c) return c.instance == "google-chrome" end, 'mygooglechrome')
-				 -- awful.spawn.single_instance("pcmanfm", awful.rules.rules, function(c) return c.instance == "pcmanfm" end, 'mypcmanfm')
-			end
+			run_once({"vscodium"})
+
+			-- -- Signal cannot be managed...
+			-- if is_launched_editor == false then
+			-- 	-- Launch editor the first time on the tag
+			--  	is_launched_editor = true
+			-- 	awful.spawn.single_instance("vscodium", awful.rules.rules, function(c) return c.instance == "vscodium" end, 'myvscode')
+			-- 	 -- awful.spawn.single_instance("xterm", awful.rules.rules, function(c) return c.instance == "xterm" end, 'myxterm')
+			-- 	 -- awful.spawn.single_instance("google-chrome-stable", awful.rules.rules, function(c) return c.instance == "google-chrome" end, 'mygooglechrome')
+			-- 	 -- awful.spawn.single_instance("pcmanfm", awful.rules.rules, function(c) return c.instance == "pcmanfm" end, 'mypcmanfm')
+			-- end
 			toggle_special_tag("S")
 		end, {description = "toggle scratchpad tag", group = "tag"})
 )
@@ -785,7 +795,10 @@ local rules = {
 	{ rule = { class = "ksnip" },
 		properties = {
 			floating = true,
+			sticky = true,
+			ontop = true,
 			screen = screens.count(),
+			placement = awful.placement.no_offscreen + awful.placement.top,
 		}
 	},
 	{ rule = { class = "mpv" },
@@ -911,16 +924,17 @@ client.connect_signal("manage", function (c)
 		awful.placement.no_offscreen(c)
 	end
 
-	-- if (c.class == "Firefox") then
-	-- 	-- if it's a Firefox we will connect a signal which will call if 'name' changing
-	-- 	c:connect_signal("property::name", function(c)
-	-- 		if (string.find(c.name, "(Private Browsing)")) then
-	-- 			-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tags[1][9]
-	-- 			local tags = root.tags()
-	-- 			c:tags({tags[9]})
-	-- 		end
-	-- 	end)
-	-- end
+	if (c.class == "Firefox") then
+		-- if it's a Firefox we will connect a signal which will call if 'name' changing
+		c:connect_signal("property::name", function(c)
+			if (string.find(c.name, "(Private Browsing)")) then
+				-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tags[9]
+				local tags = root.tags()
+				c:tags({tags[9]})
+				tags[9]:view_only()
+			end
+		end)
+	end
 end)
 
 -- -- Try to fix electron signals
