@@ -6,7 +6,7 @@ local screens = require("screens")
 local desktops = {}
 
 
-local tags_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
+local tags_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 
 -- Inits tags for each scren
 local function init(s)
@@ -58,6 +58,14 @@ local function init(s)
 			screen             = s,
 			icon               = beautiful.secret,
 		})
+
+		-- Scratchpad
+		awful.tag.add(tags_names[10], {
+			layout = awful.layout.suit.tile,
+			screen = s,
+			icon = beautiful.terminal,
+		})
+
 	else
 		-- secondary screens (Vertical layout)
 		awful.tag(tags_names, s, awful.layout.suit.tile.bottom)

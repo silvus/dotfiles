@@ -230,6 +230,12 @@ local tasklist_buttons = awful.util.table.join(
 -- Customs widgets definitions (need to be loaded after naughty configurations)
 local widgets_custom = require("widgets")
 
+-- Filter used by tags widgets
+function taglist_filter(t)
+	-- No empty and not the scratchpad (except if selected)
+	return (#t:clients() > 0 or t.selected) and (t.name ~= "0" or t.selected)
+end
+
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
 	wallpaper.update(s)
@@ -254,7 +260,7 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Create a taglist widget (https://awesomewm.org/doc/api/classes/awful.widget.taglist.html)
 	s.mytaglist = awful.widget.taglist({
 		screen  = s,
-		filter  = awful.widget.taglist.filter.noempty,
+		filter  = taglist_filter,
 		buttons = taglist_buttons,
 
 		-- style   = {
@@ -570,10 +576,10 @@ local globalkeys = awful.util.table.join(
 			awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_vpn", false)
 		end, {description = "launch vpn", group = "launcher"}),
 
-	-- Toggle code tag (²)
+	-- Toggle scratchpad tag (²)
 	awful.key({ modkey }, "#49", function ()
 			local screen = screens.get_primary()
-			local tag_next = screen.tags[2]
+			local tag_next = screen.tags[10]
 			local tag_current = awful.screen.focused().selected_tag
 			if tag_next then
 				if tag_next == tag_current then
@@ -582,13 +588,25 @@ local globalkeys = awful.util.table.join(
 					tag_next:view_only()
 				end
 			end
-		end, {description = "toggle code tag", group = "tag"})
+		end, {description = "toggle scratchpad tag", group = "tag"}),
+	-- Toggle client to scratchpad tag
+	awful.key({ modkey, "Shift" }, "#49", function ()
+			if client.focus then
+				local screen = awful.screen.focused()
+				local tag_next = screen.tags[10]
+				if tag_next then
+					client.focus:move_to_tag(tag_next)
+					tag_next:view_only()
+				end
+			end
+		end, {description = "move focused client to scratchpad", group = "tag"})
 )
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, 9 do
+-- for i = 1, 9 do
+for i, v in pairs(desktops.tags_names) do
 	globalkeys = awful.util.table.join(globalkeys,
 		-- View tag only.
 		awful.key({ modkey }, "#" .. i + 9, function ()
