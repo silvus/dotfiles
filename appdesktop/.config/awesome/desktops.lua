@@ -56,7 +56,7 @@ local function init(s)
 		awful.tag.add(tags_names[9], {
 			layout             = awful.layout.suit.tile,
 			screen             = s,
-			icon               = beautiful.secret,
+			icon               = beautiful.lock,
 		})
 
 		-- Scratchpad
