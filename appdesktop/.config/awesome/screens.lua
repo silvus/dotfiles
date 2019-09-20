@@ -97,24 +97,9 @@ local function get_primary()
 	return screen.primary
 end
 
--- Get first vertical screen (fallback to latest index)
-local function get_vertical()
-	for s in screen do
-	    -- debug_log("Screen " .. tostring(s.geometry.width) .. " x " .. tostring(s.geometry.height))
-	    if s.geometry.height > s.geometry.width then
-	    	return s
-	    end
-	end
-
-	-- Fallback
-	return screen[screen.count()]
-
-end
-
 
 screens.update = update
 screens.count = count
 screens.get_primary = get_primary
-screens.get_vertical = get_vertical
 
 return screens

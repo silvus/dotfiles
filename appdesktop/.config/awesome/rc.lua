@@ -38,6 +38,9 @@ local lain	= require("lain")
 -- Quake like terminal (single instance for all screens)
 local quake = require("quake")
 
+-- Tags declarations
+local desktops = require('desktops')
+
 -- Screen custom definitions
 local screens = require('screens')
 
@@ -88,16 +91,6 @@ local function debug_log(text)
 	-- log:write(text)
 	-- log:flush()
 	-- log:close()
-end
-
--- ---------------------------------------------------------------------
--- Utilities
--- ---------------------------------------------------------------------
--- This function will run once every time Awesome is started (https://github.com/lcpz/awesome-copycats/blob/master/rc.lua.template)
-local function run_once(cmd_arr)
-    for _, cmd in ipairs(cmd_arr) do
-        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
-    end
 end
 
 
@@ -154,9 +147,6 @@ naughty.config.defaults.border_color = beautiful.border_focus
 naughty.config.presets.low.timeout = 10
 naughty.config.presets.critical.bg = beautiful.error
 naughty.config.presets.critical.border_color = beautiful.fg_urgent
-
--- Tags names
-tags_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -250,31 +240,8 @@ awful.screen.connect_for_each_screen(function(s)
 	-- local layouts = { l.floating, l.tile, l.floating, l.fair, l.max, l.floating, l.tile.left, l.floating, l.floating }
 	-- awful.tag(names, s, layouts)
 
-	if s == screens.get_primary() then
-		-- Tag 0 is a Scratchpad !
-		-- Scratchpad is a special tag, filtered from widget and bind to a key
-		-- Better than "lain.guake" to manage multi windows apps
-		awful.tag(tags_names, s, awful.layout.layouts[1])
-		-- Mail tag
-		awful.tag.add("M", {
-			layout = awful.layout.layouts[1],
-			screen = s,
-			icon_only = true,
-			icon = beautiful.mail,
-		})
-		-- Scratchpad
-		awful.tag.add("S", {
-			layout = awful.layout.layouts[1],
-			screen = s,
-			icon_only = true,
-			-- icon = beautiful.code,
-			icon = beautiful.firefox,
-			-- 	selected = true,
-		})
-	else
-		-- secondary screens (Vertical layout)
-		awful.tag(tags_names, s, awful.layout.suit.tile.bottom)
-	end
+	-- Tags init
+	desktops.init(s)
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
 	-- We need one layoutbox per screen.
@@ -289,6 +256,53 @@ awful.screen.connect_for_each_screen(function(s)
 		screen  = s,
 		filter  = awful.widget.taglist.filter.noempty,
 		buttons = taglist_buttons,
+
+		-- style   = {
+		-- 	shape = gears.shape.powerline
+		-- },
+		-- layout   = {
+		-- 	spacing = -12,
+		-- 	spacing_widget = {
+		-- 		color  = '#dddddd',
+		-- 		shape  = gears.shape.powerline,
+		-- 		widget = wibox.widget.separator,
+		-- 	},
+		-- 	layout  = wibox.layout.fixed.horizontal
+		-- },
+		widget_template = {
+			{
+				{
+					{
+						{
+							{
+								id     = 'text_role',
+								widget = wibox.widget.textbox,
+								valign = 'top',
+								align = 'right',
+								opacity = 0.5,
+							},
+							fg     = beautiful.success,
+							widget = wibox.container.background,
+						},
+						widget = wibox.container.place,
+						valign = 'top',
+						halign = 'right',
+					},
+					{
+						id     = 'icon_role',
+						widget = wibox.widget.imagebox,
+					},
+					layout = wibox.layout.stack,
+				},
+				left  = 2,
+				right = 2,
+				widget = wibox.container.margin
+			},
+			id     = 'background_role',
+			widget = wibox.container.background,
+			forced_height = 28,
+			forced_width = 28,
+		},
 	})
 	-- s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
@@ -534,8 +548,8 @@ local globalkeys = awful.util.table.join(
 
 	-- Print screen
 	awful.key({}, "Print", function()
-		awful.util.spawn("ksnip", false)
-	end, {description = "make a printscreen with ksnip", group = "launcher"}),
+			awful.util.spawn("ksnip", false)
+		end, {description = "make a printscreen with ksnip", group = "launcher"}),
 
 	-- Reload
 	awful.key({ modkey, "Shift" }, "r", awesome.restart, {description = "reload awesome", group = "awesome"}),
@@ -556,28 +570,19 @@ local globalkeys = awful.util.table.join(
 			awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_vpn", false)
 		end, {description = "launch vpn", group = "launcher"}),
 
-	-- Toggle mail special tag
-	awful.key({}, "F1", function()
-			run_once({"thunderbird"})
-			-- awful.spawn.single_instance("thunderbird", {}, function(c) return c.instance == "thunderbird" end)
-			toggle_special_tag("M")
-		end, {description = "toggle mail tag", group = "tag"}),
-
-	-- Toggle scratchpad special tag (²)
+	-- Toggle code tag (²)
 	awful.key({ modkey }, "#49", function ()
-			run_once({"vscodium"})
-
-			-- -- Signal cannot be managed...
-			-- if is_launched_editor == false then
-			-- 	-- Launch editor the first time on the tag
-			--  	is_launched_editor = true
-			-- 	awful.spawn.single_instance("vscodium", awful.rules.rules, function(c) return c.instance == "vscodium" end, 'myvscode')
-			-- 	 -- awful.spawn.single_instance("xterm", awful.rules.rules, function(c) return c.instance == "xterm" end, 'myxterm')
-			-- 	 -- awful.spawn.single_instance("google-chrome-stable", awful.rules.rules, function(c) return c.instance == "google-chrome" end, 'mygooglechrome')
-			-- 	 -- awful.spawn.single_instance("pcmanfm", awful.rules.rules, function(c) return c.instance == "pcmanfm" end, 'mypcmanfm')
-			-- end
-			toggle_special_tag("S")
-		end, {description = "toggle scratchpad tag", group = "tag"})
+			local screen = screens.get_primary()
+			local tag_next = screen.tags[2]
+			local tag_current = awful.screen.focused().selected_tag
+			if tag_next then
+				if tag_next == tag_current then
+					awful.tag.history.restore()
+				else
+					tag_next:view_only()
+				end
+			end
+		end, {description = "toggle code tag", group = "tag"})
 )
 
 -- Bind all key numbers to tags.
@@ -682,28 +687,6 @@ local clientbuttons = awful.util.table.join(
 	awful.button({ modkey }, 1, awful.mouse.client.move),
 	awful.button({ modkey }, 3, awful.mouse.client.resize))
 
--- Toggle Special tag utility functiuon
--- ----------------------------------------------------------------------------
-function toggle_special_tag(tagname)
-	local screen = screens.get_primary()
-	local tag_special = awful.tag.find_by_name(screen, tagname)
-	local tag_current = screen.selected_tag
-
-	if tag_special then
-		if tag_special == tag_current then
-			-- On scratchpad, go to previous tag
-			awful.tag.history.restore(screen)
-		else
-			-- Update history (need for fist move, when history is empty)
-			 awful.tag.history.update(screen)
-			-- Go to the scratchpad
-			tag_special:view_only()
-			-- Focus primary screen
-			-- awful.screen.focus(screen)
-		end
-	end
-end
-
 
 -- ---------------------------------------------------------------------
 -- Rules
@@ -773,25 +756,68 @@ local rules = {
 		}
 	},
 
-	-- Specifics rules
+	-- Web
 	{ rule = { class = "Firefox" },
+		except = { type = "dialog" },
 		properties = {
-			tag = tags_names[1],
+			tag = desktops.tags_names[1],
 			screen = screens.get_primary(),
 		}
 	},
+	-- Dev
+	{ rule_any = { class = { "VSCodium", "Zim" }},
+		properties = {
+			tag = desktops.tags_names[2],
+			screen = screens.get_primary(),
+			floating = false, -- Task list is too small in popup
+		}
+	},
+
+	{ rule_any = { class = { "jetbrains-phpstorm" }},
+		properties = {
+			tag = desktops.tags_names[1],
+			floating = false, -- Task list is too small in popup
+			except = { type = "dialog" },
+			screen = screens.count(),
+		}
+	},
+	-- Mail
+	{ rule = { class = "Thunderbird" },
+		properties = {
+			tag = desktops.tags_names[3],
+			screen = screens.get_primary(),
+		}
+	},
+	-- Files explorer
 	{ rule = { class = "Pcmanfm" },
 		properties = {
-			tag = tags_names[4],
+			tag = desktops.tags_names[4],
 			screen = screens.get_primary(),
 		}
 	},
+	-- Office
+	{ rule_any = { class = { "libreoffice-writer", "libreoffice-calc", "Evince" }},
+		properties = {
+			tag = desktops.tags_names[5],
+			screen = screens.get_primary(),
+		}
+	},
+	-- Graphics
+	{ rule_any = { class = { "Gimp", "Krita", }},
+		properties = {
+			tag = desktops.tags_names[6],
+			screen = screens.get_primary(),
+		}
+	},
+	-- Games
 	{ rule = { class = "Steam" },
 		properties = {
-			tag = tags_names[8],
+			tag = desktops.tags_names[8],
 			screen = screens.get_primary(),
 		}
 	},
+
+	-- Floating on top and sticky
 	{ rule = { class = "ksnip" },
 		properties = {
 			floating = true,
@@ -801,7 +827,7 @@ local rules = {
 			placement = awful.placement.no_offscreen + awful.placement.top,
 		}
 	},
-	{ rule = { class = "mpv" },
+	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse" }},
 		properties = {
 			-- Sticky in corner on main screen
 			focus = false,
@@ -818,82 +844,8 @@ local rules = {
 			end
 		}
 	},
-	-- Mail special tag
-	{ rule = { class = "Thunderbird" },
-		properties = {
-			tag = "M",
-			screen = screens.get_primary(),
-		}
-	},
-	-- Scratchpad
-	{ rule_any = { class = {
-			"VSCodium",
-			"Zim" 
-		}},
-		properties = {
-			tag = "S",
-			screen = screens.get_primary(),
-			floating = false,  -- Task list is too small in popup
-		}
-	},
 }
--- }}}
 
--- Specific for multi screens
-if screens.count() > 1 then
-	-- On dual screens
-	table.insert(rules, { rule_any = { class = {
-			"Code",
-			"krita",
-			"Sublime_text",
-			"jetbrains-phpstorm" 
-		}},
-		except = { type = "dialog" },
-		properties = {
-			tag = tags_names[1],
-			screen = screens.get_vertical(),
-		}
-	})
-	table.insert(rules, { rule = { instance = "www.netflix.com__browse" },
-		properties = {
-			-- Fullscreen on secondary screen
-			focus = false,
-			floating = false,
-			fullscreen = true,
-			screen = screens.count()
-		}
-	})
-else
-	-- Single screen
-	table.insert(rules, { rule_any = { class = {
-			"Code",
-			"krita",
-			"Sublime_text",
-			"jetbrains-phpstorm"
-		}},
-		except = { type = "dialog" },
-		properties = {
-			tag = tags_names[2],
-			screen = screens.get_vertical(),
-		}
-	})
-	table.insert(rules, { rule = { instance = "www.netflix.com__browse" },
-		properties = {
-			focus = false,
-			sticky = true,
-			fullscreen = false,
-			floating = true,
-			ontop = true, -- Not compatible with fullscreen
-			screen = screens.get_primary(), -- On primary screen
-			callback = function(c)
-				-- 2/5 bottom right of primary screen
-				sreen_geometry = screens.get_primary().geometry
-				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
-				awful.placement.bottom_right(c)
-			end
-		}
-	})
-end
 -- set rules
 awful.rules.rules = rules
 
@@ -908,6 +860,7 @@ end)
 
 -- Re-set wallpaper when a new tag is selected
 globaltag.connect_signal("property::selected", function (t)
+	desktops.switch(t)
 	wallpaper.update()
 end)
 
