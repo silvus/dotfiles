@@ -796,10 +796,10 @@ local rules = {
 	},
 
 	{ rule_any = { class = { "jetbrains-phpstorm" }},
+		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[1],
 			floating = false, -- Task list is too small in popup
-			except = { type = "dialog" },
 			screen = screens.count(),
 		}
 	},
