@@ -258,72 +258,63 @@ awful.screen.connect_for_each_screen(function(s)
 						   awful.button({ }, 4, function () awful.layout.inc( 1) end),
 						   awful.button({ }, 5, function () awful.layout.inc(-1) end)))
 	-- Create a taglist widget (https://awesomewm.org/doc/api/classes/awful.widget.taglist.html)
-	s.mytaglist = awful.widget.taglist({
-		screen  = s,
-		filter  = taglist_filter,
-		buttons = taglist_buttons,
-
-		-- style   = {
-		-- 	shape = gears.shape.powerline
-		-- },
-		-- layout   = {
-		-- 	spacing = -12,
-		-- 	spacing_widget = {
-		-- 		color  = '#dddddd',
-		-- 		shape  = gears.shape.powerline,
-		-- 		widget = wibox.widget.separator,
-		-- 	},
-		-- 	layout  = wibox.layout.fixed.horizontal
-		-- },
-		widget_template = {
-			{
+	if s == screens.get_primary() then
+		s.mytaglist = awful.widget.taglist({
+			screen  = s,
+			filter  = taglist_filter,
+			buttons = taglist_buttons,
+			widget_template = {
 				{
 					{
 						{
-							id = 'icon_role',
-							widget = wibox.widget.imagebox,
-							resize = true,
-							forced_height = 28,
-							forced_width = 28,
+							{
+								id = 'icon_role',
+								widget = wibox.widget.imagebox,
+								resize = true,
+								forced_height = 28,
+								forced_width = 28,
+							},
+							layout = wibox.container.margin,
+							top = 2,
+							right = 2,
+							bottom= 2,
+							left = 8,
 						},
-						layout = wibox.container.margin,
-						top = 2,
-						right = 2,
-						bottom= 2,
-						left = 8,
-					},
-					{
 						{
 							{
-								id = 'text_role',
-								widget = wibox.widget.textbox,
-								valign = 'center',
-								align = 'center',
+								{
+									id = 'text_role',
+									widget = wibox.widget.textbox,
+									valign = 'center',
+									align = 'center',
+								},
+								bg = '#000000',
+								fg = '#ffffff',
+								-- forced_height = 12,
+								-- forced_width = 8,
+								opacity = 0.6,
+								widget = wibox.container.background,
 							},
-							bg = '#000000',
-							fg = '#ffffff',
-							-- forced_height = 12,
-							-- forced_width = 8,
-							opacity = 0.6,
-							widget = wibox.container.background,
+							widget = wibox.container.place,
+							valign = 'bottom',
+							halign = 'left',
 						},
-						widget = wibox.container.place,
-						valign = 'bottom',
-						halign = 'left',
+						layout = wibox.layout.stack,
 					},
-					layout = wibox.layout.stack,
+					-- left  = 1,
+					-- right = 1,
+					widget = wibox.container.margin
 				},
-				-- left  = 1,
-				-- right = 1,
-				widget = wibox.container.margin
+				id     = 'background_role',
+				widget = wibox.container.background,
+				forced_height = 32,
+				forced_width = 32,
 			},
-			id     = 'background_role',
-			widget = wibox.container.background,
-			forced_height = 32,
-			forced_width = 32,
-		},
-	})
-	-- s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
+		})
+	else
+		-- secondary screens
+		s.mytaglist = awful.widget.taglist(s, taglist_filter, taglist_buttons)
+	end
 
 	-- Create a tasklist widget
 	-- s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
@@ -800,7 +791,7 @@ local rules = {
 		properties = {
 			tag = desktops.tags_names[2],
 			screen = screens.get_primary(),
-			floating = false, -- Task list is too small in popup
+			floating = false,
 		}
 	},
 
