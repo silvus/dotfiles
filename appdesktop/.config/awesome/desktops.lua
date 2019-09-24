@@ -25,7 +25,7 @@ local function init(s)
 			icon               = beautiful.code,
 		})
 		awful.tag.add(tags_names[3], {
-			layout             = awful.layout.suit.tile,
+			layout             = awful.layout.suit.max,
 			screen             = s,
 			icon               = beautiful.mail,
 		})
@@ -49,7 +49,7 @@ local function init(s)
 			screen             = s,
 		})
 		awful.tag.add(tags_names[8], {
-			layout             = awful.layout.suit.tile,
+			layout             = awful.layout.suit.max,
 			screen             = s,
 			icon               = beautiful.gamepad,
 		})
