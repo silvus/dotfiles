@@ -62,7 +62,7 @@
 
 # MOC control keys:
 quit_client           = Q
-quit                  = q
+quit                  = q ^c ESCAPE
 
 # Menu and interface control keys:
 go                    = ENTER
