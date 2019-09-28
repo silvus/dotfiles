@@ -36,3 +36,7 @@ if [[ -x "/etc/init.d/unbound" ]]; then
 	echo "Unbound restart"
 	sudo "/etc/init.d/unbound" restart
 fi
+
+# Systemd
+echo "Systemd-resolve"
+sudo systemd-resolve --flush-caches
