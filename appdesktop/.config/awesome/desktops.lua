@@ -78,7 +78,7 @@ local function run_once(cmd_arr)
 	for _, cmd in ipairs(cmd_arr) do
 		-- Doesn't work with symlinks
 		-- awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
-		awful.spawn.with_shell(string.format("pgrep -u $USER '%s' > /dev/null || (%s)", cmd, cmd))
+		awful.spawn.with_shell(string.format("pgrep -u $USER \"$(basename %s)\" > /dev/null || (%s)", cmd, cmd))
 	end
 end
 
@@ -89,7 +89,7 @@ local function switch(t)
 		if t.name == tags_names[1] then
 			run_once({"firefox"})
 		elseif t.name == tags_names[2] then
-			run_once({"vscodium"})
+			run_once({"/usr/share/codium/bin/codium"})
 		elseif t.name == tags_names[3] then
 			run_once({"thunderbird"})
 		elseif t.name == tags_names[4] then
