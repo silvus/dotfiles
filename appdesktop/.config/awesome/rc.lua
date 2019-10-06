@@ -775,6 +775,7 @@ local rules = {
 			floating = false,
 			maximized_vertical = false,
 			maximized_horizontal = false
+			screen = screens.get_primary(),
 		}
 	},
 
@@ -783,14 +784,12 @@ local rules = {
 		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[1],
-			screen = screens.get_primary(),
 		}
 	},
 	-- Dev
 	{ rule_any = { class = { "VSCodium", "Zim" }},
 		properties = {
 			tag = desktops.tags_names[2],
-			screen = screens.get_primary(),
 			floating = false,
 		}
 	},
@@ -800,42 +799,42 @@ local rules = {
 		properties = {
 			tag = desktops.tags_names[1],
 			floating = false, -- Task list is too small in popup
-			screen = screens.count(),
 		}
 	},
 	-- Mail
 	{ rule = { class = "Thunderbird" },
 		properties = {
 			tag = desktops.tags_names[3],
-			screen = screens.get_primary(),
 		}
 	},
 	-- Files explorer
 	{ rule = { class = "Pcmanfm" },
 		properties = {
 			tag = desktops.tags_names[4],
-			screen = screens.get_primary(),
 		}
 	},
-	-- Office
-	{ rule_any = { class = { "libreoffice-writer", "libreoffice-calc", "Evince" }},
+	-- Mixed
+	{ rule_any = { class = { "Godot", "Keybase" }},
 		properties = {
 			tag = desktops.tags_names[5],
-			screen = screens.get_primary(),
 		}
 	},
 	-- Graphics
 	{ rule_any = { class = { "Gimp", "Krita", }},
 		properties = {
 			tag = desktops.tags_names[6],
-			screen = screens.get_primary(),
+		}
+	},
+	-- Office
+	{ rule_any = { class = { "libreoffice-writer", "libreoffice-calc", "Evince" }},
+		properties = {
+			tag = desktops.tags_names[7],
 		}
 	},
 	-- Games
 	{ rule = { class = "Steam" },
 		properties = {
 			tag = desktops.tags_names[8],
-			screen = screens.get_primary(),
 		}
 	},
 

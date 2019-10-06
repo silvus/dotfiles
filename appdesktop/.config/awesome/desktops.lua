@@ -37,7 +37,7 @@ local function init(s)
 		awful.tag.add(tags_names[5], {
 			layout             = awful.layout.suit.tile,
 			screen             = s,
-			icon               = beautiful.paragraph,
+			icon               = beautiful.fire,
 		})
 		awful.tag.add(tags_names[6], {
 			layout             = awful.layout.suit.tile,
@@ -47,6 +47,7 @@ local function init(s)
 		awful.tag.add(tags_names[7], {
 			layout             = awful.layout.suit.tile,
 			screen             = s,
+			icon               = beautiful.paragraph,
 		})
 		awful.tag.add(tags_names[8], {
 			layout             = awful.layout.suit.max,

@@ -68,6 +68,7 @@ theme.clock                                     = theme.dir .. "/icons/clock.png
 theme.code                                      = theme.dir .. "/icons/code.png"
 theme.cpu                                       = theme.dir .. "/icons/cpu.png"
 theme.disk                                      = theme.dir .. "/icons/disk.png"
+theme.fire                                      = theme.dir .. "/icons/fire.png"
 theme.firefox                                   = theme.dir .. "/icons/firefox.png"
 theme.folder                                    = theme.dir .. "/icons/folder.png"
 theme.gamepad                                   = theme.dir .. "/icons/gamepad.png"
