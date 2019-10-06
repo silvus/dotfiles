@@ -774,7 +774,7 @@ local rules = {
 			titlebars_enabled = true,
 			floating = false,
 			maximized_vertical = false,
-			maximized_horizontal = false
+			maximized_horizontal = false,
 			screen = screens.get_primary(),
 		}
 	},
@@ -814,7 +814,7 @@ local rules = {
 		}
 	},
 	-- Mixed
-	{ rule_any = { class = { "Godot", "Keybase" }},
+	{ rule_any = { class = { "Godot", "Keybase", "balena-etcher-electron", "GParted", "Transmission" }},
 		properties = {
 			tag = desktops.tags_names[5],
 		}
@@ -826,7 +826,7 @@ local rules = {
 		}
 	},
 	-- Office
-	{ rule_any = { class = { "libreoffice-writer", "libreoffice-calc", "Evince" }},
+	{ rule_any = { class = { "libreoffice-writer", "libreoffice-calc", "Evince", "Simple-scan" }},
 		properties = {
 			tag = desktops.tags_names[7],
 		}
@@ -898,17 +898,18 @@ client.connect_signal("manage", function (c)
 		awful.placement.no_offscreen(c)
 	end
 
-	if (c.class == "Firefox") then
-		-- if it's a Firefox we will connect a signal which will call if 'name' changing
-		c:connect_signal("property::name", function(c)
-			if (string.find(c.name, "(Private Browsing)")) then
-				-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tags[9]
-				local tags = root.tags()
-				c:tags({tags[9]})
-				tags[9]:view_only()
-			end
-		end)
-	end
+	-- if (c.class == "Firefox") then
+	-- 	-- if it's a Firefox we will connect a signal which will call if 'name' changing
+	-- 	c:connect_signal("property::name", function(c)
+	-- 		if (string.find(c.name, "(Private Browsing)")) then
+	-- 			-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tags[9]
+	--			-- Private window do not keep focuse with this method
+	-- 			local tags = root.tags()
+	-- 			c:tags({tags[9]})
+	-- 			tags[9]:view_only()
+	-- 		end
+	-- 	end)
+	-- end
 end)
 
 -- -- Try to fix electron signals
