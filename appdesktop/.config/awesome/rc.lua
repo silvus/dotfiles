@@ -515,12 +515,20 @@ local globalkeys = awful.util.table.join(
 		end, {description = "refresh the menubar", group = "launcher"}),
 
 	-- Clients menu
+	-- awful.key({ modkey,	}, "e", function()
+	-- 		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
+	-- 		-- Default to mouse.coords()
+	-- 		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
+	-- 		awful.menu.clients({theme = { width = 500} })
+	-- 	end, {description="client menu", group="launcher"}),
+
+	-- Rofi
 	awful.key({ modkey,	}, "e", function()
-			-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
-			-- Default to mouse.coords()
-		    -- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
-		    awful.menu.clients({theme = { width = 500} })
-		end, {description="client menu", group="launcher"}),
+		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
+		-- Default to mouse.coords()
+		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
+			awful.util.spawn("rofi -show drun")
+		end, {description="Rofi launch", group="launcher"}),
 
 	-- Quake-like terminal (²)
 	awful.key({}, "#49", function ()
