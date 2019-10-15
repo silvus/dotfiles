@@ -6,6 +6,7 @@ local screens = require("screens")
 
 local wallpaper = {}
 
+
 -- Wallpaper
 -- First search in ~/.wallpaper.png
 -- Then search in ~/.wallpaper.jpg

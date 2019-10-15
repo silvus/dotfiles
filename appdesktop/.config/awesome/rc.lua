@@ -80,19 +80,6 @@ do
 end
 -- }}}
 
-local function debug_log(text)
-	naughty.notify({
-		title = 'Debug',
-		text = text,
-		ontop = true,
-		preset = naughty.config.presets.critical
-	})
-	-- local log = io.open('/tmp/awesomewm_debug.log', 'aw')
-	-- log:write(text)
-	-- log:flush()
-	-- log:close()
-end
-
 
 -- ---------------------------------------------------------------------
 -- Screens
@@ -227,8 +214,20 @@ local tasklist_buttons = awful.util.table.join(
 	--					  end))
 )
 
--- Customs widgets definitions (need to be loaded after naughty configurations)
+-- Customs widgets definitions (need to be loaded after theme init (or naughty configurations ?))
 local widgets_custom = require("widgets")
+
+local widget_separator = require("widgets.separator")
+local widget_clock = require("widgets.clock")
+local widget_volume = require("widgets.volume")
+local widget_cpu = require("widgets.cpu")
+local widget_ram = require("widgets.ram")
+local widget_net = require("widgets.net")
+local widget_vpn = require("widgets.vpn")
+local widget_moc = require("widgets.moc")
+local widget_systray = require("widgets.systray")
+local widget_prompt = require("widgets.prompt")
+local widget_keyboardlayout = require("widgets.keyboardlayout")
 
 -- Filter used by tags widgets
 function taglist_filter(t)
@@ -335,7 +334,7 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Widget for main screen only
 	if s == screens.get_primary() then
 		-- Create a promptbox
-		s.promptbox = widgets_custom.promptbox
+		s.promptbox = widget_prompt.widget
 
 		-- Add widgets to the wibox
 		s.mywibox:setup {
@@ -359,31 +358,30 @@ awful.screen.connect_for_each_screen(function(s)
 				layout = wibox.layout.fixed.horizontal,
 				-- layout = awful.widget.only_on_screen,
 				-- screen = "primary", -- Only display on primary screen
-				widgets_custom.musicicon,
-				widgets_custom.mocbarwidget,
-				widgets_custom.mocwidget,
-				widgets_custom.spaceseparator,
-				widgets_custom.vpnicon,
-				widgets_custom.vpn,
-				widgets_custom.neticon,
-				widgets_custom.netwidget,
-				widgets_custom.cpuicon,
-				widgets_custom.cpuwidget,
-				widgets_custom.memicon,
-				widgets_custom.memwidget,
+				widget_moc.icon,
+				widget_moc.widgetbar,
+				widget_moc.widget,
+				widget_separator.widget,
+				widget_vpn.icon,
+				widget_vpn.widget,
+				widget_net.icon,
+				widget_net.widget,
+				widget_cpu.icon,
+				widget_cpu.widget,
+				widget_ram.icon,
+				widget_ram.widget,
 				widgets_custom.baticon,
 				widgets_custom.batwidget,
-				widgets_custom.volicon,
-				widgets_custom.volumewidget,
-				widgets_custom.spaceseparator,
-				widgets_custom.systraykeyboardlayout,
-				widgets_custom.systray,
-				widgets_custom.spaceseparator,
-				widgets_custom.spaceseparator,
-				widgets_custom.clockicon,
-				widgets_custom.spaceseparator,
-				widgets_custom.textclock,
-				widgets_custom.spaceseparator,
+				widget_volume.icon,
+				widget_volume.widget,
+				widget_separator.widget,
+				widget_keyboardlayout.widget,
+				widget_systray.widget,
+				widget_separator.widget,
+				widget_separator.widget,
+				widget_clock.icon,
+				widget_clock.widget,
+				widget_separator.widget,
 				s.layoutbox,
 			},
 		}
@@ -400,7 +398,7 @@ awful.screen.connect_for_each_screen(function(s)
 			{
 				-- Right widgets
 				layout = wibox.layout.fixed.horizontal,
-				widgets_custom.spaceseparator,
+				widget_separator.widget,
 				s.layoutbox,
 			},
 		}
@@ -536,15 +534,15 @@ local globalkeys = awful.util.table.join(
 	awful.key({}, "XF86AudioLowerVolume", function ()
 			awful.util.spawn("amixer -q sset Master 5%-", false)
 			-- trigger widget update
-			widgets_custom.volume.update()
+			widget_volume.volume.update()
 		end, {description = "Volume UP", group = "audio"}),
 	awful.key({}, "XF86AudioRaiseVolume", function ()
 			awful.util.spawn("amixer -q sset Master 5%+", false)
-			widgets_custom.volume.update()
+			widget_volume.volume.update()
 		end, {description = "Volume down", group = "audio"}),
 	awful.key({}, "XF86AudioMute", function ()
 			awful.util.spawn("amixer set Master 1+ toggle", false)
-			widgets_custom.volume.update()
+			widget_volume.volume.update()
 		end, {description = "volume mute", group = "audio"}),
 
 	-- Media Keys
@@ -720,160 +718,7 @@ local clientbuttons = awful.util.table.join(
 -- ---------------------------------------------------------------------
 
 -- Rules to apply to new clients (through the "manage" signal).
-local rules = {
-	-- All clients will match this rule
-	{ rule = { },
-		properties = {
-			border_width = beautiful.border_width,
-			border_color = beautiful.border_normal,
-			focus = awful.client.focus.filter,
-			raise = true,
-			keys = clientkeys,
-			buttons = clientbuttons,
-			screen = awful.screen.preferred,
-			titlebars_enabled = true,
-			placement = awful.placement.no_overlap+awful.placement.no_offscreen
-		}
-	},
-
-	-- Floating clients
-	{ rule_any = {
-		instance = {
-		  "DTA",  -- Firefox addon DownThemAll.
-		  "copyq",  -- Includes session name in class.
-		},
-		class = {
-		  "Arandr",
-		  "Gpick",
-		  "Kruler",
-		  "MessageWin",  -- kalarm.
-		  "Sxiv",
-		  "Wpa_gui",
-		  "pinentry",
-		  "veromix",
-		  "xtightvncviewer"},
-
-		name = {
-		  "Event Tester",  -- xev.
-		},
-		type = {
-			"dialog"
-		},
-		role = {
-		  "AlarmWindow",  -- Thunderbird's calendar.
-		  -- "pop-up",	   -- e.g. Google Chrome's (detached) Developer Tools.
-		}
-	  }, properties = { floating = true }
-	},
-
-	-- Add titlebars to normal clients and dialogs
-	{ rule_any = { type = { "normal", "dialog" } },
-		properties = {
-			titlebars_enabled = true
-		}
-	},
-
-	-- Default normal client rules
-	{ rule_any = { type = { "normal" } },
-		properties = {
-			titlebars_enabled = true,
-			floating = false,
-			maximized_vertical = false,
-			maximized_horizontal = false,
-			screen = screens.get_primary(),
-		}
-	},
-
-	-- Web
-	{ rule = { class = "Firefox" },
-		except = { type = "dialog" },
-		properties = {
-			tag = desktops.tags_names[1],
-		}
-	},
-	-- Dev
-	{ rule_any = { class = { "VSCodium", "Zim" }},
-		properties = {
-			tag = desktops.tags_names[2],
-			floating = false,
-		}
-	},
-
-	{ rule_any = { class = { "jetbrains-phpstorm" }},
-		except = { type = "dialog" },
-		properties = {
-			tag = desktops.tags_names[1],
-			floating = false, -- Task list is too small in popup
-		}
-	},
-	-- Mail
-	{ rule = { class = "Thunderbird" },
-		properties = {
-			tag = desktops.tags_names[3],
-		}
-	},
-	-- Files explorer
-	{ rule = { class = "Pcmanfm" },
-		properties = {
-			tag = desktops.tags_names[4],
-		}
-	},
-	-- Mixed
-	{ rule_any = { class = { "Godot", "Keybase", "balena-etcher-electron", "GParted", "Transmission" }},
-		properties = {
-			tag = desktops.tags_names[5],
-		}
-	},
-	-- Graphics
-	{ rule_any = { class = { "Gimp", "Krita", }},
-		properties = {
-			tag = desktops.tags_names[6],
-		}
-	},
-	-- Office
-	{ rule_any = { class = { "libreoffice-writer", "libreoffice-calc", "Evince", "Simple-scan" }},
-		properties = {
-			tag = desktops.tags_names[7],
-		}
-	},
-	-- Games
-	{ rule = { class = "Steam" },
-		properties = {
-			tag = desktops.tags_names[8],
-		}
-	},
-
-	-- Floating on top and sticky
-	{ rule = { class = "ksnip" },
-		properties = {
-			floating = true,
-			sticky = true,
-			ontop = true,
-			screen = screens.count(),
-			placement = awful.placement.no_offscreen + awful.placement.top,
-		}
-	},
-	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse" }},
-		properties = {
-			-- Sticky in corner on main screen
-			focus = false,
-			sticky = true,
-			fullscreen = false,
-			floating = true,
-			ontop = true, -- Not compatible with fullscreen
-			screen = screens.get_primary(), -- On primary screen
-			callback = function(c)
-				-- 2/5 bottom right of primary screen
-				sreen_geometry = screens.get_primary().geometry
-				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
-				awful.placement.bottom_right(c)
-			end
-		}
-	},
-}
-
--- set rules
-awful.rules.rules = rules
+awful.rules.rules = require("rules")
 
 -- ---------------------------------------------------------------------
 -- Signals
