@@ -380,6 +380,7 @@ awful.screen.connect_for_each_screen(function(s)
 				widget_separator.widget,
 				widget_separator.widget,
 				widget_clock.icon,
+				widget_separator.widget,
 				widget_clock.widget,
 				widget_separator.widget,
 				s.layoutbox,
