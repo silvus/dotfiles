@@ -16,7 +16,7 @@ widgets.spaceseparator = wibox.widget.textbox('  ')
 local mymocbar = wibox.widget {
 	forced_height	= 1,
 	forced_width	= 100,
-	margins			= 1,
+	margins 		= 1,
 	paddings		= 1,
 	ticks			= false,
 	ticks_size		= 10,
@@ -27,7 +27,7 @@ local mymocbar = wibox.widget {
 	color 			= beautiful.success,
 	background_color = beautiful.bg_normal,
 	border_color	= beautiful.info,
-	widget		   = wibox.widget.progressbar
+	widget			= wibox.widget.progressbar
 }
 local mymocbarbg = wibox.container.background(mymocbar, beautiful.info, gears.shape.rectangle)
 widgets.mocbarwidget = wibox.container.margin(mymocbarbg, 2, 7, 4, 4)

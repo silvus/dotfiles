@@ -3,6 +3,7 @@
 -- ---------------------------------------------------------------------
 
 local awful  = require("awful")
+local gears  = require("gears")
 local os      = { getenv = os.getenv, setlocale = os.setlocale }
 local theme   = {}
 
@@ -16,7 +17,7 @@ theme.success                                   = "#00A5FF"
 theme.success_alt                               = "#003859"
 -- theme.success_alt                               = "#02d31e"
 
-theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/custom"
+theme.dir                                       = gears.filesystem.get_configuration_dir() .. "themes/customblue"
 theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
 theme.font                                      = "Monospace 9"
 

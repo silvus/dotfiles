@@ -112,7 +112,7 @@ screens.update()
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 -- beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
-beautiful.init("~/.config/awesome/themes/custom/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/customblue/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "x-terminal-emulator"
@@ -411,9 +411,6 @@ end)
 -- ---------------------------------------------------------------------
 -- Keybindings
 -- ---------------------------------------------------------------------
-
--- Used to launch programms on tag fist navigation
-local is_launched_editor = false
 
 -- Global keys
 -- ----------------------------------------------------------------------------
