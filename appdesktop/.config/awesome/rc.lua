@@ -26,17 +26,11 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 
--- Used in bindings
-local hotkeys_popup = require("awful.hotkeys_popup").widget
-
--- Menubar (dmenu like)
-local menubar = require("menubar")
-
 -- Contrib utilities
 local lain	= require("lain")
 
--- Quake like terminal (single instance for all screens)
-local quake = require("quake")
+-- Base custom config
+local config = require('config')
 
 -- Tags declarations
 local desktops = require('desktops')
@@ -45,10 +39,11 @@ local desktops = require('desktops')
 local screens = require('screens')
 
 -- Wallpapers utilities
-local wallpaper = require("wallpaper")
+local wallpaper = require("utils.wallpaper")
 
 -- Set a global variable, a local one
 local globaltag = tag
+local globalclient = client
 
 
 -- ---------------------------------------------------------------------
@@ -96,27 +91,8 @@ screens.update()
 -- Config
 -- ---------------------------------------------------------------------
 
--- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
--- beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
-beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/customblue/theme.lua")
-
--- This is used later as the default terminal and editor to run.
--- terminal = "x-terminal-emulator"
--- terminal = "urxvt"
-terminal = "rxvt-unicode"
--- editor = os.getenv("EDITOR") or "editor"
--- editor_cmd = terminal .. " -e " .. editor
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
-
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
+beautiful.init(config.theme)
 
 -- Notifications
 naughty.config.defaults.timeout = 30
@@ -136,25 +112,7 @@ naughty.config.presets.critical.bg = beautiful.error
 naughty.config.presets.critical.border_color = beautiful.fg_urgent
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-awful.layout.layouts = {
-	awful.layout.suit.tile,
-	-- awful.layout.suit.tile.left,
-	awful.layout.suit.tile.bottom,
-	-- awful.layout.suit.tile.top,
-	-- awful.layout.suit.spiral,
-	-- awful.layout.suit.spiral.dwindle,
-	awful.layout.suit.fair,
-	-- awful.layout.suit.fair.horizontal,
-	awful.layout.suit.max,
-	-- awful.layout.suit.max.fullscreen,
-	-- awful.layout.suit.magnifier,
-	-- awful.layout.suit.floating,
-	-- awful.layout.suit.corner.nw,
-	-- awful.layout.suit.corner.ne,
-	-- awful.layout.suit.corner.sw,
-	-- awful.layout.suit.corner.se,
-}
--- }}}
+awful.layout.layouts = config.layouts
 
 
 -- ---------------------------------------------------------------------
@@ -166,17 +124,17 @@ local taglist_buttons = awful.util.table.join(
 	awful.button({ }, 1, function(t)
 		t:view_only()
 	end),
-	awful.button({ modkey }, 1, function(t)
-		if client.focus then
-			client.focus:move_to_tag(t)
+	awful.button({ config.modkey }, 1, function(t)
+		if globalclient.focus then
+			globalclient.focus:move_to_tag(t)
 		end
 	end),
 	awful.button({ }, 3, function(t)
 		awful.tag.viewtoggle(t)
 	end),
-	awful.button({ modkey }, 3, function(t)
-		if client.focus then
-			client.focus:toggle_tag(t)
+	awful.button({ config.modkey }, 3, function(t)
+		if globalclient.focus then
+			globalclient.focus:toggle_tag(t)
 		end
 	end),
 	awful.button({ }, 4, function(t)
@@ -190,7 +148,7 @@ local taglist_buttons = awful.util.table.join(
 -- Apps list actions
 local tasklist_buttons = awful.util.table.join(
 	awful.button({ }, 1, function (c)
-		if c == client.focus then
+		if c == globalclient.focus then
 			c.minimized = true
 		else
 			-- Without this, the following
@@ -201,7 +159,7 @@ local tasklist_buttons = awful.util.table.join(
 			end
 			-- This will also un-minimize
 			-- the client, if needed
-			client.focus = c
+			globalclient.focus = c
 			c:raise()
 			end
 		end)
@@ -411,307 +369,10 @@ end)
 -- Keybindings
 -- ---------------------------------------------------------------------
 
--- Global keys
--- ----------------------------------------------------------------------------
-local globalkeys = awful.util.table.join(
-	awful.key({ modkey, }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
+local keys = require("keys")
 
-	-- Next/previous tag
-	awful.key({ modkey, }, "Page_Up",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
-	awful.key({ modkey, }, "Page_Down", awful.tag.viewnext, {description = "view next", group = "tag"}),
-	-- Go back to previous tag
-	awful.key({ modkey, }, "Tab", awful.tag.history.restore, {description = "go back", group = "tag"}),
-
-	-- awful.key({ modkey, }, "Right", function ()
-	--		 awful.client.focus.byidx(1)
-	-- 		end, {description = "focus next by index", group = "client"}
-	-- ),
-	-- awful.key({ modkey, }, "Left", function ()
-	--		 awful.gclient.focus.byidx(-1)
-	--	 end, {description = "focus previous by index", group = "client"}
-	-- ),
-	-- awful.key({ modkey,		   }, "w", function()
-	--		mymainmenu:show()
-	--	end, {description = "show main menu", group = "awesome"}),
-
-	-- On the fly useless gaps change
-	-- awful.key({ altkey, "Control" }, "+", function () lain.util.useless_gaps_resize(1) end),
-	-- awful.key({ altkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end),
-
-	 -- By direction client focus
-	awful.key({ modkey }, "Down", function()
-			awful.client.focus.global_bydirection("down")
-			if client.focus then client.focus:raise() end
-		end, {description = "change client focus", group = "client"}),
-	awful.key({ modkey }, "Up", function()
-			awful.client.focus.global_bydirection("up")
-			if client.focus then client.focus:raise() end
-		end, {description = "change client focus", group = "client"}),
-	awful.key({ modkey }, "Left", function()
-			awful.client.focus.global_bydirection("left")
-			if client.focus then client.focus:raise() end
-		end, {description = "change client focus", group = "client"}),
-	awful.key({ modkey }, "Right", function()
-			awful.client.focus.global_bydirection("right")
-			if client.focus then client.focus:raise() end
-		end, {description = "change client focus", group = "client"}),
-
-	-- Layout manipulation
-	awful.key({ modkey,	"Control" }, "space", function()
-			awful.layout.inc(1)
-		end, {description = "select next", group = "layout"}),
-	awful.key({ modkey, "Shift" }, "space", function()
-			awful.layout.inc(-1)
-		end, {description = "select previous", group = "layout"}),
-	awful.key({ modkey, "Shift" }, "Right", function()
-			awful.client.swap.global_bydirection('right')
-		end, {description = "swap with next client by index", group = "client"}),
-	awful.key({ modkey, "Shift" }, "Left", function()
-			awful.client.swap.global_bydirection('left')
-		end, {description = "swap with previous client by index", group = "client"}),
-	awful.key({ modkey, "Shift" }, "Up", function()
-			awful.client.swap.global_bydirection('up')
-		end, {description = "swap with next client by index", group = "client"}),
-	awful.key({ modkey, "Shift" }, "Down", function()
-			awful.client.swap.global_bydirection('down')
-		end, {description = "swap with previous client by index", group = "client"}),
-	awful.key({ modkey, "Control" }, "Right", function()
-			awful.screen.focus_relative(1)
-		end, {description = "focus the next screen", group = "screen"}),
-	awful.key({ modkey, "Control" }, "Left", function()
-			awful.screen.focus_relative(-1)
-		end, {description = "focus the previous screen", group = "screen"}),
-	awful.key({ modkey, }, "u", function()
-			awful.client.urgent.jumpto()
-		end, {description = "jump to urgent client", group = "client"}),
-	awful.key({ modkey,	}, "Tab", function()
-			awful.client.focus.history.previous()
-			if client.focus then
-				client.focus:raise()
-			end
-		end, {description = "go back", group = "client"}),
-
-	-- Terminal
-	awful.key({ modkey, }, "Return", function()
-			awful.spawn("rxvt-unicode -title terminal -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev")
-		end, {description = "open a terminal", group = "launcher"}),
-	-- awful.key({}, "²", function () awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'rxvt-unicode.URxvt' '" .. terminal .. " -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev'") end, {description = "open a terminal", group = "launcher"}),
-
-	-- Prompt
-	awful.key({ modkey, }, "x", function()
-			screens.get_primary().promptbox:run()
-		end, {description = "run prompt", group = "launcher"}),
-
-	-- Menubar
-	awful.key({ modkey, }, "d", function()
-			menubar.show(screens.get_primary())
-		end, {description = "show the menubar", group = "launcher"}),
-	awful.key({ modkey, "Shift" }, "d", function()
-			menubar.refresh()
-		end, {description = "refresh the menubar", group = "launcher"}),
-
-	-- Clients menu
-	-- awful.key({ modkey,	}, "e", function()
-	-- 		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
-	-- 		-- Default to mouse.coords()
-	-- 		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
-	-- 		awful.menu.clients({theme = { width = 500} })
-	-- 	end, {description="client menu", group="launcher"}),
-
-	-- Rofi
-	awful.key({ modkey,	}, "e", function()
-		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
-		-- Default to mouse.coords()
-		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
-			awful.util.spawn("rofi -show drun")
-		end, {description="Rofi launch", group="launcher"}),
-
-	-- Quake-like terminal (²)
-	awful.key({}, "#49", function ()
-			quake.term:toggle()
-		end, {description = "Toggle guake like terminal", group = "launcher"}),
-
-	-- Volume Keys
-	awful.key({}, "XF86AudioLowerVolume", function ()
-			awful.util.spawn("amixer -q sset Master 5%-", false)
-			-- trigger widget update
-			widget_volume.volume.update()
-		end, {description = "Volume UP", group = "audio"}),
-	awful.key({}, "XF86AudioRaiseVolume", function ()
-			awful.util.spawn("amixer -q sset Master 5%+", false)
-			widget_volume.volume.update()
-		end, {description = "Volume down", group = "audio"}),
-	awful.key({}, "XF86AudioMute", function ()
-			awful.util.spawn("amixer set Master 1+ toggle", false)
-			widget_volume.volume.update()
-		end, {description = "volume mute", group = "audio"}),
-
-	-- Media Keys
-	awful.key({}, "XF86AudioPlay", function()
-			awful.util.spawn("music --toggle-pause", false)
-		end, {description = "audio toggle play/pause", group = "audio"}),
-	awful.key({}, "XF86AudioStop", function()
-			awful.util.spawn("music --stop", false)
-		end, {description = "music stop", group = "audio"}),
-	awful.key({}, "XF86AudioNext", function()
-			awful.util.spawn("music --next", false)
-		end, {description = "music next", group = "audio"}),
-	awful.key({}, "XF86AudioPrev", function()
-			awful.util.spawn("music --previous", false)
-		end, {description = "music previous", group = "audio"}),
-
-	-- Print screen
-	awful.key({}, "Print", function()
-			awful.util.spawn("ksnip", false)
-		end, {description = "make a printscreen with ksnip", group = "launcher"}),
-
-	-- Reload
-	awful.key({ modkey, "Shift" }, "r", awesome.restart, {description = "reload awesome", group = "awesome"}),
-	-- awful.key({ modkey, "Shift" }, "s", awesome.quit, {description = "quit awesome", group = "awesome"}),
-
-	-- Lock
-	awful.key({ modkey, "Shift" }, "l", function()
-			awful.util.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
-		end, {description = "lock screen", group = "launcher"}),
-
-	-- Shutdown or restart
-	awful.key({ modkey, "Shift" }, "s", function()
-			awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_shutdown", false)
-		end, {description = "shutdown", group = "launcher"}),
-
-	-- VPN
-	awful.key({ modkey, "Shift" }, "v", function()
-			awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_vpn", false)
-		end, {description = "launch vpn", group = "launcher"}),
-
-	-- Toggle scratchpad tag (²)
-	awful.key({ modkey }, "#49", function ()
-			local screen = screens.get_primary()
-			local tag_next = screen.tags[10]
-			local tag_current = awful.screen.focused().selected_tag
-			if tag_next then
-				if tag_next == tag_current then
-					awful.tag.history.restore()
-				else
-					tag_next:view_only()
-				end
-			end
-		end, {description = "toggle scratchpad tag", group = "tag"}),
-	-- Toggle client to scratchpad tag
-	awful.key({ modkey, "Shift" }, "#49", function ()
-			if client.focus then
-				local screen = awful.screen.focused()
-				local tag_next = screen.tags[10]
-				if tag_next then
-					client.focus:move_to_tag(tag_next)
-					tag_next:view_only()
-				end
-			end
-		end, {description = "move focused client to scratchpad", group = "tag"})
-)
-
--- Bind all key numbers to tags.
--- Be careful: we use keycodes to make it works on any keyboard layout.
--- This should map on the top row of your keyboard, usually 1 to 9.
--- for i = 1, 9 do
-for i, v in pairs(desktops.tags_names) do
-	globalkeys = awful.util.table.join(globalkeys,
-		-- View tag only.
-		awful.key({ modkey }, "#" .. i + 9, function ()
-				local screen = awful.screen.focused()
-				local tag_next = screen.tags[i]
-				local tag_current = awful.screen.focused().selected_tag
-
-				if tag_next then
-					if tag_next == tag_current then
-						-- If already on focused screen, go to previous one
-						awful.tag.history.restore()
-					else
-						-- Just go to the screen
-						tag_next:view_only()
-					end
-				end
-			end, {description = "view tag", group = "tag"}),
-		-- Toggle tag display.
-		awful.key({ modkey, "Control" }, "#" .. i + 9, function ()
-				local screen = awful.screen.focused()
-				local tag_next = screen.tags[i]
-				if tag_next then
-					awful.tag.viewtoggle(tag_next)
-				end
-			end, {description = "toggle tag", group = "tag"}),
-		-- Move client to tag.
-		awful.key({ modkey, "Shift" }, "#" .. i + 9, function ()
-				if client.focus then
-					local screen = awful.screen.focused()
-					local tag_next = client.focus.screen.tags[i]
-					if tag_next then
-						client.focus:move_to_tag(tag_next)
-						tag_next:view_only()
-					end
-				end
-			end, {description = "move focused client to tag", group = "tag"}),
-		-- Toggle tag on focused client.
-		awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9, function ()
-				if client.focus then
-					local tag_next = client.focus.screen.tags[i]
-					if tag_next then
-						client.focus:toggle_tag(tag_next)
-					end
-				end
-			end, {description = "toggle focused client on tag", group = "tag"})
-	)
-end
 -- Set keys
-root.keys(globalkeys)
-
--- Client keys
--- ----------------------------------------------------------------------------
-local clientkeys = awful.util.table.join(
-	awful.key({ modkey, }, "f", function(c)
-			c.fullscreen = not c.fullscreen
-			c:raise()
-		end, {description = "toggle fullscreen", group = "client"}),
-	awful.key({ modkey, }, "c", function(c)
-		   -- toggle titlebar
-		   awful.titlebar.toggle(c)
-	   end, {description = "toggle titlebar", group = "client"}),
-	awful.key({ modkey, "Shift" }, "q", function(c)
-			c:kill()
-		end, {description = "close", group = "client"}),
-	awful.key({ modkey, }, "space", function(c)
-			awful.client.floating.toggle()
-		end, {description = "toggle floating", group = "client"}),
-	awful.key({ modkey, "Control" }, "Return", function(c)
-			c:swap(awful.client.getmaster())
-		end, {description = "move to master", group = "client"}),
-	awful.key({ modkey, }, "o", function(c)
-			c:move_to_screen()
-		end, {description = "move to screen", group = "client"}),
-	awful.key({ modkey,	}, "t", function(c)
-			c.ontop = not c.ontop
-		end, {description = "toggle keep on top", group = "client"}),
-	awful.key({ modkey, }, "n", function(c)
-			-- The client currently has the input focus, so it cannot be
-			-- minimized, since minimized clients can't have the focus.
-			c.minimized = true
-		end, {description = "minimize", group = "client"}),
-	awful.key({ modkey, }, "z", function(c)
-			c.maximized = not c.maximized
-			c:raise()
-		end, {description = "maximize", group = "client"}),
-	awful.key({ modkey, }, "m", function(c)
-			c.maximized = not c.maximized
-			c:raise()
-		end, {description = "maximize", group = "client"})
-)
-
--- Client button
--- ----------------------------------------------------------------------------
-local clientbuttons = awful.util.table.join(
-	awful.button({ }, 1, function(c) client.focus = c; c:raise() end),
-	awful.button({ modkey }, 1, awful.mouse.client.move),
-	awful.button({ modkey }, 3, awful.mouse.client.resize))
+root.keys(keys.global)
 
 
 -- ---------------------------------------------------------------------
@@ -737,7 +398,7 @@ globaltag.connect_signal("property::selected", function (t)
 end)
 
 -- Signal function to execute when a new client appears.
-client.connect_signal("manage", function (c)
+globalclient.connect_signal("manage", function (c)
 	-- Set the windows at the slave,
 	-- i.e. put it at the end of others instead of setting it master.
 	if not awesome.startup then awful.client.setslave(c) end
@@ -776,16 +437,16 @@ end)
 -- end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
-client.connect_signal("request::titlebars", function(c)
+globalclient.connect_signal("request::titlebars", function(c)
 	-- buttons for the titlebar
 	local buttons = awful.util.table.join(
 		awful.button({ }, 1, function()
-			client.focus = c
+			globalclient.focus = c
 			c:raise()
 			awful.mouse.client.move(c)
 		end),
 		awful.button({ }, 3, function()
-			client.focus = c
+			globalclient.focus = c
 			c:raise()
 			awful.mouse.client.resize(c)
 		end)
@@ -818,11 +479,11 @@ client.connect_signal("request::titlebars", function(c)
 end)
 
 -- Border on focused clients
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+globalclient.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+globalclient.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- Force ontop on client fullscreen exit (fullscreen unsets ontop)
-client.connect_signal("property::fullscreen", function(c) if not c.fullscreen then c.ontop = true end end)
+globalclient.connect_signal("property::fullscreen", function(c) if not c.fullscreen then c.ontop = true end end)
 
 -- ---------------------------------------------------------------------
 -- Auto start

@@ -1,6 +1,6 @@
 local beautiful = require("beautiful")
 local wibox = require("wibox")
-local calendar = require("calendar")
+local calendar = require("utils.calendar")
 
 local customwidget = {}
 

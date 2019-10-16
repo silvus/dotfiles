@@ -5,7 +5,7 @@ local devlib = {}
 -- Debug lib
 
 -- Usage :
--- local dev = require("dev")
+-- local dev = require("utils.dev")
 -- dev.debug_log('here')
 
 -- String notification

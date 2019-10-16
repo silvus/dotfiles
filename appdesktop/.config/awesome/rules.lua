@@ -3,7 +3,8 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local desktops = require("desktops")
 local screens = require("screens")
-
+local globalclient = client
+local client = require("client")
 
 
 -- Rules to apply to new clients (through the "manage" signal).
@@ -15,8 +16,8 @@ local rules = {
 			border_color = beautiful.border_normal,
 			focus = awful.client.focus.filter,
 			raise = true,
-			keys = clientkeys,
-			buttons = clientbuttons,
+			keys = client.keys,
+			buttons = client.buttons,
 			screen = awful.screen.preferred,
 			titlebars_enabled = true,
 			placement = awful.placement.no_overlap+awful.placement.no_offscreen
