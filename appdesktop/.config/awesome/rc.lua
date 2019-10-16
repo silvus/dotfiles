@@ -144,17 +144,17 @@ awful.screen.connect_for_each_screen(function(s)
 	desktops.init(s)
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
-	s.layoutbox = widget_layout.widget(s)
+	local layoutbox = widget_layout.widget(s)
 	
 	-- Create a tags list widget
-	s.mytaglist = widget_tags.widget(s)
+	local mytaglist = widget_tags.widget(s)
 
 	-- Create a tasklist widget
-	s.mytasklist = widget_tasks.widget(s)
+	local mytasklist = widget_tasks.widget(s)
 
 	-- Create the wibox
 	-- TODO: improve like this : https://github.com/awesomeWM/awesome/blob/dd5be865c3d00c580389c38ea41b6719ab567d3e/tests/_wibox_helper.lua
-	s.mywibox = awful.wibar({
+	local mywibox = awful.wibar({
 		position = "top",
 		screen = s,
 		--height = 25
@@ -162,20 +162,20 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Widget for main screen only
 	if s == screens.get_primary() then
-		-- Create a promptbox
+		-- Create a promptbox (on screen object to trigger in keys bindings)
 		s.promptbox = widget_prompt.widget
 
 		-- Add widgets to the wibox
-		s.mywibox:setup {
+		mywibox:setup {
 			layout = wibox.layout.align.horizontal,
 			{ -- Left widgets
 				layout = wibox.layout.fixed.horizontal,
-				s.mytaglist,
+				mytaglist,
 				s.promptbox,
 			},
 			{ -- Middle widget
 				layout = wibox.layout.fixed.horizontal,
-				s.mytasklist,
+				mytasklist,
 			},
 			{ -- Right widgets
 				layout = wibox.layout.fixed.horizontal,
@@ -206,25 +206,25 @@ awful.screen.connect_for_each_screen(function(s)
 				widget_separator.widget,
 				widget_clock.widget,
 				widget_separator.widget,
-				s.layoutbox,
+				layoutbox,
 			},
 		}
 	else
 		-- secondary screen
-		s.mywibox:setup {
+		mywibox:setup {
 			layout = wibox.layout.align.horizontal,
 			{ -- Left widgets
 				layout = wibox.layout.fixed.horizontal,
-				s.mytaglist,
+				mytaglist,
 			},
 			{ -- Middle widget
 				layout = wibox.layout.fixed.horizontal,
-				s.mytasklist,
+				mytasklist,
 			},
 			{ -- Right widgets
 				layout = wibox.layout.fixed.horizontal,
 				widget_separator.widget,
-				s.layoutbox,
+				layoutbox,
 			},
 		}
 	end
