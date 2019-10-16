@@ -119,61 +119,10 @@ awful.layout.layouts = config.layouts
 -- Status bar
 -- ---------------------------------------------------------------------
 
--- Create a wibox for each screen and add it
-local taglist_buttons = awful.util.table.join(
-	awful.button({ }, 1, function(t)
-		t:view_only()
-	end),
-	awful.button({ config.modkey }, 1, function(t)
-		if globalclient.focus then
-			globalclient.focus:move_to_tag(t)
-		end
-	end),
-	awful.button({ }, 3, function(t)
-		awful.tag.viewtoggle(t)
-	end),
-	awful.button({ config.modkey }, 3, function(t)
-		if globalclient.focus then
-			globalclient.focus:toggle_tag(t)
-		end
-	end),
-	awful.button({ }, 4, function(t)
-		awful.tag.viewnext(t.screen)
-	end),
-	awful.button({ }, 5, function(t)
-		awful.tag.viewprev(t.screen)
-	end)
-)
-
--- Apps list actions
-local tasklist_buttons = awful.util.table.join(
-	awful.button({ }, 1, function (c)
-		if c == globalclient.focus then
-			c.minimized = true
-		else
-			-- Without this, the following
-			-- :isvisible() makes no sense
-			c.minimized = false
-			if not c:isvisible() and c.first_tag then
-				c.first_tag:view_only()
-			end
-			-- This will also un-minimize
-			-- the client, if needed
-			globalclient.focus = c
-			c:raise()
-			end
-		end)
-	-- awful.button({ }, 3, client_menu_toggle_fn())
-	-- awful.button({ }, 4, function ()
-	--						  awful.client.focus.byidx(1)
-	--					  end),
-	-- awful.button({ }, 5, function ()
-	--						  awful.client.focus.byidx(-1)
-	--					  end))
-)
-
 -- Customs widgets definitions (need to be loaded after theme init (or naughty configurations ?))
 local widget_separator = require("widgets.separator")
+local widget_tags = require("widgets.tags")
+local widget_tasks = require("widgets.tasks")
 local widget_clock = require("widgets.clock")
 local widget_volume = require("widgets.volume")
 local widget_cpu = require("widgets.cpu")
@@ -186,21 +135,9 @@ local widget_prompt = require("widgets.prompt")
 local widget_keyboardlayout = require("widgets.keyboardlayout")
 local widget_battery = require("widgets.battery")
 
--- Filter used by tags widgets
-function taglist_filter(t)
-	-- No empty and not the scratchpad (except if selected)
-	return (#t:clients() > 0 or t.selected) and (t.name ~= "0" or t.selected)
-end
-
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
 	wallpaper.update(s)
-
-	-- Each screen has its own tag table.
-	-- local names = { "main", "www", "skype", "gimp", "office", "im", "7", "8", "9" }
-	-- local l = awful.layout.suit  -- Just to save some typing: use an alias.
-	-- local layouts = { l.floating, l.tile, l.floating, l.fair, l.max, l.floating, l.tile.left, l.floating, l.floating }
-	-- awful.tag(names, s, layouts)
 
 	-- Tags init
 	desktops.init(s)
@@ -213,72 +150,11 @@ awful.screen.connect_for_each_screen(function(s)
 						   awful.button({ }, 3, function () awful.layout.inc(-1) end),
 						   awful.button({ }, 4, function () awful.layout.inc( 1) end),
 						   awful.button({ }, 5, function () awful.layout.inc(-1) end)))
-	-- Create a taglist widget (https://awesomewm.org/doc/api/classes/awful.widget.taglist.html)
-	if s == screens.get_primary() then
-		s.mytaglist = awful.widget.taglist({
-			screen  = s,
-			filter  = taglist_filter,
-			buttons = taglist_buttons,
-			widget_template = {
-				{
-					{
-						{
-							{
-								id = 'icon_role',
-								widget = wibox.widget.imagebox,
-								resize = true,
-								forced_height = 28,
-								forced_width = 28,
-							},
-							layout = wibox.container.margin,
-							top = 2,
-							right = 2,
-							bottom= 2,
-							left = 8,
-						},
-						{
-							{
-								{
-									id = 'text_role',
-									widget = wibox.widget.textbox,
-									valign = 'center',
-									align = 'center',
-								},
-								bg = '#000000',
-								fg = '#ffffff',
-								-- forced_height = 12,
-								-- forced_width = 8,
-								opacity = 0.6,
-								widget = wibox.container.background,
-							},
-							widget = wibox.container.place,
-							valign = 'bottom',
-							halign = 'left',
-						},
-						layout = wibox.layout.stack,
-					},
-					-- left  = 1,
-					-- right = 1,
-					widget = wibox.container.margin
-				},
-				id     = 'background_role',
-				widget = wibox.container.background,
-				forced_height = 32,
-				forced_width = 32,
-			},
-		})
-	else
-		-- secondary screens
-		s.mytaglist = awful.widget.taglist(s, taglist_filter, taglist_buttons)
-	end
+	-- Create a tags list widget
+	s.mytaglist = widget_tags.widget(s)
 
 	-- Create a tasklist widget
-	-- s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
-	-- Create a tasklist widget with a max width
-	s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons, nil, function(w, buttons, label, data, objects)
-		widget_common.list_update(w, buttons, label, data, objects)
-		w:set_max_widget_size(300)
-	end, wibox.layout.flex.horizontal())
+	s.mytasklist = widget_tasks.widget(s)
 
 	-- Create the wibox
 	-- TODO: improve like this : https://github.com/awesomeWM/awesome/blob/dd5be865c3d00c580389c38ea41b6719ab567d3e/tests/_wibox_helper.lua
@@ -362,7 +238,7 @@ awful.screen.connect_for_each_screen(function(s)
 		}
 	end
 end)
--- }}}
+
 
 -- ---------------------------------------------------------------------
 -- Keybindings
@@ -380,6 +256,7 @@ root.keys(keys.global)
 
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = require("rules")
+
 
 -- ---------------------------------------------------------------------
 -- Signals

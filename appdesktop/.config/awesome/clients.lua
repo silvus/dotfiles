@@ -3,13 +3,12 @@ local globalclient = client
 local config = require("config")
 
 modkey = config.modkey
-modkey = "Mod4"
 
-local client = {}
+local clients = {}
 
--- Client keys
+-- Clients keys
 -- ----------------------------------------------------------------------------
-client.keys = awful.util.table.join(
+clients.keys = awful.util.table.join(
 	awful.key({ modkey, }, "f", function(c)
 			c.fullscreen = not c.fullscreen
 			c:raise()
@@ -50,10 +49,10 @@ client.keys = awful.util.table.join(
 
 -- Client button
 -- ----------------------------------------------------------------------------
-client.buttons = awful.util.table.join(
+clients.buttons = awful.util.table.join(
 	awful.button({ }, 1, function(c) globalclient.focus = c; c:raise() end),
 	awful.button({ modkey }, 1, awful.mouse.client.move),
 	awful.button({ modkey }, 3, awful.mouse.client.resize))
 
 
-return client
+return clients
