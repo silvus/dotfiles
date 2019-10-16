@@ -1,6 +1,6 @@
 local wibox = require("wibox")
 local awful = require("awful")
-
+local widget_common = require("awful.widget.common")
 
 local customwidget = {}
 
@@ -33,13 +33,23 @@ customwidget.buttons = awful.util.table.join(
 -- Build tasks widget list 
 function widget(s)
 	-- Create a tasklist widget
-	-- s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, widget_tasks.buttons)
-	
+	-- return awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, customwidget.buttons)
+
 	-- Create a tasklist widget with a max width
-	return awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, customwidget.buttons, nil, function(w, buttons, label, data, objects)
+	-- return awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags , customwidget.buttons, nil, function(w, buttons, label, data, objects)
+	-- 	widget_common.list_update(w, buttons, label, data, objects)
+	-- 	w:set_max_widget_size(300)
+	-- end, wibox.layout.flex.horizontal())
+
+	-- Create a tasklist widget for minimized clients only
+	-- return awful.widget.tasklist(s, awful.widget.tasklist.filter.minimizedcurrenttags, customwidget.buttons)
+
+	-- Create a tasklist widget for minimized clients only with a max width
+	return awful.widget.tasklist(s, awful.widget.tasklist.filter.minimizedcurrenttags , customwidget.buttons, nil, function(w, buttons, label, data, objects)
 		widget_common.list_update(w, buttons, label, data, objects)
 		w:set_max_widget_size(300)
 	end, wibox.layout.flex.horizontal())
+	
 end
 
 

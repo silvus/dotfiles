@@ -18,7 +18,6 @@ require("awful.autofocus")
 
 -- Widget and layout library
 local wibox = require("wibox")
-local widget_common = require("awful.widget.common")
 
 -- Theme handling library
 local beautiful = require("beautiful")
@@ -179,14 +178,8 @@ awful.screen.connect_for_each_screen(function(s)
 				s.promptbox,
 			},
 			{ -- Middle widget
-				widget = wibox.container.margin,
-				left = 10,
-				right = 10,
-				{
-					layout = s.mytasklist,
-					-- layout = wibox.layout.fixed.horizontal,
-					-- s.mytasklist,
-				}
+				layout = wibox.layout.fixed.horizontal,
+				s.mytasklist,
 			},
 			{ -- Right widgets
 				layout = wibox.layout.fixed.horizontal,
@@ -348,6 +341,7 @@ globalclient.connect_signal("request::titlebars", function(c)
 			awful.titlebar.widget.stickybutton   (c),
 			awful.titlebar.widget.ontopbutton	(c),
 			awful.titlebar.widget.maximizedbutton(c),
+			awful.titlebar.widget.minimizebutton(c),
 			awful.titlebar.widget.closebutton	(c),
 			layout = wibox.layout.fixed.horizontal()
 		},

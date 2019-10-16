@@ -22,7 +22,16 @@ local function debug_log(text)
 	-- log:close()
 end
 
+function debug_table(t)
+	local str = ""
+	for k, v in pairs(t) do
+		str = str .. tostring(k) .. " " .. tostring(v) .. "\n"
+	end
+	naughty.notify({ text = str })
+end
 
+
+devlib.debug_table = debug_table
 devlib.debug_log = debug_log
 
 return devlib
