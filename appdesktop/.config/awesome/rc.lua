@@ -25,9 +25,6 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 
--- Contrib utilities
-local lain	= require("lain")
-
 -- Base custom config
 local config = require('config')
 
@@ -124,6 +121,7 @@ awful.layout.layouts = config.layouts
 
 -- Customs widgets definitions (need to be loaded after theme init (or naughty configurations ?))
 local widget_separator = require("widgets.separator")
+local widget_layout = require("widgets.layout")
 local widget_tags = require("widgets.tags")
 local widget_tasks = require("widgets.tasks")
 local widget_clock = require("widgets.clock")
@@ -145,14 +143,9 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Tags init
 	desktops.init(s)
 
-	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
-	-- We need one layoutbox per screen.
-	s.layoutbox = awful.widget.layoutbox(s)
-	s.layoutbox:buttons(awful.util.table.join(
-						   awful.button({ }, 1, function () awful.layout.inc( 1) end),
-						   awful.button({ }, 3, function () awful.layout.inc(-1) end),
-						   awful.button({ }, 4, function () awful.layout.inc( 1) end),
-						   awful.button({ }, 5, function () awful.layout.inc(-1) end)))
+	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
+	s.layoutbox = widget_layout.widget(s)
+	
 	-- Create a tags list widget
 	s.mytaglist = widget_tags.widget(s)
 
@@ -224,10 +217,11 @@ awful.screen.connect_for_each_screen(function(s)
 				layout = wibox.layout.fixed.horizontal,
 				s.mytaglist,
 			},
-			-- Middle widget
-			s.mytasklist,
-			{
-				-- Right widgets
+			{ -- Middle widget
+				layout = wibox.layout.fixed.horizontal,
+				s.mytasklist,
+			},
+			{ -- Right widgets
 				layout = wibox.layout.fixed.horizontal,
 				widget_separator.widget,
 				s.layoutbox,
