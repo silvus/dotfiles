@@ -11,23 +11,21 @@ local theme   = {}
 -- Config
 -- ---------------------------------------------------------------------
 
-theme.name = "customblue"
+theme.name = "matrix"
 
-theme.info                                      = "#494B4F"
-theme.error                                     = "#D64937"
-theme.success                                   = "#00A5FF"
-theme.primary                                   = "#003859"
--- theme.success_alt                               = "#02d31e"
+theme.info                                      = "#074d0b"
+theme.error                                     = "#b01c09"
+theme.success                                   = "#009914"
+theme.primary                                   = "#074f00"
+
+theme.bar_orientation                           = "vertical"
+
+theme.notification_position                     = "bottom_left"
+theme.notification_max_width                    = 500
 
 theme.dir                                       = gears.filesystem.get_configuration_dir() .. "themes/" .. theme.name
-theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
-theme.font                                      = "Monospace 9"
-
-theme.bar_orientation                           = "horizontal"
-
-theme.notification_position                     = "top_right"
-theme.notification_max_width                    = 500
-theme.notification_opacity                      = 0.7
+theme.wallpaper                                 = theme.dir .. "/wallpaper.png"
+theme.font                                      = "DejaVu Sans Mono 9"
 
 theme.fg_normal                                 = theme.info
 theme.bg_normal                                 = "#111111"
@@ -43,19 +41,21 @@ theme.taglist_fg_focus                          = "#FFFFFF"
 theme.taglist_bg_normal                         = theme.bg_normal
 theme.taglist_bg_focus                          = theme.success
 
-theme.tasklist_spacing                          = 10
+theme.tasklist_spacing                          = 15
+theme.tasklist_fg_normal                        = "#FFFFFF"
 
-theme.titlebar_bg_normal                        = "#333333"
-theme.titlebar_bg_focus                         = "#00141a"
+theme.titlebar_fg_normal                        = "#333333"
+theme.titlebar_bg_normal                        = "#1c2b25"
+theme.titlebar_bg_focus                         = "#022603"
 
 theme.border_normal                             = "#141414"
 theme.border_focus                              = theme.success
-theme.border_width                              = 2
+theme.border_width                              = 1
 
 -- theme.useless_gap                               = 5
--- theme.gap_single_client                         = false
+-- theme.gap_single_client                         = true
+theme.gap_single_client                         = false
 theme.useless_gap                               = 0
-theme.gap_single_client                         = true
 
 theme.menu_height                               = 16
 theme.menu_width                                = 250
@@ -166,8 +166,7 @@ else
 	theme.icon_theme = nil
 end
 
--- Awesome >= 4.1
--- theme.tasklist_disable_task_name = true
+theme.tasklist_disable_task_name = true
 -- theme.tasklist_plain_task_name = true
 -- theme.tasklist_disable_icon = true
 

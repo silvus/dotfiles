@@ -6,7 +6,7 @@ local desktops = require("desktops")
 local config = require("config")
 -- Quake like terminal (single instance for all screens)
 local quake = require("utils.quake")
-
+local widget_volume = require("widgets.volume")
 
 local keys = {}
 

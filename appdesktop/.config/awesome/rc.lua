@@ -6,8 +6,8 @@
 -- math.randomseed(os.time());
 
 -- Standard lua
-local string = require("string")
-local os = { getenv = os.getenv, setlocale = os.setlocale }
+-- local string = require("string")
+-- local os = { getenv = os.getenv, setlocale = os.setlocale }
 
 -- Standard awesome library
 local gears = require("gears")
@@ -86,13 +86,13 @@ screens.update()
 -- ---------------------------------------------------------------------
 
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(config.theme)
+beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. config.theme .. "/theme.lua")
 
 -- Notifications
 naughty.config.defaults.timeout = 30
 naughty.config.defaults.screen = screens.get_primary()
-naughty.config.defaults.position = "top_right"
-naughty.config.defaults.margin = 10
+naughty.config.defaults.position = beautiful.notification_position
+naughty.config.defaults.margin = 5
 naughty.config.defaults.gap = 35
 naughty.config.defaults.ontop = true
 naughty.config.defaults.border_width = 1
@@ -100,6 +100,13 @@ naughty.config.defaults.hover_timeout = nil
 naughty.config.defaults.fg = beautiful.fg_focus
 naughty.config.defaults.bg = beautiful.bg_focus
 naughty.config.defaults.border_color = beautiful.border_focus
+naughty.config.notify_callback = function(args)
+	-- Set defaut icon
+	if not args.icon then
+		args.icon = beautiful.arrow_left
+	end
+	return args
+end
 
 naughty.config.presets.low.timeout = 10
 naughty.config.presets.critical.bg = beautiful.error

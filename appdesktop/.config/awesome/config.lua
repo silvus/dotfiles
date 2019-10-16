@@ -8,7 +8,8 @@ local menubar = require("menubar")
 local config = {}
 
 
-config.theme = gears.filesystem.get_configuration_dir() .. "themes/customblue/theme.lua"
+config.theme = "customblue"
+-- config.theme = "matrix"
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "x-terminal-emulator"

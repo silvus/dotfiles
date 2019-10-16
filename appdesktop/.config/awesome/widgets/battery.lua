@@ -44,7 +44,7 @@ local battery = lain.widget.bat({
 
 			-- Change icon and color if full or low battery
 			if bat_now.perc >= 95 then
-				batbar.color = beautiful.success_alt
+				batbar.color = beautiful.primary
 			elseif bat_now.perc <= 15 then
 				customwidget.icon:set_image(beautiful.battery_low)
 				batbar.color = beautiful.error
@@ -54,7 +54,7 @@ local battery = lain.widget.bat({
 			else
 				customwidget.icon:set_image(beautiful.battery)
 				if bat_now.status == "Full" then
-					batbar.color = beautiful.success_alt
+					batbar.color = beautiful.primary
 				elseif bat_now.status == "Discharging" then
 					batbar.color = beautiful.success
 				elseif bat_now.status == "Charging" then
