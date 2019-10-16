@@ -42,6 +42,7 @@ local screens = require('screens')
 local wallpaper = require("utils.wallpaper")
 
 -- Set a global variable, a local one
+local globalscreen = screen
 local globaltag = tag
 local globalclient = client
 

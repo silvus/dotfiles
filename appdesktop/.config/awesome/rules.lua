@@ -91,6 +91,7 @@ local rules = {
 		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[1],
+			screen = screens.count(),
 			floating = false, -- Task list is too small in popup
 		}
 	},

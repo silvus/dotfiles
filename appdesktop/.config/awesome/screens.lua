@@ -4,7 +4,7 @@ local awful = require("awful")
 local io = require("io")
 
 -- Set global screen variable to a local one
-local screen = screen
+-- local screen = screen
 
 -- Xrandr commands based on current hostname
 local screens_configuration = {}
