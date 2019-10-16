@@ -173,8 +173,6 @@ local tasklist_buttons = awful.util.table.join(
 )
 
 -- Customs widgets definitions (need to be loaded after theme init (or naughty configurations ?))
-local widgets_custom = require("widgets")
-
 local widget_separator = require("widgets.separator")
 local widget_clock = require("widgets.clock")
 local widget_volume = require("widgets.volume")
@@ -186,6 +184,7 @@ local widget_moc = require("widgets.moc")
 local widget_systray = require("widgets.systray")
 local widget_prompt = require("widgets.prompt")
 local widget_keyboardlayout = require("widgets.keyboardlayout")
+local widget_battery = require("widgets.battery")
 
 -- Filter used by tags widgets
 function taglist_filter(t)
@@ -328,8 +327,8 @@ awful.screen.connect_for_each_screen(function(s)
 				widget_cpu.widget,
 				widget_ram.icon,
 				widget_ram.widget,
-				widgets_custom.baticon,
-				widgets_custom.batwidget,
+				widget_battery.icon,
+				widget_battery.widget,
 				widget_volume.icon,
 				widget_volume.widget,
 				widget_separator.widget,

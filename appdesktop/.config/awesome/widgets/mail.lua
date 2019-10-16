@@ -1,0 +1,22 @@
+-- Mail
+-- in mail.lua
+-- ----------------------------------------------------------------------------
+-- local mailicondev = wibox.widget.imagebox()
+-- mailicondev:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mail) end)))
+-- local myimapcheckdev = lain.widget.imap({
+-- 	timeout  = 180,
+--  	is_plain = true,
+--  	password = "nope",
+--  	server = "mail.nope.net",
+--  	mail = "nope@nope.fr",
+--  	icon = beautiful.mail,
+--  	settings = function()
+--  		if mailcount > 0 then
+--  			widget:set_markup("Dev <span color='#ffffff'>" .. mailcount .. '</span>')
+--  			mailicondev:set_image(beautiful.mail_on)
+--  		else
+--  			widget:set_markup("")
+--  			mailicondev:set_image(beautiful.mail)
+--  		end
+--  	end
+-- })
