@@ -40,6 +40,9 @@ local screens = require('screens')
 -- Wallpapers utilities
 local wallpaper = require("utils.wallpaper")
 
+-- To build client titlebars
+local titlebars = require("titlebars")
+
 -- Set a global variable, a local one
 local globalscreen = screen
 local globaltag = tag
@@ -294,59 +297,9 @@ globalclient.connect_signal("manage", function (c)
 	-- end
 end)
 
--- -- Try to fix electron signals
--- local awfulrules = require("awful.rules")
--- client.connect_signal("manage", function (c)
--- 	-- Some applications (like Spotify) does not respect ICCCM rules correctly and redefine the window class property.
--- 	-- This leads to having window which does *NOT* follow the user rules defined in the table `awful.rules.rules`.
--- 	c:connect_signal("property::class", awfulrules.apply)
--- 	awfulrules.apply(c)
--- end)
--- client.connect_signal("unmanage", function (c)
--- 	c:disconnect_signal("property::class", awfulrules.apply)
--- end)
-
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 globalclient.connect_signal("request::titlebars", function(c)
-	-- buttons for the titlebar
-	local buttons = awful.util.table.join(
-		awful.button({ }, 1, function()
-			globalclient.focus = c
-			c:raise()
-			awful.mouse.client.move(c)
-		end),
-		awful.button({ }, 3, function()
-			globalclient.focus = c
-			c:raise()
-			awful.mouse.client.resize(c)
-		end)
-	)
-
-	awful.titlebar(c) : setup {
-		{ -- Left
-			awful.titlebar.widget.iconwidget(c),
-			buttons = buttons,
-			layout  = wibox.layout.fixed.horizontal
-		},
-		{ -- Middle
-			{ -- Title
-				align  = "left",
-				widget = awful.titlebar.widget.titlewidget(c)
-			},
-			buttons = buttons,
-			layout  = wibox.layout.flex.horizontal
-		},
-		{ -- Right
-			awful.titlebar.widget.floatingbutton (c),
-			awful.titlebar.widget.stickybutton   (c),
-			awful.titlebar.widget.ontopbutton	(c),
-			awful.titlebar.widget.maximizedbutton(c),
-			awful.titlebar.widget.minimizebutton(c),
-			awful.titlebar.widget.closebutton	(c),
-			layout = wibox.layout.fixed.horizontal()
-		},
-		layout = wibox.layout.align.horizontal
-	}
+	titlebars.setup_titlebars(c)
 end)
 
 -- Border on focused clients

@@ -1,7 +1,7 @@
 
 local awful = require("awful")
 local gears = require("gears")
--- Dmenu-like launcher²
+-- Dmenu-like launcher
 local menubar = require("menubar")
 
 
