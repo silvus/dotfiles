@@ -8,6 +8,7 @@ Xft.autohint: false
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
+URxvt.iconFile: /usr/share/icons/gnome/48x48/apps/terminal.png 
 
 URxvt.termName: rxvt-256color
 URxvt.cursorBlink: 1
