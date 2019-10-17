@@ -5,6 +5,7 @@ local beautiful = require("beautiful")
 
 -- Customs widgets definitions
 local widget_separator = require("widgets.separator")
+local widget_separator_vertical = require("widgets.separator_vertical")
 local widget_layout = require("widgets.layout")
 local widget_tags = require("widgets.tags")
 local widget_tags_vertical = require("widgets.tags_vertical")
@@ -62,6 +63,7 @@ function init(s)
 				{ -- Left widgets
 					layout = wibox.layout.fixed.vertical,
 					widget_tags_vertical.widget(s),
+					widget_separator_vertical.widget,
 					s.promptbox,
 				},
 				{ -- Middle widget
@@ -75,18 +77,24 @@ function init(s)
 					widget_rotate(widget_moc.widget),
 					widget_vpn.icon,
 					widget_vpn.widget,
-					widget_net.icon,
-					widget_rotate(widget_net.widget, true),
-					widget_cpu.icon,
-					widget_rotate(widget_cpu.widget, true),
-					widget_ram.icon,
-					widget_rotate(widget_ram.widget),
 					widget_battery.icon,
 					widget_rotate(widget_battery.widget),
+					widget_separator_vertical.widget,
+					widget_net.icon,
+					widget_rotate(widget_net.widget, true),
+					widget_separator_vertical.widget,
+					widget_cpu.icon,
+					widget_rotate(widget_cpu.widget, true),
+					widget_separator_vertical.widget,
+					widget_ram.icon,
+					widget_rotate(widget_ram.widget),
+					widget_separator_vertical.widget,
 					widget_volume.icon,
 					widget_rotate(widget_volume.widget),
+					widget_separator_vertical.widget,
 					-- widget_keyboardlayout.widget,
 					widget_rotate(widget_systray.widget),
+					widget_separator_vertical.widget,
 					widget_clock.icon,
 					widget_rotate(widget_clock.widget),
 					layoutbox,
