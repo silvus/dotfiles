@@ -74,12 +74,21 @@ local function init(s)
 	end
 end
 
--- This function will run once every time Awesome is started (https://github.com/lcpz/awesome-copycats/blob/master/rc.lua.template)
+-- Use to launch program only one time
+local launched_list = {}
+
+-- This function will run once every time Awesome is started, only one time per programm (https://github.com/lcpz/awesome-copycats/blob/master/rc.lua.template)
 local function run_once(cmd_arr)
 	for _, cmd in ipairs(cmd_arr) do
-		-- Doesn't work with symlinks
-		-- awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
-		awful.spawn.with_shell(string.format("pgrep -u $USER \"$(basename %s)\" > /dev/null || (%s)", cmd, cmd))
+		-- if not already launched
+		if launched_list[cmd] == nil then
+			-- Add to programms launched list
+			launched_list[cmd] = true
+
+			-- Doesn't work with symlinks
+			-- awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
+			awful.spawn.with_shell(string.format("pgrep -u $USER \"$(basename %s)\" > /dev/null || (%s)", cmd, cmd))
+		end
 	end
 end
 
