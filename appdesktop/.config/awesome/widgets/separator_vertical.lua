@@ -10,7 +10,7 @@ customwidget.widget = wibox.widget {
 	border_width = 1,
 	color = beautiful.titlebar_fg_normal,
 	border_color = beautiful.titlebar_fg_normal,
-	forced_height = 5,
+	forced_height = 18,
 	forced_width = nil,
 	widget = wibox.widget.separator,
 }

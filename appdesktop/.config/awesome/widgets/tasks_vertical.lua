@@ -2,6 +2,8 @@ local wibox = require("wibox")
 local awful = require("awful")
 local widget_common = require("awful.widget.common")
 
+local widget_separator_vertical = require("widgets.separator_vertical")
+
 local customwidget = {}
 
 -- Apps list
@@ -36,18 +38,9 @@ function widget(s)
 		-- 	shape  = gears.shape.rounded_bar,
 		-- },
 		layout   = {
-			-- spacing = 10,
-			-- spacing_widget = {
-			-- 	{
-			-- 		forced_width = 5,
-			-- 		shape        = gears.shape.circle,
-			-- 		widget       = wibox.widget.separator
-			-- 	},
-			-- 	valign = 'center',
-			-- 	halign = 'center',
-			-- 	widget = wibox.container.place,
-			-- },
-			layout  = wibox.layout.fixed.vertical
+			spacing = 1,
+			spacing_widget = widget_separator_vertical.widget,
+			layout  = wibox.layout.fixed.vertical,
 		},
 	})
 end

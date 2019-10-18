@@ -8,8 +8,8 @@ local menubar = require("menubar")
 local config = {}
 
 
-config.theme = "customblue"
--- config.theme = "matrix"
+-- config.theme = "customblue"
+config.theme = "matrix"
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "x-terminal-emulator"

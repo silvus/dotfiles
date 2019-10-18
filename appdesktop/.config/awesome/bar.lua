@@ -97,7 +97,11 @@ function init(s)
 					widget_separator_vertical.widget,
 					widget_clock.icon,
 					widget_rotate(widget_clock.widget),
-					layoutbox,
+					widget_separator_vertical.widget,
+					{
+						layoutbox,
+						layout = wibox.container.margin(layoutbox ,0 ,0 ,0 ,-5)
+					},
 				},
 			}
 			
