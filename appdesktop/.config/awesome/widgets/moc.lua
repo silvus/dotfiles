@@ -7,10 +7,12 @@ local naughty = require("naughty")
 
 local customwidget = {}
 
-customwidget.icon = wibox.widget.imagebox(beautiful.music)
+customwidget.icon = wibox.widget.imagebox(beautiful.note)
 customwidget.icon.visible = false
 
 -- Moc
+
+-- TODO: tooltip
 
 -- First widget, a bar
 local mymocbar = wibox.widget {
@@ -36,7 +38,8 @@ customwidget.widgetbar.visible = false
 -- second widget, current song and update bar and icon
 local moc = lain.widget.contrib.moc({
 	music_dir = "/data/media/music",
-	cover_size = 0,
+	cover_size = 50,
+	default_art = beautiful.music,
 	settings  = function()
 		moc_notification_preset = {
 			title   = moc_now.artist .. " - " .. moc_now.title,

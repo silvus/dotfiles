@@ -75,7 +75,7 @@ function init(s)
 					layout = wibox.layout.fixed.vertical,
 					widget_moc.icon,
 					widget_rotate(widget_moc.widgetbar),
-					widget_rotate(widget_moc.widget),
+					-- widget_rotate(widget_moc.widget),
 					widget_vpn.icon,
 					widget_vpn.widget,
 					widget_battery.icon,
