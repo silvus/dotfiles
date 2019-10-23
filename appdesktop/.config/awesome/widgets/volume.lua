@@ -10,39 +10,66 @@ customwidget.icon = wibox.widget.imagebox(beautiful.vol)
 
 -- ALSA volume bar
 
-customwidget.volume = lain.widget.alsabar({
-	width = 100,
-	border_width = 0,
-	ticks = false,
-	ticks_size = 10,
+customwidget.volume = lain.widget.alsa({
 	timeout = 2,
-	notification_preset = { font = beautiful.font },
-	--togglechannel = "IEC958,3",
 	settings = function()
+		local level = tonumber(volume_now.level)
+		customwidget.widgetbar:set_value(level)
 		if volume_now.status == "off" then
 			customwidget.icon:set_image(beautiful.vol_mute)
-		elseif volume_now.level == 0 then
+			-- TODO: How to trigger widget update ?
+			customwidget.widgetbar.colors[1] = beautiful.error
+			customwidget.widgetbar.border_color = beautiful.error
+		elseif level == 0 then
 			customwidget.icon:set_image(beautiful.vol_no)
-		elseif volume_now.level <= 50 then
+			customwidget.widgetbar.colors[1] = beautiful.error
+			customwidget.widgetbar.border_color = beautiful.error
+		elseif level <= 50 then
 			customwidget.icon:set_image(beautiful.vol_low)
 		else
 			customwidget.icon:set_image(beautiful.vol)
 		end
 	end,
-	colors = {
-		background	= beautiful.bg_normal,
-		mute 		= beautiful.error,
-		unmute		= beautiful.fg_normal
-	}
 })
-customwidget.volume.tooltip.wibox.fg = beautiful.fg_focus
 
-local volumebg = wibox.container.background(customwidget.volume.bar, beautiful.info, gears.shape.rectangle)
+-- Widget bar
+customwidget.widgetbar = wibox.widget {
+	colors = {
+		beautiful.success,
+		-- beautiful.bg_normal,
+		-- beautiful.bg_highlight,
+		-- beautiful.border_color,
+	},
+	value = 0,
+	max_value = 100,
+	min_value = 0,
+	rounded_edge = false,
+	background_color = beautiful.info,
+	bg = beautiful.info,
+	border_width = 1,
+	border_color = beautiful.border_focus,
+	paddings     = {
+		left   = 6,
+		right  = 6,
+		top    = 6,
+		bottom = 6,
+	},
+	start_angle = 3*math.pi/2,
+	thickness = 2,
+	forced_width = 18,
+	forced_height = 18,
+	widget = wibox.container.arcchart,
+}
 
-customwidget.widget = wibox.container.margin(volumebg, 2, 7, 4, 4)
+-- Stack icon + bar
+customwidget.widget = wibox.widget {
+	customwidget.widgetbar,
+	customwidget.icon,
+	layout  = wibox.layout.stack
+}
 
 -- events
-customwidget.widget:buttons(awful.util.table.join (
+buttons_event = awful.util.table.join (
 	awful.button({}, 1, function()
 		awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
 	end),
@@ -62,7 +89,8 @@ customwidget.widget:buttons(awful.util.table.join (
 		awful.spawn(string.format("%s set %s 5%%-", customwidget.volume.cmd, customwidget.volume.channel))
 		customwidget.volume.update()
 	end)
-))
-
+)
+-- customwidget.icon:buttons(buttons_event)
+customwidget.widget:buttons(buttons_event)
 
 return customwidget
