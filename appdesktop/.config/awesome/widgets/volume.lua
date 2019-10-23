@@ -17,7 +17,6 @@ customwidget.volume = lain.widget.alsa({
 		customwidget.widgetbar:set_value(level)
 		if volume_now.status == "off" then
 			customwidget.icon:set_image(beautiful.vol_mute)
-			-- TODO: How to trigger widget update ?
 			customwidget.widgetbar.colors[1] = beautiful.error
 			customwidget.widgetbar.border_color = beautiful.error
 		elseif level == 0 then
@@ -26,8 +25,12 @@ customwidget.volume = lain.widget.alsa({
 			customwidget.widgetbar.border_color = beautiful.error
 		elseif level <= 50 then
 			customwidget.icon:set_image(beautiful.vol_low)
+			customwidget.widgetbar.colors[1] = beautiful.success
+			customwidget.widgetbar.border_color = beautiful.info
 		else
 			customwidget.icon:set_image(beautiful.vol)
+			customwidget.widgetbar.colors[1] = beautiful.success
+			customwidget.widgetbar.border_color = beautiful.info
 		end
 	end,
 })
@@ -63,7 +66,7 @@ customwidget.widgetbar = wibox.widget {
 
 -- Stack icon + bar
 customwidget.widget = wibox.widget {
-	customwidget.widgetbar,
+	wibox.container.margin(customwidget.widgetbar, 0, 1, 0, 1),
 	customwidget.icon,
 	layout  = wibox.layout.stack
 }
@@ -71,22 +74,23 @@ customwidget.widget = wibox.widget {
 -- events
 buttons_event = awful.util.table.join (
 	awful.button({}, 1, function()
-		awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
+		-- awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
+		awful.spawn.with_shell('pavucontrol')
 	end),
 	awful.button({}, 2, function()
-		awful.spawn(string.format("%s set %s 100%%", customwidget.volume.cmd, customwidget.volume.channel))
+		awful.spawn(string.format("%s -D pulse set %s 100%%", customwidget.volume.cmd, customwidget.volume.channel))
 		customwidget.volume.update()
 	end),
 	awful.button({}, 3, function()
-		awful.spawn(string.format("%s set %s toggle", customwidget.volume.cmd, customwidget.volume.togglechannel or customwidget.volume.channel))
+		awful.spawn(string.format("%s -D pulse set %s toggle", customwidget.volume.cmd, customwidget.volume.togglechannel or customwidget.volume.channel))
 		customwidget.volume.update()
 	end),
 	awful.button({}, 4, function()
-		awful.spawn(string.format("%s set %s 5%%+", customwidget.volume.cmd, customwidget.volume.channel))
+		awful.spawn(string.format("%s -D pulse set %s 5%%+", customwidget.volume.cmd, customwidget.volume.channel))
 		customwidget.volume.update()
 	end),
 	awful.button({}, 5, function()
-		awful.spawn(string.format("%s set %s 5%%-", customwidget.volume.cmd, customwidget.volume.channel))
+		awful.spawn(string.format("%s -D pulse set %s 5%%-", customwidget.volume.cmd, customwidget.volume.channel))
 		customwidget.volume.update()
 	end)
 )
