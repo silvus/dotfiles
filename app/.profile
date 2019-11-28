@@ -42,7 +42,6 @@ fi
 if [ -n "$BASH_VERSION" ]; then
 	# include .bashrc if it exists
 	if [[ -f "$HOME/.bashrc" ]]; then
-		echo "bashrc\n" >> /tmp/debugsauvage.log
 		source "$HOME/.bashrc"
 	fi
 fi
