@@ -39,8 +39,27 @@ function widget(s)
 		-- },
 		layout   = {
 			spacing = 1,
-			spacing_widget = widget_separator_vertical.widget,
+			-- spacing_widget = widget_separator_vertical.widget,
 			layout  = wibox.layout.fixed.vertical,
+			-- layout  = wibox.layout.flex.vertical
+		},
+		widget_template = {
+			{
+				{
+					{
+						id     = 'icon_role',
+						widget = wibox.widget.imagebox,
+					},
+					widget  = wibox.container.margin,
+				},
+				left  = 2,
+				right = 2,
+				widget = wibox.container.margin
+			},
+			id     = 'background_role',
+			widget = wibox.container.background,
+			forced_height = 25,
+			forced_width = 25,
 		},
 	})
 end

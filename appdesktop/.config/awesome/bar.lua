@@ -116,7 +116,7 @@ function init(s)
 			-- Add widgets to the wibox
 			wibox_custom:setup {
 				layout = wibox.layout.align.horizontal,
-				{ -- Left widgets
+				{ -- Top widgets
 					layout = wibox.layout.fixed.horizontal,
 					widget_tags.widget(s),
 					s.promptbox,
@@ -125,7 +125,7 @@ function init(s)
 					layout = wibox.layout.fixed.horizontal,
 					widget_tasks.widget(s),
 				},
-				{ -- Right widgets
+				{ -- Bottom widgets
 					layout = wibox.layout.fixed.horizontal,
 					-- layout = awful.widget.only_on_screen,
 					-- screen = "primary", -- Only display on primary screen
