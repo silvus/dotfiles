@@ -96,7 +96,7 @@ local rules = {
 		}
 	},
 	-- Mail
-	{ rule = { class = "Thunderbird" },
+	{ rule = { class = "thunderbird" },
 		properties = {
 			tag = desktops.tags_names[3],
 		}
