@@ -101,6 +101,20 @@ local rules = {
 			tag = desktops.tags_names[3],
 		}
 	},
+	{ rule = { class = "thunderbird", instance = "Msgcompose" },
+		properties = {
+			tag = desktops.tags_names[3],
+			floating = true,
+			ontop = true,
+			callback = function(c)
+				-- left 50%
+				sreen_geometry = screens.get_primary().geometry
+				c:geometry( { width = sreen_geometry.width / 2 , height = sreen_geometry.height } )
+				awful.placement.bottom_left(c)
+			end
+		}
+	},
+
 	-- Files explorer
 	{ rule = { class = "Pcmanfm" },
 		properties = {
