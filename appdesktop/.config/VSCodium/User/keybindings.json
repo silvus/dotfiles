@@ -19,6 +19,11 @@
 		"command": "workbench.action.quickOpen"
 	},
 	{
+		"key": "ctrl+e",
+		"command": "workbench.action.quickOpenNavigateNextInFilePicker",
+		"when": "inFilesPicker && inQuickOpen"
+	},
+	{
 		"key": "ctrl+s",
 		"command": "-workbench.action.files.save"
 	},
