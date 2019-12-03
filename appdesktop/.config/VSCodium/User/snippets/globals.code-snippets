@@ -27,4 +27,11 @@
 			"- _[$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND]_ ",
 		]
 	},
+	"Loremipsum": {
+		"prefix": "loremipsum",
+		"description": "Output lorem ipsum text",
+		"body": [
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae ante non sapien consectetur imperdiet. Suspendisse potenti. Praesent urna nisl, fermentum quis urna convallis, gravida ullamcorper purus. Sed vitae malesuada libero, ac blandit mi. Vivamus tincidunt mauris eros. Ut vitae aliquam ligula, a ultricies sem. Morbi molestie ante ut felis faucibus, eu sagittis orci pretium. Nulla facilisi. Vivamus mattis arcu lacus, at malesuada erat imperdiet a. Morbi eros metus, accumsan a lacinia ac, pulvinar ut arcu. Donec id mauris magna.",
+		]
+	},
 }
