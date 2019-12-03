@@ -96,12 +96,12 @@ local rules = {
 		}
 	},
 	-- Mail
-	{ rule = { class = "thunderbird" },
+	{ rule_any = { class = {"thunderbird", "Thunderbird"} },
 		properties = {
 			tag = desktops.tags_names[3],
 		}
 	},
-	{ rule = { class = "thunderbird", instance = "Msgcompose" },
+	{ rule_any = { instance = {"Msgcompose"} },
 		properties = {
 			tag = desktops.tags_names[3],
 			floating = true,
