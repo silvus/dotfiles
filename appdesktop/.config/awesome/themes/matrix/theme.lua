@@ -22,6 +22,7 @@ theme.bar_orientation                           = "vertical"
 
 theme.notification_position                     = "top_left"
 theme.notification_max_width                    = 500
+theme.notification_icon_size                    = 50
 
 theme.dir                                       = gears.filesystem.get_configuration_dir() .. "themes/" .. theme.name
 theme.wallpaper                                 = theme.dir .. "/wallpaper.png"
