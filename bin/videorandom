@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-mpv "$(find /data/silvus/video/youtubedl/ti/ -type f | shuf -n1)"
