@@ -1,19 +1,15 @@
 // Place your key bindings in this file to override the defaultsauto[]
 [
-	{
-		"key": "ctrl+d",
-		"command": "editor.action.deleteLines",
-		"when": "textInputFocus && !editorReadonly"
-	},
-	{
-		"key": "ctrl+shift+k",
-		"command": "-editor.action.deleteLines",
-		"when": "textInputFocus && !editorReadonly"
-	},
+	// Save
 	{
 		"key": "ctrl+s",
 		"command": "workbench.action.files.saveAll"
 	},
+	{
+		"key": "ctrl+s",
+		"command": "-workbench.action.files.save"
+	},
+	// File switch
 	{
 		"key": "ctrl+e",
 		"command": "workbench.action.quickOpen"
@@ -23,10 +19,7 @@
 		"command": "workbench.action.quickOpenNavigateNextInFilePicker",
 		"when": "inFilesPicker && inQuickOpen"
 	},
-	{
-		"key": "ctrl+s",
-		"command": "-workbench.action.files.save"
-	},
+	// Navigation
 	{
 		"key": "alt+left",
 		"command": "workbench.action.navigateBack"
@@ -34,5 +27,42 @@
 	{
 		"key": "alt+right",
 		"command": "workbench.action.navigateForward"
-	}
+	},
+	// Multi cursor
+	{
+		"key": "ctrl+l",
+		"command": "editor.action.addSelectionToNextFindMatch",
+		"when": "editorFocus"
+	},
+	{
+		"key": "ctrl+l",
+		"command": "-expandLineSelection",
+		"when": "textInputFocus"
+	},
+	{
+		"key": "ctrl+k",
+		"command": "editor.action.selectHighlights",
+		"when": "editorFocus"
+	},
+	{
+		"key": "ctrl+shift+l",
+		"command": "editor.action.insertCursorAtEndOfEachLineSelected",
+		"when": "editorTextFocus"
+	},
+	{
+		"key": "ctrl+shift+l",
+		"command": "-editor.action.selectHighlights",
+		"when": "editorFocus"
+	},
+	// Delete line
+	{
+		"key": "ctrl+d",
+		"command": "editor.action.deleteLines",
+		"when": "textInputFocus && !editorReadonly"
+	},
+	{
+		"key": "ctrl+d",
+		"command": "-editor.action.addSelectionToNextFindMatch",
+		"when": "editorFocus"
+	},
 ]
