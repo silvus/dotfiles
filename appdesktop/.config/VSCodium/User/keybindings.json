@@ -12,12 +12,25 @@
 	// File switch
 	{
 		"key": "ctrl+e",
-		"command": "workbench.action.quickOpen"
+		"command": "workbench.action.quickOpenPreviousEditor"
 	},
 	{
 		"key": "ctrl+e",
 		"command": "workbench.action.quickOpenNavigateNextInFilePicker",
 		"when": "inFilesPicker && inQuickOpen"
+	},
+	{
+		"key": "ctrl+p",
+		"command": "workbench.action.quickOpenPreviousEditor"
+	},
+	{
+		"key": "ctrl+p",
+		"command": "workbench.action.quickOpenNavigateNextInFilePicker",
+		"when": "inFilesPicker && inQuickOpen"
+	},
+	{
+		"key": "ctrl+p",
+		"command": "-workbench.action.quickOpen"
 	},
 	// History Navigation
 	{
