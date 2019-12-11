@@ -19,7 +19,7 @@
 		"command": "workbench.action.quickOpenNavigateNextInFilePicker",
 		"when": "inFilesPicker && inQuickOpen"
 	},
-	// Navigation
+	// History Navigation
 	{
 		"key": "alt+left",
 		"command": "workbench.action.navigateBack"
@@ -28,6 +28,24 @@
 		"key": "alt+right",
 		"command": "workbench.action.navigateForward"
 	},
+	// Splits navigation
+	{
+		"key": "ctrl+enter",
+		"command": "workbench.action.navigateEditorGroups"
+	},
+	{
+		"key": "ctrl+enter",
+		"command": "-editor.action.insertLineAfter",
+	},
+	// New tab
+	{
+		"key": "ctrl+t",
+		"command": "workbench.action.files.newUntitledFile"
+	},
+	{
+		"key": "ctrl+t",
+		"command": "-workbench.action.showAllSymbols"
+	}
 	// Multi cursor
 	{
 		"key": "ctrl+l",
