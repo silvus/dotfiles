@@ -108,10 +108,11 @@ local rules = {
 			floating = true,
 			ontop = true,
 			callback = function(c)
-				-- left 50%
-				sreen_geometry = screens.get_primary().geometry
-				c:geometry( { width = sreen_geometry.width / 2 , height = sreen_geometry.height } )
-				awful.placement.bottom_left(c)
+				-- snap left 50%
+				local f = awful.placement.scale
+					+ awful.placement.top_left
+					+ awful.placement.maximize_vertically
+				f(c, {honor_workarea=true, to_percent = 0.5})
 			end
 		}
 	},
