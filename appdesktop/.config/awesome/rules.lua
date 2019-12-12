@@ -9,7 +9,7 @@ local clients = require("clients")
 
 -- Rules to apply to new clients (through the "manage" signal).
 local rules = {
-	-- All clients will match this rule
+	-- Generics rules
 	{ rule = { },
 		properties = {
 			border_width = beautiful.border_width,
@@ -20,61 +20,75 @@ local rules = {
 			buttons = clients.buttons,
 			screen = awful.screen.preferred,
 			titlebars_enabled = true,
-			placement = awful.placement.no_overlap+awful.placement.no_offscreen
+			placement = awful.placement.no_overlap + awful.placement.no_offscreen + awful.placement.top,
+			-- floating = false,
+			-- maximized_vertical = false,
+			-- maximized_horizontal = false,
 		}
 	},
 
-	-- Floating clients
-	{ rule_any = {
-		instance = {
-			"DTA",  -- Firefox addon DownThemAll.
-			"copyq",  -- Includes session name in class.
-		},
-		class = {
-			"Arandr",
-			"Gpick",
-			"Kruler",
-			"MessageWin",  -- kalarm.
-			"Sxiv",
-			"Wpa_gui",
-			"pinentry",
-			"veromix",
-			"xtightvncviewer",
-			"Gcr-prompter",  -- Gnome password prompt
-		},
-		name = {
-		  "Event Tester",  -- xev.
-		},
-		type = {
-			"dialog"
-		},
-		role = {
-		  "AlarmWindow",  -- Thunderbird's calendar.
-		  -- "pop-up",	   -- e.g. Google Chrome's (detached) Developer Tools.
-		}
-	  }, properties = { floating = true }
-	},
+	-- Dialogs client
+	-- { rule_any = { type = { "dialog" } },
+	-- 	properties = {
+	-- 		placement = awful.placement.no_offscreen + awful.placement.centered
+	-- 	}
+	-- },
 
-	-- Add titlebars to normal clients and dialogs
-	{ rule_any = { type = { "normal", "dialog" } },
-		properties = {
-			titlebars_enabled = true
-		}
-	},
-
-	-- Default normal client rules
+	-- Normal client
 	{ rule_any = { type = { "normal" } },
 		properties = {
-			titlebars_enabled = true,
-			floating = false,
-			maximized_vertical = false,
-			maximized_horizontal = false,
 			screen = screens.get_primary(),
 		}
 	},
 
+	-- Floating clients
+	{
+		rule_any = {
+			instance = {
+				"DTA",  -- Firefox addon DownThemAll.
+				"copyq",  -- Includes session name in class.
+				"pinentry",
+			},
+			class = {
+				"Arandr",
+				"Blueman-manager",
+				"Gpick",
+				"Kruler",
+				"MessageWin",  -- kalarm.
+				"Sxiv",
+				"Wpa_gui",
+				"pinentry",
+				"veromix",
+				"xtightvncviewer",
+				"Gcr-prompter",  -- Gnome password prompt
+			},
+			-- Note that the name property shown in xprop might be set slightly after creation of the client
+			-- and the name shown there might not match defined rules here.
+			name = {
+				"Event Tester",  -- xev
+			},
+			title = {
+				"Event Tester",  -- xev
+			},
+			type = {
+				"dialog"
+			},
+			role = {
+				"AlarmWindow",  -- Thunderbird's calendar.
+				"ConfigManager",  -- Thunderbird's about:config.
+				-- "pop-up",  -- e.g. Google Chrome's (detached) Developer Tools.
+			}
+		},
+		properties = {
+			floating = true,
+			placement = awful.placement.no_offscreen + awful.placement.centered
+		}
+	},
+
+	-- Specifics rules
+
 	-- Web
-	{ rule = { class = "Firefox" },
+	{ rule_any = { class = {"Firefox"} },
 		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[1],
@@ -84,10 +98,8 @@ local rules = {
 	{ rule_any = { class = { "VSCodium", "Zim" }},
 		properties = {
 			tag = desktops.tags_names[2],
-			floating = false,
 		}
 	},
-
 	{ rule_any = { class = { "jetbrains-phpstorm" }},
 		except = { type = "dialog" },
 		properties = {
@@ -116,9 +128,8 @@ local rules = {
 			end
 		}
 	},
-
 	-- Files explorer
-	{ rule = { class = "Pcmanfm" },
+	{ rule_any = { class = {"Pcmanfm"} },
 		properties = {
 			tag = desktops.tags_names[4],
 		}
@@ -142,15 +153,15 @@ local rules = {
 		}
 	},
 	-- Games
-	{ rule = { class = "Steam" },
+	{ rule_any = { class = {"Steam"} },
 		properties = {
 			tag = desktops.tags_names[8],
 		}
 	},
-
-	-- Floating on top and sticky
-	{ rule = { class = "ksnip" },
+	-- Ksnip (screenshots)
+	{ rule_any = { class = {"ksnip"} },
 		properties = {
+			-- Floating on top and sticky
 			floating = true,
 			sticky = true,
 			ontop = true,
@@ -158,6 +169,7 @@ local rules = {
 			placement = awful.placement.no_offscreen + awful.placement.top,
 		}
 	},
+	-- MPV
 	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse" }},
 		properties = {
 			-- Sticky in corner on main screen
@@ -168,10 +180,14 @@ local rules = {
 			ontop = true, -- Not compatible with fullscreen
 			screen = screens.get_primary(), -- On primary screen
 			callback = function(c)
-				-- 2/5 bottom right of primary screen
-				sreen_geometry = screens.get_primary().geometry
-				c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
-				awful.placement.bottom_right(c)
+				-- -- 2/5 bottom right of primary screen
+				-- sreen_geometry = screens.get_primary().geometry
+				-- c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
+				-- awful.placement.bottom_right(c)
+				-- snap left 50%
+				local f = awful.placement.scale
+					+ awful.placement.bottom_right
+				f(c, {honor_workarea=true, to_percent = 0.4})
 			end
 		}
 	},
