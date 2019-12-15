@@ -49,6 +49,9 @@ theme.titlebar_fg_normal                        = "#333333"
 theme.titlebar_bg_normal                        = "#1c2b25"
 theme.titlebar_bg_focus                         = "#022603"
 
+theme.snap_bg                                   = theme.primary
+theme.snap_border_width                         = 5
+
 theme.border_normal                             = "#141414"
 theme.border_focus                              = theme.success
 theme.border_width                              = 1
