@@ -22,32 +22,32 @@ local function init(s)
 		awful.tag.add(tags_names[2], {
 			layout             = awful.layout.suit.tile,
 			screen             = s,
-			icon               = beautiful.code,
+			icon               = beautiful.terminal,
 		})
 		awful.tag.add(tags_names[3], {
+			layout             = awful.layout.suit.tile,
+			screen             = s,
+			icon               = beautiful.code,
+		})
+		awful.tag.add(tags_names[4], {
 			layout             = awful.layout.suit.tile.bottom,
 			screen             = s,
 			icon               = beautiful.mail,
 		})
-		awful.tag.add(tags_names[4], {
+		awful.tag.add(tags_names[5], {
 			layout             = awful.layout.suit.tile,
 			screen             = s,
 			icon               = beautiful.folder,
 		})
-		awful.tag.add(tags_names[5], {
+		awful.tag.add(tags_names[6], {
 			layout             = awful.layout.suit.tile,
 			screen             = s,
 			icon               = beautiful.fire,
 		})
-		awful.tag.add(tags_names[6], {
-			layout             = awful.layout.suit.tile,
-			screen             = s,
-			icon               = beautiful.paint,
-		})
 		awful.tag.add(tags_names[7], {
 			layout             = awful.layout.suit.tile,
 			screen             = s,
-			icon               = beautiful.paragraph,
+			icon               = beautiful.paint,
 		})
 		awful.tag.add(tags_names[8], {
 			layout             = awful.layout.suit.max,
@@ -64,7 +64,7 @@ local function init(s)
 		awful.tag.add(tags_names[10], {
 			layout = awful.layout.suit.tile,
 			screen = s,
-			icon = beautiful.terminal,
+			icon = beautiful.bolt,
 		})
 
 	else
@@ -100,9 +100,9 @@ local function switch(t)
 			run_once({"firefox"})
 		elseif t.name == tags_names[2] then
 			run_once({"/usr/share/codium/bin/codium"})
-		elseif t.name == tags_names[3] then
-			run_once({"thunderbird"})
 		elseif t.name == tags_names[4] then
+			run_once({"thunderbird"})
+		elseif t.name == tags_names[5] then
 			run_once({"pcmanfm"})
 		end
 	end

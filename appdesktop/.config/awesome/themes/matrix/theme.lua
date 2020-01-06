@@ -76,6 +76,7 @@ theme.bat_no                                    = theme.dir .. "/icons/bat_no.pn
 theme.battery                                   = theme.dir .. "/icons/battery.png"
 theme.battery_empty                             = theme.dir .. "/icons/battery_empty.png"
 theme.battery_low                               = theme.dir .. "/icons/battery_low.png"
+theme.bolt                                      = theme.dir .. "/icons/bolt.png"
 theme.bottom_bar                                = theme.dir .. "/icons/bottom_bar.png"
 theme.calendar                                  = theme.dir .. "/icons/cal.png"
 theme.clock                                     = theme.dir .. "/icons/clock.png"
