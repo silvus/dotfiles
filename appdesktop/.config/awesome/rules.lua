@@ -97,13 +97,13 @@ local rules = {
 	-- Dev
 	{ rule_any = { class = { "VSCodium", "Zim" }},
 		properties = {
-			tag = desktops.tags_names[2],
+			tag = desktops.tags_names[10],
 		}
 	},
 	{ rule_any = { class = { "jetbrains-phpstorm" }},
 		except = { type = "dialog" },
 		properties = {
-			tag = desktops.tags_names[3],
+			tag = desktops.tags_names[2],
 			-- screen = screens.count(),
 			floating = false, -- Task list is too small in popup
 		}
@@ -111,12 +111,12 @@ local rules = {
 	-- Mail
 	{ rule_any = { class = {"thunderbird", "Thunderbird"} },
 		properties = {
-			tag = desktops.tags_names[4],
+			tag = desktops.tags_names[3],
 		}
 	},
 	{ rule_any = { instance = {"Msgcompose"} },
 		properties = {
-			tag = desktops.tags_names[4],
+			tag = desktops.tags_names[3],
 			floating = true,
 			ontop = true,
 			callback = function(c)
@@ -131,19 +131,19 @@ local rules = {
 	-- Files explorer
 	{ rule_any = { class = {"Pcmanfm"} },
 		properties = {
-			tag = desktops.tags_names[5],
+			tag = desktops.tags_names[4],
 		}
 	},
 	-- Mixed
 	{ rule_any = { class = { "Godot", "Keybase", "balena-etcher-electron", "GParted", "Transmission" }},
 		properties = {
-			tag = desktops.tags_names[6],
+			tag = desktops.tags_names[5],
 		}
 	},
 	-- Graphics
 	{ rule_any = { class = { "Gimp", "Krita", }},
 		properties = {
-			tag = desktops.tags_names[7],
+			tag = desktops.tags_names[6],
 		}
 	},
 	-- Office
