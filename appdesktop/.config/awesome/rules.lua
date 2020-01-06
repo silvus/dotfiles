@@ -97,14 +97,14 @@ local rules = {
 	-- Dev
 	{ rule_any = { class = { "VSCodium", "Zim" }},
 		properties = {
-			tag = desktops.tags_names[10],
+			tag = desktops.tags_names[2],
 		}
 	},
 	{ rule_any = { class = { "jetbrains-phpstorm" }},
 		except = { type = "dialog" },
 		properties = {
-			tag = desktops.tags_names[2],
-			-- screen = screens.count(),
+			tag = desktops.tags_names[3],
+			screen = screens.count(),
 			floating = false, -- Task list is too small in popup
 		}
 	},
