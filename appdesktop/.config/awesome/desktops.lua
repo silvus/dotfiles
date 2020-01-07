@@ -97,7 +97,7 @@ local function switch(t)
 		-- Auto launch programms on tag access
 		if t.name == tags_names[1] then
 			run_once({"firefox"})
-		elseif t.name == tags_names[10] then
+		elseif t.name == tags_names[2] then
 			run_once({"/usr/share/codium/bin/codium"})
 		elseif t.name == tags_names[3] then
 			run_once({"thunderbird"})

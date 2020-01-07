@@ -88,7 +88,7 @@ local rules = {
 	-- Specifics rules
 
 	-- Web
-	{ rule_any = { class = {"Firefox"} },
+	{ rule_any = { class = {"Firefox"}},
 		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[1],
@@ -96,6 +96,7 @@ local rules = {
 	},
 	-- Dev
 	{ rule_any = { class = { "VSCodium", "Zim" }},
+		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[2],
 		}
@@ -103,7 +104,7 @@ local rules = {
 	{ rule_any = { class = { "jetbrains-phpstorm" }},
 		except = { type = "dialog" },
 		properties = {
-			tag = desktops.tags_names[3],
+			tag = desktops.tags_names[1],
 			screen = screens.count(),
 			floating = false, -- Task list is too small in popup
 		}
