@@ -1,4 +1,3 @@
-
 # Python
 # ------------------------------------------------------
 export PYTHONSTARTUP="$HOME/.pythonrc"
@@ -29,6 +28,13 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
 	eval "$(pyenv init -)"
 fi
+
+# Rust
+# ------------------------------------------------------
+export RUSTUP_HOME="$HOME/.config/rustup"
+export CARGO_HOME="$HOME/.config/cargo"
+export PATH="${CARGO_HOME}/bin:$PATH"
+
 
 # Go to projects folder and git pull
 # Must be here due to "cd" subshell usage
