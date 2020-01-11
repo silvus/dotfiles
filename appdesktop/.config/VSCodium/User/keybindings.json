@@ -72,7 +72,7 @@
 	{
 		"key": "ctrl+t",
 		"command": "-workbench.action.showAllSymbols"
-	}
+	},
 	// Multi cursor
 	{
 		"key": "ctrl+l",
