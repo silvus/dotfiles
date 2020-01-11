@@ -41,6 +41,20 @@
 		"key": "alt+right",
 		"command": "workbench.action.navigateForward"
 	},
+	// Symbol navigation
+	{
+		"key": "ctrl+r",
+		"command": "workbench.action.gotoSymbol"
+	},
+	{
+		"key": "ctrl+shift+r",
+		"command": "workbench.action.showAllSymbols"
+	},
+	// Workspace switch
+	{
+		"key": "ctrl+shift+w",
+		"command": "workbench.action.openRecent"
+	},
 	// Splits navigation
 	{
 		"key": "ctrl+enter",
