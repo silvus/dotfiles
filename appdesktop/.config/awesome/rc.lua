@@ -76,9 +76,9 @@ end
 -- ---------------------------------------------------------------------
 -- Screens
 -- ---------------------------------------------------------------------
-screen.connect_signal("added", screens.update)
-screen.connect_signal("removed", screens.update)
-screens.update()
+-- screen.connect_signal("added", screens.update)
+-- screen.connect_signal("removed", screens.update)
+screens.init()
 
 
 -- ---------------------------------------------------------------------
