@@ -107,6 +107,8 @@ local rules = {
 			tag = desktops.tags_names[2],
 			-- screen = screens.count(),
 			floating = false, -- Task list is too small in popup
+			maximized_vertical = true,
+			maximized_horizontal = true,
 		}
 	},
 	-- Mail
