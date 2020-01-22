@@ -20,7 +20,7 @@ theme.primary                                   = "#074f00"
 
 theme.bar_orientation                           = "vertical"
 
-theme.notification_position                     = "top_left"
+theme.notification_position                     = "bottom_left"
 theme.notification_max_width                    = 500
 theme.notification_icon_size                    = 50
 
