@@ -121,7 +121,13 @@ awful.layout.layouts = config.layouts
 -- ---------------------------------------------------------------------
 
 -- Custom status bar (need to be loaded after theme init (or naughty configurations ?))
-local statusbar = require("bar")
+local statusbar = nil
+if beautiful.bar_orientation == "vertical" then
+	-- vertical bar if theme defined it
+	statusbar = require("bar_vertical")
+else
+	statusbar = require("bar")
+end
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
