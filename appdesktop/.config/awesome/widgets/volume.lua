@@ -1,3 +1,4 @@
+local string = require("string")
 local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
@@ -5,6 +6,8 @@ local gears = require("gears")
 local lain = require("lain")
 
 local customwidget = {}
+
+local volume_value = 0
 
 customwidget.icon = wibox.widget.imagebox(beautiful.vol)
 
@@ -15,6 +18,7 @@ customwidget.volume = lain.widget.alsa({
 	settings = function()
 		local level = tonumber(volume_now.level)
 		customwidget.widgetbar:set_value(level)
+		volume_value = level
 		if volume_now.status == "off" then
 			customwidget.icon:set_image(beautiful.vol_mute)
 			customwidget.widgetbar.colors[1] = beautiful.error
@@ -69,6 +73,15 @@ customwidget.widget = wibox.widget {
 	wibox.container.margin(customwidget.widgetbar, 0, 1, 0, 1),
 	customwidget.icon,
 	layout  = wibox.layout.stack
+}
+
+-- Tooltip
+local widget_tooltip = awful.tooltip {
+	objects        = { customwidget.widget},
+	timer_function = function()
+		return string.format("%d%%", volume_value)
+		
+	end,
 }
 
 -- events
