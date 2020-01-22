@@ -20,7 +20,7 @@ local function init(s)
 			-- icon_only          = true,
 		})
 		awful.tag.add(tags_names[2], {
-			layout             = awful.layout.suit.tile,
+			layout             = awful.layout.suit.max,
 			screen             = s,
 			icon               = beautiful.code,
 		})
