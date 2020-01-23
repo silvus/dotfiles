@@ -28,10 +28,10 @@ run redshift-gtk
 
 # Environment specific configuration
 # ------------------------------------------------------
-if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" || $(hostname --short) == "orcus" ]]; then
-	run firefox
-	# run thunderbird
-fi
+# if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" || $(hostname --short) == "orcus" ]]; then
+# 	run firefox
+#	run thunderbird
+# fi
 
 if [[ -f "$HOME/.dotfiles_custom/autostart" ]]; then
 	source "$HOME/.dotfiles_custom/autostart"
