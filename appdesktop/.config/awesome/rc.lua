@@ -170,7 +170,6 @@ end)
 
 -- Re-set wallpaper when a new tag is selected
 globaltag.connect_signal("property::selected", function (t)
-	desktops.switch(t)
 	wallpaper.update()
 end)
 
