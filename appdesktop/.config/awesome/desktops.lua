@@ -12,63 +12,63 @@ local tags_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 local function init(s)
 
 	if s == screens.get_primary() then
-		awful.tag.add(tags_names[1], {
-			layout             = awful.layout.suit.tile,
-			screen             = s,
-			selected           = true,
-			icon               = beautiful.firefox,
-			-- icon_only          = true,
-		})
-		awful.tag.add(tags_names[2], {
-			layout             = awful.layout.suit.tile,
-			screen             = s,
-			icon               = beautiful.code,
-		})
-		awful.tag.add(tags_names[3], {
-			layout             = awful.layout.suit.tile.bottom,
-			screen             = s,
-			icon               = beautiful.mail,
-		})
-		awful.tag.add(tags_names[4], {
-			layout             = awful.layout.suit.tile,
-			screen             = s,
-			icon               = beautiful.folder,
-		})
-		awful.tag.add(tags_names[5], {
-			layout             = awful.layout.suit.tile,
-			screen             = s,
-			icon               = beautiful.fire,
-		})
-		awful.tag.add(tags_names[6], {
-			layout             = awful.layout.suit.tile,
-			screen             = s,
-			icon               = beautiful.paint,
-		})
-		awful.tag.add(tags_names[7], {
-			layout             = awful.layout.suit.tile,
-			screen             = s,
-			icon               = beautiful.paragraph,
-		})
-		awful.tag.add(tags_names[8], {
-			layout             = awful.layout.suit.max,
-			screen             = s,
-			icon               = beautiful.gamepad,
-		})
-		awful.tag.add(tags_names[9], {
-			layout             = awful.layout.suit.tile,
-			screen             = s,
-			icon               = beautiful.lock,
-		})
-		-- Scratchpad
-		awful.tag.add(tags_names[10], {
-			layout = awful.layout.suit.tile,
-			screen = s,
-			icon = beautiful.terminal,
-		})
-
+		local tags_definitions = {
+			{
+				name   = tags_names[1],
+				icon   = beautiful.firefox,
+			},
+			{
+				name   = tags_names[2],
+				icon   = beautiful.code,
+			},
+			{
+				name   = tags_names[3],
+				icon   = beautiful.mail,
+			},
+			{
+				name   = tags_names[4],
+				icon   = beautiful.folder,
+			},
+			{
+				name   = tags_names[5],
+				icon   = beautiful.fire,
+			},
+			{
+				name   = tags_names[6],
+				icon   = beautiful.paint,
+			},
+			{
+				name   = tags_names[7],
+				icon   = beautiful.paragraph,
+			},
+			{
+				name   = tags_names[8],
+				layout = awful.layout.suit.max,
+				icon   = beautiful.gamepad,
+			},
+			{
+				name   = tags_names[9],
+				icon   = beautiful.lock,
+			},
+			{  -- Scratchpad
+				name   = tags_names[10],
+				icon   = beautiful.terminal,
+			},
+		}
+		
+		-- Primary screen
+		for i, tag in pairs(tags_definitions) do
+			awful.tag.add(tag.name, {
+				layout = (tag.layout or awful.layout.suit.tile),
+				icon = tag.icon,
+				screen = s,
+				selected = (i == 1),
+				-- icon_only = true,
+			})
+		end
 	else
 		-- secondary screens (Vertical layout)
-		awful.tag(tags_names, s, awful.layout.suit.tile.bottom)
+		awful.tag(tags_names, s, awful.layout.suit.tile)
 
 	end
 end
