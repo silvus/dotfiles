@@ -335,6 +335,7 @@ def launch(dotfilespath, restarted):
                 )
 
             # Reload .Xresources
+            os.environ["DISPLAY"] = ":0"  # Assure DISPLAY is set if launched from SSH
             exec_command(["xrdb", os.path.expanduser("~/.Xresources")])
 
 
