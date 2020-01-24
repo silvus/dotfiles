@@ -124,10 +124,11 @@ awful.layout.layouts = config.layouts
 local statusbar = nil
 if beautiful.bar_orientation == "vertical" then
 	-- vertical bar if theme defined it
-	statusbar = require("bar_vertical")
+	statusbar = require("bar.vertical")
 else
-	statusbar = require("bar")
+	statusbar = require("bar.horizontal")
 end
+-- local statusbar_mini = require("bar.mini")
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
@@ -138,6 +139,7 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Bar init
 	statusbar.init(s)
+	-- statusbar_mini.init(s)
 end)
 
 
