@@ -22,6 +22,7 @@ local rules = {
 			titlebars_enabled = true,
 			placement = awful.placement.no_overlap + awful.placement.no_offscreen + awful.placement.top,
 			-- floating = false,
+			-- maximized = false,
 			-- maximized_vertical = false,
 			-- maximized_horizontal = false,
 		}
@@ -101,12 +102,17 @@ local rules = {
 			tag = desktops.tags_names[2],
 		}
 	},
-	{ rule_any = { class = { "jetbrains-phpstorm" }},
-		-- except = { type = "dialog" },
+	{ rule = { class = "jetbrains-phpstorm"},
+		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[2],
 			-- screen = screens.count(),
-			floating = false, -- Task list is too small in popup
+		}
+	},
+	{ rule = { class = "jetbrains-phpstorm", type = "dialog"},
+		properties = {
+			floating = true,
+			-- Task list is too small in popup
 			maximized_vertical = true,
 			maximized_horizontal = true,
 		}
