@@ -76,8 +76,9 @@ end
 -- ---------------------------------------------------------------------
 -- Screens
 -- ---------------------------------------------------------------------
--- screen.connect_signal("added", screens.update)
--- screen.connect_signal("removed", screens.update)
+-- Restart awesome to update screens count
+screen.connect_signal("added", awesome.restart)
+screen.connect_signal("removed", awesome.restart)
 screens.init()
 
 
