@@ -7,38 +7,33 @@ local globalclient = client
 local clients = require("clients")
 
 
-local function get_video_rule()
+local function get_video_rule(c)
 	if screens.count() > 1 then
-		return {
-			-- Full screen on last screen
-			focus = false,
-			sticky = false,
-			fullscreen = true,
-			floating = false,
-			ontop = false, -- Not compatible with fullscreen
-			screen = screens.count(), -- On last screen
-		}
+		-- Full screen on last screen
+		c.focus = false
+		c.sticky = false
+		c.fullscreen = true
+		c.floating = false
+		c.ontop = false -- Not compatible with fullscreen
+		c.screen = screens.count() -- On last screen
 	else
-		return {
-			-- Sticky in corner on main screen
-			focus = false,
-			sticky = true,
-			fullscreen = false,
-			floating = true,
-			ontop = true, -- Not compatible with fullscreen
-			screen = screens.get_primary(), -- On primary screen
-			callback = function(c)
-				-- -- 2/5 bottom right of primary screen
-				-- sreen_geometry = screens.get_primary().geometry
-				-- c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
-				-- awful.placement.bottom_right(c)
-				-- snap left 50%
-				local f = awful.placement.scale
-					+ awful.placement.bottom_right
-				f(c, {honor_workarea=true, to_percent = 0.4})
-			end
-		}
+		-- Sticky in corner on main screen
+		c.focus = false
+		c.sticky = true
+		c.fullscreen = false
+		c.floating = true
+		c.ontop = true -- Not compatible with fullscreen
+		c.screen = screens.get_primary() -- On primary screen
+		-- -- 2/5 bottom right of primary screen
+		-- sreen_geometry = screens.get_primary().geometry
+		-- c:geometry( { width = sreen_geometry.width * 2 / 5 , height = sreen_geometry.height * 2 / 5 } )
+		-- awful.placement.bottom_right(c)
+		-- snap left 50%
+		local f = awful.placement.scale + awful.placement.bottom_right
+		f(c, {honor_workarea=true, to_percent = 0.4})
 	end
+
+	return c
 end
 
 -- Rules to apply to new clients (through the "manage" signal).
@@ -214,7 +209,11 @@ local rules = {
 	},
 	-- MPV
 	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse" }},
-		properties = get_video_rule()
+		properties = {
+			callback = function(c)
+				get_video_rule(c)
+			end
+		}
 	},
 }
 
