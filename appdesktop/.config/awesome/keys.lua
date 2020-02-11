@@ -143,7 +143,7 @@ keys.global = awful.util.table.join(
 			widget_volume.volume.update()
 		end, {description = "Volume down", group = "audio"}),
 	awful.key({}, "XF86AudioMute", function ()
-			awful.util.spawn("amixer set Master 1+ toggle", false)
+			awful.util.spawn("amixer -D pulse sset Master toggle", false)
 			widget_volume.volume.update()
 		end, {description = "volume mute", group = "audio"}),
 
