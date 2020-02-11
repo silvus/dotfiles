@@ -110,4 +110,10 @@
 		"command": "-editor.action.addSelectionToNextFindMatch",
 		"when": "editorFocus"
 	},
+	// Folds
+	{
+		"key": "ctrl+shift+space",
+		"command": "editor.toggleFold",
+		"when": "editorTextFocus && foldingEnabled"
+	},
 ]
