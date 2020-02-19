@@ -207,6 +207,15 @@ local rules = {
 			placement = awful.placement.no_offscreen + awful.placement.top,
 		}
 	},
+	-- Sonata (mpd client)
+	{ rule_any = { class = {"Sonata"} },
+		properties = {
+			-- Floating on top (no sticky)
+			floating = true,
+			ontop = true,
+			placement = awful.placement.no_offscreen + awful.placement.left,
+		}
+	},
 	-- MPV
 	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse" }},
 		properties = {
