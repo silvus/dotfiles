@@ -1,0 +1,214 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import sys
+import subprocess
+import shutil
+import logging
+import atexit
+import getpass
+import tempfile
+
+__author__ = "Silvus"
+__version__ = "202002"
+
+DEBUG = False
+
+logging.basicConfig(
+    stream=sys.stdout, level=logging.INFO, format="[%(levelname).4s] %(message)s"
+)
+logger = logging.getLogger("gpgedit")
+
+
+def check_requirements():
+    """
+    Exit if gpg isn't install
+    """
+    if not shutil.which("gpg"):
+        logger.error("GPG not found")
+        sys.exit(2)
+
+
+def init_cli_arg():
+    """
+    Parse args
+    """
+    parser = argparse.ArgumentParser(
+        description="""If called with a gpg file, decrypt it to a tmp file to on the fly edit.
+        Else gpg encrypt it."""
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s {0}".format(__version__),
+        help="show program's version number and exit",
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="debug flag", default=DEBUG
+    )
+    parser.add_argument(
+        "file", type=argparse.FileType("r"), help="file to edit or to protect"
+    )
+
+    args = parser.parse_args()
+
+    return args
+
+
+def on_exit(filepath_tmp):
+    """
+    Assure noting stay on disk on exit (tmp files)
+    """
+    logger.debug("Exit handler")
+    if os.path.exists(filepath_tmp):
+        logger.debug("Cleanup {}".format(filepath_tmp))
+        os.remove(filepath_tmp)
+
+
+def open_editor(filepath):
+    logger.debug("Open editor on {}".format(filepath))
+
+    if shutil.which("codium"):
+        logger.info("Open tempory decrypted file in Codium")
+        execute_cmd(["codium", "--wait", filepath])
+    elif shutil.which("geany"):
+        logger.info("Open tempory decrypted file in Geany")
+        execute_cmd(["geany", filepath])
+    elif shutil.which("vim"):
+        logger.info("Open tempory decrypted file in Vim")
+        execute_cmd(["vim", filepath])
+    elif shutil.which("nano"):
+        logger.info("Open tempory decrypted file in is Nano")
+        execute_cmd(["nano", filepath])
+    else:
+        logger.info("Open tempory decrypted file in {}".format(os.getenv("EDITOR")))
+        execute_cmd([os.getenv("EDITOR"), filepath])
+
+
+def gpg_decrypt(passphrase, filepath, fileoutput):
+    """
+    Decrypt filepath with gpg command
+    """
+    logger.debug("Decrypt call {} to {}".format(filepath, fileoutput))
+    execute_cmd(
+        [
+            "gpg",
+            "-q",
+            "--batch",
+            "--decrypt",
+            "--passphrase",
+            passphrase,
+            "--cipher-algo",
+            "AES256",
+            "--pinentry-mode",
+            "loopback",
+            "--yes",
+            "--output",
+            fileoutput,
+            filepath,
+        ]
+    )
+
+
+def gpg_encrypt(passphrase, filepath, fileoutput=None):
+    """
+    Encrypt filepath with gpg command
+    Output to fileoutput arg if provide, else keep gpg default
+    """
+    logger.debug("Encrypt call {} to {}".format(filepath, fileoutput))
+    cmd = [
+        "gpg",
+        "-q",
+        "--batch",
+        "--symmetric",
+        "--passphrase",
+        passphrase,
+        "--pinentry-mode",
+        "loopback",
+        "--yes",
+    ]
+    if fileoutput:
+        cmd = cmd + ["--output", fileoutput]
+
+    cmd = cmd + [filepath]
+
+    execute_cmd(cmd)
+
+
+def execute_cmd(cmd):
+    """
+    Subprocess wrapper to log commands in debug mode
+    """
+    logger.debug(cmd)
+    subprocess.check_call(cmd)
+
+
+def main():
+    global DEBUG
+
+    # Parse args
+    args = init_cli_arg()
+
+    # Pass debug flag to logger
+    DEBUG = args.debug
+    logger.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+    logger.debug(args)
+
+    try:
+
+        filepath = os.path.abspath(args.file.name)
+
+        check_requirements()
+
+        # Ask for password
+        passphrase = getpass.getpass("Passphrase: ")
+
+        filename, file_extension = os.path.splitext(filepath)
+        if file_extension == ".gpg":
+            logger.debug("Editing {}".format(os.path.basename(filepath)))
+
+            # Get extension without .gpg
+            _, file_extension_original = os.path.splitext(filename)
+
+            # Get dynamic temp file with same extension
+            with tempfile.NamedTemporaryFile(suffix=file_extension_original) as f:
+
+                filepath_tmp = f.name
+
+                # Register exit handler to delete temp file
+                atexit.register(on_exit, filepath_tmp)
+
+                try:
+                    # Decrypt
+                    gpg_decrypt(passphrase, filepath, filepath_tmp)
+                except subprocess.CalledProcessError:
+                    # Error is probably a bad passphrase
+                    logger.error("Error when decrypting {}".format(filepath))
+                    sys.exit(2)
+
+                #  Edit
+                open_editor(filepath_tmp)
+
+                #  Encrypt
+                gpg_encrypt(passphrase, filepath_tmp, filepath)
+        else:
+            # If file not already protected, encrypt
+            logger.info("Encrypt {}".format(filename))
+
+            #  Encrypt
+            gpg_encrypt(passphrase, filepath)
+
+            #  Cleanup original file
+            os.remove(filepath)
+
+    except KeyboardInterrupt:
+        logger.warning("Aborting")
+        sys.exit(1)
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
