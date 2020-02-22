@@ -55,5 +55,12 @@
                 }
             },
         ]
-    }
+    },
+    "pasteImage.showFilePathConfirmInputBox": true,
+    "pasteImage.basePath": "${currentFileDir}/.img",
+    "pasteImage.path": "${currentFileDir}/.img",
+    "pasteImage.insertPattern": "${imageSyntaxPrefix}.img/${imageFilePath}${imageSyntaxSuffix}",
+    "pasteImage.defaultName": "Y-MM-DD",
+    "pasteImage.namePrefix": "${currentFileNameWithoutExt}_",
+    "pasteImage.filePathConfirmInputBoxMode": "onlyName"
 }
