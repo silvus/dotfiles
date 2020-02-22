@@ -116,4 +116,10 @@
 		"command": "editor.toggleFold",
 		"when": "editorTextFocus && foldingEnabled"
 	},
+	// Markdown extension is changing ctrl+b to bold
+	{
+		"key": "ctrl+b",
+		"command": "-markdown.extension.editing.toggleBold",
+		"when": "editorTextFocus && !editorReadonly && editorLangId == 'markdown'"
+	},
 ]

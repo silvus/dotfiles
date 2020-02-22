@@ -62,5 +62,9 @@
     "pasteImage.insertPattern": "${imageSyntaxPrefix}.img/${imageFilePath}${imageSyntaxSuffix}",
     "pasteImage.defaultName": "Y-MM-DD",
     "pasteImage.namePrefix": "${currentFileNameWithoutExt}_",
-    "pasteImage.filePathConfirmInputBoxMode": "onlyName"
+    "pasteImage.filePathConfirmInputBoxMode": "onlyName",
+    "workbench.editor.limit.enabled": true,
+    "workbench.editor.limit.value": 12,
+    "files.defaultLanguage": "markdown",
+    "window.restoreWindows": "folders"
 }
