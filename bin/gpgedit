@@ -170,10 +170,18 @@ def main():
             logger.debug("Editing {}".format(os.path.basename(filepath)))
 
             # Get extension without .gpg
-            _, file_extension_original = os.path.splitext(filename)
+            filename_strip, file_extension_original = os.path.splitext(
+                os.path.basename(filename)
+            )
+            # Get file folder
+            file_dir, _ = os.path.split(filepath)
 
-            # Get dynamic temp file with same extension
-            with tempfile.NamedTemporaryFile(suffix=file_extension_original) as f:
+            # Get dynamic temp file with same extension, same base name and in same folder
+            with tempfile.NamedTemporaryFile(
+                dir=file_dir,
+                prefix=".__{}_".format(filename_strip),
+                suffix=file_extension_original,
+            ) as f:
 
                 filepath_tmp = f.name
 
