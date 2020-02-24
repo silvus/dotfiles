@@ -9,7 +9,7 @@ if [[ -x "$(which xset)" ]]; then
 	# If X is running
 	if xset q &>/dev/null; then
 		# Default: xset r rate 660 25
-		xset r rate 300 30
+		xset r rate 200 30
 
 		# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
 		if [[ -x "$(which setxkbmap)" ]]; then
@@ -20,3 +20,4 @@ if [[ -x "$(which xset)" ]]; then
 		xset b off
 	fi
 fi
+
