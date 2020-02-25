@@ -66,5 +66,7 @@
     "workbench.editor.limit.enabled": true,
     "workbench.editor.limit.value": 12,
     "files.defaultLanguage": "markdown",
-    "window.restoreWindows": "folders"
+    "window.restoreWindows": "folders",
+    "markdown.preview.breaks": true,
+    "markdown.preview.lineHeight": 1.4
 }
