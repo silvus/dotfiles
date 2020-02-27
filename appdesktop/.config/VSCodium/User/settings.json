@@ -68,5 +68,6 @@
     "files.defaultLanguage": "markdown",
     "window.restoreWindows": "folders",
     "markdown.preview.breaks": true,
-    "markdown.preview.lineHeight": 1.4
+    "markdown.preview.lineHeight": 1.4,
+    "markdown.extension.list.indentationSize": "inherit"
 }
