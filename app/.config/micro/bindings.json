@@ -1,10 +1,11 @@
 {
-	"CtrlD":          "CutLine",
-	"CtrlW":          "DeleteWordLeft",
-	"CtrlLeft":       "WordLeft",
-	"CtrlRight":      "WordRight",
-	"CtrlShiftLeft":  "SelectWordLeft",
-	"CtrlShiftRight": "SelectWordRight",
-	"CtrlShiftUp":    "SelectUp",
-	"CtrlShiftDown":  "SelectDown"
+    "Alt-/": "lua:comment.comment",
+    "CtrlD": "CutLine",
+    "CtrlLeft": "WordLeft",
+    "CtrlRight": "WordRight",
+    "CtrlShiftDown": "SelectDown",
+    "CtrlShiftLeft": "SelectWordLeft",
+    "CtrlShiftRight": "SelectWordRight",
+    "CtrlShiftUp": "SelectUp",
+    "CtrlW": "DeleteWordLeft"
 }
