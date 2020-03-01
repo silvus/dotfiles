@@ -127,8 +127,11 @@ keys.global = awful.util.table.join(
 			awful.util.spawn("rofi -show drun")
 		end, {description="Rofi launch", group="launcher"}),
 
-	-- Quake-like terminal (²)
+	-- Quake-like terminal (² and Super Escape)
 	awful.key({}, "#49", function ()
+			quake.term:toggle()
+		end, {description = "Toggle guake like terminal", group = "launcher"}),
+	awful.key({modkey}, "Escape", function ()
 			quake.term:toggle()
 		end, {description = "Toggle guake like terminal", group = "launcher"}),
 
