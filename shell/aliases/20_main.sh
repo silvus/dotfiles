@@ -77,4 +77,4 @@ alias mountshow='mount |column -t'
 # Keymap
 # -----------------------------------------------------------------------------
 alias keymapazerty="setxkbmap -model pc105 -layout fr,us -variant oss"
-alias keymapqwerty="setxkbmap -model pc105 -layout us,fr -variant oss"
+alias keymapqwerty="setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl"
