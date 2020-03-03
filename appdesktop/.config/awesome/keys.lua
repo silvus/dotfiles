@@ -1,4 +1,6 @@
 local awful = require("awful")
+local naughty = require("naughty")
+local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local menubar = require("menubar")
 local screens = require("screens")
@@ -8,6 +10,9 @@ local config = require("config")
 local quake = require("utils.quake")
 local widget_volume = require("widgets.volume")
 
+local io = require("io")
+local string = require("string")
+
 local keys = {}
 
 
@@ -16,6 +21,31 @@ terminal = config.terminal
 
 keys.global = awful.util.table.join(
 	awful.key({ modkey, }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
+
+	awful.key({ modkey,	"Shift"}, "h", function()
+			-- Utility function to trim a string
+			local function trim(s)
+				if s == nil then return nil end
+				return (s:gsub("^%s*(.-)%s*$", "%1"))
+			end
+
+			-- parse current layout from setxkbmap
+			local file = assert(io.popen('setxkbmap -query', 'r'))
+			local status = file:read('*all')
+			file:close()
+			naughty.notify({
+				title = 'Keymap',
+				text = trim(status),
+				icon = beautiful.paragraph,
+				preset = naughty.config.presets.success
+			})
+
+			local layout = trim(string.match(status, "layout:([^\n]*)"))
+			local variant = trim(string.match(status, "variant:([^\n]*)"))
+
+			-- Launch keyboard visualizer
+			awful.util.spawn("gkbd-keyboard-display -l " .. layout .. " " .. variant)
+		end, {description="Keyboard keys help", group="awesome"}),
 
 	-- Next/previous tag
 	awful.key({ modkey, }, "Page_Up",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
