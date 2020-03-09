@@ -200,6 +200,9 @@ show-keymap-hint no
 # confirm-exit no
 confirm-exit yes
 
+## If set to yes, then all podcast URLs that are found in articles are added to the podcast download queue. See the respective section in the documentation for more information on podcast support in newsboat.
+# podcast-auto-enqueue no
+podcast-auto-enqueue yes
 
 # Podboat
 
@@ -213,10 +216,10 @@ download-path "/data/media/music/podcasts/%n"
 ## This variable defines the format of entries in podboat’s download list. See the respective section in the documentation for more information on format strings.
 # podlist-format "%4i [%6dMB/%6tMB] [%5p %%] [%7k kb/s] %-20S %u -> %F"
 
-# Specifies the maximum number of parallel downloads when automatic download is enabled.
-max-downloads 4
+## Specifies the maximum number of parallel downloads when automatic download is enabled.
+# max-downloads 1
 
-# Specifies the player that shall be used for playback of downloaded files.
+## Specifies the player that shall be used for playback of downloaded files.
 player mpv
 
 
@@ -241,6 +244,7 @@ bind-key ENTER quit article # On article, back to list
 bind-key x toggle-article-read # Toggle read flag
 bind-key ESC hard-quit # Exit
 bind-key b bookmark # Bookmark
+bind-key p enqueue # Podcast
 
 # left hand navigation
 # bind-key q quit # Quit the program or return to the previous dialog (depending on the context). Already bind
@@ -260,3 +264,7 @@ bind-key RIGHT toggle-article-read # Toggle read flag
 # bind-key DOWN down # Goes down one item in the list. Already bind
 bind-key RIGHT open feedlist # Open the currently selected feed
 bind-key RIGHT open tagselection # Open the currently selected tag
+
+# Podcast
+bind-key ENTER pb-download podbeuter
+bind-key p pb-play podbeuter
