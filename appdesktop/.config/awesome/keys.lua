@@ -22,7 +22,7 @@ terminal = config.terminal
 keys.global = awful.util.table.join(
 	awful.key({ modkey, }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
 
-	awful.key({ modkey,	"Shift"}, "h", function()
+	awful.key({ modkey, "Shift"}, "h", function()
 			-- Utility function to trim a string
 			local function trim(s)
 				if s == nil then return nil end
@@ -122,6 +122,10 @@ keys.global = awful.util.table.join(
 			end
 		end, {description = "go back", group = "client"}),
 
+	awful.key({ modkey, "Shift" }, "d", function()
+			awful.util.spawn(os.getenv("HOME") .. "/.dotfiles_custom/screens_switch")
+		end, {description = "Screens layout switch", group = "screen"}),
+	
 	-- Terminal
 	awful.key({ modkey, }, "Return", function()
 			awful.spawn("rxvt-unicode -title terminal -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev")
