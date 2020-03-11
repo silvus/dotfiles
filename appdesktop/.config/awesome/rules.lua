@@ -135,7 +135,7 @@ local rules = {
 		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[2],
-			-- screen = screens.count(),
+			screen = screens.count(),
 		}
 	},
 	{ rule = { class = "jetbrains-phpstorm", type = "dialog"},
@@ -185,7 +185,7 @@ local rules = {
 		}
 	},
 	-- Office
-	{ rule_any = { class = { "libreoffice-startcenter","libreoffice-writer", "libreoffice-calc", "Evince", "Simple-scan" }, instance = {"libreoffice"}},
+	{ rule_any = { class = { "libreoffice-startcenter","libreoffice-writer", "libreoffice-calc", "libreoffice-impress","Evince", "Simple-scan" }},
 		properties = {
 			tag = desktops.tags_names[7],
 		}

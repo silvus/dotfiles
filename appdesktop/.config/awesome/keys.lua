@@ -198,6 +198,11 @@ keys.global = awful.util.table.join(
 			awful.util.spawn("music --previous", false)
 		end, {description = "music previous", group = "audio"}),
 
+	-- Touchpad Toggle
+	awful.key({}, "XF86TouchpadToggle", function ()
+			awful.util.spawn_with_shell("synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')")
+		end, {description = "toggle touchpad", group = "launcher"}),
+
 	-- Print screen
 	awful.key({}, "Print", function()
 			awful.util.spawn("ksnip", false)
