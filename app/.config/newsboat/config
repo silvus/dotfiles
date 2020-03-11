@@ -226,8 +226,8 @@ player mpv
 # Colorschemes
 color listnormal        green   default
 color listnormal_unread blue    default
-color listfocus         white   default reverse
-color listfocus_unread  white   default reverse
+color listfocus         black   green
+color listfocus_unread  green   default reverse  # Reverse because default (white) inverse is a nice grey instead of black)
 color info              white   black
 color background        green   default
 color article           default default
@@ -248,13 +248,15 @@ bind-key p enqueue # Podcast
 
 # left hand navigation
 # bind-key q quit # Quit the program or return to the previous dialog (depending on the context). Already bind
-bind-key d toggle-article-read # Toggle read flag
+bind-key d open # Open
+bind-key d open-in-browser article # Toggle read flag and open
 bind-key d open feedlist # Open the currently selected feed
 bind-key d open tagselection # Open the currently selected tag
 bind-key z up # Goes up one item in the list
 bind-key s down # Goes down one item in the list
 bind-key k save # Save the currently selected article to a file
 bind-key e open # Open the currently selected feed or article.
+bind-key SPACE open-in-browser-and-mark-read # Open in browser
 bind-key e quit article # On article, back to list
 
 # right hand navigation
