@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Read SSH hosts from ~/.ssh/config
+# Pick one with FZF and ssh to it on a new Tmux window
+
+function ssh-fzf () {
+	local selected_host=$(grep "Host " ~/.ssh/config | grep -v '*' | awk '{print $2}' | fzf --ansi --reverse --prompt="SSH Remote > ")
+
+	if [ -n "$selected_host" ]; then
+		if [[ -n "$TMUX" ]]; then
+			# open new window in Tmux, with host has name
+			tmux new-window -n "${selected_host}" "ssh ${selected_host}"
+		else
+			ssh "${selected_host}"
+		fi
+	fi
+}
+
+ssh-fzf
+
+exit 0
