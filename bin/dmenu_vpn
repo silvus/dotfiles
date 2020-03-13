@@ -8,7 +8,7 @@ else
 fi
 
 vpnconfs=$(find "/etc/openvpn" -type f -name "*.ovpn" -printf "%f\n" | cut -f1 -d'.')
-action="$(echo -e "${actionstop}${vpnconfs}" | dmenu -i)"
+action="$(echo -e "${actionstop}${vpnconfs}" | dmenu -i -nb '#1e1e1e' -sf '#ffffff' -sb '#009914' -nf '#009914')"
 
 case "$action" in
 	"Stop")
