@@ -215,7 +215,7 @@ keys.global = awful.util.table.join(
 	-- Lock
 	awful.key({ modkey, "Shift" }, "l", function()
 			-- awful.util.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
-			awful.util.spawn("i3lock --color 000305 -t -i ~/.dotfiles/appdesktop/.config/awesome/wallpapers/lock_1.png --show-failed-attempts --ignore-empty-password", false)
+			awful.util.spawn("i3lock --color 000305 -t -i " .. os.getenv("HOME") .. "/.dotfiles/appdesktop/.config/awesome/wallpapers/lock_1.png --show-failed-attempts --ignore-empty-password", false)
 		end, {description = "lock screen", group = "launcher"}),
 
 	-- Shutdown or restart
