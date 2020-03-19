@@ -6,7 +6,7 @@ local customwidget = {}
 
 customwidget.vpn_text = wibox.widget.textbox()
 
-customwidget.icon = wibox.widget.imagebox(beautiful.net_wired)
+customwidget.icon = wibox.widget.imagebox(beautiful.shield)
 customwidget.icon.visible = false
 
 -- VPN

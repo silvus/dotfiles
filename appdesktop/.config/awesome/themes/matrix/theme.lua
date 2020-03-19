@@ -108,6 +108,7 @@ theme.paragraph                                 = theme.dir .. "/icons/paragraph
 theme.pause                                     = theme.dir .. "/icons/pause.png"
 theme.play                                      = theme.dir .. "/icons/play.png"
 theme.prev                                      = theme.dir .. "/icons/prev.png"
+theme.shield                                    = theme.dir .. "/icons/shield.png"
 theme.spr_bottom_right                          = theme.dir .. "/icons/spr_bottom_right.png"
 theme.spr_left                                  = theme.dir .. "/icons/spr_left.png"
 theme.spr_right                                 = theme.dir .. "/icons/spr_right.png"
