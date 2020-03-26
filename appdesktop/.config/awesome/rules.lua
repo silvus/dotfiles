@@ -135,7 +135,7 @@ local rules = {
 		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[2],
-			screen = screens.count(),
+			-- screen = screens.count(),
 		}
 	},
 	{ rule = { class = "jetbrains-phpstorm", type = "dialog"},
@@ -203,8 +203,8 @@ local rules = {
 			floating = true,
 			sticky = true,
 			ontop = true,
-			screen = screens.count(),
-			placement = awful.placement.no_offscreen + awful.placement.top,
+			-- screen = screens.count(),
+			placement = awful.placement.no_offscreen + awful.placement.top_right,
 		}
 	},
 	-- Sonata (mpd client)

@@ -90,11 +90,13 @@ screen.connect_signal("removed", awesome.restart)
 beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. config.theme .. "/theme.lua")
 
 -- Notifications
+naughty.config.padding = 25 -- Space between popups and edge of the workarea
+naughty.config.spacing = 2 -- Spacing between popups
+
 naughty.config.defaults.timeout = 30
 naughty.config.defaults.screen = screens.get_primary()
 naughty.config.defaults.position = beautiful.notification_position
-naughty.config.defaults.margin = 5
-naughty.config.defaults.gap = 20
+naughty.config.defaults.margin = 5 -- Space inside popup
 naughty.config.defaults.ontop = true
 naughty.config.defaults.border_width = 1
 naughty.config.defaults.hover_timeout = nil
