@@ -20,8 +20,6 @@
 	dif = diff --stat=160,120
 [web]
 	browser = elinks
-[github]
-	user = Silvus
 [diff]
 	tool = vimdiff
 	submodule = log
@@ -40,4 +38,5 @@
 	default = current
 [status]
 	submoduleSummary = true
-
+[user]
+	useConfigOnly = true
