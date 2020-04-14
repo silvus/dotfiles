@@ -10,7 +10,6 @@ local clients = require("clients")
 local function get_video_rule(c)
 	if screens.count() > 1 then
 		-- Full screen on last screen
-		c.focus = false
 		c.sticky = false
 		c.fullscreen = true
 		c.floating = false
@@ -18,7 +17,6 @@ local function get_video_rule(c)
 		c.screen = screens.count() -- On last screen
 	else
 		-- Sticky in corner on main screen
-		c.focus = false
 		c.sticky = true
 		c.fullscreen = false
 		c.floating = true
@@ -166,6 +164,12 @@ local rules = {
 			end
 		}
 	},
+	-- Slack
+	{ rule_any = { class = {"Slack"} },
+		properties = {
+			tag = desktops.tags_names[3],
+		}
+	},
 	-- Files explorer
 	{ rule_any = { class = {"Pcmanfm", "Thunar", "Nemo"} },
 		properties = {
@@ -219,6 +223,9 @@ local rules = {
 	-- MPV
 	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse" }},
 		properties = {
+			focus = false,
+			placement = awful.placement.no_offscreen + awful.placement.bottom_right,
+			-- Floating on top and sticky or full screen on secondary
 			callback = function(c)
 				get_video_rule(c)
 			end
