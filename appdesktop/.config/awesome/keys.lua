@@ -48,8 +48,8 @@ keys.global = awful.util.table.join(
 		end, {description="Keyboard keys help", group="awesome"}),
 
 	-- Next/previous tag
-	awful.key({ modkey, }, "Page_Up",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
-	awful.key({ modkey, }, "Page_Down", awful.tag.viewnext, {description = "view next", group = "tag"}),
+	awful.key({ modkey, }, "<",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
+	awful.key({ modkey, }, ">", awful.tag.viewnext, {description = "view next", group = "tag"}),
 	-- Go back to previous tag
 	awful.key({ modkey, }, "Tab", awful.tag.history.restore, {description = "go back", group = "tag"}),
 
@@ -174,7 +174,7 @@ keys.global = awful.util.table.join(
 			awful.util.spawn("amixer -q sset Master 5%-", false)
 			-- trigger widget update
 			widget_volume.volume.update()
-		end, {description = "Volume UP", group = "audio"}),
+		end, {description = "Volume up", group = "audio"}),
 	awful.key({}, "XF86AudioRaiseVolume", function ()
 			awful.util.spawn("amixer -q sset Master 5%+", false)
 			widget_volume.volume.update()
@@ -183,7 +183,23 @@ keys.global = awful.util.table.join(
 			awful.util.spawn("amixer -D pulse sset Master toggle", false)
 			widget_volume.volume.update()
 		end, {description = "volume mute", group = "audio"}),
-
+	-- Simulated volume keys
+	awful.key({ modkey }, "Page_Down", function ()
+			awful.util.spawn("amixer -q sset Master 5%-", false)
+			widget_volume.volume.update()
+		end, {description = "Volume up", group = "audio"}),
+	awful.key({ modkey }, "Page_Up", function ()
+			awful.util.spawn("amixer -q sset Master 5%+", false)
+			widget_volume.volume.update()
+		end, {description = "Volume down", group = "audio"}),
+	awful.key({ modkey }, "Scroll_Lock", function ()
+			awful.util.spawn("amixer -D pulse sset Master toggle", false)
+			widget_volume.volume.update()
+		end, {description = "volume mute", group = "audio"}),
+	awful.key({ modkey }, "Pause", function ()
+			awful.util.spawn("amixer -D pulse sset Master toggle", false)
+			widget_volume.volume.update()
+		end, {description = "volume mute", group = "audio"}),
 	-- Media Keys
 	awful.key({}, "XF86AudioPlay", function()
 			awful.util.spawn("music --toggle-pause", false)
