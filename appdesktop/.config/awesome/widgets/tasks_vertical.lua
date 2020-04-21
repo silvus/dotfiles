@@ -53,14 +53,16 @@ function widget(s)
 					},
 					widget  = wibox.container.margin,
 				},
-				left  = 2,
-				right = 2,
+				left  = 3,
+				right = 3,
+				top  = 3,
+				bottom = 3,
 				widget = wibox.container.margin
 			},
 			id     = 'background_role',
 			widget = wibox.container.background,
 			forced_height = 20,
-			forced_width = 22,
+			forced_width = 20,
 		},
 	})
 end
