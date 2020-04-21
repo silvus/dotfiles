@@ -48,10 +48,10 @@ keys.global = awful.util.table.join(
 		end, {description="Keyboard keys help", group="awesome"}),
 
 	-- Next/previous tag
-	awful.key({ modkey, }, "<",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
-	awful.key({ modkey, }, ">", awful.tag.viewnext, {description = "view next", group = "tag"}),
+	awful.key({ modkey, }, "<",   awful.tag.viewprev, {description = "view previous tag", group = "tag"}),
+	awful.key({ modkey, }, ">", awful.tag.viewnext, {description = "view next tag", group = "tag"}),
 	-- Go back to previous tag
-	awful.key({ modkey, }, "Tab", awful.tag.history.restore, {description = "go back", group = "tag"}),
+	awful.key({ modkey, }, "Tab", awful.tag.history.restore, {description = "go back to previous tag", group = "tag"}),
 
 	-- awful.key({ modkey, }, "Right", function ()
 	--		 awful.client.focus.byidx(1)
@@ -64,10 +64,6 @@ keys.global = awful.util.table.join(
 	-- awful.key({ modkey,		   }, "w", function()
 	--		mymainmenu:show()
 	--	end, {description = "show main menu", group = "awesome"}),
-
-	-- On the fly useless gaps change
-	-- awful.key({ altkey, "Control" }, "+", function () lain.util.useless_gaps_resize(1) end),
-	-- awful.key({ altkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end),
 
 	 -- By direction client focus
 	awful.key({ modkey }, "Down", function()
@@ -87,6 +83,23 @@ keys.global = awful.util.table.join(
 			if client.focus then client.focus:raise() end
 		end, {description = "change client focus", group = "client"}),
 
+	awful.key({ modkey }, "s", function()
+			awful.client.focus.global_bydirection("down")
+			if client.focus then client.focus:raise() end
+		end, {description = "change client focus", group = "client"}),
+	awful.key({ modkey }, "z", function()
+			awful.client.focus.global_bydirection("up")
+			if client.focus then client.focus:raise() end
+		end, {description = "change client focus", group = "client"}),
+	awful.key({ modkey }, "q", function()
+			awful.client.focus.global_bydirection("left")
+			if client.focus then client.focus:raise() end
+		end, {description = "change client focus", group = "client"}),
+	awful.key({ modkey }, "d", function()
+			awful.client.focus.global_bydirection("right")
+			if client.focus then client.focus:raise() end
+		end, {description = "change client focus", group = "client"}),
+
 	-- Layout manipulation
 	awful.key({ modkey,	"Control" }, "space", function()
 			awful.layout.inc(1)
@@ -94,6 +107,7 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "space", function()
 			awful.layout.inc(-1)
 		end, {description = "select previous", group = "layout"}),
+
 	awful.key({ modkey, "Shift" }, "Right", function()
 			awful.client.swap.global_bydirection('right')
 		end, {description = "swap with next client by index", group = "client"}),
@@ -115,17 +129,13 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, }, "u", function()
 			awful.client.urgent.jumpto()
 		end, {description = "jump to urgent client", group = "client"}),
-	awful.key({ modkey,	}, "Tab", function()
-			awful.client.focus.history.previous()
-			if client.focus then
-				client.focus:raise()
-			end
-		end, {description = "go back", group = "client"}),
+	-- awful.key({ modkey,	}, "Tab", function()
+	-- 		awful.client.focus.history.previous()
+	-- 		if client.focus then
+	-- 			client.focus:raise()
+	-- 		end
+	-- 	end, {description = "go back", group = "client"}),
 
-	awful.key({ modkey, "Shift" }, "d", function()
-			awful.util.spawn(os.getenv("HOME") .. "/.dotfiles_custom/screens_switch")
-		end, {description = "Screens layout switch", group = "screen"}),
-	
 	-- Terminal
 	awful.key({ modkey, }, "Return", function()
 			awful.spawn("rxvt-unicode -title terminal -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev")
@@ -137,21 +147,13 @@ keys.global = awful.util.table.join(
 			screens.get_primary().promptbox:run()
 		end, {description = "run prompt", group = "launcher"}),
 
-	-- Menubar
-	awful.key({ modkey, }, "d", function()
-			menubar.show(screens.get_primary())
-		end, {description = "show the menubar", group = "launcher"}),
-	awful.key({ modkey, "Shift" }, "d", function()
-			menubar.refresh()
-		end, {description = "refresh the menubar", group = "launcher"}),
-
 	-- Clients menu
-	awful.key({ modkey, "Shift"}, "e", function()
-			-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
-			-- Default to mouse.coords()
-			-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
-			awful.menu.clients({theme = { width = 500} })
-		end, {description="client menu", group="launcher"}),
+	-- awful.key({ modkey, "Shift"}, "e", function()
+	-- 		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
+	-- 		-- Default to mouse.coords()
+	-- 		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
+	-- 		awful.menu.clients({theme = { width = 500} })
+	-- 	end, {description="client menu", group="launcher"}),
 
 	-- Rofi
 	awful.key({ modkey,	}, "e", function()
@@ -160,6 +162,10 @@ keys.global = awful.util.table.join(
 		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
 			awful.util.spawn("rofi -show drun")
 		end, {description="Rofi launch", group="launcher"}),
+	-- Menubar
+	awful.key({ modkey, "Shift"}, "e", function()
+		menubar.show(screens.get_primary())
+	end, {description = "show the menubar", group = "launcher"}),
 
 	-- Quake-like terminal (² and Super Escape)
 	awful.key({}, "#49", function ()
