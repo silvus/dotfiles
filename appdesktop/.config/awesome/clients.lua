@@ -37,10 +37,10 @@ clients.keys = awful.util.table.join(
 			-- minimized, since minimized clients can't have the focus.
 			c.minimized = true
 		end, {description = "minimize", group = "client"}),
-	awful.key({ modkey, }, "z", function(c)
-			c.maximized = not c.maximized
-			c:raise()
-		end, {description = "maximize", group = "client"}),
+	-- awful.key({ modkey, }, "z", function(c)
+	-- 		c.maximized = not c.maximized
+	-- 		c:raise()
+	-- 	end, {description = "maximize", group = "client"}),
 	awful.key({ modkey, }, "m", function(c)
 			c.maximized = not c.maximized
 			c:raise()

@@ -3,6 +3,7 @@ local awful = require("awful")
 local gears = require("gears")
 -- Dmenu-like launcher
 local menubar = require("menubar")
+local lain = require("lain")
 
 
 local config = {}
@@ -30,10 +31,18 @@ config.layouts = {
 	awful.layout.suit.tile,
 	-- awful.layout.suit.tile.left,
 	awful.layout.suit.tile.bottom,
+
+	lain.layout.termfair,
+	-- lain.layout.termfair.center,
+	-- lain.layout.cascade,
+	-- lain.layout.cascade.tile,
+	lain.layout.centerwork,
+	-- lain.layout.centerwork.horizontal,
+	
 	-- awful.layout.suit.tile.top,
 	-- awful.layout.suit.spiral,
 	-- awful.layout.suit.spiral.dwindle,
-	awful.layout.suit.fair,
+	-- awful.layout.suit.fair,
 	-- awful.layout.suit.fair.horizontal,
 	awful.layout.suit.max,
 	-- awful.layout.suit.max.fullscreen,
@@ -44,5 +53,10 @@ config.layouts = {
 	-- awful.layout.suit.corner.sw,
 	-- awful.layout.suit.corner.se,
 }
+
+lain.layout.termfair.nmaster = 2
+lain.layout.termfair.ncol    = 1
+lain.layout.termfair.center.nmaster = 2
+lain.layout.termfair.center.ncol    = 1
 
 return config
