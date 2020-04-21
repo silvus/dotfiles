@@ -45,7 +45,7 @@ function widget(s)
 	-- return awful.widget.tasklist(s, awful.widget.tasklist.filter.minimizedcurrenttags, customwidget.buttons)
 
 	-- Create a tasklist widget for minimized clients only with a max width
-	return awful.widget.tasklist(s, awful.widget.tasklist.filter.minimizedcurrenttags , customwidget.buttons, nil, function(w, buttons, label, data, objects)
+	return awful.widget.tasklist(s, awful.widget.tasklist.filter.minimizedcurrenttags, customwidget.buttons, nil, function(w, buttons, label, data, objects)
 		widget_common.list_update(w, buttons, label, data, objects)
 		w:set_max_widget_size(300)
 	end, wibox.layout.flex.horizontal())

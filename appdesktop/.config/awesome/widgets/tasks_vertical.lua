@@ -30,7 +30,8 @@ function widget(s)
 	-- Create a tasklist widget for minimized clients only
 	return awful.widget.tasklist({
 		screen   = s,
-		filter   = awful.widget.tasklist.filter.minimizedcurrenttags,
+		-- filter   = awful.widget.tasklist.filter.minimizedcurrenttags,
+		filter   = awful.widget.tasklist.filter.currenttags,
 		buttons  = customwidget.buttons,
 		-- style    = {
 		-- 	shape_border_width = 1,
@@ -58,8 +59,8 @@ function widget(s)
 			},
 			id     = 'background_role',
 			widget = wibox.container.background,
-			forced_height = 25,
-			forced_width = 25,
+			forced_height = 20,
+			forced_width = 22,
 		},
 	})
 end
