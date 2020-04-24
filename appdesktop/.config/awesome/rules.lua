@@ -200,6 +200,12 @@ local rules = {
 			tag = desktops.tags_names[8],
 		}
 	},
+	-- Privacy
+	{ rule_any = { class = {"Tor Browser", "VirtualBox Machine"} },
+		properties = {
+			tag = desktops.tags_names[9],
+		}
+	},
 	-- Ksnip (screenshots)
 	{ rule_any = { class = {"ksnip"} },
 		properties = {
