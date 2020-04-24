@@ -58,6 +58,10 @@ set --global fish_color_search_match --background='green'
 # Source bash aliases
 source ~/.dotfiles/shell/aliases/20_main.sh
 
+echo $SILVUSDOTFILES_CUSTOM
+	source "$SILVUSDOTFILES_CUSTOM/shellfish"
+end
+
 # Differents alias
 alias l='env LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 
