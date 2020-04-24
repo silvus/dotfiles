@@ -58,7 +58,7 @@ set --global fish_color_search_match --background='green'
 # Source bash aliases
 source ~/.dotfiles/shell/aliases/20_main.sh
 
-echo $SILVUSDOTFILES_CUSTOM
+if test -f "$SILVUSDOTFILES_CUSTOM/shellfish"
 	source "$SILVUSDOTFILES_CUSTOM/shellfish"
 end
 
