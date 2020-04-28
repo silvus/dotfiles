@@ -123,16 +123,6 @@ awful.layout.layouts = config.layouts
 -- Status bar
 -- ---------------------------------------------------------------------
 
--- Custom status bar (need to be loaded after theme init (or naughty configurations ?))
-local statusbar = nil
-if beautiful.bar_orientation == "vertical" then
-	-- vertical bar if theme defined it
-	statusbar = require("bar.vertical")
-else
-	statusbar = require("bar.horizontal")
-end
--- local statusbar_mini = require("bar.mini")
-
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
 	wallpaper.update(s)
@@ -141,8 +131,7 @@ awful.screen.connect_for_each_screen(function(s)
 	desktops.init(s)
 
 	-- Bar init
-	statusbar.init(s)
-	-- statusbar_mini.init(s)
+	beautiful.bar(s)
 end)
 
 
@@ -220,4 +209,4 @@ globalclient.connect_signal("property::fullscreen", function(c) if not c.fullscr
 -- ---------------------------------------------------------------------
 -- Auto start
 -- ---------------------------------------------------------------------
-awful.spawn.with_shell("~/.dotfiles/bin/autostart")
+awful.spawn.with_shell(config.home .. "/.dotfiles/bin/autostart")
