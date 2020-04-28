@@ -71,7 +71,7 @@ function init(s)
 				widget_ram.widget,
 				widget_battery.icon,
 				widget_battery.widget,
-				widget_volume.icon,
+				-- widget_volume.icon,
 				widget_volume.widget,
 				widget_separator.widget,
 				widget_keyboardlayout.widget,

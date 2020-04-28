@@ -11,7 +11,7 @@ local config = {}
 
 config.home = os.getenv("HOME")
 
--- config.theme = "customblue"
+-- config.theme = "lagoon"
 config.theme = "matrix"
 
 -- This is used later as the default terminal and editor to run.
