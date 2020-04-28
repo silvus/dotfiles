@@ -202,10 +202,6 @@ keys.global = awful.util.table.join(
 			awful.util.spawn("amixer -D pulse sset Master toggle", false)
 			widget_volume.volume.update()
 		end, {description = "volume mute", group = "audio"}),
-	awful.key({ modkey }, "Pause", function ()
-			awful.util.spawn("amixer -D pulse sset Master toggle", false)
-			widget_volume.volume.update()
-		end, {description = "volume mute", group = "audio"}),
 	-- Media Keys
 	awful.key({}, "XF86AudioPlay", function()
 			awful.util.spawn("music --toggle-pause", false)
@@ -263,7 +259,7 @@ keys.global = awful.util.table.join(
 				end
 			end
 		end, {description = "toggle scratchpad tag", group = "tag"}),
-	-- Toggle client to scratchpad tag
+	-- Move client to scratchpad tag
 	awful.key({ modkey, "Shift" }, "#49", function ()
 			if client.focus then
 				local screen = awful.screen.focused()
@@ -273,7 +269,45 @@ keys.global = awful.util.table.join(
 					tag_next:view_only()
 				end
 			end
-		end, {description = "move focused client to scratchpad", group = "tag"})
+		end, {description = "move focused client to scratchpad", group = "tag"}),
+	
+	-- Panic button
+	awful.key({ }, "Pause", function ()
+		local screen = awful.screen.focused()
+		local tag_next = screen.tags[2]
+		if tag_next then
+			-- to fake history
+			tag_next:view_only()
+		end
+		local tag_next = screen.tags[1]
+		if tag_next then
+			tag_next:view_only()
+		end
+	end, {description = "Focus first tag", group = "tag"}),
+	-- Toggle X tag (Pause)
+	awful.key({ modkey }, "Pause", function ()
+		local screen = screens.get_primary()
+		local tag_next = screen.tags[11]
+		local tag_current = awful.screen.focused().selected_tag
+		if tag_next then
+			if tag_next == tag_current then
+				awful.tag.history.restore()
+			else
+				tag_next:view_only()
+			end
+		end
+	end, {description = "toggle X tag", group = "tag"}),
+	-- Move client to X tag
+	awful.key({ modkey, "Shift" }, "Pause", function ()
+			if client.focus then
+				local screen = awful.screen.focused()
+				local tag_next = screen.tags[11]
+				if tag_next then
+					client.focus:move_to_tag(tag_next)
+					tag_next:view_only()
+				end
+			end
+		end, {description = "move focused client to X tag", group = "tag"})
 )
 
 -- Bind all key numbers to tags.
