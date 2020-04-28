@@ -231,6 +231,7 @@ function bar(s)
 		local wibox_custom = awful.wibar({
 			position = "left",
 			screen = s,
+			bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
 		})
 
 		-- Add widgets to the wibox
