@@ -201,9 +201,15 @@ local rules = {
 		}
 	},
 	-- Privacy
-	{ rule_any = { class = {"Tor Browser", "VirtualBox Machine"} },
+	{ rule_any = { class = {"Tor Browser"} },
 		properties = {
 			tag = desktops.tags_names[9],
+		}
+	},
+	-- X tag
+	{ rule_any = { title = {"devus [Running] - Oracle VM VirtualBox"} },
+		properties = {
+			tag = "x",
 		}
 	},
 	-- Ksnip (screenshots)
