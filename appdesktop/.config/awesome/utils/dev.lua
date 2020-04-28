@@ -27,7 +27,12 @@ function debug_table(t)
 	for k, v in pairs(t) do
 		str = str .. tostring(k) .. " " .. tostring(v) .. "\n"
 	end
-	naughty.notify({ text = str })
+	naughty.notify({
+		title = 'Debug',
+		text = str,
+		ontop = true,
+		preset = naughty.config.presets.critical
+	})
 end
 
 
