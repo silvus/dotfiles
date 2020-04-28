@@ -1,4 +1,5 @@
 
+local os = require("os")
 local awful = require("awful")
 local gears = require("gears")
 -- Dmenu-like launcher
@@ -8,13 +9,13 @@ local lain = require("lain")
 
 local config = {}
 
+config.home = os.getenv("HOME")
+
 
 -- config.theme = "customblue"
 config.theme = "matrix"
 
 -- This is used later as the default terminal and editor to run.
--- terminal = "x-terminal-emulator"
--- terminal = "urxvt"
 config.terminal = "rxvt-unicode"
 -- editor = os.getenv("EDITOR") or "editor"
 -- editor_cmd = terminal .. " -e " .. editor
