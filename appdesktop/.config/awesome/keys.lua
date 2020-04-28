@@ -17,10 +17,9 @@ local keys = {}
 
 
 modkey = config.modkey
-terminal = config.terminal
 
 keys.global = awful.util.table.join(
-	awful.key({ modkey, }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
+	awful.key({ modkey }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
 
 	awful.key({ modkey, "Shift"}, "h", function()
 			-- Utility function to trim a string
@@ -48,16 +47,16 @@ keys.global = awful.util.table.join(
 		end, {description="Keyboard keys help", group="awesome"}),
 
 	-- Next/previous tag
-	awful.key({ modkey, }, "<",   awful.tag.viewprev, {description = "view previous tag", group = "tag"}),
-	awful.key({ modkey, }, ">", awful.tag.viewnext, {description = "view next tag", group = "tag"}),
+	awful.key({ modkey }, "<",   awful.tag.viewprev, {description = "view previous tag", group = "tag"}),
+	awful.key({ modkey }, ">", awful.tag.viewnext, {description = "view next tag", group = "tag"}),
 	-- Go back to previous tag
-	awful.key({ modkey, }, "Tab", awful.tag.history.restore, {description = "go back to previous tag", group = "tag"}),
+	awful.key({ modkey }, "Tab", awful.tag.history.restore, {description = "go back to previous tag", group = "tag"}),
 
-	-- awful.key({ modkey, }, "Right", function ()
+	-- awful.key({ modkey }, "Right", function ()
 	--		 awful.client.focus.byidx(1)
 	-- 		end, {description = "focus next by index", group = "client"}
 	-- ),
-	-- awful.key({ modkey, }, "Left", function ()
+	-- awful.key({ modkey }, "Left", function ()
 	--		 awful.gclient.focus.byidx(-1)
 	--	 end, {description = "focus previous by index", group = "client"}
 	-- ),
@@ -126,7 +125,7 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Control" }, "Left", function()
 			awful.screen.focus_relative(-1)
 		end, {description = "focus the previous screen", group = "screen"}),
-	awful.key({ modkey, }, "u", function()
+	awful.key({ modkey }, "u", function()
 			awful.client.urgent.jumpto()
 		end, {description = "jump to urgent client", group = "client"}),
 	-- awful.key({ modkey,	}, "Tab", function()
@@ -137,13 +136,13 @@ keys.global = awful.util.table.join(
 	-- 	end, {description = "go back", group = "client"}),
 
 	-- Terminal
-	awful.key({ modkey, }, "Return", function()
-			awful.spawn("rxvt-unicode -title terminal -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev")
+	awful.key({ modkey }, "Return", function()
+			awful.spawn( config.terminal .. " -title terminal -e " .. config.home .. "/.dotfiles/bin/tmuxdev")
 		end, {description = "open a terminal", group = "launcher"}),
-	-- awful.key({}, "²", function () awful.spawn(os.getenv("HOME") .. "/.dotfiles/bin/guakify 'rxvt-unicode.URxvt' '" .. terminal .. " -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev'") end, {description = "open a terminal", group = "launcher"}),
+	-- awful.key({}, "²", function () awful.spawn(config.home .. "/.dotfiles/bin/guakify 'rxvt-unicode.URxvt' '" .. terminal .. " -e " .. config.home .. "/.dotfiles/bin/tmuxdev'") end, {description = "open a terminal", group = "launcher"}),
 
 	-- Prompt
-	awful.key({ modkey, }, "x", function()
+	awful.key({ modkey }, "x", function()
 			screens.get_primary().promptbox:run()
 		end, {description = "run prompt", group = "launcher"}),
 
@@ -156,7 +155,7 @@ keys.global = awful.util.table.join(
 	-- 	end, {description="client menu", group="launcher"}),
 
 	-- Rofi
-	awful.key({ modkey,	}, "e", function()
+	awful.key({ modkey }, "e", function()
 		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
 		-- Default to mouse.coords()
 		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
@@ -233,17 +232,17 @@ keys.global = awful.util.table.join(
 	-- Lock
 	awful.key({ modkey, "Shift" }, "l", function()
 			-- awful.util.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
-			awful.util.spawn("i3lock --color 000305 -t -i " .. os.getenv("HOME") .. "/.dotfiles/appdesktop/.config/awesome/wallpapers/lock_1.png --show-failed-attempts --ignore-empty-password", false)
+			awful.util.spawn("i3lock --color 000305 -t -i " .. config.home .. "/.dotfiles/appdesktop/.config/awesome/wallpapers/lock_1.png --show-failed-attempts --ignore-empty-password", false)
 		end, {description = "lock screen", group = "launcher"}),
 
 	-- Shutdown or restart
 	awful.key({ modkey, "Shift" }, "s", function()
-			awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_shutdown", false)
+			awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_shutdown", false)
 		end, {description = "shutdown", group = "launcher"}),
 
 	-- VPN
 	awful.key({ modkey, "Shift" }, "v", function()
-			awful.util.spawn(os.getenv("HOME") .. "/.dotfiles/bin/dmenu_vpn", false)
+			awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_vpn", false)
 		end, {description = "launch vpn", group = "launcher"}),
 
 	-- Toggle scratchpad tag (²)

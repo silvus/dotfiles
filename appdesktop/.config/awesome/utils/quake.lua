@@ -1,5 +1,6 @@
 local os = require("os")
 local screens = require("screens")
+local config = require("config")
 local lain = require("lain")
 
 
@@ -10,9 +11,9 @@ quake.term = lain.util.quake({
 	-- client name
 	name = "guaketerm",
 	-- client to spawn
-	app = "rxvt-unicode" ,
+	app = config.terminal,
 	-- extra app arguments
-	extra = "-title terminal -e " .. os.getenv("HOME") .. "/.dotfiles/bin/tmuxdev",
+	extra = "-title terminal -e " .. config.home .. "/.dotfiles/bin/tmuxdev",
 	-- border width
 	border = 0,
 	-- initially visible

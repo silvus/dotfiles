@@ -3,6 +3,7 @@ local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
 local screens = require("screens")
+local config = require("config")
 
 local wallpaper = {}
 
@@ -21,18 +22,18 @@ local function update(s)
 		s = awful.screen.focused()
 	end
 
-	if awful.util.file_readable(os.getenv("HOME") .. '/.wallpaper.png') then
+	if awful.util.file_readable(config.home .. '/.wallpaper.png') then
 		-- if ~/.wallpaper is a file, use it
-		wallpaper_current = os.getenv("HOME") .. '/.wallpaper.png'
-	elseif awful.util.file_readable(os.getenv("HOME") .. '/.wallpaper.jpg') then
+		wallpaper_current = config.home .. '/.wallpaper.png'
+	elseif awful.util.file_readable(config.home .. '/.wallpaper.jpg') then
 		-- if ~/.wallpaper is a file, use it
-		wallpaper_current = os.getenv("HOME") .. '/.wallpaper.jpg'
+		wallpaper_current = config.home .. '/.wallpaper.jpg'
 
-	elseif awful.util.dir_readable (os.getenv("HOME") .. '/.wallpapers') then
+	elseif awful.util.dir_readable (config.home .. '/.wallpapers') then
 		-- if ~/.wallpapers is a directory, pick one into it (if name match pattern wallpaper_tagindex.ext)
-		local wallpapers_dir = os.getenv("HOME") .. '/.wallpapers'
+		local wallpapers_dir = config.home .. '/.wallpapers'
 		-- else fallback to default wallpapers directory
-		local wallpaper_default_dir = os.getenv("HOME") .. '/.config/awesome/wallpapers'
+		local wallpaper_default_dir = config.home .. '/.config/awesome/wallpapers'
 		-- Based on current tag
 		local tag = s.selected_tag
 		local tag_name = "1"
