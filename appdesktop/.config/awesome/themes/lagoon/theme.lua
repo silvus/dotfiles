@@ -11,7 +11,7 @@ local theme   = {}
 -- Config
 -- ---------------------------------------------------------------------
 
-theme.name = "customblue"
+theme.name = "lagoon"
 
 theme.info                                      = "#494B4F"
 theme.error                                     = "#D64937"
