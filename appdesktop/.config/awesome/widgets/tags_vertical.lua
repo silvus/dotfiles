@@ -103,7 +103,7 @@ end
 -- Filter for tags widgets
 function tags_filter(t)
 	-- No empty and not the scratchpad (except if selected)
-	return (#t:clients() > 0 or t.selected) and (t.name ~= "0" or t.selected)  and (t.name ~= "X" or t.selected)
+	return (#t:clients() > 0 or t.selected) and (t.name ~= "0" or t.selected) and (t.name ~= "x" or t.selected)
 end
 
 

@@ -206,12 +206,6 @@ local rules = {
 			tag = desktops.tags_names[9],
 		}
 	},
-	-- X tag
-	{ rule_any = { title = {"devus [Running] - Oracle VM VirtualBox"} },
-		properties = {
-			tag = "x",
-		}
-	},
 	-- Ksnip (screenshots)
 	{ rule_any = { class = {"ksnip"} },
 		properties = {
@@ -244,5 +238,32 @@ local rules = {
 		}
 	},
 }
+
+-- Connect a signal on new client appears
+-- https://superuser.com/questions/585058/how-to-move-just-opened-new-window-of-an-already-started-client-to-a-tag-automat?rq=1
+client.connect_signal("manage",function(c,startup)
+	if (c.class == "Firefox") then
+		-- if it's a Firefox we will connect a signal which will call if 'name' changing
+		c:connect_signal("property::name",function(c)
+			-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tag 9
+			if (string.find(c.name,"(Private Browsing)")) then
+				local t = awful.tag.find_by_name(awful.screen.focused(), desktops.tags_names[9])
+				c:tags({t})
+			end
+		end)
+	
+	elseif (c.class == "VirtualBox Machine") then
+		-- if it's a VirtualBox we will connect a signal which will call if 'name' changing
+		c:connect_signal("property::name",function(c)
+			-- if "devus" is part of 'c.name' then 'c' goes to tag x
+			if (string.find(c.name,"devus")) then
+				local t = awful.tag.find_by_name(awful.screen.focused(), 'x')
+				c:tags({t})
+			end
+		end)
+	end
+
+end)
+
 
 return rules
