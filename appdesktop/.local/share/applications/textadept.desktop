@@ -2,7 +2,7 @@
 Name=Textadept
 GenericName=Textadept
 Exec=sh -c "\$HOME/.textadept/textadept/textadept"
-Icon=textadept.png
+Icon=textadept
 Type=Application
 Categories=Categories=Utility;TextEditor;
 Terminal=false
