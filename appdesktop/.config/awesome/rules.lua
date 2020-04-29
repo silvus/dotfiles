@@ -227,7 +227,7 @@ local rules = {
 		}
 	},
 	-- MPV
-	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse" }},
+	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse", "www.primevideo.com" }},
 		properties = {
 			focus = false,
 			placement = awful.placement.no_offscreen + awful.placement.bottom_right,
