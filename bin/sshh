@@ -1,0 +1,184 @@
+#!/usr/bin/env bash
+
+# Fork from https://github.com/fsquillace/kyrat
+#
+# Changes :
+# Script is renamed and launcher is merged to one file
+# "kyrat" variables are replaced by "sshh"
+# Do not use $HOME as $BASE_DIRS
+
+
+set -e -o pipefail
+
+# PATH needs to be updated since GNU Coreutils is required in OSX environments
+GNUBIN="/usr/local/opt/coreutils/libexec/gnubin"
+[[ -d "$GNUBIN" ]] && PATH="$GNUBIN:$PATH"
+
+SSHH_HOME=${SSHH_HOME:-${HOME}/.config/sshh}
+
+BASE64=base64
+BASH=bash
+CAT=cat
+GUNZIP=gunzip
+GZIP=gzip
+SSH=ssh
+# PATH needs to be updated since GNU Coreutils is required in OSX environments
+GNUBIN="/usr/local/opt/coreutils/libexec/gnubin"
+
+# BASE_DIRS=("/tmp" "\$HOME")
+BASE_DIRS=("/tmp")
+
+NOT_EXISTING_COMMAND=111
+NO_WRITABLE_DIRECTORY=112
+
+#######################################
+# Concatenate files to standard output.
+#
+# Globals:
+#   None
+# Arguments:
+#   files ($@)  :  the program arguments.
+# Returns:
+#   None
+# Output:
+#   The file contents.
+#######################################
+function _concatenate_files(){
+    for file_rc in "$@"
+    do
+        if [[ -f "${file_rc}" ]]
+        then
+            cat "${file_rc}"
+        elif [[ -e "${file_rc}" ]]
+        then
+            echo >&2 "Warn: ${file_rc} is not a file."
+        fi
+    done
+}
+
+#######################################
+# Run ssh session with all config files
+# in $SSHH_HOME.
+#
+# Globals:
+#   SSHH_HOME (RO)   : Sshh home location.
+#   BASE64 (RO)      : base64 command.
+#   GZIP (RO)        : gzip command.
+#   GUNZIP (RO)      : gunzip command.
+# Arguments:
+#   args ($@)        : The ssh arguments.
+# Returns:
+#   None
+# Output:
+#   None
+#######################################
+function sshh(){
+    mkdir -p $SSHH_HOME/bashrc.d
+    mkdir -p $SSHH_HOME/inputrc.d
+    mkdir -p $SSHH_HOME/vimrc.d
+    mkdir -p $SSHH_HOME/tmux.conf.d
+    _parse_args "$@"
+    _execute_ssh
+}
+
+#######################################
+# Parse the ssh arguments.
+#
+# Globals:
+#   SSH (RO)         : ssh command.
+#   SSH_OPTS (WO)    : The ssh options.
+#   COMMANDS (WO)    : The ssh command to invoke remotely.
+# Arguments:
+#   args ($@)        : The ssh arguments.
+# Returns:
+#   None
+# Output:
+#   None
+#######################################
+function _parse_args(){
+    [[ -z "$@" ]] && { $SSH; return $?; }
+
+    SSH_OPTS=()
+    for opt in "$@"; do
+        case "$opt" in
+            --) shift ; break ;;
+            *) SSH_OPTS+=("$opt") ; shift ;;
+        esac
+    done
+
+    COMMANDS=("$@")
+}
+
+#######################################
+# Run ssh session with all config files
+# in $SSHH_HOME.
+#
+# Globals:
+#   SSHH_HOME (RO)       : Sshh home location.
+#   BASE64 (RO)          : base64 command.
+#   GZIP (RO)            : gzip command.
+#   GUNZIP (RO)          : gunzip command.
+# Arguments:
+#   args ($@)            : The ssh arguments.
+# Returns:
+#   NOT_EXISTING_COMMAND : if one of the required commands
+#                          does not exist.
+# Output:
+#   None
+#######################################
+function _execute_ssh(){
+    command -v $BASE64 >/dev/null 2>&1 || { echo >&2 "sshh requires $BASE64 to be installed locally. Aborting."; return $NOT_EXISTING_COMMAND; }
+    command -v $GZIP >/dev/null 2>&1 || { echo >&2 "sshh requires $GZIP to be installed locally. Aborting."; return $NOT_EXISTING_COMMAND; }
+
+    local remote_command="$(_get_remote_command)"
+    $SSH -t "${SSH_OPTS[@]}" -- "$BASH -c '$remote_command'"
+}
+
+#######################################
+# Compose and return the remote command
+# to be executed inside the ssh session.
+#
+# Globals:
+#   SSHH_HOME (RO)        : Sshh home location.
+#   BASE64 (RO)           : base64 command.
+#   GZIP (RO)             : gzip command.
+#   GUNZIP (RO)           : gunzip command.
+#   COMMANDS (RO?)        : ssh commands to execute (if any).
+# Arguments:
+#   None
+# Returns:
+#   NOT_EXISTING_COMMAND  : if one of the required commands
+#                           does not exist.
+#   NO_WRITABLE_DIRECTORY : if no writable directories could
+#                           be found in the remote host.
+# Output:
+#   The composed remote command to execute in the ssh session.
+#######################################
+function _get_remote_command(){
+    local rc_script="$(_concatenate_files "$SSHH_HOME"/bashrc "$SSHH_HOME"/bashrc.d/* | $GZIP | $BASE64)"
+    local inputrc_script="$(_concatenate_files "$SSHH_HOME"/inputrc "$SSHH_HOME"/inputrc.d/* | $GZIP | $BASE64)"
+    local vimrc_script="$(_concatenate_files "$SSHH_HOME"/vimrc "$SSHH_HOME"/vimrc.d/* | $GZIP | $BASE64)"
+    local tmux_conf="$(_concatenate_files "$SSHH_HOME"/tmux.conf "$SSHH_HOME"/tmux.conf.d/* | $GZIP | $BASE64)"
+
+    local commands_opt=""
+    [[ -z "${COMMANDS[@]}" ]] || commands_opt="-c \"${COMMANDS[@]}\""
+    $CAT <<EOF
+[[ -e /etc/motd ]] && $CAT /etc/motd || { [[ -e /etc/update-motd.d ]] && command -v run-parts &> /dev/null && run-parts /etc/update-motd.d/; }
+[[ -d "$GNUBIN" ]] && PATH="$GNUBIN:\$PATH";
+for tmp_dir in ${BASE_DIRS[@]}; do [[ -w "\$tmp_dir" ]] && { base_dir="\$tmp_dir"; break; } done;
+[[ -z "\$base_dir" ]] && { echo >&2 "Could not find writable temp directory on the remote host. Aborting."; exit $NO_WRITABLE_DIRECTORY; };
+command -v $BASE64 >/dev/null 2>&1 || { echo >&2 "sshh requires $BASE64 command on the remote host. Aborting."; exit $NOT_EXISTING_COMMAND; };
+command -v $GUNZIP >/dev/null 2>&1 || { echo >&2 "sshh requires $GUNZIP command on the remote host. Aborting."; exit $NOT_EXISTING_COMMAND; };
+SSHH_HOME="\$(mktemp -d sshh-XXXXX -p "\$base_dir")";
+trap "rm -rf "\$SSHH_HOME"; exit" EXIT HUP INT QUIT PIPE TERM KILL;
+[[ -e \${HOME}/.bashrc ]] && echo "source \${HOME}/.bashrc" > "\${SSHH_HOME}/bashrc";
+echo "${rc_script}" | $BASE64 -di | $GUNZIP >> "\${SSHH_HOME}/bashrc";
+echo "${inputrc_script}" | $BASE64 -di | $GUNZIP > "\${SSHH_HOME}/inputrc";
+echo "${vimrc_script}" | $BASE64 -di | $GUNZIP > "\${SSHH_HOME}/vimrc";
+echo "${tmux_conf}" | $BASE64 -di | $GUNZIP > "\${SSHH_HOME}/tmux.conf";
+VIMINIT="let \\\$MYVIMRC=\\"\${SSHH_HOME}/vimrc\\" | source \\\$MYVIMRC" INPUTRC="\${SSHH_HOME}/inputrc" TMUX_CONF="\${SSHH_HOME}/tmux.conf" $BASH --rcfile "\${SSHH_HOME}/bashrc" -i ${commands_opt};
+EOF
+}
+
+
+sshh "$@"
