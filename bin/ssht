@@ -3,6 +3,8 @@
 # Read SSH hosts from ~/.ssh/config
 # Pick one with FZF and ssh to it on a new Tmux window
 
+set -e -o pipefail
+
 function ssh-fzf () {
 	local selected_host=$(grep "Host " ~/.ssh/config | grep -v '*' | awk '{print $2}' | fzf --ansi --reverse --prompt="SSH Remote > ")
 
@@ -10,9 +12,9 @@ function ssh-fzf () {
 
 		# Use sshh is present instead of ssh
 		if [[ -x $(which sshh) ]]; then
-			$SSH="$(which sshh)"
+			local SSH="$(which sshh)"
 		else
-			$SSH="$(which ssh)"
+			local SSH="$(which ssh)"
 		fi
 
 		if [[ -n "$TMUX" ]]; then
