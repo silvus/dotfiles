@@ -205,6 +205,7 @@ function bar(s)
 	local widget_layout = require("widgets.layout")
 	local widget_tags = require("widgets.tags")
 	local widget_tags_vertical = require("widgets.tags_vertical")
+	local widget_tasks = require("widgets.tasks")
 	local widget_tasks_vertical = require("widgets.tasks_vertical")
 	local widget_clock = require("widgets.clock")
 	local widget_clock_vertical = require("widgets.clock_vertical")
@@ -297,7 +298,7 @@ function bar(s)
 			},
 			{ -- Middle widget
 				layout = wibox.layout.fixed.horizontal,
-				tasklist,
+				widget_tasks.widget(s),
 			},
 			{ -- Right widgets
 				layout = wibox.layout.fixed.horizontal,
