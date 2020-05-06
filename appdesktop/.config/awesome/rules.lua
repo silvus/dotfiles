@@ -2,13 +2,16 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
 local desktops = require("desktops")
+local config = require("config")
 local screens = require("screens")
 local globalclient = client
 local clients = require("clients")
 
 
 local function get_video_rule(c)
-	if screens.count() > 1 then
+	if (config.rules_videos == "auto" and screens.count() > 1) or config.rules_videos == "fullscreen" then
+		-- Auto or fullscreen modes. Auto is full screen with more than 1 screen
+
 		-- Full screen on last screen
 		c.sticky = false
 		c.fullscreen = true
@@ -16,6 +19,8 @@ local function get_video_rule(c)
 		c.ontop = false -- Not compatible with fullscreen
 		c.screen = screens.count() -- On last screen
 	else
+		-- Défault to float mode
+
 		-- Sticky in corner on main screen
 		c.sticky = true
 		c.fullscreen = false
