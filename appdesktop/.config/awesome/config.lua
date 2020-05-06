@@ -23,6 +23,9 @@ config.terminal = "rxvt-unicode"
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 config.modkey = "Mod4"
 
+-- Videos windows placement (auto, float, fullscreen)
+config.rules_videos = "auto"
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 config.layouts = {
 	awful.layout.suit.tile,
