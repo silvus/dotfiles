@@ -11,11 +11,12 @@ function ssh-fzf () {
 	if [ -n "$selected_host" ]; then
 
 		# Use sshh is present instead of ssh
-		if [[ -x $(which sshh) ]]; then
-			local SSH="$(which sshh)"
-		else
-			local SSH="$(which ssh)"
-		fi
+		# if [[ -x $(which sshh) ]]; then
+		# 	local SSH="$(which sshh)"
+		# else
+		# 	local SSH="$(which ssh)"
+		# fi
+		local SSH="$(which ssh)"
 
 		if [[ -n "$TMUX" ]]; then
 			# open new window in Tmux, with host has name
