@@ -10,9 +10,14 @@ if [[ -n "$DISPLAY" ]]; then
 			export PATH="${HOME}/bin:$PATH"
 		fi
 		${HOME}/.dotfiles/bin/video "$1"
+	elif [[ -d "/var/pers/vera/mnt/firefox" ]]; then
+		# Firefox custom profile
+		"$(which firefox)" -profile /var/pers/vera/mnt/firefox "$1"
 	elif [[ -x $(which firefox) ]]; then
+		# Firefox
 		"$(which firefox)" "$1"
 	else
+		# Default browser
 		"$BROWSER" "$1"
 	fi
 else
