@@ -7,7 +7,7 @@ REGEXP (((http|https|ftp|gopher)|mailto):(//)?[^ <>"\t]*|(www|ftp)[0-9]?\.[-a-z0
 
 # command to invoke for selected URL
 # COMMAND /etc/urlview/url_handler.sh
-COMMAND ~/.config/newsbeuter/browse
+COMMAND ~/.config/newsboat/browse
 
 # set to yes to enable menu wrapping
 #WRAP Yes
