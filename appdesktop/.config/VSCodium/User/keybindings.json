@@ -46,14 +46,6 @@
 	},
 	// Splits
 	{
-		"key": "ctrl+a v",
-		"command": "workbench.action.splitEditor"
-	},
-	{
-		"key": "ctrl+a h",
-		"command": "workbench.action.splitEditorOrthogonal"
-	},
-	{
 		"key": "ctrl+h",
 		"command": "workbench.action.splitEditor"
 	},
@@ -71,28 +63,12 @@
 		"command": "-editor.action.insertLineAfter",
 	},
 	{
-		"key": "ctrl+a o",
-		"command": "workbench.action.navigateEditorGroups"
-	},
-	{
-		"key": "ctrl+a right",
-		"command": "workbench.action.navigateRight"
-	},
-	{
 		"key": "alt+right",
 		"command": "workbench.action.navigateRight"
 	},
 	{
-		"key": "ctrl+a left",
-		"command": "workbench.action.navigateLeft"
-	},
-	{
 		"key": "alt+left",
 		"command": "workbench.action.navigateLeft"
-	},
-	{
-		"key": "ctrl+a up",
-		"command": "workbench.action.navigateUp"
 	},
 	{
 		"key": "alt+up",
@@ -102,10 +78,6 @@
 		"key": "alt+up",
 		"command": "-editor.action.moveLinesUpAction",
 		"when": "editorTextFocus && !editorReadonly"
-	},
-	{
-		"key": "ctrl+a down",
-		"command": "workbench.action.navigateDown"
 	},
 	{
 		"key": "alt+down",
@@ -118,14 +90,6 @@
 	},
 	// Splits move clients
 	{
-		"key": "ctrl+a shift+right",
-		"command": "workbench.action.moveEditorToRightGroup"
-	},
-	{
-		"key": "ctrl+a ctrl+right",
-		"command": "workbench.action.moveEditorToRightGroup"
-	},
-	{
 		"key": "shift+alt+right",
 		"command": "workbench.action.moveEditorToRightGroup"
 	},
@@ -133,14 +97,6 @@
 		"key": "shift+alt+right",
 		"command": "-editor.action.smartSelect.expand",
 		"when": "editorTextFocus"
-	},
-	{
-		"key": "ctrl+a shift+left",
-		"command": "workbench.action.moveEditorToLeftGroup"
-	},
-	{
-		"key": "ctrl+a ctrl+left",
-		"command": "workbench.action.moveEditorToLeftGroup"
 	},
 	{
 		"key": "shift+alt+left",
@@ -152,14 +108,6 @@
 		"when": "editorTextFocus"
 	},
 	{
-		"key": "ctrl+a shift+down",
-		"command": "workbench.action.moveEditorToDownGroup"
-	},
-	{
-		"key": "ctrl+a ctrl+down",
-		"command": "workbench.action.moveEditorToDownGroup"
-	},
-	{
 		"key": "shift+alt+down",
 		"command": "workbench.action.moveEditorToBelowGroup"
 	},
@@ -167,14 +115,6 @@
 		"key": "shift+alt+down",
 		"command": "-editor.action.insertCursorBelow",
 		"when": "editorTextFocus"
-	},
-	{
-		"key": "ctrl+a shift+up",
-		"command": "workbench.action.moveEditorToUpGroup"
-	},
-	{
-		"key": "ctrl+a ctrl+up",
-		"command": "workbench.action.moveEditorToUpGroup"
 	},
 	{
 		"key": "shift+alt+up",
