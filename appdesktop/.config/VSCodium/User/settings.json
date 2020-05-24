@@ -69,5 +69,8 @@
     "window.restoreWindows": "folders",
     "markdown.preview.breaks": true,
     "markdown.preview.lineHeight": 1.4,
-    "markdown.extension.list.indentationSize": "inherit"
+    "markdown.extension.list.indentationSize": "inherit",
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
 }
