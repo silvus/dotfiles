@@ -72,5 +72,6 @@
     "markdown.extension.list.indentationSize": "inherit",
     "files.eol": "\n",
     "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true
+    "files.trimFinalNewlines": true,
+    "extensions.ignoreRecommendations": true
 }
