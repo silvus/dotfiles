@@ -272,7 +272,7 @@ keys.global = awful.util.table.join(
 	
 	-- Panic button
 	awful.key({ }, "Pause", function ()
-		local screen = awful.screen.focused()
+		local screen = screens.get_primary() -- Work only for primary screen
 		local tag_next = screen.tags[2]
 		if tag_next then
 			-- to fake history
