@@ -26,7 +26,7 @@ config.modkey = "Mod4"
 -- Videos windows placement (auto, float, fullscreen)
 config.rules_videos = "auto"
 
--- Set a different wallpaper for each tag (and each screen)
+-- Set a different wallpaper for each tag (and each screen), else take a random on init
 config.wallpapers_by_tag = false
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
