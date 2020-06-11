@@ -3,7 +3,7 @@
 -- ---------------------------------------------------------------------
 
 -- init random
--- math.randomseed(os.time());
+math.randomseed(os.time());
 
 -- Standard lua
 -- local string = require("string")
