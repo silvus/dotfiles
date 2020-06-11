@@ -26,6 +26,9 @@ config.modkey = "Mod4"
 -- Videos windows placement (auto, float, fullscreen)
 config.rules_videos = "auto"
 
+-- Set a different wallpaper for each tag (and each screen)
+config.wallpapers_by_tag = false
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 config.layouts = {
 	awful.layout.suit.tile,

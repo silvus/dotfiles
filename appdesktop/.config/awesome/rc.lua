@@ -162,10 +162,12 @@ screen.connect_signal("property::geometry", function (s)
 	wallpaper.update(s)
 end)
 
--- Re-set wallpaper when a new tag is selected
-globaltag.connect_signal("property::selected", function (t)
-	wallpaper.update()
-end)
+-- Re-set wallpaper when a new tag is selected (if config option on)
+if config.wallpapers_by_tag then
+	globaltag.connect_signal("property::selected", function (t)
+		wallpaper.update()
+	end)
+end
 
 -- Signal function to execute when a new client appears.
 globalclient.connect_signal("manage", function (c)
@@ -179,19 +181,6 @@ globalclient.connect_signal("manage", function (c)
 		-- Prevent clients from being unreachable after screen count changes.
 		awful.placement.no_offscreen(c)
 	end
-
-	-- if (c.class == "Firefox") then
-	-- 	-- if it's a Firefox we will connect a signal which will call if 'name' changing
-	-- 	c:connect_signal("property::name", function(c)
-	-- 		if (string.find(c.name, "(Private Browsing)")) then
-	-- 			-- if "(Private Browsing)" is part of 'c.name' then 'c' goes to tags[9]
-	--			-- Private window do not keep focuse with this method
-	-- 			local tags = root.tags()
-	-- 			c:tags({tags[9]})
-	-- 			tags[9]:view_only()
-	-- 		end
-	-- 	end)
-	-- end
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
