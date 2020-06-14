@@ -194,7 +194,7 @@ local rules = {
 		}
 	},
 	-- Office
-	{ rule_any = { class = { "libreoffice-startcenter","libreoffice-writer", "libreoffice-calc", "libreoffice-impress","Evince", "Simple-scan" }},
+	{ rule_any = { class = { "libreoffice-startcenter", "libreoffice-writer", "libreoffice-calc", "libreoffice-impress", "Simple-scan" }},
 		properties = {
 			tag = desktops.tags_names[7],
 		}
