@@ -18,6 +18,33 @@ local keys = {}
 
 modkey = config.modkey
 
+-- Panic buttons actions
+function panic_key()
+	-- for all screens
+	for s in screen do
+		-- Go to second tag to fake history
+		local tag_next = s.tags[2]
+		if tag_next then
+			tag_next:view_only()
+		end
+		-- Go to first tag
+		local tag_next = s.tags[1]
+		if tag_next then
+			tag_next:view_only()
+		end
+	end
+
+	-- Clear all notifications
+	naughty.destroy_all_notifications()
+
+	-- Focus on first window in tmux
+	awful.util.spawn("tmux select-window -t 1", false)
+
+	-- Mute sound
+	awful.util.spawn("amixer -D pulse sset Master mute", false)
+	widget_volume.volume.update()
+end
+
 keys.global = awful.util.table.join(
 	awful.key({ modkey }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
 
@@ -166,11 +193,8 @@ keys.global = awful.util.table.join(
 		menubar.show(screens.get_primary())
 	end, {description = "show the menubar", group = "launcher"}),
 
-	-- Quake-like terminal (² and Super Escape)
+	-- Quake-like terminal (²)
 	awful.key({}, "#49", function ()
-			quake.term:toggle()
-		end, {description = "Toggle guake like terminal", group = "launcher"}),
-	awful.key({modkey}, "Escape", function ()
 			quake.term:toggle()
 		end, {description = "Toggle guake like terminal", group = "launcher"}),
 
@@ -270,23 +294,17 @@ keys.global = awful.util.table.join(
 			end
 		end, {description = "move focused client to scratchpad", group = "tag"}),
 	
-	-- Panic button
+	-- Panic buttons
 	awful.key({ }, "Pause", function ()
-		local screen = screens.get_primary() -- Work only for primary screen
-		local tag_next = screen.tags[2]
-		if tag_next then
-			-- to fake history
-			tag_next:view_only()
-		end
-		local tag_next = screen.tags[1]
-		if tag_next then
-			tag_next:view_only()
-		end
-	end, {description = "Focus first tag", group = "tag"}),
+			panic_key()
+		end, {description = "Panic button", group = "tag"}),
+	awful.key({modkey}, "Escape", function ()
+			panic_key()
+		end, {description = "Panic button", group = "tag"}),
 	-- Toggle X tag (Pause)
 	awful.key({ modkey }, "Pause", function ()
-		local screen = screens.get_primary()
-		local tag_next = screen.tags[11]
+		local s_primary = screens.get_primary()
+		local tag_next = s_primary.tags[11]
 		local tag_current = awful.screen.focused().selected_tag
 		if tag_next then
 			if tag_next == tag_current then
@@ -299,8 +317,8 @@ keys.global = awful.util.table.join(
 	-- Move client to X tag
 	awful.key({ modkey, "Shift" }, "Pause", function ()
 			if client.focus then
-				local screen = awful.screen.focused()
-				local tag_next = screen.tags[11]
+				local s_primary = screens.get_primary()
+				local tag_next = s_primary.tags[11]
 				if tag_next then
 					client.focus:move_to_tag(tag_next)
 					tag_next:view_only()
