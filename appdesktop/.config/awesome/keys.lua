@@ -10,6 +10,9 @@ local config = require("config")
 local quake = require("utils.quake")
 local widget_volume = require("widgets.volume")
 
+-- Set a global variable, a local one
+local globalclient = client
+
 local io = require("io")
 local string = require("string")
 
@@ -43,6 +46,30 @@ function panic_key()
 	-- Mute sound
 	awful.util.spawn("amixer -D pulse sset Master mute", false)
 	widget_volume.volume.update()
+
+	-- Clients loop
+	for _, c in ipairs(globalclient.get()) do
+		-- Close MPV
+		if c.class == "mpv" then
+			-- c:kill()  -- kill doesn't preserve video position
+			-- Simulate "q" keypress
+			awful.util.spawn("xdotool key --window " .. c.window .. " q")
+		end
+		
+		-- Unpin and minimize all sticky clients
+		-- if c.sticky then
+		-- 	c.ontop = false
+		-- 	c.above = false
+		-- 	c.sticky = false
+		-- 	c.minimized = true
+		-- end
+
+		-- Re-apply rules
+		-- awful.rules.apply(c)
+	end
+
+	-- Focus primary screen
+	awful.screen.focus(screens.get_primary())
 end
 
 keys.global = awful.util.table.join(
