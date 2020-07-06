@@ -13,7 +13,6 @@ battery usage:
     -e            don't output the emoji
     -a            output ascii instead of spark
     -b            battery path            default: /sys/class/power_supply/BAT0
-    -p            use pmset (more accurate)
   colors:                                                 tmux     zsh
     -g <color>    good battery level      default: 1;32 | green  | 64
     -m <color>    middle battery level    default: 1;33 | yellow | 136
@@ -28,7 +27,6 @@ fi
 
 # For default behavior
 setDefaults() {
-    pmset_on=0
     output_tmux=0
     output_zsh=0
     ascii=0
@@ -125,7 +123,7 @@ print_status() {
 }
 
 # Read args
-while getopts ":g:m:w:tzeab:p" opt; do
+while getopts ":g:m:w:tzeab" opt; do
     case $opt in
         g)
             good_color=$OPTARG
@@ -153,9 +151,6 @@ while getopts ":g:m:w:tzeab:p" opt; do
             ;;
         a)
             ascii=1
-            ;;
-        p)
-            pmset_on=1
             ;;
         b)
             if [ -d $OPTARG ]; then
