@@ -61,7 +61,7 @@ apply_colors() {
     # Green
     if [[ $BATT_PCT -ge 75 ]]; then
         if ((output_tmux)); then
-            COLOR="#[fg=$good_color]"
+            COLOR="$good_color"
         elif ((output_zsh)); then
             COLOR="%F{$good_color}"
         else
@@ -71,7 +71,7 @@ apply_colors() {
     # Yellow
     elif [[ $BATT_PCT -ge 25 ]] && [[ $BATT_PCT -lt 75 ]]; then
         if ((output_tmux)); then
-            COLOR="#[fg=$middle_color]"
+            COLOR="$middle_color"
         elif ((output_zsh)); then
             COLOR="%F{$middle_color}"
         else
@@ -81,7 +81,7 @@ apply_colors() {
     # Red
     elif [[ $BATT_PCT -lt 25 ]]; then
         if ((output_tmux)); then
-            COLOR="#[fg=$warn_color]"
+            COLOR="$warn_color"
         elif ((output_zsh)); then
             COLOR="%F{$warn_color}"
         else
@@ -92,8 +92,9 @@ apply_colors() {
 
 # Print the battery status
 print_status() {
+    GRAPH_ASCII=""
     if ((emoji)) && ((BATT_CONNECTED)); then
-        GRAPH="⚡"
+        GRAPH_ASCII="⚡"
     else
         if command -v spark &>/dev/null; then
             sparks=$(spark 0 ${BATT_PCT} 100)
@@ -110,11 +111,11 @@ print_status() {
         rounded_n=$(( $barlength * $BATT_PCT / 100 + 1))
 
         # Creates the bar
-        GRAPH=$(printf "[%-${barlength}s]" "${ascii_bar:0:rounded_n}")
+        GRAPH=$(printf "%-${barlength}s" "${ascii_bar:0:rounded_n}")
     fi
 
     if ((output_tmux)); then
-        printf "%s%s %s%s" "$COLOR" "[$BATT_PCT%]" "$GRAPH" "#[default]"
+        printf "#[bg=black]#[fg=white] %s #[fg=black]#[bg=%s] %s #[default] " "$GRAPH_ASCII" "$COLOR" "$GRAPH"
     elif ((output_zsh)); then
         printf "%%B%s%s %s" "$COLOR" "[$BATT_PCT%%]" "$GRAPH"
     else
