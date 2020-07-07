@@ -59,7 +59,7 @@ battery_charge() {
 # Apply the correct color to the battery status prompt
 apply_colors() {
 	# Green
-	if [[ $BATT_PCT -ge 75 ]]; then
+	if [[ $BATT_PCT -ge 50 ]]; then
 		if ((output_tmux)); then
 			COLOR="$good_color"
 		elif ((output_zsh)); then
@@ -69,7 +69,7 @@ apply_colors() {
 		fi
 
 	# Yellow
-	elif [[ $BATT_PCT -ge 25 ]] && [[ $BATT_PCT -lt 75 ]]; then
+	elif [[ $BATT_PCT -ge 25 ]] && [[ $BATT_PCT -lt 50 ]]; then
 		if ((output_tmux)); then
 			COLOR="$middle_color"
 		elif ((output_zsh)); then
