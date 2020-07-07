@@ -62,7 +62,7 @@ print_status() {
 	# Create the bar
 	GRAPH=$(printf "%-${barlength}s" "${ascii_bar:0:rounded_n}")
 
-	printf "#[bg=black]#[fg=%s] %s #[fg=black]#[bg=green] %s#[default] " "$COLOR" "$GRAPH_ASCII" "$GRAPH"
+	printf "#[bg=black]#[fg=%s] %s #[fg=black]#[bg=green] %s #[default] " "$COLOR" "$GRAPH_ASCII" "$GRAPH"
 }
 
 volume_status
