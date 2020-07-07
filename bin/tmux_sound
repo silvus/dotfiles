@@ -1,0 +1,70 @@
+#!/bin/bash
+
+usage() {
+cat <<EOF
+sound usage:
+  general:
+	-h, --help    print this message
+EOF
+}
+
+if [[ $1 == '-h' || $1 == '--help' || $1 == '-?' ]]; then
+	usage
+	exit 0
+fi
+
+# Determine volume state and level
+volume_status() {
+	
+	# Get volume state
+	VOL_ON=0
+	if $(amixer -D pulse sget Master | grep 'Left:' | grep -q "\[on\]"); then
+		VOL_ON=1
+	fi
+
+	# Silent exit if sound is off
+	if [[ "$VOL_ON" -eq 0 ]]; then
+		exit 0
+	fi
+
+	# Get volume percentage
+	vol_now=$(amixer -D pulse sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }')
+	# Remove "%" from string
+	VOL_PCT=${vol_now::-1}
+}
+
+# Apply the correct color to the battery status prompt
+apply_colors() {
+	if [[ "$VOL_ON" -eq 1 ]]; then
+		COLOR="white"
+	elif [[ "$VOL_ON" -eq 0 ]]; then
+		COLOR="red"
+	else
+		COLOR="yellow"
+	fi
+}
+
+# Print the battery status
+print_status() {
+	GRAPH_ASCII=""
+	if ((VOL_ON)); then
+		GRAPH_ASCII="🔉"
+	else
+		GRAPH_ASCII="🔇"
+	fi
+
+	ascii_bar='=========='
+	barlength=${#ascii_bar}
+
+	# Battery percentage rounded to the lenght of ascii_bar
+	rounded_n=$(( $barlength * $VOL_PCT / 100))
+
+	# Create the bar
+	GRAPH=$(printf "%-${barlength}s" "${ascii_bar:0:rounded_n}")
+
+	printf "#[bg=black]#[fg=%s] %s #[fg=black]#[bg=green] %s#[default] " "$COLOR" "$GRAPH_ASCII" "$GRAPH"
+}
+
+volume_status
+apply_colors
+print_status
