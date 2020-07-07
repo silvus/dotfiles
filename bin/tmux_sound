@@ -48,9 +48,9 @@ apply_colors() {
 print_status() {
 	GRAPH_ASCII=""
 	if ((VOL_ON)); then
-		GRAPH_ASCII="🔉"
+		GRAPH_ASCII="V"
 	else
-		GRAPH_ASCII="🔇"
+		GRAPH_ASCII="X"
 	fi
 
 	ascii_bar='=========='
