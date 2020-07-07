@@ -73,5 +73,6 @@
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    "extensions.ignoreRecommendations": true
+    "extensions.ignoreRecommendations": true,
+    "rust-client.rustupPath": "~/.config/cargo/bin/rustup"
 }
