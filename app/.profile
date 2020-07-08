@@ -25,12 +25,9 @@ if [[ -f "$SILVUSDOTFILES/shell/env.sh" ]]; then
 fi
 
 
-# Auto start X or sandman
+# Auto start X on tty1
 # ------------------------------------------------------
-if [[ -f ~/.bash_sandman ]]; then
-	# Sandman special case
-	source ~/.bash_sandman
-elif [[ -x "$(which startx)" ]] && [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+if [[ -x "$(which startx)" ]] && [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
 	# Auto start x
 	exec startx
 fi
