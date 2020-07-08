@@ -35,7 +35,6 @@ export SILVUSPROJECT="/data/dev"
 
 # Dotfiles
 export SILVUSDOC="/data/doc"
-export SILVUSHOME="/data/silvus"
 export SILVUSMEDIA="/data/media"
 
 # PATH
