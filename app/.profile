@@ -26,8 +26,9 @@ fi
 
 
 # Auto start X on tty1
+# Only if startx is installed, on first tty and if CUSTOM_AUTO_START_X is set to 1 (default but cas be alter in $SILVUSDOTFILES_CUSTOM/env.sh)
 # ------------------------------------------------------
-if [[ -x "$(which startx)" ]] && [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+if [[ -x "$(which startx)" ]] && [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]] && [[ "$CUSTOM_AUTO_START_X" -eq 1 ]]; then
 	# Auto start x
 	exec startx
 fi

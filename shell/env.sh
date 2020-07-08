@@ -1,3 +1,7 @@
+# X auto start
+# -----------------------------------------------------------------------------
+export CUSTOM_AUTO_START_X=1
+
 # Locales
 # -----------------------------------------------------------------------------
 export LANGUAGE=en
@@ -29,6 +33,7 @@ fi
 # -----------------------------------------------------------------------------
 # Dotfiles path (if not set)
 export SILVUSDOTFILES=${SILVUSDOTFILES:="$HOME/.dotfiles"}
+export SILVUSDOTFILES_CUSTOM=${SILVUSDOTFILES_CUSTOM:="${SILVUSDOTFILES}_custom"}
 
 # Projects root folder (for Virtualenvwrapper, etc...)
 export SILVUSPROJECT="/data/dev"
@@ -100,3 +105,9 @@ export HISTCONTROL=ignoreboth # ignoredups + ignorespace
 # Do not ignore hiddens files (except .git and .svn)
 export FZF_DEFAULT_COMMAND="find . -type f -not -path '*/\.git/*' -not -path '*/\.svn/*' -print -o -type l -print 2> /dev/null | sed s/^..//"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Environment specific configuration
+# ------------------------------------------------------
+if [[ -f "$SILVUSDOTFILES_CUSTOM/env.sh" ]]; then
+	source "$SILVUSDOTFILES_CUSTOM/env.sh"
+fi
