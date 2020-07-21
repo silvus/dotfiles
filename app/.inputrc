@@ -1,0 +1,4 @@
+
+# Disable beep sound in tty
+# set bell-style none
+set bell-style visible
