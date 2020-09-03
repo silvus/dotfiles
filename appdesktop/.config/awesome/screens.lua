@@ -3,14 +3,20 @@ local screens = {}
 local awful = require("awful")
 local io = require("io")
 
+local config = require("config")
+
 -- Set global screen variable to a local one
 -- local screen = screen
 
 -- Execute specific xrandr script
--- Init can not be done each time we start awesome because of add screen event (infinite loop)
--- local function init()
--- 	awful.spawn.with_shell("~/.dotfiles/bin/autostart_screen")
--- end
+local function init()
+	awful.spawn.with_shell(config.home .. "/.dotfiles/bin/autostart_screen")
+
+	-- Update primary and screens change after xrandr command
+	-- TODO: how to update wibar and tags on primary changed ?
+	screen.emit_signal("list")
+	screen.emit_signal("primary_changed")
+end
 
 -- Count numbers of screens
 local function count()
@@ -28,7 +34,7 @@ local function get_primary()
 end
 
 
--- screens.init = init
+screens.init = init
 screens.count = count
 screens.get_primary = get_primary
 
