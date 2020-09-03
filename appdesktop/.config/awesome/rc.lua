@@ -37,6 +37,9 @@ local wallpaper = require("utils.wallpaper")
 -- To build client titlebars
 local titlebars = require("titlebars")
 
+-- Dashboard
+require("utils.dashboard")
+
 -- Set a global variable, a local one
 local globalscreen = screen
 local globaltag = tag
