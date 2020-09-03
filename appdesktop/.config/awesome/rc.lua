@@ -79,10 +79,11 @@ end
 -- ---------------------------------------------------------------------
 -- Screens
 -- ---------------------------------------------------------------------
+-- Launch specific xrandr script on init if presents (Need to be done before launching Awesome or primary screen can be wrong)
+screens.init()
 -- Restart awesome to update screens count
-screen.connect_signal("added", awesome.restart)
-screen.connect_signal("removed", awesome.restart)
--- screens.init()
+-- screen.connect_signal("added", awesome.restart)
+-- screen.connect_signal("removed", awesome.restart)
 
 
 -- ---------------------------------------------------------------------
@@ -125,7 +126,6 @@ awful.layout.layouts = config.layouts
 -- ---------------------------------------------------------------------
 -- Status bar
 -- ---------------------------------------------------------------------
-
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
 	wallpaper.update(s)
@@ -133,10 +133,20 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Tags init
 	desktops.init(s)
 
-	-- Bar init
-	beautiful.bar(s)
+	-- Bar init (keeped in screen to remove on events)
+	s.bar = beautiful.bar(s)
 end)
 
+
+screen.connect_signal("primary_changed", function (s)
+	-- on primary change, delete and redraw all bars
+	for s in screen do
+		if s.bar then 
+			s.bar:remove()
+			s.bar = beautiful.bar(s)
+		end
+	end
+end)
 
 -- ---------------------------------------------------------------------
 -- Keybindings
