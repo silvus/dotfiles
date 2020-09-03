@@ -291,6 +291,13 @@ keys.global = awful.util.table.join(
 			awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_shutdown", false)
 		end, {description = "shutdown", group = "launcher"}),
 
+	-- Dashboard
+	awful.key({ modkey }, "a", function()
+			if dashboard_show then
+				dashboard_show()
+			end
+		end, {description = "dashboard", group = "custom"}),
+
 	-- VPN
 	awful.key({ modkey, "Shift" }, "v", function()
 			awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_vpn", false)
