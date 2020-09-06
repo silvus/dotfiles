@@ -253,6 +253,9 @@ keys.global = awful.util.table.join(
 			widget_volume.volume.update()
 		end, {description = "volume mute", group = "audio"}),
 	-- Media Keys
+	awful.key({}, "XF86Tools", function()
+			awful.util.spawn("tmux new-window " .. config.home .. "/.dotfiles/bin/music", false)
+		end, {description = "Media launcher", group = "audio"}),
 	awful.key({}, "XF86AudioPlay", function()
 			awful.util.spawn("music --toggle-pause", false)
 		end, {description = "audio toggle play/pause", group = "audio"}),
