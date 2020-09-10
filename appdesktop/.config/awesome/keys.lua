@@ -315,10 +315,10 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey }, "#49", function ()
 			local screen = screens.get_primary()
 			local tag_next = screen.tags[10]
-			local tag_current = awful.screen.focused().selected_tag
+			local tag_current = screen.selected_tag
 			if tag_next then
 				if tag_next == tag_current then
-					awful.tag.history.restore()
+					awful.tag.history.restore(screen)
 				else
 					tag_next:view_only()
 				end
@@ -347,10 +347,10 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey }, "Pause", function ()
 		local s_primary = screens.get_primary()
 		local tag_next = s_primary.tags[11]
-		local tag_current = awful.screen.focused().selected_tag
+		local tag_current = s_primary.selected_tag
 		if tag_next then
 			if tag_next == tag_current then
-				awful.tag.history.restore()
+				awful.tag.history.restore(s_primary)
 			else
 				tag_next:view_only()
 			end
