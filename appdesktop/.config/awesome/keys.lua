@@ -306,6 +306,11 @@ keys.global = awful.util.table.join(
 			awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_vpn", false)
 		end, {description = "launch vpn", group = "launcher"}),
 
+	-- Firefox refresh
+	awful.key({ modkey }, "r", function()
+		awful.util.spawn(config.home .. "/.dotfiles/bin/refresh_firefox", false)
+	end, {description = "refresh firefox", group = "launcher"}),
+
 	-- Toggle scratchpad tag (²)
 	awful.key({ modkey }, "#49", function ()
 			local screen = screens.get_primary()
