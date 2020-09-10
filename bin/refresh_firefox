@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Refresh Firefox
+
+ACTIVE_WINDOW=$(xdotool getactivewindow)
+
+if [ -z "${1}" ]; then
+	xdotool search --onlyvisible --classname Navigator windowactivate --sync key --clearmodifiers "F5"
+else
+	xdotool search --onlyvisible --classname Navigator search --name $1 windowactivate --sync key --clearmodifiers "F5"
+fi
+
+xdotool windowactivate --sync ${ACTIVE_WINDOW}
