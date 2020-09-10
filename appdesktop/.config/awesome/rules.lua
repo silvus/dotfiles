@@ -137,7 +137,7 @@ local rules = {
 	{ rule = { class = "jetbrains-phpstorm"},
 		except = { type = "dialog" },
 		properties = {
-			tag = desktops.tags_names[2],
+			tag = desktops.tags_names[1],
 			-- screen = screens.count(),
 		}
 	},
