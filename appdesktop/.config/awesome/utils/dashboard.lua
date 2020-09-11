@@ -57,7 +57,9 @@ end
 
 local function set_visibility(v)
 	for s in screen do
-		s.dashboard.visible = v
+		if s.dashboard then
+			s.dashboard.visible = v
+		end
 	end
 end
 
