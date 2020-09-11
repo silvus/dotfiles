@@ -43,9 +43,19 @@ setDefaults
 
 # Determine battery charge state
 battery_charge() {
-	battery_state=$(cat $battery_path/energy_now)
-	battery_full=$battery_path/energy_full
-	battery_current=$battery_path/energy_now
+	
+	if [ -f "$battery_path/status" ]; then
+		# Ubuntu 20.04
+		battery_state=$(cat $battery_path/status)
+		battery_full="$battery_path/charge_full"
+		battery_current="$battery_path/charge_now"
+	else 
+		# Debian 10
+		battery_state=$(cat $battery_path/energy_now)
+		battery_full="$battery_path/energy_full"
+		battery_current="$battery_path/energy_now"
+	fi
+
 	if [ $battery_state == 'Discharging' ]; then
 		BATT_CONNECTED=0
 	else
@@ -115,7 +125,7 @@ print_status() {
 	fi
 
 	if ((output_tmux)); then
-		printf "#[bg=black]#[fg=white] %s #[fg=black]#[bg=%s] %s#[default] " "$GRAPH_ASCII" "$COLOR" "$GRAPH"
+		printf "#[bg=black]#[fg=white] %s #[fg=black]#[bg=%s] %s #[default] " "$GRAPH_ASCII" "$COLOR" "$GRAPH"
 	elif ((output_zsh)); then
 		printf "%%B%s%s %s" "$COLOR" "[$BATT_PCT%%]" "$GRAPH"
 	else
