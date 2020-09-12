@@ -34,11 +34,11 @@ local screens = require('screens')
 -- Wallpapers utilities
 local wallpaper = require("utils.wallpaper")
 
+-- Init Dashboard
+-- local dashboard = require("utils.dashboard")
+
 -- To build client titlebars
 local titlebars = require("titlebars")
-
--- Dashboard
-require("utils.dashboard")
 
 -- Set a global variable, a local one
 local globalscreen = screen

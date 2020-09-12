@@ -12,37 +12,32 @@ local config = require("config")
 
 -- Theme handling library
 local beautiful = require("beautiful")
-local xrdb = beautiful.xresources.get_current_theme()
--- xrdb variable
-local x = {
-	background = xrdb.background,
-	foreground = xrdb.foreground,
-}
+
+local calendar = require("utils.calendar")
+
+local widgets_background = '#00060f'
+-- local widgets_foreground = '#eeeeec'
 
 local box_radius = beautiful.dashboard_box_border_radius or dpi(12)
-local box_gap = dpi(6)
-
--- Make dpi function global
-dpi = beautiful.xresources.apply_dpi
--- Make xresources colors global
-
-
--- Get screen geometry
-local screen_width = awful.screen.focused().geometry.width
-local screen_height = awful.screen.focused().geometry.height
+local box_gap = dpi(12)
 
 -- Create the widget
-dashboard = wibox({visible = false, ontop = true, type = "dock", screen = screen.primary})
+local dashboard = wibox({visible = false, ontop = true, type = "dock", screen = screen.primary})
 awful.placement.maximize(dashboard)
 
-dashboard.bg = beautiful.dashboard_bg or beautiful.exit_screen_bg or beautiful.wibar_bg or "#111111"
-dashboard.fg = beautiful.dashboard_fg or beautiful.exit_screen_fg or beautiful.wibar_fg or "#FEFEFE"
+dashboard.bg = beautiful.dashboard_bg or (beautiful.bg_normal .. "ED") or "#111111"
+dashboard.fg = beautiful.dashboard_fg or "#FEFEFE"
 
 -- Adds a maximized mask to a screen
-local function screen_mask(s, bg)
-	local mask = wibox({visible = false, ontop = true, type = "splash", screen = s})
+local function screen_mask(s)
+	local mask = wibox({
+		visible = false,
+		ontop = true,
+		type = "splash",
+		screen = s,
+	})
 	awful.placement.maximize(mask)
-	mask.bg = bg
+	mask.bg = "#11111190"
 	return mask
 end
 
@@ -51,7 +46,7 @@ for s in screen do
 	if s == screen.primary then
 		s.dashboard = dashboard
 	else
-		s.dashboard = screen_mask(s, dashboard.bg)
+		s.dashboard = screen_mask(s)
 	end
 end
 
@@ -81,6 +76,10 @@ local function prrect(radius, tl, tr, br, bl)
 	return function(cr, width, height)
 		gears.shape.partially_rounded_rect(cr, width, height, tl, tr, br, bl, radius)
 	end
+end
+
+local function firstToUpper(str)
+	return (str:gsub("^%l", string.upper))
 end
 
 -- Helper function that puts a widget inside a box with a specified background color
@@ -121,25 +120,12 @@ local function create_boxed_widget(widget_to_be_boxed, width, height, bg_color)
 	return boxed_widget
 end
 
--- Calendar
--- local calendar = require("noodle.calendar")
--- -- Update calendar whenever dashboard is shown
--- dashboard:connect_signal("property::visible", function ()
---	 if dashboard.visible then
---		 calendar.date = os.date('*t')
---	 end
--- end)
-
--- local calendar_box = create_boxed_widget(calendar, dpi(300), dpi(400), x.background)
--- -- local calendar_box = create_boxed_widget(calendar, 380, 540, x.color0)
-
-
 -- Fortune
 local fortune_command = "fortune -n 140 -s"
 local fortune_update_interval = 3600
 -- local fortune_command = "fortune -n 140 -s computers"
 local fortune = wibox.widget {
-	font = "sans medium 11",
+	-- font = "sans medium 11",
 	text = "Loading your cookie...",
 	widget = wibox.widget.textbox
 }
@@ -172,19 +158,29 @@ local fortune_widget = wibox.widget {
 	widget = wibox.container.margin
 }
 
-local fortune_box = create_boxed_widget(fortune_widget, dpi(300), dpi(140), x.background)
+local fortune_box = create_boxed_widget(fortune_widget, dpi(300), dpi(140), widgets_background)
 fortune_box:buttons(gears.table.join(
 	-- Left click - New fortune
-	awful.button({ }, 1, update_fortune)
+	awful.button({}, 1, update_fortune)
 ))
 -- helpers.add_hover_cursor(fortune_box, "hand1")
+
+-- Calendar
+local calendar = require("widgets.calendar")
+-- Update calendar whenever dashboard is shown
+dashboard:connect_signal("property::visible", function ()
+	 if dashboard.visible then
+		 calendar.date = os.date('*t')
+	 end
+end)
+local calendar_box = create_boxed_widget(calendar, dpi(300), dpi(300), widgets_background)
 
 -- Uptime
 local uptime_text = wibox.widget.textbox()
 awful.widget.watch("uptime -p | sed 's/^...//'", 60, function(_, stdout)
 	-- Remove trailing whitespaces
 	local out = stdout:gsub('^%s*(.-)%s*$', '%1')
-	uptime_text.text = out
+	uptime_text.text = firstToUpper(out)
 end)
 local uptime = wibox.widget {
 	{
@@ -197,17 +193,16 @@ local uptime = wibox.widget {
 	{
 		align = "center",
 		valign = "center",
-		font = "sans medium 11",
+		-- font = "sans medium 11",
 		widget = uptime_text
 	},
-	spacing = dpi(10),
+	spacing = dpi(5),
 	layout = wibox.layout.fixed.horizontal
 }
 
-local uptime_box = create_boxed_widget(uptime, dpi(300), dpi(80), x.background)
-
+local uptime_box = create_boxed_widget(uptime, dpi(300), dpi(80), widgets_background)
 uptime_box:buttons(gears.table.join(
-	awful.button({ }, 1, function ()
+	awful.button({}, 1, function ()
 		exit_screen_show()
 		gears.timer.delayed_call(function()
 			dashboard_hide()
@@ -232,12 +227,13 @@ dashboard:setup {
 				layout = wibox.layout.fixed.vertical
 			},
 			-- {
-			--	 -- Column 2
+				-- Column 2
 			--	 url_petals_box,
 			--	 notification_state_box,
 			--	 screenshot_box,
 			--	 disk_box,
-			--	 layout = wibox.layout.fixed.vertical
+			--	calendar_box,
+			--	layout = wibox.layout.fixed.vertical
 			-- },
 			-- {
 			--	 -- Column 3
@@ -263,28 +259,23 @@ dashboard:setup {
 	layout = wibox.layout.align.vertical
 }
 
+
 local dashboard_grabber
-function dashboard_hide()
+dashboard.hide = function()
 	awful.keygrabber.stop(dashboard_grabber)
 	set_visibility(false)
 end
 
 
-local original_cursor = "left_ptr"
-function dashboard_show()
-	-- Fix cursor sometimes turning into "hand1" right after showing the dashboard
-	-- Sigh... This fix does not always work
-	local w = mouse.current_wibox
-	if w then
-		w.cursor = original_cursor
-	end
-	-- naughty.notify({text = "starting the keygrabber"})
+dashboard.show = function()
 	dashboard_grabber = awful.keygrabber.run(function(_, key, event)
 		if event == "release" then return end
 		-- Press Escape or others to hide it
 		if key == 'Escape' or key == 'q' or key == 'a' or key == config.modkey then
-			dashboard_hide()
+			dashboard.hide()
 		end
 	end)
 	set_visibility(true)
 end
+
+return dashboard
