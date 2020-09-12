@@ -8,6 +8,8 @@ local desktops = require("desktops")
 local config = require("config")
 -- Quake like terminal (single instance for all screens)
 local quake = require("utils.quake")
+-- Dashboard
+local dashboard = require("utils.dashboard")
 local widget_volume = require("widgets.volume")
 
 -- Set a global variable, a local one
@@ -296,9 +298,7 @@ keys.global = awful.util.table.join(
 
 	-- Dashboard
 	awful.key({ modkey }, "a", function()
-			if dashboard_show then
-				dashboard_show()
-			end
+			dashboard.show()
 		end, {description = "dashboard", group = "custom"}),
 
 	-- VPN

@@ -22,7 +22,7 @@ local function debug_log(text)
 	-- log:close()
 end
 
-function debug_table(t)
+local function debug_table(t)
 	local str = ""
 	for k, v in pairs(t) do
 		str = str .. tostring(k) .. " " .. tostring(v) .. "\n"
