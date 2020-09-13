@@ -5,6 +5,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
+local escape_f = require("awful.util").escape
 
 local keygrabber = require("awful.keygrabber")
 
@@ -133,8 +134,7 @@ local fortune = wibox.widget {
 local update_fortune = function()
 	awful.spawn.easy_async_with_shell(fortune_command, function(out)
 		-- Remove trailing whitespaces
-		out = out:gsub('^%s*(.-)%s*$', '%1')
-		-- fortune.markup = "<i>"..helpers.colorize_text(out, x.color4).."</i>"
+		out = escape_f(out:gsub('^%s*(.-)%s*$', '%1'))
 		fortune.markup = "<i>"..out.."</i>"
 	end)
 end
@@ -175,6 +175,69 @@ dashboard:connect_signal("property::visible", function ()
 end)
 local calendar_box = create_boxed_widget(calendar, dpi(300), dpi(300), widgets_background)
 
+-- Music
+local music_text = awful.widget.watch("mocp -M " .. os.getenv("HOME") .. "/.config/moc" .. " -i", 10, function(music_widget, stdout)
+	moc_now = {
+		state   = "N/A",
+		file    = "N/A",
+		artist  = "N/A",
+		title   = "N/A",
+		album   = "N/A",
+		elapsed = "N/A",
+		total   = "N/A"
+	}
+
+	for line in string.gmatch(stdout, "[^\n]+") do
+		for k, v in string.gmatch(line, "([%w]+):[%s](.*)$") do
+			if     k == "State"       then moc_now.state   = v
+			elseif k == "File"        then moc_now.file    = v
+			elseif k == "Artist"      then moc_now.artist  = escape_f(v)
+			elseif k == "SongTitle"   then moc_now.title   = escape_f(v)
+			elseif k == "Album"       then moc_now.album   = escape_f(v)
+			elseif k == "CurrentTime" then moc_now.elapsed = escape_f(v)
+			elseif k == "TotalTime"   then moc_now.total   = escape_f(v)
+			end
+		end
+	end
+
+	if moc_now.state == 'PLAY' or moc_now.state == 'PAUSE' then
+		music_widget.visible = true
+
+		if moc_now.total == 'N/A' then
+			-- Remote m3a (Like Rainwave)
+			music_widget:set_markup("<span color='" .. beautiful.success .. "'>" .. moc_now.title .. "</span>")
+		else
+			if moc_now.artist == "N/A" then
+				music_widget:set_markup("<span color='" .. beautiful.success .. "'>" .. moc_now.title .. "</span>")
+			else
+				music_widget:set_markup(moc_now.artist .. " - <span color='" .. beautiful.success .. "'>" .. moc_now.title .. "</span>")
+			end
+		end
+	else
+		music_widget.visible = false
+	end
+
+end)
+local music = wibox.widget {
+	{
+		align = "left",
+		valign = "center",
+		widget = music_text
+	},
+	margins = box_gap * 4,
+	color = "#00000000",
+	widget = wibox.container.margin
+}
+local music_box = create_boxed_widget(music, dpi(300), dpi(300), widgets_background)
+-- music_box:buttons(gears.table.join(
+-- 	awful.button({}, 1, function ()
+-- 		exit_screen_show()
+-- 		gears.timer.delayed_call(function()
+-- 			dashboard_hide()
+-- 		end)
+-- 	end)
+-- ))
+
 -- Uptime
 local uptime_text = wibox.widget.textbox()
 awful.widget.watch("uptime -p | sed 's/^...//'", 60, function(_, stdout)
@@ -186,20 +249,12 @@ local uptime = wibox.widget {
 	{
 		align = "center",
 		valign = "center",
-		font = "DejaVu sans 20",
-		-- markup = helpers.colorize_text("", x.color3),
-		widget = wibox.widget.textbox()
-	},
-	{
-		align = "center",
-		valign = "center",
 		-- font = "sans medium 11",
 		widget = uptime_text
 	},
 	spacing = dpi(5),
 	layout = wibox.layout.fixed.horizontal
 }
-
 local uptime_box = create_boxed_widget(uptime, dpi(300), dpi(80), widgets_background)
 uptime_box:buttons(gears.table.join(
 	awful.button({}, 1, function ()
@@ -223,6 +278,7 @@ dashboard:setup {
 			{
 				-- Column 1
 				-- user_box,
+				music_box,
 				fortune_box,
 				layout = wibox.layout.fixed.vertical
 			},
@@ -271,7 +327,7 @@ dashboard.show = function()
 	dashboard_grabber = awful.keygrabber.run(function(_, key, event)
 		if event == "release" then return end
 		-- Press Escape or others to hide it
-		if key == 'Escape' or key == 'q' or key == 'a' or key == config.modkey then
+		if key == 'Escape' or key == 'q' or key == 'a' or key == '²' or key == config.modkey then
 			dashboard.hide()
 		end
 	end)
