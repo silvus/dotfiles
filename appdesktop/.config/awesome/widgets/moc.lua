@@ -49,12 +49,10 @@ local moc = lain.widget.contrib.moc({
 	cover_size = 50,
 	default_art = beautiful.music,
 	settings  = function()
-		moc_notification_preset = {
-			title   = moc_now.artist .. " - " .. moc_now.title,
-			timeout = 10,
-			text    = string.format("%s (%s) - %s", moc_now.artist, moc_now.album, moc_now.title),
-			preset  = naughty.config.defaults
-		}
+		moc_notification_preset = naughty.config.presets.low
+		moc_notification_preset.title = moc_now.artist .. " - " .. moc_now.title
+		moc_notification_preset.text    = string.format("%s (%s) - %s", moc_now.artist, moc_now.album, moc_now.title)
+
 		if moc_now.state == 'PLAY' or moc_now.state == 'PAUSE' then
 			customwidget.icon.visible = true
 
