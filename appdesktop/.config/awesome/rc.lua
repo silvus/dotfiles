@@ -97,7 +97,16 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. config.t
 naughty.config.padding = 25 -- Space between popups and edge of the workarea
 naughty.config.spacing = 2 -- Spacing between popups
 
-naughty.config.defaults.timeout = 30
+-- Set defaut icon
+naughty.config.notify_callback = function(args)
+	if not args.icon then
+		args.icon = beautiful.arrow_left
+	end
+	return args
+end
+
+-- Default
+naughty.config.defaults.timeout = 60
 naughty.config.defaults.screen = screens.get_primary()
 naughty.config.defaults.position = beautiful.notification_position
 naughty.config.defaults.margin = 5 -- Space inside popup
@@ -107,21 +116,18 @@ naughty.config.defaults.hover_timeout = nil
 naughty.config.defaults.fg = beautiful.fg_urgent
 naughty.config.defaults.bg = beautiful.bg_focus
 naughty.config.defaults.border_color = beautiful.border_focus
-naughty.config.notify_callback = function(args)
-	-- Set defaut icon
-	if not args.icon then
-		args.icon = beautiful.arrow_left
-	end
-	return args
-end
-
-naughty.config.presets.low.timeout = 10
+-- Low
+naughty.config.presets.low.fg = beautiful.fg_urgent
+naughty.config.presets.low.bg = "#333333"
+naughty.config.presets.low.border_color = beautiful.bg_normal
+naughty.config.presets.low.timeout = 3
+-- Critical
+naughty.config.presets.critical.fg = beautiful.fg_urgent
 naughty.config.presets.critical.bg = beautiful.error
 naughty.config.presets.critical.border_color = beautiful.fg_urgent
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = config.layouts
-
 
 -- ---------------------------------------------------------------------
 -- Status bar
