@@ -71,8 +71,8 @@ local function init(s)
 			})
 		end
 	else
-		-- secondary screens (Vertical layout)
-		awful.tag(tags_names, s, awful.layout.suit.tile)
+		-- secondary screens (One tag only)
+		awful.tag({"S"..s.index}, s, awful.layout.suit.tile)
 
 	end
 end

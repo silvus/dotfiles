@@ -106,7 +106,10 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey }, "<",   awful.tag.viewprev, {description = "view previous tag", group = "tag"}),
 	awful.key({ modkey }, ">", awful.tag.viewnext, {description = "view next tag", group = "tag"}),
 	-- Go back to previous tag
-	awful.key({ modkey }, "Tab", awful.tag.history.restore, {description = "go back to previous tag", group = "tag"}),
+	awful.key({ modkey }, "Tab", function()
+			local screen = screens.get_primary()
+			awful.tag.history.restore(screen)
+		end, {description = "go back to previous tag", group = "tag"}),
 
 	-- awful.key({ modkey }, "Right", function ()
 	--		 awful.client.focus.byidx(1)
@@ -377,14 +380,14 @@ for i, v in pairs(desktops.tags_names) do
 	keys.global = awful.util.table.join(keys.global,
 	-- View tag only.
 	awful.key({ modkey }, "#" .. i + 9, function ()
-			local screen = awful.screen.focused()
+			local screen = screens.get_primary()
 			local tag_next = screen.tags[i]
-			local tag_current = awful.screen.focused().selected_tag
+			local tag_current = screen.selected_tag
 
 			if tag_next then
 				if tag_next == tag_current then
 					-- If already on focused screen, go to previous one
-					awful.tag.history.restore()
+					awful.tag.history.restore(screen)
 				else
 					-- Just go to the screen
 					tag_next:view_only()
@@ -393,7 +396,7 @@ for i, v in pairs(desktops.tags_names) do
 		end, {description = "view tag", group = "tag"}),
 	-- Toggle tag display.
 	awful.key({ modkey, "Control" }, "#" .. i + 9, function ()
-			local screen = awful.screen.focused()
+			local screen = screens.get_primary()
 			local tag_next = screen.tags[i]
 			if tag_next then
 				awful.tag.viewtoggle(tag_next)
@@ -402,7 +405,7 @@ for i, v in pairs(desktops.tags_names) do
 	-- Move client to tag.
 	awful.key({ modkey, "Shift" }, "#" .. i + 9, function ()
 			if client.focus then
-				local screen = awful.screen.focused()
+				local screen = screens.get_primary()
 				local tag_next = client.focus.screen.tags[i]
 				if tag_next then
 					client.focus:move_to_tag(tag_next)
