@@ -23,11 +23,11 @@ customwidget.volume = lain.widget.alsa({
 			customwidget.icon:set_image(beautiful.vol_mute)
 			customwidget.widgetbar.colors[1] = beautiful.error
 			customwidget.widgetbar.border_color = beautiful.error
-		elseif level == 0 then
+		elseif level and level == 0 then
 			customwidget.icon:set_image(beautiful.vol_no)
 			customwidget.widgetbar.colors[1] = beautiful.error
 			customwidget.widgetbar.border_color = beautiful.error
-		elseif level <= 50 then
+		elseif level and level <= 50 then
 			customwidget.icon:set_image(beautiful.vol_low)
 			customwidget.widgetbar.colors[1] = beautiful.success
 			customwidget.widgetbar.border_color = beautiful.info
