@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -38,10 +38,11 @@ Download and read more at
 from argparse import ArgumentParser
 from random import shuffle, choice
 from textwrap import fill
+import sys
 
 SHORTNAME = "lorem"
 PROGRAM = "Lorem Ipsum Generator (%s)" % SHORTNAME
-VERSION = "0.7.4"
+VERSION = "0.8.0"
 COPYR = "Copyright (C) 2014 Per Erik Strandberg"
 GPLV3 = """This is free software, and you are welcome to redistribute it
 under the GNU General Public License 3+ <http://www.gnu.org/licenses/gpl.html>
@@ -269,6 +270,53 @@ def get_quote(source=None, idx=None):
         conquer it, and oversee the fish in the sea, and the bird in
         the sky, and every animal which crawls upon the Earth."""
 
+    i += 1
+    if source in ['walden', 'thoreau'] or idx == i:
+        # https://en.wikisource.org/wiki/Walden/Chapter_II
+        # Walden (II: Where I Lived, and What I Lived For),
+        # by Henry David Thoreau, 1854
+        return """I went to the woods because I wished to live deliberately,
+        to front only the essential facts of life, and see if I
+        could not learn what it had to teach, and not, when I came
+        to die, discover that I had not lived. I did not wish to
+        live what was not life, living is so dear; nor did I wish to
+        practise resignation, unless it was quite necessary. I
+        wanted to live deep and suck out all the marrow of life, to
+        live so sturdily and Spartan like as to put to rout all that
+        was not life, to cut a broad swath and shave close, to drive
+        life into a corner, and reduce it to its lowest terms, and,
+        if it proved to be mean, why then to get the whole and
+        genuine meanness of it, and publish its meanness to the
+        world; or if it were sublime, to know it by experience, and
+        be able to give a true account of it in my next excursion.
+        For most men, it appears to me, are in a strange uncertainty
+        about it, whether it is of the devil or of God, and have
+        somewhat hastily concluded that it is the chief end of man
+        here to glorify God and enjoy him forever. Still we live
+        meanly, like ants; though the fable tells us that we were
+        long ago changed into men; like pygmies we fight with
+        cranes; it is error upon error, and clout upon clout, and
+        our best virtue has for its occasion a superfluous and
+        evitable wretchedness. Our life is frittered away by detail.
+        An honest man has hardly need to count more than his ten
+        fingers, or in extreme cases he may add his ten toes, and
+        lump the rest. Simplicity, simplicity, simplicity! I say,
+        let your affairs be as two or three, and not a hundred or a
+        thousand; instead of a million count half a dozen, and keep
+        your accounts on your thumbnail. In the midst of this
+        chopping sea of civilized life, such are the clouds and
+        storms and quicksands and thousand and one items to be
+        allowed for, that a man has to live, if he would not founder
+        and go to the bottom and not make his port at all, by dead
+        reckoning, and he must be a great calculator indeed who
+        succeeds. Simplify, simplify. Instead of three meals a day,
+        if it be necessary eat but one; instead of a hundred dishes,
+        five; and reduce other things in proportion."""
+
+    i += 1
+    if source in ['stdin'] or idx == i:
+        return sys.stdin.read()
+
     # output from the emacs spook function
     # http://www.gnu.org/software/emacs/manual/html_node/emacs/Mail-Amusements.html
     return """Asset csystems BATF Blowpipe Soviet South Africa wire
@@ -328,7 +376,7 @@ def parse_args(arguments=None):
     parser.add_argument('-t', action='store_true',
                         help='run self-tests and exit')
     parser.add_argument('--cols', action='store', type=int, metavar='COLS',
-                        default=80, help='override line width - default 80')
+                        default=80, help='override line width - default 80 (set to 0 for no line returns)')
 
     ogroup = parser.add_argument_group('output format (mutually exclusive)')
     ogroup.add_argument('--words', '-n', action='store', type=int, metavar='N',
@@ -369,6 +417,12 @@ def parse_args(arguments=None):
     qgroup.add_argument('--bible', '--genesis', dest='source',
                         action='store_const', const='bible',
                         help='"At first, God created the sky, and..."')
+    qgroup.add_argument('--walden', '--thoreau', dest='source',
+                        action='store_const', const='walden',
+                        help='"I went to the woods..."')
+    qgroup.add_argument('--stdin', dest='source',
+                        action='store_const', const='stdin',
+                        help='use stdin as the source text')
     qgroup.add_argument('-q', '--quote', action='store', type=int, metavar='Q',
                         help='select source by index instead, q = 1, 2, ...')
 
@@ -507,10 +561,9 @@ def do_lorem(opt):
     """Get the lorem and apply the arguments"""
 
     if opt.quote:
-        lorem = get_quote(idx = opt.quote)
+        lorem = get_quote(idx=opt.quote)
     else:
         lorem = get_quote(opt.source)
-
 
     for spaces in ['\n', '    ', '    ', '  ', '  ']:
         lorem = lorem.replace(spaces, ' ')
@@ -518,7 +571,11 @@ def do_lorem(opt):
     if opt.randomize:
         lorem = randomize(lorem)
 
-    lorem = fill(lorem, width=opt.cols)
+    if opt.cols == 0:
+        lorem = fill(lorem, width=80)
+        lorem = no_linebreaks(lorem)
+    else:
+        lorem = fill(lorem, width=opt.cols)
 
     if opt.sentences is not None:
         lorem = get_sentences(lorem, opt.sentences)
@@ -530,7 +587,11 @@ def do_lorem(opt):
         lorem = get_lines(lorem, opt.lines)
 
     if opt.lines is None and opt.chars is None:
-        lorem = fill(lorem, width=opt.cols)
+        if opt.cols == 0:
+            lorem = fill(lorem, width=80)
+            lorem = no_linebreaks(lorem)
+        else:
+            lorem = fill(lorem, width=opt.cols)
 
     return do_case(lorem, opt.case)
 
@@ -540,8 +601,8 @@ if __name__ == '__main__':
     if my_args.t:
         import doctest
         res = doctest.testmod()
-        print "Tested %s cases, %s failed." % (res.attempted, res.failed)
+        print("Tested %s cases, %s failed." % (res.attempted, res.failed))
     elif my_args.version:
-        print my_args.version
+        print(my_args.version)
     else:
-        print do_lorem(my_args)
+        print(do_lorem(my_args))
