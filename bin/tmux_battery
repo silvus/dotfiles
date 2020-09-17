@@ -44,7 +44,7 @@ setDefaults
 # Determine battery charge state
 battery_charge() {
 	
-	if [ -f "$battery_path/status" ]; then
+	if [ -f "$battery_path/charge_now" ]; then
 		# Ubuntu 20.04
 		battery_state=$(cat $battery_path/status)
 		battery_full="$battery_path/charge_full"
