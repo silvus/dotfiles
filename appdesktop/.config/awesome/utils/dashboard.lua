@@ -83,6 +83,30 @@ local function firstToUpper(str)
 	return (str:gsub("^%l", string.upper))
 end
 
+-- Add a hover cursor to a widget by changing the cursor on
+-- mouse::enter and mouse::leave
+-- You can find the names of the available cursors by opening any
+-- cursor theme and looking in the "cursors folder"
+-- For example: "hand1" is the cursor that appears when hovering over
+-- links
+local function add_hover_cursor(w, hover_cursor)
+	local original_cursor = "left_ptr"
+
+	w:connect_signal("mouse::enter", function ()
+		local w = _G.mouse.current_wibox
+		if w then
+			w.cursor = hover_cursor
+		end
+	end)
+
+	w:connect_signal("mouse::leave", function ()
+		local w = _G.mouse.current_wibox
+		if w then
+			w.cursor = original_cursor
+		end
+	end)
+end
+
 -- Helper function that puts a widget inside a box with a specified background color
 -- Invisible margins are added so that the boxes created with this function are evenly separated
 -- The widget_to_be_boxed is vertically and horizontally centered inside the box
@@ -163,7 +187,7 @@ fortune_box:buttons(gears.table.join(
 	-- Left click - New fortune
 	awful.button({}, 1, update_fortune)
 ))
--- helpers.add_hover_cursor(fortune_box, "hand1")
+add_hover_cursor(fortune_box, "hand1")
 
 -- Calendar
 local calendar = require("widgets.calendar")
@@ -179,7 +203,7 @@ local calendar_box = create_boxed_widget(calendar, dpi(300), dpi(300), widgets_b
 local music_text = awful.widget.watch("mocp -M " .. os.getenv("HOME") .. "/.config/moc" .. " -i", 10, function(music_widget, stdout)
 	moc_now = {
 		state   = "N/A",
-		file    = "N/A",
+		file	= "N/A",
 		artist  = "N/A",
 		title   = "N/A",
 		album   = "N/A",
@@ -189,11 +213,11 @@ local music_text = awful.widget.watch("mocp -M " .. os.getenv("HOME") .. "/.conf
 
 	for line in string.gmatch(stdout, "[^\n]+") do
 		for k, v in string.gmatch(line, "([%w]+):[%s](.*)$") do
-			if     k == "State"       then moc_now.state   = v
-			elseif k == "File"        then moc_now.file    = v
-			elseif k == "Artist"      then moc_now.artist  = escape_f(v)
+			if	 k == "State"	   then moc_now.state   = v
+			elseif k == "File"		then moc_now.file	= v
+			elseif k == "Artist"	  then moc_now.artist  = escape_f(v)
 			elseif k == "SongTitle"   then moc_now.title   = escape_f(v)
-			elseif k == "Album"       then moc_now.album   = escape_f(v)
+			elseif k == "Album"	   then moc_now.album   = escape_f(v)
 			elseif k == "CurrentTime" then moc_now.elapsed = escape_f(v)
 			elseif k == "TotalTime"   then moc_now.total   = escape_f(v)
 			end
@@ -256,15 +280,50 @@ local uptime = wibox.widget {
 	layout = wibox.layout.fixed.horizontal
 }
 local uptime_box = create_boxed_widget(uptime, dpi(300), dpi(80), widgets_background)
-uptime_box:buttons(gears.table.join(
+-- uptime_box:buttons(gears.table.join(
+-- 	awful.button({}, 1, function ()
+-- 		gears.timer.delayed_call(function()
+-- 			dashboard.hide()
+-- 		end)
+-- 	end)
+-- ))
+-- add_hover_cursor(uptime_box, "hand1")
+
+local dev = require("utils.dev")
+local buttonclose = wibox.widget.imagebox(beautiful.lock)
+buttonclose.resize = true
+buttonclose.forced_width = 40
+buttonclose.forced_height = 40
+local buttonclose_box = create_boxed_widget(buttonclose, dpi(60), dpi(60), widgets_background)
+buttonclose_box:buttons(gears.table.join(
+	-- Left click
 	awful.button({}, 1, function ()
-		exit_screen_show()
-		gears.timer.delayed_call(function()
-			dashboard_hide()
-		end)
+		dashboard.hide()
+	end),
+	-- Right click
+	awful.button({}, 3, function ()
+		dashboard.hide()
 	end)
 ))
--- helpers.add_hover_cursor(uptime_box, "hand1")
+add_hover_cursor(buttonclose_box, "hand1")
+
+local buttonpoweroff = wibox.widget.imagebox(beautiful.bolt)
+buttonpoweroff.resize = true
+buttonpoweroff.forced_width = 40
+buttonpoweroff.forced_height = 40
+local buttonpoweroff_box = create_boxed_widget(buttonpoweroff, dpi(60), dpi(60), widgets_background)
+buttonpoweroff_box:buttons(gears.table.join(
+	-- Left click
+	awful.button({}, 1, function ()
+		-- todo: poweroff
+		dev.debug_log('button 1')
+	end),
+	-- Right click
+	awful.button({}, 3, function ()
+		dev.debug_log('button 3')
+	end)
+))
+add_hover_cursor(buttonpoweroff_box, "hand1")
 
 -- Item placement
 dashboard:setup {
@@ -277,20 +336,21 @@ dashboard:setup {
 			-- Column container
 			{
 				-- Column 1
-				-- user_box,
-				music_box,
-				fortune_box,
+				buttonclose_box,
+				buttonpoweroff_box,
 				layout = wibox.layout.fixed.vertical
 			},
-			-- {
+			{
 				-- Column 2
+				music_box,
+				fortune_box,
 			--	 url_petals_box,
 			--	 notification_state_box,
 			--	 screenshot_box,
 			--	 disk_box,
 			--	calendar_box,
-			--	layout = wibox.layout.fixed.vertical
-			-- },
+				layout = wibox.layout.fixed.vertical
+			},
 			-- {
 			--	 -- Column 3
 			--	 bookmarks_box,
