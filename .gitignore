@@ -1,5 +1,3 @@
 *.bak
-*_draft
-*_draft.*
 
 __pycache__

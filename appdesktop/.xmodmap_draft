@@ -1,0 +1,28 @@
+! --- Modifier
+! Caps lock
+! keycode 66 = Mode_switch
+! Alt Gr
+! keycode 108 = Mode_switch
+! Alt
+remove mod1 = Alt_L
+keycode 64 = Mode_switch
+
+! --- Right hand nivagation
+keysym i = i I Up
+keysym l = l L Right
+keysym k = k K Down
+keysym j = j J Left
+
+keysym o = o O End
+keysym u = u U Home
+keysym p = p P Prior
+keysym m = m M Next
+
+! --- Left hand nivagation
+keysym z = z Z Up
+keysym d = d D Right
+keysym s = s S Down
+keysym q = q Q Left
+
+keysym a = a A Prior
+keysym e = e E Next
