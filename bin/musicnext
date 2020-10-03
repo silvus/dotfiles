@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Bind to "media next" (XF86AudioNext)
+
+if pgrep "mpv" >/dev/null 2>&1 ; then
+	# Mpv
+	echo "playlist-next" | socat - "/tmp/mpv-socket"
+
+elif pgrep "mocp" >/dev/null 2>&1 ; then
+	# Moc
+	${HOME}/.dotfiles/bin/music --next
+fi
+
+exit 0

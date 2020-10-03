@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Bind to "media play/pause" (XF86AudioPlay)
+
+if pgrep "mpv" >/dev/null 2>&1 ; then
+	# Mpv
+	echo "cycle pause" | socat - "/tmp/mpv-socket"
+
+elif pgrep "mocp" >/dev/null 2>&1 ; then
+	# Moc
+	${HOME}/.dotfiles/bin/music --toggle-pause
+fi
+
+exit 0
