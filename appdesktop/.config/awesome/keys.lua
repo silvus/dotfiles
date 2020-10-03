@@ -262,16 +262,16 @@ keys.global = awful.util.table.join(
 			awful.util.spawn("/data/doc/.bin/sport", false)
 		end, {description = "Sport launcher", group = "audio"}),
 	awful.key({}, "XF86AudioPlay", function()
-			awful.util.spawn("music --toggle-pause", false)
+			awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
 		end, {description = "audio toggle play/pause", group = "audio"}),
 	awful.key({}, "XF86AudioStop", function()
-			awful.util.spawn("music --stop", false)
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicstop", false)
 		end, {description = "music stop", group = "audio"}),
 	awful.key({}, "XF86AudioNext", function()
-			awful.util.spawn("music --next", false)
+			awful.util.spawn(config.home .. "/.dotfiles/bin/musicnext", false)
 		end, {description = "music next", group = "audio"}),
 	awful.key({}, "XF86AudioPrev", function()
-			awful.util.spawn("music --previous", false)
+			awful.util.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
 		end, {description = "music previous", group = "audio"}),
 
 	-- Touchpad Toggle

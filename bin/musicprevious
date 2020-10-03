@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Bind to "media previous" (XF86AudioPrev)
+
+if pgrep "mpv" >/dev/null 2>&1 ; then
+	# Mpv
+	echo "playlist-prev" | socat - "/tmp/mpv-socket"
+
+elif pgrep "mocp" >/dev/null 2>&1 ; then
+	# Moc
+	${HOME}/.dotfiles/bin/music --previous
+fi
+
+exit 0
