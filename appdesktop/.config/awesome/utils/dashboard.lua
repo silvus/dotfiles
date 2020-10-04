@@ -15,6 +15,7 @@ local config = require("config")
 local beautiful = require("beautiful")
 
 local calendar = require("utils.calendar")
+local keyboardlayout = require("awful.widget.keyboardlayout")
 
 local widgets_background = '#00060f'
 -- local widgets_foreground = '#eeeeec'
@@ -46,8 +47,8 @@ end
 for s in screen do
 	if s == screen.primary then
 		s.dashboard = dashboard
-	else
-		s.dashboard = screen_mask(s)
+	-- else
+	-- 	s.dashboard = screen_mask(s)
 	end
 end
 
@@ -81,6 +82,12 @@ end
 
 local function firstToUpper(str)
 	return (str:gsub("^%l", string.upper))
+end
+
+-- Utility function to trim a string
+local function trim(s)
+	if s == nil then return nil end
+	return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
 
 -- Add a hover cursor to a widget by changing the cursor on
@@ -182,7 +189,7 @@ local fortune_widget = wibox.widget {
 	widget = wibox.container.margin
 }
 
-local fortune_box = create_boxed_widget(fortune_widget, dpi(300), dpi(140), widgets_background)
+local fortune_box = create_boxed_widget(fortune_widget, dpi(300), dpi(300), widgets_background)
 fortune_box:buttons(gears.table.join(
 	-- Left click - New fortune
 	awful.button({}, 1, update_fortune)
@@ -252,7 +259,7 @@ local music = wibox.widget {
 	color = "#00000000",
 	widget = wibox.container.margin
 }
-local music_box = create_boxed_widget(music, dpi(300), dpi(300), widgets_background)
+local music_box = create_boxed_widget(music, dpi(300), dpi(180), widgets_background)
 -- music_box:buttons(gears.table.join(
 -- 	awful.button({}, 1, function ()
 -- 		exit_screen_show()
@@ -288,6 +295,41 @@ local uptime_box = create_boxed_widget(uptime, dpi(300), dpi(80), widgets_backgr
 -- 	end)
 -- ))
 -- add_hover_cursor(uptime_box, "hand1")
+
+-- Keyboard
+local keyboard = wibox.widget {
+	{
+		align = "center",
+		valign = "center",
+		-- font = "sans medium 11",
+		widget = keyboardlayout()
+	},
+	spacing = dpi(5),
+	layout = wibox.layout.fixed.horizontal
+}
+local keyboard_box = create_boxed_widget(keyboard, dpi(300), dpi(80), widgets_background)
+keyboard_box:buttons(gears.table.join(
+	-- Left click can trigger a layout change
+	-- Right click
+	awful.button({}, 3, function ()
+		dashboard.hide()
+		-- Utility function to trim a string
+		local function trim(s)
+			if s == nil then return nil end
+			return (s:gsub("^%s*(.-)%s*$", "%1"))
+		end
+
+		-- parse current layout from setxkbmap
+		local file = assert(io.popen('setxkbmap -query', 'r'))
+		local status = file:read('*all')
+		file:close()
+		local layout = trim(string.match(status, "layout:([^\n]*)"))
+		local variant = trim(string.match(status, "variant:([^\n]*)"))
+		-- Launch keyboard visualizer (dep: gkbd-capplet)
+		awful.util.spawn("gkbd-keyboard-display -l " .. layout .. " " .. variant)
+	end)
+))
+add_hover_cursor(keyboard_box, "hand1")
 
 local dev = require("utils.dev")
 local buttonclose = wibox.widget.imagebox(beautiful.lock)
@@ -325,6 +367,8 @@ buttonpoweroff_box:buttons(gears.table.join(
 ))
 add_hover_cursor(buttonpoweroff_box, "hand1")
 
+
+
 -- Item placement
 dashboard:setup {
 	-- Center boxes vertically
@@ -342,8 +386,8 @@ dashboard:setup {
 			},
 			{
 				-- Column 2
-				music_box,
 				fortune_box,
+				music_box,
 			--	 url_petals_box,
 			--	 notification_state_box,
 			--	 screenshot_box,
@@ -361,6 +405,7 @@ dashboard:setup {
 				-- Column 4
 				calendar_box,
 				uptime_box,
+				keyboard_box,
 				layout = wibox.layout.fixed.vertical
 			},
 			layout = wibox.layout.fixed.horizontal

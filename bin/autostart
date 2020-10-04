@@ -10,7 +10,17 @@ function run {
 
 # Keyboard config
 # ------------------------------------------------------
-setxkbmap -model pc105 -layout fr,us -variant oss
+setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option "grp:shift_caps_toggle,grp_led:scroll,nbsp:level3,lv3:ralt_switch,compose:menu,eurosign:e"
+# TODO: -variant intl or altgr-intl ?
+# TODO: handle tty layout (/etc/default/keyboard)
+
+# https://gist.github.com/jatcwang/ae3b7019f219b8cdc6798329108c9aee
+# grp:shift_caps_toggle : Shift+Caps Lock to switch to another layout
+# grp_led:scroll : Use keyboard LED to show alternative layout
+# nbsp:level3 : Usual space on AltGr + Space
+# lv3:ralt_switch : Alt_R to AltGr
+# compose:menu : Menu is compose key
+# eurosign:e : AltGr+e to €
 
 # Auto start progs
 # ------------------------------------------------------

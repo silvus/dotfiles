@@ -11,13 +11,7 @@ if [[ -x "$(which xset)" ]]; then
 		# Default: xset r rate 660 25
 		xset r rate 200 30
 
-		# Disable nbsp character (AltGr + Space: non-breakable space) if X is running
-		if [[ -x "$(which setxkbmap)" ]]; then
-			setxkbmap -option "nbsp:none"
-		fi
-
 		# Disable beeps
 		xset b off
 	fi
 fi
-

@@ -98,7 +98,8 @@ keys.global = awful.util.table.join(
 			local layout = trim(string.match(status, "layout:([^\n]*)"))
 			local variant = trim(string.match(status, "variant:([^\n]*)"))
 
-			-- Launch keyboard visualizer
+			-- Launch keyboard visualizer (dep: gkbd-capplet)
+			-- or xkeycaps (and use gucharmap)
 			awful.util.spawn("gkbd-keyboard-display -l " .. layout .. " " .. variant)
 		end, {description="Keyboard keys help", group="awesome"}),
 
