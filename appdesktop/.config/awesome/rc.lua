@@ -112,6 +112,11 @@ naughty.config.notify_callback = function(args)
 	if not args.icon then
 		args.icon = beautiful.arrow_left
 	end
+
+	if config.blink_path then
+		local blink_color = args.bg or beautiful.primary
+		awful.util.spawn(config.blink_path .. " --on '" .. blink_color .. "'", false)
+	end
 	return args
 end
 
