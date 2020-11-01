@@ -7,6 +7,12 @@ local menubar = require("menubar")
 local lain = require("lain")
 
 
+-- Return if a file is readable
+function file_exists(name)
+	local f=io.open(name,"r")
+	if f~=nil then io.close(f) return true else return false end
+end
+
 local config = {}
 
 config.home = os.getenv("HOME")
@@ -28,6 +34,12 @@ config.rules_videos = "auto"
 
 -- Set a different wallpaper for each tag (and each screen), else take a random on init
 config.wallpapers_by_tag = false
+
+-- Use blink1 led to flash on notification (if installed)
+config.blink_path = nil
+if file_exists(config.home .. '/bin/blink1-flash') then
+	config.blink_path = config.home .. '/bin/blink1-flash'
+end
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 config.layouts = {
@@ -61,13 +73,6 @@ lain.layout.termfair.nmaster = 2
 lain.layout.termfair.ncol    = 1
 lain.layout.termfair.center.nmaster = 2
 lain.layout.termfair.center.ncol    = 1
-
-
--- Return if a file is readable
-function file_exists(name)
-	local f=io.open(name,"r")
-	if f~=nil then io.close(f) return true else return false end
-end
 
 -- Include config customisation to override previous default values
 -- This file should return a table, for exemple:
