@@ -169,8 +169,8 @@ local rules = {
 			end
 		}
 	},
-	-- Slack
-	{ rule_any = { class = {"Slack"} },
+	-- Slack / discord
+	{ rule_any = { class = {"Slack", "discord"} },
 		properties = {
 			tag = desktops.tags_names[3],
 		}
