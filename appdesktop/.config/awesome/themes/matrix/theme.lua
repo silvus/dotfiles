@@ -254,7 +254,7 @@ function bar(s)
 				widget_moc.widgetbar,
 				-- widget_rotate(widget_moc.widget),
 				widget_vpn.icon,
-				widget_vpn.widget,
+				-- widget_vpn.widget,
 				widget_battery.icon,
 				widget_rotate(widget_battery.widget),
 				widget_separator_vertical.widget,
