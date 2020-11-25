@@ -169,8 +169,8 @@ local rules = {
 			end
 		}
 	},
-	-- Slack / discord
-	{ rule_any = { class = {"Slack", "discord"} },
+	-- Slack
+	{ rule_any = { class = {"Slack"} },
 		properties = {
 			tag = desktops.tags_names[3],
 		}
@@ -200,7 +200,7 @@ local rules = {
 		}
 	},
 	-- Games
-	{ rule_any = { class = {"Steam"} },
+	{ rule_any = { class = {"Steam", "discord"} },
 		properties = {
 			tag = desktops.tags_names[8],
 		}
@@ -231,7 +231,7 @@ local rules = {
 			placement = awful.placement.no_offscreen + awful.placement.left,
 		}
 	},
-	-- MPV
+	-- MPV and streaming services
 	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse", "www.primevideo.com" }},
 		properties = {
 			focus = false,
