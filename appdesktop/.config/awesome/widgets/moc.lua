@@ -99,7 +99,7 @@ local moc = lain.widget.contrib.moc({
 	end,
 })
 local mocbg = wibox.container.background(moc.widget, beautiful.bg_normal, gears.shape.rectangle)
-customwidget.widget = wibox.container.margin(mocbg, 2, 7, 4, 4)
+customwidget.widget = wibox.container.margin(mocbg, 2, 4, 4, 4)
 
 -- Events
 local events_actions = awful.util.table.join (

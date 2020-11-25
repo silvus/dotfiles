@@ -93,6 +93,6 @@ local battery = lain.widget.bat({
 })
 local batbg = wibox.container.background(batbar, beautiful.info, gears.shape.rectangle)
 
-customwidget.widget = wibox.container.margin(batbg, 2, 7, 4, 4)
+customwidget.widget = wibox.container.margin(batbg, 2, 4, 4, 4)
 
 return customwidget

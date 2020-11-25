@@ -35,6 +35,6 @@ local mem = lain.widget.mem({
 })
 local membg = wibox.container.background(membar, beautiful.info, gears.shape.rectangle)
 
-customwidget.widget = wibox.container.margin(membg, 2, 7, 4, 4)
+customwidget.widget = wibox.container.margin(membg, 2, 4, 4, 4)
 
 return customwidget
