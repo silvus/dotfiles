@@ -27,6 +27,14 @@ buttons_event = awful.util.table.join (
 		naughty.toggle()
 		update()
 	end),
+	awful.button({}, 2, function()
+		naughty.notify({
+			title = 'Test notification',
+			text = "This a notification, for testing purpose.",
+			ontop = true,
+			-- preset = naughty.config.presets.critical
+		})
+	end),
 	awful.button({}, 3, function()
 		naughty.destroy_all_notifications()
 		update()
