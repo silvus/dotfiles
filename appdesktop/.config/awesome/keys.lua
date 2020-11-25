@@ -11,6 +11,7 @@ local quake = require("utils.quake")
 -- Dashboard
 local dashboard = require("utils.dashboard")
 local widget_volume = require("widgets.volume")
+local widget_notifications = require("widgets.notifications")
 
 -- Set a global variable, a local one
 local globalclient = client
@@ -41,6 +42,10 @@ function panic_key()
 
 	-- Clear all notifications
 	naughty.destroy_all_notifications()
+
+	-- Mute notifications
+	naughty.suspend()
+	widget_notifications.update()
 
 	-- Focus on first window in tmux
 	awful.util.spawn("tmux select-window -t 1", false)
@@ -274,6 +279,12 @@ keys.global = awful.util.table.join(
 	awful.key({}, "XF86AudioPrev", function()
 			awful.util.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
 		end, {description = "music previous", group = "audio"}),
+
+	-- Notifications toogle
+	awful.key({ modkey }, "n", function ()
+			naughty.toggle()
+			widget_notifications.update()
+		end, {description = "notification toggle", group = "awesome"}),
 
 	-- Touchpad Toggle
 	awful.key({}, "XF86TouchpadToggle", function ()
