@@ -36,6 +36,6 @@ local net = lain.widget.net({
 })
 local netbg = wibox.container.background(netbar, beautiful.info, gears.shape.rectangle)
 
-customwidget.widget = wibox.container.margin(netbg, 2, 7, 4, 4)
+customwidget.widget = wibox.container.margin(netbg, 2, 4, 4, 4)
 
 return customwidget

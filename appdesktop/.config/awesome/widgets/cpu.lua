@@ -36,6 +36,6 @@ local cpu = lain.widget.cpu({
 })
 local cpubg = wibox.container.background(cpubar, beautiful.info, gears.shape.rectangle)
 
-customwidget.widget = wibox.container.margin(cpubg, 2, 7, 4, 4)
+customwidget.widget = wibox.container.margin(cpubg, 2, 4, 4, 4)
 
 return customwidget
