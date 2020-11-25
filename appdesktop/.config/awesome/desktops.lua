@@ -6,7 +6,7 @@ local screens = require("screens")
 local desktops = {}
 
 
-local tags_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "x"}
+local tags_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 
 -- Inits tags for each scren
 local function init(s)
@@ -53,10 +53,6 @@ local function init(s)
 			{  -- Scratchpad
 				name   = tags_names[10],
 				icon   = beautiful.terminal,
-			},
-			{  -- X
-				name   = tags_names[11],
-				icon   = beautiful.bolt,
 			},
 		}
 		

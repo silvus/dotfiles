@@ -40,6 +40,10 @@ function panic_key()
 		end
 	end
 
+	-- Mute sound
+	awful.util.spawn("amixer -D pulse sset Master mute", false)
+	widget_volume.volume.update()
+
 	-- Clear all notifications
 	naughty.destroy_all_notifications()
 
@@ -49,10 +53,6 @@ function panic_key()
 
 	-- Focus on first window in tmux
 	awful.util.spawn("tmux select-window -t 1", false)
-
-	-- Mute sound
-	awful.util.spawn("amixer -D pulse sset Master mute", false)
-	widget_volume.volume.update()
 
 	-- Clients loop
 	for _, c in ipairs(globalclient.get()) do
@@ -78,6 +78,25 @@ function panic_key()
 	-- Focus primary screen
 	awful.screen.focus(screens.get_primary())
 end
+
+-- Unpanic button
+function unpanic_key()
+	-- Unmute notifications
+	naughty.resume()
+	widget_notifications.update()
+
+	-- Unmute sound
+	awful.util.spawn("amixer -D pulse sset Master unmute", false)
+	widget_volume.volume.update()
+
+	-- Primary screen - Go to last tag
+	local screen_primary = screens.get_primary()
+	local tag_next = screen_primary.tags[10]
+	if tag_next then
+		tag_next:view_only()
+	end
+end
+
 
 keys.global = awful.util.table.join(
 	awful.key({ modkey }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
@@ -358,19 +377,10 @@ keys.global = awful.util.table.join(
 	awful.key({modkey}, "Escape", function ()
 			panic_key()
 		end, {description = "Panic button", group = "tag"}),
-	-- Toggle X tag (Pause)
+	-- Unpanic buttons
 	awful.key({ modkey }, "Pause", function ()
-		local s_primary = screens.get_primary()
-		local tag_next = s_primary.tags[11]
-		local tag_current = s_primary.selected_tag
-		if tag_next then
-			if tag_next == tag_current then
-				awful.tag.history.restore(s_primary)
-			else
-				tag_next:view_only()
-			end
-		end
-	end, {description = "toggle X tag", group = "tag"}),
+			unpanic_key()
+		end, {description = "Unpanic button", group = "tag"}),
 	-- Move client to X tag
 	awful.key({ modkey, "Shift" }, "Pause", function ()
 			if client.focus then
