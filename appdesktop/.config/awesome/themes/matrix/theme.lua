@@ -121,6 +121,8 @@ theme.taglist_squares_sel                       = theme.dir .. "/icons/square_se
 theme.taglist_squares_unsel                     = theme.dir .. "/icons/square_unsel.png"
 theme.temp                                      = theme.dir .. "/icons/temp.png"
 theme.terminal                                  = theme.dir .. "/icons/terminal.png"
+theme.bell                                      = theme.dir .. "/icons/bell.png"
+theme.bell_slash                                = theme.dir .. "/icons/bell-slash.png"
 theme.vol                                       = theme.dir .. "/icons/vol.png"
 theme.vol_low                                   = theme.dir .. "/icons/vol_low.png"
 theme.vol_mute                                  = theme.dir .. "/icons/vol_mute.png"
@@ -210,6 +212,7 @@ function bar(s)
 	local widget_clock = require("widgets.clock")
 	local widget_clock_vertical = require("widgets.clock_vertical")
 	local widget_volume = require("widgets.volume")
+	local widget_notifications = require("widgets.notifications")
 	local widget_cpu = require("widgets.cpu")
 	local widget_ram = require("widgets.ram")
 	local widget_net = require("widgets.net")
@@ -267,6 +270,7 @@ function bar(s)
 				widget_ram.icon,
 				widget_rotate(widget_ram.widget),
 				widget_separator_vertical.widget,
+				widget_notifications.widget,
 				-- widget_volume.icon,
 				widget_volume.widget,
 				widget_separator_vertical.widget,
