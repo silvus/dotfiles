@@ -127,6 +127,10 @@ theme.vol                                       = theme.dir .. "/icons/vol.png"
 theme.vol_low                                   = theme.dir .. "/icons/vol_low.png"
 theme.vol_mute                                  = theme.dir .. "/icons/vol_mute.png"
 theme.vol_no                                    = theme.dir .. "/icons/vol_no.png"
+theme.volcapture                                = theme.dir .. "/icons/volcapture.png"
+theme.volcapture_low                            = theme.dir .. "/icons/volcapture_low.png"
+theme.volcapture_mute                           = theme.dir .. "/icons/volcapture_mute.png"
+theme.volcapture_no                             = theme.dir .. "/icons/volcapture_no.png"
 
 theme.titlebar_close_button_focus               = theme.dir .. "/icons/titlebar/close_focus.png"
 theme.titlebar_close_button_normal              = theme.dir .. "/icons/titlebar/close_normal.png"
@@ -212,6 +216,7 @@ function bar(s)
 	local widget_clock = require("widgets.clock")
 	local widget_clock_vertical = require("widgets.clock_vertical")
 	local widget_volume = require("widgets.volume")
+	local widget_volumecapture = require("widgets.volumecapture")
 	local widget_notifications = require("widgets.notifications")
 	local widget_cpu = require("widgets.cpu")
 	local widget_ram = require("widgets.ram")
@@ -271,7 +276,7 @@ function bar(s)
 				widget_rotate(widget_ram.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
-				-- widget_volume.icon,
+				widget_volumecapture.widget,
 				widget_volume.widget,
 				widget_separator_vertical.widget,
 				-- widget_keyboardlayout.widget,

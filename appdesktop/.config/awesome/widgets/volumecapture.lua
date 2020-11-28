@@ -9,32 +9,27 @@ local customwidget = {}
 
 local volume_value = 0
 
-customwidget.icon = wibox.widget.imagebox(beautiful.vol)
+customwidget.icon = wibox.widget.imagebox(beautiful.volcapture)
 
--- ALSA volume bar
+-- ALSA volume capture bar
 
 customwidget.volume = lain.widget.alsa({
+	channel = 'Capture',
 	timeout = 2,
 	settings = function()
+		customwidget.widgetbar.visible = true
 		local level = tonumber(volume_now.level)
-		customwidget.widgetbar:set_value(level)
+		-- customwidget.widgetbar:set_value(level)
 		volume_value = level
+		customwidget.widgetbar.border_color = beautiful.info
 		if volume_now.status == "off" then
-			customwidget.icon:set_image(beautiful.vol_mute)
-			customwidget.widgetbar.colors[1] = beautiful.error
-			customwidget.widgetbar.border_color = beautiful.error
+			customwidget.icon:set_image(beautiful.volcapture_mute)
 		elseif level and level == 0 then
-			customwidget.icon:set_image(beautiful.vol_no)
-			customwidget.widgetbar.colors[1] = beautiful.error
-			customwidget.widgetbar.border_color = beautiful.error
-		elseif level and level <= 50 then
-			customwidget.icon:set_image(beautiful.vol_low)
-			customwidget.widgetbar.colors[1] = beautiful.success
-			customwidget.widgetbar.border_color = beautiful.info
+			customwidget.icon:set_image(beautiful.volcapture_no)
+		elseif level and level <= 20 then
+			customwidget.icon:set_image(beautiful.volcapture_low)
 		else
-			customwidget.icon:set_image(beautiful.vol)
-			customwidget.widgetbar.colors[1] = beautiful.success
-			customwidget.widgetbar.border_color = beautiful.info
+			customwidget.icon:set_image(beautiful.volcapture)
 		end
 	end,
 })
@@ -61,11 +56,12 @@ customwidget.widgetbar = wibox.widget {
 		top    = 6,
 		bottom = 6,
 	},
-	start_angle = 3*math.pi/2,
-	thickness = 2,
+	-- start_angle = 3*math.pi/2,
+	-- thickness = 2,
 	forced_width = 18,
 	forced_height = 18,
-	widget = wibox.container.arcchart,
+	-- widget = wibox.container.arcchart,
+	widget = wibox.container.background,
 }
 
 -- Stack icon + bar
