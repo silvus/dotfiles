@@ -1,3 +1,4 @@
+local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
 local gears = require("gears")
@@ -6,7 +7,7 @@ local lain = require("lain")
 
 
 local customwidget = {}
-
+local battery_value = 0
 
 customwidget.icon = wibox.widget.imagebox(beautiful.battery)
 customwidget.icon.visible = false
@@ -15,7 +16,7 @@ customwidget.icon.visible = false
 
 local batbar = wibox.widget {
 	forced_height	= 1,
-	forced_width	= 100,
+	forced_width	= 75,
 	margins			= 1,
 	paddings		= 1,
 	ticks			= true,
@@ -41,6 +42,7 @@ local battery = lain.widget.bat({
 			batbar.visible  = true
 			customwidget.icon.visible = true
 			batbar:set_value(bat_now.perc)
+			battery_value = bat_now.perc
 
 			-- Change icon and color if full or low battery
 			if bat_now.perc >= 95 then
@@ -94,5 +96,13 @@ local battery = lain.widget.bat({
 local batbg = wibox.container.background(batbar, beautiful.info, gears.shape.rectangle)
 
 customwidget.widget = wibox.container.margin(batbg, 2, 4, 4, 4)
+
+-- Tooltip
+local widget_tooltip = awful.tooltip {
+	objects        = { customwidget.widget},
+	timer_function = function()
+		return string.format("%d%%", battery_value)
+	end,
+}
 
 return customwidget
