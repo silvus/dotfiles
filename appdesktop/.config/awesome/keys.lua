@@ -380,18 +380,7 @@ keys.global = awful.util.table.join(
 	-- Unpanic buttons
 	awful.key({ modkey }, "Pause", function ()
 			unpanic_key()
-		end, {description = "Unpanic button", group = "tag"}),
-	-- Move client to X tag
-	awful.key({ modkey, "Shift" }, "Pause", function ()
-			if client.focus then
-				local s_primary = screens.get_primary()
-				local tag_next = s_primary.tags[11]
-				if tag_next then
-					client.focus:move_to_tag(tag_next)
-					tag_next:view_only()
-				end
-			end
-		end, {description = "move focused client to X tag", group = "tag"})
+		end, {description = "Unpanic button", group = "tag"})
 )
 
 -- Bind all key numbers to tags.
