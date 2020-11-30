@@ -380,7 +380,10 @@ keys.global = awful.util.table.join(
 	-- Unpanic buttons
 	awful.key({ modkey }, "Pause", function ()
 			unpanic_key()
-		end, {description = "Unpanic button", group = "tag"})
+		end, {description = "Unpanic button", group = "tag"}),
+	awful.key({modkey, "Shift"}, "Escape", function ()
+			panic_key()
+		end, {description = "Panic button", group = "tag"})
 )
 
 -- Bind all key numbers to tags.
