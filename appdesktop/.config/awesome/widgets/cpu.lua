@@ -11,7 +11,7 @@ customwidget.icon = wibox.widget.imagebox(beautiful.cpu)
 
 local cpubar = wibox.widget {
 	forced_height 	= 1,
-	forced_width 	= 100,
+	forced_width 	= 75,
 	margins 		= 1,
 	paddings 		= 1,
 	ticks 			= true,
