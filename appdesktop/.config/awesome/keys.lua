@@ -88,13 +88,6 @@ function unpanic_key()
 	-- Unmute sound
 	awful.util.spawn("amixer -D pulse sset Master unmute", false)
 	widget_volume.volume.update()
-
-	-- Primary screen - Go to last tag
-	local screen_primary = screens.get_primary()
-	local tag_next = screen_primary.tags[10]
-	if tag_next then
-		tag_next:view_only()
-	end
 end
 
 
