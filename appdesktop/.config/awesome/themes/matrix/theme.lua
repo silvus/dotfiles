@@ -216,7 +216,6 @@ function bar(s)
 	local widget_clock = require("widgets.clock")
 	local widget_clock_vertical = require("widgets.clock_vertical")
 	local widget_volume = require("widgets.volume")
-	local widget_volumecapture = require("widgets.volumecapture")
 	local widget_notifications = require("widgets.notifications")
 	local widget_cpu = require("widgets.cpu")
 	local widget_ram = require("widgets.ram")
@@ -276,7 +275,7 @@ function bar(s)
 				widget_rotate(widget_ram.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
-				widget_volumecapture.widget,
+				-- widget_volumecapture.widget,
 				widget_volume.widget,
 				widget_separator_vertical.widget,
 				-- widget_keyboardlayout.widget,
