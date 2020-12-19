@@ -6,8 +6,8 @@ if [[ -n "$TMUX" ]]; then
 		# Takes the URL from the clipboard when no arguments are given
 		tmux split-window -d -l 10 -v "mpv --ytdl-format='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' \"$(xclip -selection "clipboard" -out)\""
 	else
-		tmux split-window -d -l 10 -v "mpv --ytdl-format='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]'  \"$@\""
+		tmux split-window -d -l 10 -v "mpv --ytdl-format='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' \"$@\""
 	fi
 else
-	mpv "$@"
+	mpv --ytdl-format='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' "$@"
 fi
