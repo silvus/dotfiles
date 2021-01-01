@@ -105,5 +105,15 @@
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "extensions.ignoreRecommendations": true,
-    "rust-client.rustupPath": "~/.config/cargo/bin/rustup"
+    "rust-client.rustupPath": "~/.config/cargo/bin/rustup",
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext",
+    ],
+    "spellright.language": [
+        "fr",
+        "en_US",
+    ],
+    "spellright.notificationClass": "hint",
 }
