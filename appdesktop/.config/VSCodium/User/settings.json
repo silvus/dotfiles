@@ -54,6 +54,37 @@
                     "foreground": "#263a4f",
                 }
             },
+            {
+                "scope": "markup.quote.markdown",
+                "settings": {
+                    "foreground": "#6A9955",
+                    "fontStyle": "italic",
+                }
+            },
+            {
+                "scope": "punctuation.definition.quote.begin.markdown",
+                "settings": {
+                    "foreground": "#8a8888",
+                }
+            },
+            {
+                "scope": "fenced_code.block.language.markdown",
+                "settings": {
+                    "foreground": "#772525",
+                }
+            },
+            {
+                "scope": "punctuation.definition.markdown",
+                "settings": {
+                    "foreground": "#8a8888",
+                }
+            },
+            {
+                "scope": "markup.fenced_code.block.markdown",
+                "settings": {
+                    "foreground": "#adadad",
+                }
+            },
         ]
     },
     "pasteImage.showFilePathConfirmInputBox": true,
