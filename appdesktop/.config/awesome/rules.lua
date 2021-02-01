@@ -114,7 +114,10 @@ local rules = {
 		},
 		properties = {
 			floating = true,
-			placement = awful.placement.no_offscreen + awful.placement.centered
+			sticky = true,
+			ontop = true,
+			modal = true,
+			placement = awful.placement.no_overlap + awful.placement.no_offscreen + awful.placement.top,
 		}
 	},
 
@@ -122,31 +125,21 @@ local rules = {
 
 	-- Web
 	{ rule_any = { class = {"Firefox"}},
-		except = { type = "dialog" },
+		-- except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[1],
 		}
 	},
 	-- Dev
 	{ rule_any = { class = { "VSCodium", "Zim" }},
-		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[2],
 		}
 	},
 	{ rule = { class = "jetbrains-phpstorm"},
-		except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[1],
 			-- screen = screens.count(),
-		}
-	},
-	{ rule = { class = "jetbrains-phpstorm", type = "dialog"},
-		properties = {
-			floating = true,
-			-- Task list is too small in popup
-			maximized_vertical = true,
-			maximized_horizontal = true,
 		}
 	},
 	-- Mail
@@ -218,7 +211,7 @@ local rules = {
 			floating = true,
 			sticky = true,
 			ontop = true,
-			-- screen = screens.count(),
+			modal = true,
 			placement = awful.placement.no_offscreen + awful.placement.top_right,
 		}
 	},
