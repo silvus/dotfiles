@@ -224,7 +224,7 @@ function bar(s)
 	local widget_moc = require("widgets.moc")
 	local widget_systray = require("widgets.systray")
 	local widget_prompt = require("widgets.prompt")
-	-- local widget_keyboardlayout = require("widgets.keyboardlayout")
+	local widget_keyboardlayout = require("widgets.keyboardlayout")
 	local widget_battery = require("widgets.battery")
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
@@ -273,12 +273,12 @@ function bar(s)
 				widget_separator_vertical.widget,
 				widget_ram.icon,
 				widget_rotate(widget_ram.widget),
+				widget_rotate(widget_keyboardlayout.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
 				-- widget_volumecapture.widget,
 				widget_volume.widget,
 				widget_separator_vertical.widget,
-				-- widget_keyboardlayout.widget,
 				widget_rotate(widget_systray.widget),
 				widget_separator_vertical.widget,
 				widget_clock.icon,
