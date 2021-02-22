@@ -23,8 +23,11 @@ clients.keys = awful.util.table.join(
 	awful.key({ modkey, }, "space", function(c)
 			awful.client.floating.toggle()
 		end, {description = "toggle floating", group = "client"}),
-	awful.key({ modkey, "Control" }, "Return", function(c)
-			c:swap(awful.client.getmaster())
+	awful.key({ modkey, }, "Return", function(c)
+			master = awful.client.getmaster()
+			if master then
+				c:swap(master)
+			end
 		end, {description = "move to master", group = "client"}),
 	awful.key({ modkey, }, "o", function(c)
 			c:move_to_screen()
@@ -37,10 +40,6 @@ clients.keys = awful.util.table.join(
 			-- minimized, since minimized clients can't have the focus.
 			c.minimized = true
 		end, {description = "minimize", group = "client"}),
-	-- awful.key({ modkey, }, "z", function(c)
-	-- 		c.maximized = not c.maximized
-	-- 		c:raise()
-	-- 	end, {description = "maximize", group = "client"}),
 	awful.key({ modkey, }, "m", function(c)
 			c.maximized = not c.maximized
 			c:raise()
