@@ -78,7 +78,7 @@ function panic_key()
 end
 
 -- Unpanic button
-function unpanic_key()
+function unpanic_key(restaure_tag)
 	-- Unmute notifications
 	naughty.resume()
 	widget_notifications.update()
@@ -86,6 +86,12 @@ function unpanic_key()
 	-- Unmute sound
 	awful.util.spawn("amixer -D pulse sset Master unmute", false)
 	widget_volume.volume.update()
+
+	-- Restaure previous tag
+	if restaure_tag then
+		local screen = screens.get_primary()
+		awful.tag.history.restore(screen, 2)
+	end
 end
 
 -- Focus client in direction
@@ -366,16 +372,18 @@ keys.global = awful.util.table.join(
 	awful.key({ }, "Pause", function ()
 			panic_key()
 		end, {description = "Panic button", group = "tag"}),
-	awful.key({modkey}, "a", function ()
-			panic_key()
-		end, {description = "Panic button", group = "tag"}),
 	-- Unpanic buttons
 	awful.key({ modkey }, "Pause", function ()
-			unpanic_key()
+			unpanic_key(false)
 		end, {description = "Unpanic button", group = "tag"}),
-	awful.key({modkey, "Shift"}, "a", function ()
-			unpanic_key()
-		end, {description = "Unpanic button", group = "tag"})
+	-- Toggle Panic buttons
+	awful.key({modkey}, "a", function ()
+			if naughty.is_suspended() then
+				unpanic_key(true)
+			else
+				panic_key()
+			end
+		end, {description = "Toggle Panic button", group = "tag"})
 )
 
 -- Bind all key numbers to tags.
