@@ -88,6 +88,28 @@ function unpanic_key()
 	widget_volume.volume.update()
 end
 
+-- Focus client in direction
+function focus_client(direction)
+	local c = client.focus
+	if c and c.maximized then
+		-- Focused on a maximized client, maximized next client
+		c.maximized = false
+		if direction == "left" or direction == "up" then
+			awful.client.focus.byidx(-1, c)
+		else
+			awful.client.focus.byidx(1, c)
+		end
+		if client.focus then 
+			client.focus.maximized = true
+			client.focus:raise() 
+		end
+	else
+		-- Focus by direction
+		awful.client.focus.global_bydirection(direction, c, max)
+		if client.focus then client.focus:raise() end
+	end
+end
+
 
 keys.global = awful.util.table.join(
 	awful.key({ modkey }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
@@ -141,37 +163,29 @@ keys.global = awful.util.table.join(
 
 	 -- By direction client focus
 	awful.key({ modkey }, "Down", function()
-			awful.client.focus.global_bydirection("down")
-			if client.focus then client.focus:raise() end
+			focus_client("down")
 		end, {description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "Up", function()
-			awful.client.focus.global_bydirection("up")
-			if client.focus then client.focus:raise() end
+			focus_client("up")
 		end, {description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "Left", function()
-			awful.client.focus.global_bydirection("left")
-			if client.focus then client.focus:raise() end
+			focus_client("left")
 		end, {description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "Right", function()
-			awful.client.focus.global_bydirection("right")
-			if client.focus then client.focus:raise() end
+			focus_client("right")
 		end, {description = "change client focus", group = "client"}),
 
 	awful.key({ modkey }, "s", function()
-			awful.client.focus.global_bydirection("down")
-			if client.focus then client.focus:raise() end
+			focus_client("down")
 		end, {description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "z", function()
-			awful.client.focus.global_bydirection("up")
-			if client.focus then client.focus:raise() end
+			focus_client("up")
 		end, {description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "q", function()
-			awful.client.focus.global_bydirection("left")
-			if client.focus then client.focus:raise() end
+			focus_client("left")
 		end, {description = "change client focus", group = "client"}),
 	awful.key({ modkey }, "d", function()
-			awful.client.focus.global_bydirection("right")
-			if client.focus then client.focus:raise() end
+			focus_client("right")
 		end, {description = "change client focus", group = "client"}),
 
 	-- Layout manipulation
@@ -211,7 +225,7 @@ keys.global = awful.util.table.join(
 	-- 	end, {description = "go back", group = "client"}),
 
 	-- Terminal
-	awful.key({ modkey }, "Return", function()
+	awful.key({ modkey, "Control" }, "Return", function()
 			awful.spawn( config.terminal .. " -title terminal -e " .. config.home .. "/.dotfiles/bin/tmuxdev")
 		end, {description = "open a terminal", group = "launcher"}),
 	-- awful.key({}, "²", function () awful.spawn(config.home .. "/.dotfiles/bin/guakify 'rxvt-unicode.URxvt' '" .. terminal .. " -e " .. config.home .. "/.dotfiles/bin/tmuxdev'") end, {description = "open a terminal", group = "launcher"}),
