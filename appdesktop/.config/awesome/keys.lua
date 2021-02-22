@@ -8,8 +8,6 @@ local desktops = require("desktops")
 local config = require("config")
 -- Quake like terminal (single instance for all screens)
 local quake = require("utils.quake")
--- Dashboard
-local dashboard = require("utils.dashboard")
 local widget_volume = require("widgets.volume")
 local widget_notifications = require("widgets.notifications")
 
@@ -323,11 +321,6 @@ keys.global = awful.util.table.join(
 			awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_shutdown", false)
 		end, {description = "shutdown", group = "launcher"}),
 
-	-- Dashboard
-	awful.key({ modkey }, "a", function()
-			dashboard.show()
-		end, {description = "dashboard", group = "custom"}),
-
 	-- VPN
 	awful.key({ modkey, "Shift" }, "v", function()
 			awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_vpn", false)
@@ -367,16 +360,16 @@ keys.global = awful.util.table.join(
 	awful.key({ }, "Pause", function ()
 			panic_key()
 		end, {description = "Panic button", group = "tag"}),
-	awful.key({modkey}, "Escape", function ()
+	awful.key({modkey}, "a", function ()
 			panic_key()
 		end, {description = "Panic button", group = "tag"}),
 	-- Unpanic buttons
 	awful.key({ modkey }, "Pause", function ()
 			unpanic_key()
 		end, {description = "Unpanic button", group = "tag"}),
-	awful.key({modkey, "Shift"}, "Escape", function ()
-			panic_key()
-		end, {description = "Panic button", group = "tag"})
+	awful.key({modkey, "Shift"}, "a", function ()
+			unpanic_key()
+		end, {description = "Unpanic button", group = "tag"})
 )
 
 -- Bind all key numbers to tags.
