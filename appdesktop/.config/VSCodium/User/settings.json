@@ -91,7 +91,7 @@
     "pasteImage.basePath": "${currentFileDir}/.img",
     "pasteImage.path": "${currentFileDir}/.img",
     "pasteImage.insertPattern": "${imageSyntaxPrefix}.img/${imageFilePath}${imageSyntaxSuffix}",
-    "pasteImage.defaultName": "Y-MM-DD",
+    "pasteImage.defaultName": "YMMDD",
     "pasteImage.namePrefix": "${currentFileNameWithoutExt}_",
     "pasteImage.filePathConfirmInputBoxMode": "onlyName",
     "workbench.editor.limit.enabled": true,
@@ -116,4 +116,7 @@
         "en_US",
     ],
     "spellright.notificationClass": "hint",
+    "gutterpreview.imagePreviewMaxHeight": 200,
+    "gutterpreview.sourceFolder": ".img",
+    "rainbow_csv.enable_tooltip": false,
 }
