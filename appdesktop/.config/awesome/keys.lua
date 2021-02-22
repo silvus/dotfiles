@@ -149,14 +149,6 @@ keys.global = awful.util.table.join(
 			awful.tag.history.restore(screen)
 		end, {description = "go back to previous tag", group = "tag"}),
 
-	-- awful.key({ modkey }, "Right", function ()
-	--		 awful.client.focus.byidx(1)
-	-- 		end, {description = "focus next by index", group = "client"}
-	-- ),
-	-- awful.key({ modkey }, "Left", function ()
-	--		 awful.gclient.focus.byidx(-1)
-	--	 end, {description = "focus previous by index", group = "client"}
-	-- ),
 	-- awful.key({ modkey,		   }, "w", function()
 	--		mymainmenu:show()
 	--	end, {description = "show main menu", group = "awesome"}),
