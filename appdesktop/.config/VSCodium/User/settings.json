@@ -119,4 +119,9 @@
     "gutterpreview.imagePreviewMaxHeight": 200,
     "gutterpreview.sourceFolder": ".img",
     "rainbow_csv.enable_tooltip": false,
+    "cSpell.enableFiletypes": [
+        "makefile",
+        "tsv"
+    ],
+    "cSpell.language": "en,fr",
 }
