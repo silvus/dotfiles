@@ -23,6 +23,10 @@ setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option "grp:shift_caps_t
 # compose:menu : Menu is compose key
 # eurosign:e : AltGr+e to €
 
+# Sleep time
+# ------------------------------------------------------
+xset s 3600 3600
+
 # Auto start progs
 # ------------------------------------------------------
 # Network applet
