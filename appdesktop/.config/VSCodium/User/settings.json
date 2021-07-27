@@ -18,34 +18,34 @@
                     "foreground": "#8a8888",
                 }
             },
-            // {
-            //     "scope": "heading.1.markdown entity.name.section.markdown",
-            //     "settings": {
-            //         "foreground": "#4d85c3",
-            //     }
-            // },
+            {
+                "scope": "heading.1.markdown entity.name.section.markdown",
+                "settings": {
+                    "foreground": "#71cafd",
+                }
+            },
             {
                 "scope": "heading.2.markdown entity.name.section.markdown",
                 "settings": {
-                    "foreground": "#27ba86",
+                    "foreground": "#5da6cf",
                 }
             },
             {
                 "scope": "heading.3.markdown entity.name.section.markdown",
                 "settings": {
-                    "foreground": "#358769",
+                    "foreground": "#4982a3",
                 }
             },
             {
                 "scope": "heading.4.markdown entity.name.section.markdown",
                 "settings": {
-                    "foreground": "#436e9c",
+                    "foreground": "#417391",
                 }
             },
             {
                 "scope": "heading.5.markdown entity.name.section.markdown",
                 "settings": {
-                    "foreground": "#3e5063",
+                    "foreground": "#2d4d5f",
                 }
             },
             {
@@ -124,4 +124,5 @@
         "tsv"
     ],
     "cSpell.language": "en,fr",
+    "security.workspace.trust.untrustedFiles": "open",
 }
