@@ -19,37 +19,55 @@
                 }
             },
             {
-                "scope": "heading.1.markdown entity.name.section.markdown",
+                "scope": "markup.heading.markdown heading.1.markdown entity.name.section.markdown",
                 "settings": {
                     "foreground": "#71cafd",
                 }
             },
             {
-                "scope": "heading.2.markdown entity.name.section.markdown",
+                "scope": "markup.heading.markdown heading.1.markdown punctuation.definition.heading.markdown",
+                "settings": {
+                    "foreground": "#eb4848",
+                }
+            },
+            {
+                "scope": "markup.heading.markdown heading.2.markdown",
                 "settings": {
                     "foreground": "#5da6cf",
                 }
             },
             {
-                "scope": "heading.3.markdown entity.name.section.markdown",
+                "scope": "markup.heading.markdown heading.2.markdown punctuation.definition.heading.markdown",
+                "settings": {
+                    "foreground": "#4ba521",
+                }
+            },
+            {
+                "scope": "markup.heading.markdown heading.3.markdown",
                 "settings": {
                     "foreground": "#4982a3",
                 }
             },
             {
-                "scope": "heading.4.markdown entity.name.section.markdown",
+                "scope": "markup.heading.markdown heading.3.markdown punctuation.definition.heading.markdown",
+                "settings": {
+                    "foreground": "#5c91af",
+                }
+            },
+            {
+                "scope": "markup.heading.markdown heading.4.markdown",
                 "settings": {
                     "foreground": "#417391",
                 }
             },
             {
-                "scope": "heading.5.markdown entity.name.section.markdown",
+                "scope": "markup.heading.markdown heading.5.markdown",
                 "settings": {
                     "foreground": "#2d4d5f",
                 }
             },
             {
-                "scope": "heading.6.markdown entity.name.section.markdown",
+                "scope": "markup.heading.markdown heading.6.markdown",
                 "settings": {
                     "foreground": "#263a4f",
                 }
