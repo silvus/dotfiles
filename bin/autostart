@@ -35,7 +35,8 @@ if [[ -x $(which nm-applet) ]]; then
 	run nm-applet
 fi
 
-run redshift-gtk
+# Broken with Apparmor profile https://github.com/jonls/redshift/issues/708
+# run redshift-gtk
 
 # Bluetooth applet if installed
 # if [[ -x $(which blueman-applet) ]]; then
