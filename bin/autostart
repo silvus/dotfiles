@@ -26,6 +26,7 @@ setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option "grp:shift_caps_t
 # Sleep time
 # ------------------------------------------------------
 xset s 3600 3600
+xset dpms 3600 3600 3600
 
 # Auto start progs
 # ------------------------------------------------------
