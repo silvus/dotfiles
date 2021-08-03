@@ -9,7 +9,8 @@ if echo "$1" | cut -d'/' -f3 | grep -q -e youtube.com$ -e dailymotion.com -e vim
 	if [[ -d "${HOME}/.local/bin" ]]; then
 		export PATH="${HOME}/.local/bin:$PATH"
 	fi
-	${HOME}/.dotfiles/bin/video "$1"
+	
+	tmux split-window -l 10 -v "${HOME}/.dotfiles/bin/video \"$1\""
 else
 	if [[ -n "$DISPLAY" ]]; then
 		# Browser Desktop
