@@ -2,9 +2,12 @@
 
 if echo "$1" | cut -d'/' -f3 | grep -q -e youtube.com$ -e dailymotion.com -e vimeo.com$ ; then
 	# Video
+	# Fix youtube-dl path with urlview
 	if [[ -d "${HOME}/bin" ]]; then
-		# Fix youtube-dl path with urlview
 		export PATH="${HOME}/bin:$PATH"
+	fi
+	if [[ -d "${HOME}/.local/bin" ]]; then
+		export PATH="${HOME}/.local/bin:$PATH"
 	fi
 	${HOME}/.dotfiles/bin/video "$1"
 else
