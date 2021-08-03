@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 
-# If run under Tmux, open in new split
-if [[ -n "$TMUX" ]]; then
-	if [ $# -eq 0 ]; then
-		# Takes the URL from the clipboard when no arguments are given
-		tmux split-window -d -l 10 -v "mpv --ytdl-format='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' \"$(xclip -selection "clipboard" -out)\""
-	else
-		tmux split-window -d -l 10 -v "mpv --ytdl-format='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' \"$@\""
-	fi
-else
-	mpv --ytdl-format='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' "$@"
-fi
+MPV_EXEC="$(which mpv) --vo=gpu,drm"
+MPV_FORMAT='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]'
+
+$MPV_EXEC --ytdl-format="$MPV_FORMAT" "$@"
