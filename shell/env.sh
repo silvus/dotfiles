@@ -86,6 +86,9 @@ export ELINKS_CONFDIR="$XDG_CONFIG_HOME"/elinks
 # GPG
 export GNUPGHOME="$XDG_CONFIG_HOME"/gnupg
 
+# Gpodder
+export GPODDER_HOME="$XDG_CONFIG_HOME"/gpodder
+
 # Atom
 export ATOM_HOME="$XDG_DATA_HOME"/atom
 
