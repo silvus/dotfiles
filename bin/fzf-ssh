@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# Read SSH hosts from ~/.ssh/config
+# Pick one with FZF and ssh to it on a new Tmux window
+# if flag -m is used, used mosh instead of ssh
+
+set -e -o pipefail
+
+function print_usage() { 
+	echo "Usage: $0 [-m]" 1>&2;
+	echo
+	echo "Read SSH hosts from ~/.ssh/config"
+	echo "Pick one with FZF and ssh to it on a new Tmux window"
+	echo "if flag -m is used, used mosh instead of ssh"
+	exit 0
+}
+
+function fzf-ssh () {
+	local selected_host=$(grep "Host " $HOME/.ssh/config | grep -v '*' | awk '{print $2}' | $HOME/.fzf/bin/fzf-tmux -d 35% -m -0 --no-preview --no-border --ansi --reverse --prompt="$SSH_LABEL Remote > ")
+
+	if [ -n "$selected_host" ]; then
+
+		if [[ -n "$TMUX" ]]; then
+			# open new window in Tmux, with host has name
+			tmux new-window -n "${selected_host}" "${SSH_PATH} ${selected_host}"
+		else
+			${SSH_PATH} "${selected_host}"
+		fi
+	fi
+
+}
+
+# Env variables not setted ?
+HOME="/home/$(whoami)"
+
+SSH_PATH="$(which ssh)"
+SSH_LABEL="SSH"
+
+# Read flags
+while getopts "hm" opt; do
+	case "$opt" in
+		"h")
+			print_usage
+			exit 0
+			;;
+		"m")
+			SSH_PATH="$(which mosh)"
+			SSH_LABEL="Mosh"
+			;;
+	esac
+done
+
+# Execute
+fzf-ssh
+
+exit 0
