@@ -22,9 +22,9 @@ function fzf-ssh () {
 
 		if [[ -n "$TMUX" ]]; then
 			# open new window in Tmux, with host has name
-			tmux new-window -n "${selected_host}" "${SSH_PATH} ${selected_host}"
+			tmux new-window -n "${selected_host}" "${SSH_PATH} ${selected_host} ${SSH_COMMAND}"
 		else
-			${SSH_PATH} "${selected_host}"
+			${SSH_PATH} "${selected_host} ${SSH_COMMAND}"
 		fi
 	fi
 
@@ -33,8 +33,10 @@ function fzf-ssh () {
 # Env variables not setted ?
 HOME="/home/$(whoami)"
 
+# Default options
 SSH_PATH="$(which ssh)"
 SSH_LABEL="SSH"
+SSH_COMMAND=""
 
 # Read flags
 while getopts "hm" opt; do
@@ -46,6 +48,7 @@ while getopts "hm" opt; do
 		"m")
 			SSH_PATH="$(which mosh)"
 			SSH_LABEL="Mosh"
+			SSH_COMMAND="~/.dotfiles/bin/tmuxdev"
 			;;
 	esac
 done
