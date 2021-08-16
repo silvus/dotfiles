@@ -165,4 +165,3 @@ done
 # Environment specific configuration
 # -----------------------------------------------------------------------------
 [ -f ${SILVUSDOTFILES_CUSTOM}/shell ] && source ${SILVUSDOTFILES_CUSTOM}/shell
-
