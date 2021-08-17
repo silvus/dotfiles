@@ -48,7 +48,7 @@ while getopts "hm" opt; do
 		"m")
 			SSH_PATH="$(which mosh)"
 			SSH_LABEL="Mosh"
-			SSH_COMMAND="~/.dotfiles/bin/tmuxdev"
+			SSH_COMMAND="/home/silvus/.dotfiles/bin/tmuxdev"
 			;;
 	esac
 done
