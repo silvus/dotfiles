@@ -227,7 +227,7 @@ local rules = {
 	-- MPV and streaming services
 	{ rule_any = { class = { "mpv" }, instance = { "www.netflix.com__browse", "www.primevideo.com" }},
 		properties = {
-			focus = false,
+			-- focus = false,
 			placement = awful.placement.no_offscreen + awful.placement.bottom_right,
 			-- Floating on top and sticky or full screen on secondary
 			callback = function(c)
