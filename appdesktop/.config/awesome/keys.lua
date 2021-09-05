@@ -249,9 +249,18 @@ keys.global = awful.util.table.join(
 			awful.util.spawn("rofi -show drun")
 		end, {description="Rofi launch", group="launcher"}),
 	-- Menubar
+	-- awful.key({ modkey, "Shift"}, "e", function()
+	-- 	menubar.show(screens.get_primary())
+	-- end, {description = "show the menubar", group = "launcher"}),
+
+	-- Editor
 	awful.key({ modkey, "Shift"}, "e", function()
-		menubar.show(screens.get_primary())
-	end, {description = "show the menubar", group = "launcher"}),
+		awful.util.spawn("codium")
+	end, {description = "open editor", group = "launcher"}),
+	-- File Manager
+	awful.key({ modkey, "Shift"}, "f", function()
+		awful.util.spawn("thunar")
+	end, {description = "open file manager", group = "launcher"}),
 
 	-- Quake-like terminal (²)
 	awful.key({}, "#49", function ()
