@@ -4,7 +4,6 @@
     "editor.insertSpaces": false,
     "editor.dragAndDrop": false,
     "editor.minimap.enabled": false,
-    "files.autoSave": "off",
     "python.formatting.provider": "black",
     "workbench.tree.indent": 16,
     "workbench.list.horizontalScrolling": true,
@@ -143,4 +142,5 @@
     ],
     "cSpell.language": "en,fr",
     "security.workspace.trust.untrustedFiles": "open",
+    "workbench.editor.enablePreview": false,
 }
