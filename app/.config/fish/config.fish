@@ -70,3 +70,10 @@ function mkcd --description 'Create a folder and go into it'
 	cd "$argv"
 end
 
+# Bindings
+# -----------------------------------------------------------------------------
+# Fzf trigger file with CTRL+P
+bind \cp fzf-file-widget
+
+# Fzf trigger history with CTRL+H
+bind \ch fzf-history-widget
