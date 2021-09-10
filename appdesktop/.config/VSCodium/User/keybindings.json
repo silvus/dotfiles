@@ -1,12 +1,12 @@
 [
 	// Save
 	{
-		"key": "ctrl+s",
-		"command": "workbench.action.files.saveAll"
+		"key": "ctrl+shift+s",
+		"command": "-workbench.action.files.saveAs"
 	},
 	{
-		"key": "ctrl+s",
-		"command": "-workbench.action.files.save"
+		"key": "ctrl+shift+s",
+		"command": "workbench.action.files.saveFiles"
 	},
 	// File switch
 	{
