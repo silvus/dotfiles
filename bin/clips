@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Launch random video playlist
+/usr/bin/mpv --shuffle /data/media/clips &
+
+sleep 2
+
+# Force focus mpv
+/usr/bin/xdotool search --class 'mpv' windowactivate &

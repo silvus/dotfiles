@@ -296,7 +296,7 @@ keys.global = awful.util.table.join(
 		end, {description = "volume mute", group = "audio"}),
 	-- Media Keys
 	awful.key({}, "XF86Tools", function()
-			awful.util.spawn("/data/doc/.bin/sport", false)
+			awful.util.spawn(config.home .. "/.dotfiles/bin/clips", false)
 		end, {description = "Sport launcher", group = "audio"}),
 	awful.key({}, "XF86AudioPlay", function()
 			awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
