@@ -2,7 +2,7 @@
 
 # Check if youtube-dl is installed
 if [[ -x "$(which youtube-dl)" ]]; then
-	youtube-dl -f 'bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' --ignore-errors "$@"
+	youtube-dl -f 'bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' --ignore-errors --output "%(uploader)s%(title)s.%(ext)s" "$@"
 	exit 0
 else
 	echo "youtube-dl is not installed"
