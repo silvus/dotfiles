@@ -65,7 +65,7 @@ def print_error(message):
 
 
 def assure_dir_exist(path):
-    """ Create parents folders """
+    """Create parents folders for file path"""
     dir_path = os.path.dirname(os.path.expanduser(path))
     if not os.path.exists(dir_path):
         try:
@@ -75,7 +75,7 @@ def assure_dir_exist(path):
 
 
 def exec_command(command, show_errors=True):
-    """ Execute a system command """
+    """Execute a system command"""
     p = Popen(command, stdout=PIPE, stderr=PIPE)
     output, errors = p.communicate()
 
@@ -122,6 +122,14 @@ def count_files(rootFolder):
     return total
 
 
+def copy_if_not_exist(source, destination):
+    """Copy file if destination doesn't exist"""
+    if not os.path.exists(destination):
+        assure_dir_exist(destination)
+        return shutil.copy(source, destination)
+    return True
+
+
 # --------------------------------------------------------------------
 # Symlinks
 # --------------------------------------------------------------------
@@ -149,6 +157,7 @@ def symlink_arbo(rootSource, rootDestination):
 
             count += 1
             if not symlink(source, destination):
+                print_error("Error copying {}".format(source))
                 return False
 
             # Update the same line each time
@@ -175,6 +184,41 @@ def symlink(src, dest):
     else:
         print_error(src + " doesn't exist")
         return False
+
+
+# --------------------------------------------------------------------
+# Copy
+# --------------------------------------------------------------------
+
+
+def copy_arbo(rootSource, rootDestination):
+    """
+    Scan "appcustom" directory and create an equivalent file copy in home for each file.
+    """
+    count = 0
+    total = count_files(rootSource)
+
+    for dirName, subdirList, fileList in os.walk(rootSource):
+        for fileName in fileList:
+            # Get relative dir from dotfiles root
+            relativeDir = os.path.relpath(dirName, rootSource)
+            # Add file name and handle "." (with normpath)
+            relativeFile = os.path.normpath(os.path.join(relativeDir, fileName))
+
+            # Create absolutes paths
+            source = os.path.join(rootSource, relativeFile)
+            destination = os.path.join(rootDestination, relativeFile)
+
+            count += 1
+            if not copy_if_not_exist(source, destination):
+                print_error("Error copying {}".format(source))
+                return False
+
+            # Update the same line each time
+            print_progress(count, total)
+
+    print()
+    return True
 
 
 # --------------------------------------------------------------------
@@ -214,7 +258,7 @@ def git_pull(destination):
 
 
 def git_changelog(destination):
-    """ Get changelog from git commits """
+    """Get changelog from git commits"""
     p = Popen(
         [
             "git",
@@ -236,7 +280,7 @@ def git_changelog(destination):
 
 
 def git_version(destination):
-    """ Get current commit """
+    """Get current commit"""
     p = Popen(
         [
             "git",
@@ -257,7 +301,7 @@ def git_version(destination):
 
 
 def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
-    """ Clone or update dotfiles """
+    """Clone or update dotfiles"""
     print_header("Dotfiles updated" if restarted else "Dotfiles")
 
     if not os.path.exists(dotfilespath):
@@ -337,6 +381,15 @@ def launch(dotfilespath, restarted):
             # Reload .Xresources
             os.environ["DISPLAY"] = ":0"  # Assure DISPLAY is set if launched from SSH
             exec_command(["xrdb", os.path.expanduser("~/.Xresources")])
+
+        # Generate ~/.dotfiles_custom files if not exists
+        print_header("Generate {}_custom files".format(os.path.basename(dotfilespath)))
+        copy_arbo(
+            os.path.join(dotfilespath, "appcustom"),
+            "{}_custom".format(dotfilespath),
+        )
+
+        print()
 
 
 def init_cli_arg():
