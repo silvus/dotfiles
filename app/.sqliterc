@@ -2,4 +2,4 @@
 .mode column
 .nullvalue NULL
 -- .timer on
-.prompt "\033[32msqlite >\033[0m "
+-- .prompt "\033[32msqlite >\033[0m "
