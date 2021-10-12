@@ -266,6 +266,9 @@ keys.global = awful.util.table.join(
 	awful.key({}, "#49", function ()
 			quake.term:toggle()
 		end, {description = "Toggle guake like terminal", group = "launcher"}),
+	awful.key({modkey}, "Escape", function ()
+			quake.term:toggle()
+		end, {description = "Toggle guake like terminal", group = "launcher"}),
 
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function ()
