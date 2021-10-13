@@ -9,16 +9,17 @@
 	},
 	"Insert table": {
 		"prefix": "table",
+		"description": "Insert md table",
 		"body": [
 			"| ${1:Column1} | ${2:Column2} |",
 			"| ------- | ------- |",
 			"|         |         |",
 			"${0}"
 		],
-		"description": "Insert md table"
 	},
 	"Insert planning table": {
 		"prefix": "planning",
+		"description": "Insert md table",
 		"body": [
 			"| Time  | Task |",
 			"| ----- | ---- |",
@@ -37,7 +38,21 @@
 			"| 20:00 |      |",
 			"${0}",
 		],
-		"description": "Insert md table"
 	},
-}
+	"Journalog": {
+		"prefix": [
+			"journal",
+			"journalog",
+			"log",
+		],
+		"description": "Insert journalog header",
+		"body": [
+			"",
+			"# $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_DAY_NAME",
+			"",
+			"Mood: ",
+			"",
+			"- [ ] ${0}",
+		],
+	},
 }
