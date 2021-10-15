@@ -1,7 +1,7 @@
 
 ! ------------------------------------------------------------------------------
 ! Color theme
-! ! ------------------------------------------------------------------------------
+! ------------------------------------------------------------------------------
 
 ! rofi.color-window: #273238, #273238, #1e2529
 ! rofi.color-normal: #273238, #c1c1c1, #273238, #394249, #ffffff
@@ -32,7 +32,7 @@ rofi.monitor: primary
 
 ! "Font to use" Set from: Default
 !rofi.font:                           mono 9
-rofi.font:                           DejaVu Sans Mono 9
+rofi.font:                           DejaVu Sans Mono 11
 
 ! "Border width" Set from: Default
 ! rofi.bw:                             1
@@ -65,10 +65,10 @@ rofi.show-icons:                     true
 ! rofi.ssh-command:                    {terminal} -e {ssh-client} {host}
 
 ! "Run command to execute" Set from: Default
-! rofi.run-command:                    {cmd}
+rofi.run-command: fish -c '{cmd}'
 
 ! "Command to get extra run targets" Set from: Default
-! rofi.run-list-command:               
+rofi.run-list-command: 'fish -c functions'
 
 ! "Run command to execute that runs in shell" Set from: Default
 ! rofi.run-shell-command:              {terminal} -e {cmd}
@@ -101,7 +101,7 @@ rofi.sort:                           true
 ! rofi.cycle:                          true
 
 ! "Enable sidebar-mode" Set from: Default
-rofi.sidebar-mode:                   true
+!rofi.sidebar-mode:                   true
 
 ! "Row height (in chars)" Set from: Default
 ! rofi.eh:                             1
@@ -173,6 +173,7 @@ rofi.fake-transparency:              true
 ! rofi.show-match:                     true
 
 ! "New style theme file" Set from: File
+! rofi.theme:                          ~/.config/rofi/theme_sidebar.rasi
 rofi.theme:                          ~/.config/rofi/theme.rasi
 
 ! "Color scheme for normal row" Set from: XResources
@@ -188,7 +189,7 @@ rofi.theme:                          ~/.config/rofi/theme.rasi
 ! rofi.color-window:                   #273238, #273238, #1e2529
 
 ! "Max history size (WARNING: can cause slowdowns when set to high)." Set from: Default
-! rofi.max-history-size:               25
+rofi.max-history-size:               100
 
 ! "Hide the prefix mode prefix on the combi view." Set from: Default
 ! rofi.combi-hide-mode-prefix:         false
