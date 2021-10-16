@@ -43,6 +43,8 @@ configuration {
     background-color: @background;
     border:           1;
     padding:          5;
+    location:         north;
+    anchor:           north;
 }
 #mainbox {
     border:  0;
@@ -61,10 +63,10 @@ configuration {
     border:       2px 0px 0px ;
     border-color: @separatorcolor;
     spacing:      2px ;
-    scrollbar:    false;
+    scrollbar:    true;
     padding:      2px 0px 0px ;
-    columns:      2;
-    lines:        10;
+    columns:      1;
+    lines:        20;
 }
 #element {
     border:  0;
