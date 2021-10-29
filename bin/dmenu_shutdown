@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-action="$(echo -e "Shutdown\nRestart\nLogout" | dmenu -i -nb '#1e1e1e' -sf '#ffffff' -sb '#009914' -nf '#009914')"
+action="$(echo -e "Shutdown\nRestart\nLogout\nSleep" | dmenu -i -nb '#1e1e1e' -sf '#ffffff' -sb '#009914' -nf '#009914')"
 
 case "$action" in
 	"Shutdown")
@@ -12,6 +12,9 @@ case "$action" in
 	"Logout")
 		session=$(loginctl session-status | head -n 1 | awk '{print $1}')
 		loginctl terminate-session $session
+		;;
+	"Sleep")
+		xset dpms force off
 		;;
 esac
 
