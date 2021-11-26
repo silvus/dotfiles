@@ -199,4 +199,12 @@
 		"command": "editor.action.quickFix",
 		"when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
 	},
+	{
+		"key": "ctrl+shift+b",
+		"command": "-workbench.action.tasks.build"
+	},
+	{
+		"key": "ctrl+shift+b",
+		"command": "workbench.action.toggleEditorWidths"
+	},
 ]
