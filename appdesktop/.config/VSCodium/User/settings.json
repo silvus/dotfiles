@@ -105,11 +105,7 @@
         ]
     },
     "pasteImage.showFilePathConfirmInputBox": true,
-    "pasteImage.basePath": "${currentFileDir}/.img",
-    "pasteImage.path": "${currentFileDir}/.img",
-    "pasteImage.insertPattern": "${imageSyntaxPrefix}.img/${imageFilePath}${imageSyntaxSuffix}",
     "pasteImage.defaultName": "YMMDD",
-    "pasteImage.namePrefix": "${currentFileNameWithoutExt}_",
     "pasteImage.filePathConfirmInputBoxMode": "onlyName",
     "workbench.editor.limit.enabled": true,
     "workbench.editor.limit.value": 12,
@@ -144,4 +140,6 @@
     "security.workspace.trust.untrustedFiles": "open",
     "workbench.editor.enablePreview": false,
     "telemetry.telemetryLevel": "off",
+    "pasteImage.insertPattern": "${imageSyntaxPrefix}/${imageFilePath}${imageSyntaxSuffix}",
+    "pasteImage.namePrefix": "${currentFileNameWithoutExt}_",
 }
