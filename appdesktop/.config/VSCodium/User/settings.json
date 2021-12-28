@@ -142,4 +142,5 @@
     "telemetry.telemetryLevel": "off",
     "pasteImage.insertPattern": "${imageSyntaxPrefix}/${imageFilePath}${imageSyntaxSuffix}",
     "pasteImage.namePrefix": "${currentFileNameWithoutExt}_",
+    "window.titleBarStyle": "custom",
 }
