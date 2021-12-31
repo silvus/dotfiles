@@ -102,6 +102,25 @@
                     "foreground": "#adadad",
                 }
             },
+            // Markdown checkboxes
+            {
+                "scope": "markup.list.unnumbered.markdown meta.link.reference.markdown punctuation.definition.string.begin.markdown",
+                "settings": {
+                    "foreground": "#71cafd",
+                }
+            },
+            {
+                "scope": "markup.list.unnumbered.markdown meta.link.reference.markdown punctuation.definition.string.end.markdown",
+                "settings": {
+                    "foreground": "#71cafd",
+                }
+            },
+            {
+                "scope": "markup.list.unnumbered.markdown meta.link.reference.markdown string.other.link.title.markdown",
+                "settings": {
+                    "foreground": "#6A9955",
+                }
+            },
         ]
     },
     "pasteImage.showFilePathConfirmInputBox": true,
