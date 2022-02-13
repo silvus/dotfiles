@@ -2,7 +2,7 @@
 
 # Check if youtube-dl is installed
 if [[ -x "$(which youtube-dl)" ]]; then
-	youtube-dl --ignore-errors --extract-audio --audio-format mp3 --output "%(uploader)s%(title)s.%(ext)s" "$@"
+	youtube-dl --ignore-errors --extract-audio --audio-format mp3 --output "%(artist,uploader)s - %(track,title)s.%(ext)s" "$@"
 	exit 0
 else
 	echo "youtube-dl is not installed"
