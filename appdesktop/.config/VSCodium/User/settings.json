@@ -162,4 +162,8 @@
     "pasteImage.insertPattern": "${imageSyntaxPrefix}/${imageFilePath}${imageSyntaxSuffix}",
     "pasteImage.namePrefix": "${currentFileNameWithoutExt}_",
     "window.titleBarStyle": "custom",
+    "notebook.breadcrumbs.showCodeCells": false,
+    "notebook.lineNumbers": "on",
+    "notebook.showFoldingControls": "always",
+    "notebook.dragAndDropEnabled": false,
 }
