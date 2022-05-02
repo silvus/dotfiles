@@ -17,3 +17,6 @@ if [ -n "$PS1" ]; then
 		fi
 	fi
 fi
+
+# Make sure Fish is flagged as not started at this point 
+unset FISH_IS_STARTED

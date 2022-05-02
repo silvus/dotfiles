@@ -5,6 +5,9 @@
 _launch_tmux() {
 	local _TMUX_SESSION_NAME="${USER}_dev"
 
+	# Make sure Fish is flagged as not started at this point
+	unset FISH_IS_STARTED
+
 	if [[ -z "${SSH_CLIENT}" ]]; then
 		local _WINDOWS_MAIN='Dev'
 	else
