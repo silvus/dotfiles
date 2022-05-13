@@ -166,4 +166,5 @@
     "notebook.lineNumbers": "on",
     "notebook.showFoldingControls": "always",
     "notebook.dragAndDropEnabled": false,
+    "window.confirmBeforeClose": "keyboardOnly",
 }
