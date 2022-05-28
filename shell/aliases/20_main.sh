@@ -9,10 +9,9 @@ alias ......='cd ../../../../../'
 
 alias dotreload="source $HOME/.bashrc"
 alias dot="cd $SILVUSDOTFILES"
-alias d="cd $SILVUSDOC"
-alias t="cd $SILVUSTOOLS"
-alias s="cd $SILVUSHOME"
-alias m="cd $SILVUSMEDIA"
+alias doc="cd $SILVUSDOC"
+alias data="cd $SILVUSHOME"
+alias media="cd $SILVUSMEDIA"
 
 # from http://news.ycombinator.com/item?id=4492682
 alias tree1="tree --dirsfirst -ChFLQ 1"

@@ -20,7 +20,7 @@ export PAPERSIZE=a4
 # Programs
 # -----------------------------------------------------------------------------
 # Editor
-export EDITOR=vim
+export EDITOR=macro
 
 # Browser
 if [[ -n "$DISPLAY" ]]; then
@@ -40,6 +40,7 @@ export SILVUSPROJECT="/data/dev"
 
 # Dotfiles
 export SILVUSDOC="/data/doc"
+export SILVUSHOME="/data"
 export SILVUSMEDIA="/data/media"
 
 # PATH
