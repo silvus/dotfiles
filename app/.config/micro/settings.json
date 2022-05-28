@@ -25,7 +25,7 @@
     "linter": true,
     "literate": true,
     "matchbrace": false,
-    "mkparents": false,
+    "mkparents": true,
     "mouse": true,
     "paste": false,
     "pluginchannels": [
