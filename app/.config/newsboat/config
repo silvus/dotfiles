@@ -268,5 +268,5 @@ bind-key RIGHT open feedlist # Open the currently selected feed
 bind-key RIGHT open tagselection # Open the currently selected tag
 
 # Podcast
-bind-key ENTER pb-download podbeuter
-bind-key p pb-play podbeuter
+# bind-key ENTER pb-download podbeuter
+# bind-key p pb-play podbeuter
