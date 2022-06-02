@@ -11,3 +11,6 @@
 __pycache__/
 .ropeproject/
 *.py[cod]
+.pdm.toml
+__pypackages__/
+
