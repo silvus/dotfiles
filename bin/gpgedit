@@ -76,11 +76,14 @@ def open_editor(filepath):
     elif shutil.which("geany"):
         logger.info("Open tempory decrypted file in Geany")
         execute_cmd(["geany", filepath])
+    elif shutil.which("micro"):
+        logger.info("Open tempory decrypted file in Micro")
+        execute_cmd(["micro", filepath])
     elif shutil.which("vim"):
         logger.info("Open tempory decrypted file in Vim")
         execute_cmd(["vim", filepath])
     elif shutil.which("nano"):
-        logger.info("Open tempory decrypted file in is Nano")
+        logger.info("Open tempory decrypted file in Nano")
         execute_cmd(["nano", filepath])
     else:
         logger.info("Open tempory decrypted file in {}".format(os.getenv("EDITOR")))
