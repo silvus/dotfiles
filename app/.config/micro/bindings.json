@@ -8,5 +8,6 @@
     "CtrlShiftRight": "SelectWordRight",
     "CtrlShiftUp": "SelectUp",
     "CtrlUnderscore": "lua:comment.comment",
-    "CtrlW": "DeleteWordLeft"
+    "CtrlW": "DeleteWordLeft",
+    "Ctrl-l": "SpawnMultiCursor"
 }
