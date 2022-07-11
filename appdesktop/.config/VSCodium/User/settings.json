@@ -5,6 +5,8 @@
     "editor.dragAndDrop": false,
     "editor.minimap.enabled": false,
     "python.formatting.provider": "black",
+    "python.autoComplete.extraPaths": ["__pypackages__/<major.minor>/lib"],
+    "python.analysis.extraPaths": ["__pypackages__/<major.minor>/lib"],
     "workbench.tree.indent": 16,
     "workbench.list.horizontalScrolling": true,
     "editor.formatOnSave": true,
