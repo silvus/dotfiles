@@ -103,8 +103,8 @@ go_url                = o
 # Volume control keys:
 volume_down_1         = <
 volume_up_1           = >
-volume_down_5         = ,
-volume_up_5           = .
+volume_down_5         = -
+volume_up_5           = +
 volume_10             = M-1
 volume_20             = M-2
 volume_30             = M-3
