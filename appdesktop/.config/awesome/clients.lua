@@ -23,12 +23,6 @@ clients.keys = awful.util.table.join(
 	awful.key({ modkey, }, "space", function(c)
 			awful.client.floating.toggle()
 		end, {description = "toggle floating", group = "client"}),
-	awful.key({ modkey, }, "Return", function(c)
-			master = awful.client.getmaster()
-			if master then
-				c:swap(master)
-			end
-		end, {description = "move to master", group = "client"}),
 	awful.key({ modkey, }, "o", function(c)
 			c:move_to_screen()
 		end, {description = "move to screen", group = "client"}),

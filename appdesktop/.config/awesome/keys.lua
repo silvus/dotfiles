@@ -120,32 +120,6 @@ end
 keys.global = awful.util.table.join(
 	awful.key({ modkey }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
 
-	awful.key({ modkey, "Shift"}, "h", function()
-			-- Utility function to trim a string
-			local function trim(s)
-				if s == nil then return nil end
-				return (s:gsub("^%s*(.-)%s*$", "%1"))
-			end
-
-			-- parse current layout from setxkbmap
-			local file = assert(io.popen('setxkbmap -query', 'r'))
-			local status = file:read('*all')
-			file:close()
-			naughty.notify({
-				title = 'Keymap',
-				text = trim(status),
-				icon = beautiful.paragraph,
-				preset = naughty.config.presets.success
-			})
-
-			local layout = trim(string.match(status, "layout:([^\n]*)"))
-			local variant = trim(string.match(status, "variant:([^\n]*)"))
-
-			-- Launch keyboard visualizer (dep: gkbd-capplet)
-			-- or xkeycaps (and use gucharmap)
-			awful.util.spawn("gkbd-keyboard-display -l " .. layout .. " " .. variant)
-		end, {description="Keyboard keys help", group="awesome"}),
-
 	-- Next/previous tag
 	awful.key({ modkey }, "<",   awful.tag.viewprev, {description = "view previous tag", group = "tag"}),
 	awful.key({ modkey }, ">", awful.tag.viewnext, {description = "view next tag", group = "tag"}),
@@ -200,30 +174,27 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "Left", function()
 			awful.client.swap.global_bydirection('left')
 		end, {description = "swap with previous client by index", group = "client"}),
+
 	awful.key({ modkey, "Shift" }, "Up", function()
-			awful.client.swap.global_bydirection('up')
-		end, {description = "swap with next client by index", group = "client"}),
+			awful.tag.incmwfact(0.05)
+		end, {description = "Increase master width", group = "client"}),
 	awful.key({ modkey, "Shift" }, "Down", function()
-			awful.client.swap.global_bydirection('down')
-		end, {description = "swap with previous client by index", group = "client"}),
+			awful.tag.incmwfact(-0.05)
+		end, {description = "Decrease master width", group = "client"}),
+
 	awful.key({ modkey, "Control" }, "Right", function()
 			awful.screen.focus_relative(1)
 		end, {description = "focus the next screen", group = "screen"}),
 	awful.key({ modkey, "Control" }, "Left", function()
 			awful.screen.focus_relative(-1)
 		end, {description = "focus the previous screen", group = "screen"}),
+
 	awful.key({ modkey }, "u", function()
 			awful.client.urgent.jumpto()
 		end, {description = "jump to urgent client", group = "client"}),
-	-- awful.key({ modkey,	}, "Tab", function()
-	-- 		awful.client.focus.history.previous()
-	-- 		if client.focus then
-	-- 			client.focus:raise()
-	-- 		end
-	-- 	end, {description = "go back", group = "client"}),
 
 	-- Terminal
-	awful.key({ modkey, "Control" }, "Return", function()
+	awful.key({ modkey }, "Return", function()
 			awful.spawn( config.terminal .. " -title terminal -e " .. config.home .. "/.dotfiles/bin/tmuxdev")
 		end, {description = "open a terminal", group = "launcher"}),
 	-- awful.key({}, "²", function () awful.spawn(config.home .. "/.dotfiles/bin/guakify 'rxvt-unicode.URxvt' '" .. terminal .. " -e " .. config.home .. "/.dotfiles/bin/tmuxdev'") end, {description = "open a terminal", group = "launcher"}),
@@ -298,9 +269,9 @@ keys.global = awful.util.table.join(
 			widget_volume.volume.update()
 		end, {description = "volume mute", group = "audio"}),
 	-- Media Keys
-	awful.key({}, "XF86Tools", function()
-			awful.util.spawn(config.home .. "/.dotfiles/bin/clips", false)
-		end, {description = "Sport launcher", group = "audio"}),
+	-- awful.key({}, "XF86Tools", function()
+	-- 		awful.util.spawn(config.home .. "/.dotfiles/bin/clips", false)
+	-- 	end, {description = "Sport launcher", group = "audio"}),
 	awful.key({}, "XF86AudioPlay", function()
 			awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
 		end, {description = "audio toggle play/pause", group = "audio"}),
@@ -346,9 +317,9 @@ keys.global = awful.util.table.join(
 		end, {description = "shutdown", group = "launcher"}),
 
 	-- VPN
-	awful.key({ modkey, "Shift" }, "v", function()
-			awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_vpn", false)
-		end, {description = "launch vpn", group = "launcher"}),
+	-- awful.key({ modkey, "Shift" }, "v", function()
+	-- 		awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_vpn", false)
+	-- 	end, {description = "launch vpn", group = "launcher"}),
 
 	-- Firefox refresh
 	awful.key({ modkey }, "r", function()
@@ -381,11 +352,11 @@ keys.global = awful.util.table.join(
 		end, {description = "move focused client to scratchpad", group = "tag"}),
 	
 	-- Panic buttons
-	awful.key({ }, "Pause", function ()
+	awful.key({ modkey }, "Pause", function ()
 			panic_key()
 		end, {description = "Panic button", group = "tag"}),
 	-- Unpanic buttons
-	awful.key({ modkey }, "Pause", function ()
+	awful.key({ modkey, "Shift" }, "Pause", function ()
 			unpanic_key(false)
 		end, {description = "Unpanic button", group = "tag"}),
 	-- Toggle Panic buttons
