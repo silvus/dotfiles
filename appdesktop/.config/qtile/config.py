@@ -1,27 +1,14 @@
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# Test this configuration without reload with :
+# python3 -m py_compile ~/.config/qtile/config.py
 
-from typing import List  # noqa: F401
 
+from typing import List, Callable
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from libqtile import hook, extension
+from libqtile.core.manager import Qtile
 
 mod = "mod4"
 terminal = guess_terminal()
@@ -78,13 +65,36 @@ keys = [
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
-    Key([mod], "space", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod, "shift"], "space", lazy.previous_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "space", lazy.window.toggle_floating(), desc="Toggle floating"),
+    # Key([mod, "shift"], "space", lazy.previous_layout(), desc="Toggle between layouts"),
+    Key([mod, "shift"], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "e", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    # Sound
+    Key([], "XF86AudioMute", lazy.spawn("amixer -q set Master toggle")),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -c 0 sset Master 1- unmute")),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -c 0 sset Master 1+ unmute")),
+    Key(
+        [mod],
+        "m",
+        lazy.run_extension(
+            extension.CommandSet(
+                commands={
+                    "play/pause": "[ $(mocp -i | wc -l) -lt 2 ] && mocp -p || mocp -G",
+                    "next": "mocp -f",
+                    "previous": "mocp -r",
+                    "quit": "mocp -x",
+                    "open": "urxvt -e mocp",
+                    "shuffle": "mocp -t shuffle",
+                    "repeat": "mocp -t repeat",
+                },
+                pre_commands=["[ $(mocp -i | wc -l) -lt 1 ] && mocp -S"],
+                # **Theme.dmenu
+            )
+        ),
+    ),
 ]
 
 # QWERTY keyboards
@@ -102,65 +112,135 @@ keys = [
 # ]
 
 # AZERTY keyboards
-group_names = [
-    "ampersand",
-    "eacute",
-    "quotedbl",
-    "apostrophe",
-    "parenleft",
-    "section",
-    "egrave",
-    "exclam",
-    "ccedilla",
-    "agrave",
-]
-group_labels = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "0",
-]
-group_layouts = [
-    "monadtall",
-    "monadtall",
-    "monadtall",
-    "monadtall",
-    "monadtall",
-    "monadtall",
-    "monadtall",
-    "monadtall",
-    "treetab",
-    "floating",
-]
+# group_names = [
+#     "ampersand",
+#     "eacute",
+#     "quotedbl",
+#     "apostrophe",
+#     "parenleft",
+#     "section",
+#     "egrave",
+#     "exclam",
+#     "ccedilla",
+#     "agrave",
+# ]
+# group_labels = [
+#     "1",
+#     "2",
+#     "3",
+#     "4",
+#     "5",
+#     "6",
+#     "7",
+#     "8",
+#     "9",
+#     "0",
+# ]
+# group_layouts = [
+#     "monadtall",
+#     "treetab",
+#     "treetab",
+#     "treetab",
+#     "treetab",
+#     "treetab",
+#     "treetab",
+#     "treetab",
+#     "treetab",
+#     "treetab",
+# ]
 
-# groups = [Group(i) for i in "123456789"]
-groups = []
-for i in range(len(group_names)):
-    groups.append(
-        Group(
-            name=group_names[i],
-            layout=group_layouts[i],
-            label=group_labels[i],
-        )
-    )
+# # groups = [Group(i) for i in "123456789"]
+# groups = []
+# for i in range(len(group_names)):
+#     groups.append(
+#         Group(
+#             name=group_names[i],
+#             layout=group_layouts[i],
+#             label=group_labels[i],
+#         )
+#     )
+
+groups = [
+    Group(
+        name="ampersand",  # 1
+        layout="max",
+        label="Web",
+        matches=[Match(wm_class=["Firefox"])],
+        exclusive=True,
+        spawn="firefox",
+    ),
+    Group(
+        name="eacute",  # 2
+        layout="max",
+        label="Code",
+        matches=[Match(wm_class=["VSCodium", "jetbrains-phpstorm"])],
+        exclusive=True,
+        spawn="codium",
+    ),
+    Group(
+        name="quotedbl",  # 3
+        layout="max",
+        label="Mail",
+        matches=[Match(wm_class=["Thunderbird"])],
+        exclusive=True,
+        spawn="thunderbird",
+    ),
+    Group(
+        name="apostrophe",  # 4
+        layout="max",
+        label="File",
+        matches=[Match(wm_class=["Pcmanfm", "Thunar", "Nemo"])],
+        exclusive=True,
+    ),
+    Group(
+        name="parenleft",  # 5
+        layout="columns",
+        label="5",
+        matches=[],
+    ),
+    Group(
+        name="minus",  # 6
+        layout="columns",
+        label="6",
+        matches=[],
+    ),
+    Group(
+        name="egrave",  # 7
+        layout="columns",
+        label="7",
+        matches=[],
+    ),
+    Group(
+        name="underscore",  # 8
+        layout="columns",
+        label="8",
+        matches=[],
+    ),
+    Group(
+        name="ccedilla",  # 9
+        layout="columns",
+        label="9",
+        matches=[],
+    ),
+    Group(
+        name="agrave",  # 0
+        layout="columns",
+        label="0",
+        matches=[],
+    ),
+]
 
 
 for i in groups:
     keys.extend(
         [
             # mod1 + letter of group = switch to group
-            Key(
-                [mod],
-                i.name,
-                lazy.group[i.name].toscreen(),
-                desc="Switch to group {}".format(i.name),
-            ),
+            # Key(
+            #     [mod],
+            #     i.name,
+            #     lazy.group[i.name].toscreen(),
+            #     desc="Switch to group {}".format(i.name),
+            # ),
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
                 [mod, "shift"],
@@ -175,41 +255,66 @@ for i in groups:
         ]
     )
 
+
+def go_to_group(name: str) -> Callable:
+    def _inner(qtile: Qtile) -> None:
+        if len(qtile.screens) == 1:
+            qtile.groups_map[name].cmd_toscreen()
+            return
+
+        if name in "ccedilla":
+            # 9
+            qtile.focus_screen(1)
+            qtile.groups_map[name].cmd_toscreen()
+        elif name in "underscore":
+            # 8
+            qtile.focus_screen(2)
+            qtile.groups_map[name].cmd_toscreen()
+        else:
+            qtile.focus_screen(0)
+            qtile.groups_map[name].cmd_toscreen()
+
+    return _inner
+
+
+for i in groups:
+    keys.append(Key([mod], i.name, lazy.function(go_to_group(i.name))))
+
+
 # https://docs.qtile.org/en/latest/manual/ref/layouts.html
 layouts = [
     layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2),
-    layout.Max(),
-    # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),  # How to access other apps ?
     # layout.Bsp(),  # Horizontal matrix
     # layout.Matrix(),  # 1 left, 1 right, 1 left, etc...
     layout.MonadTall(),  # Left Main, all right
+    layout.Max(),
     # layout.MonadWide(),  # Left Top, all bottom
     # layout.RatioTile(),  # Horizontal boxes
     # layout.Tile(),  # Left large Main, all right
     # layout.VerticalTile(),  # Bottom large, all top
-    layout.TreeTab(),  # Left sidebar app navigation
+    # layout.TreeTab(),  # Left sidebar app navigation
     # layout.Zoomy(),  # Right sidebar  app navigation miniature
     # layout.Floating(),
 ]
 
 widget_defaults = dict(
     font="sans",
-    fontsize=12,
-    padding=3,
+    fontsize=11,
+    padding=2,
 )
 extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
                 widget.CurrentScreen(),
                 widget.CurrentLayoutIcon(),
                 widget.CurrentLayout(),
                 widget.Prompt(),
                 widget.GroupBox(),
-                widget.AGroupBox(),
+                # widget.AGroupBox(),
                 widget.TaskList(),
                 # widget.WindowName(),
                 # widget.WindowTabs(),
@@ -222,12 +327,11 @@ screens = [
                         widget.TextBox(text="This widget is in the box"),
                         widget.CPU(),
                         widget.Memory(),
-                        widget.Memory(),
+                        widget.Net(),
                     ]
                 ),
                 # widget.Memory(),
                 widget.MemoryGraph(),
-                # widget.Net(),
                 widget.NetGraph(),
                 widget.CheckUpdates(),
                 # widget.KeyboardKbdd(),
@@ -243,13 +347,48 @@ screens = [
                 widget.Systray(),
                 widget.PulseVolume(),
                 widget.Volume(),
-                widget.Clock(format="%Y-%m-%d %a %H:%M"),
-                widget.QuickExit(),
+                widget.Clock(format="%H:%M"),
                 widget.Wallpaper(
-                    directory="~/.wallpapers/", random_selection=True, fmt=""
+                    directory="~/.config/qtile/wallpapers/",
+                    random_selection=True,
+                    fmt="",
                 ),
             ],
-            24,
+            22,
+        ),
+    ),
+    Screen(
+        bottom=bar.Bar(
+            [
+                widget.CurrentScreen(),
+                widget.CurrentLayoutIcon(),
+                widget.CurrentLayout(),
+                groupbox2,
+                widget.TaskList(),
+                widget.Wallpaper(
+                    directory="~/.config/qtile/wallpapers/",
+                    random_selection=True,
+                    fmt="",
+                ),
+            ],
+            22,
+        ),
+    ),
+    Screen(
+        bottom=bar.Bar(
+            [
+                widget.CurrentScreen(),
+                widget.CurrentLayoutIcon(),
+                widget.CurrentLayout(),
+                groupbox3,
+                widget.TaskList(),
+                widget.Wallpaper(
+                    directory="~/.config/qtile/wallpapers/",
+                    random_selection=True,
+                    fmt="",
+                ),
+            ],
+            22,
         ),
     ),
 ]
@@ -283,6 +422,7 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
+        Match(title="Event Tester"),  # xev
     ]
 )
 auto_fullscreen = True
@@ -302,3 +442,19 @@ auto_minimize = True
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
+
+# @hook.subscribe.screens_reconfigured
+# async def _():
+#     if len(qtile.screens) > 1:
+#         groupbox1.visible_groups = ["1", "2", "3"]
+#     else:
+#         groupbox1.visible_groups = ["1", "2", "3", "q", "w", "e"]
+#     if hasattr(groupbox1, "bar"):
+#         groupbox1.bar.draw()
+
+
+# @hook.subscribe.startup_once
+# def autostart():
+#     home = os.path.expanduser("~")
+#     subprocess.Popen([home + "/.config/qtile/autostart.sh"])
