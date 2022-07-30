@@ -8,7 +8,7 @@ local math = require("math")
 
 local customwidget = {}
 
-customwidget.icon = wibox.widget.imagebox(beautiful.note)
+customwidget.icon = wibox.widget.imagebox(beautiful.music_note)
 customwidget.icon.visible = false
 
 -- Moc

@@ -61,8 +61,6 @@ local function _get_wallpaper_path(s, tag_based)
 				screen_index = s.index
 			end
 
-			-- naughty.notify({title = "tag_name", text = tostring(tag_name) })
-
 			local wallpapers_possibilities = {
 				-- Search in home with a screen index
 				wallpapers_dir .. '/wallpaper_' .. screen_index .. '_' .. tag_name .. '.jpg',

@@ -4,7 +4,6 @@ local awful = require("awful")
 local table = require("gears.table")
 -- Dmenu-like launcher
 local menubar = require("menubar")
-local lain = require("lain")
 
 
 -- Return if a file is readable
@@ -47,11 +46,11 @@ config.layouts = {
 	-- awful.layout.suit.tile.left,
 	awful.layout.suit.tile.bottom,
 
-	lain.layout.termfair,
+	-- lain.layout.termfair,
 	-- lain.layout.termfair.center,
 	-- lain.layout.cascade,
 	-- lain.layout.cascade.tile,
-	lain.layout.centerwork,
+	-- lain.layout.centerwork,
 	-- lain.layout.centerwork.horizontal,
 	
 	-- awful.layout.suit.tile.top,
@@ -61,7 +60,7 @@ config.layouts = {
 	-- awful.layout.suit.fair.horizontal,
 	awful.layout.suit.max,
 	-- awful.layout.suit.max.fullscreen,
-	-- awful.layout.suit.magnifier,
+	awful.layout.suit.magnifier,
 	-- awful.layout.suit.floating,
 	-- awful.layout.suit.corner.nw,
 	-- awful.layout.suit.corner.ne,
@@ -69,10 +68,10 @@ config.layouts = {
 	-- awful.layout.suit.corner.se,
 }
 
-lain.layout.termfair.nmaster = 2
-lain.layout.termfair.ncol    = 1
-lain.layout.termfair.center.nmaster = 2
-lain.layout.termfair.center.ncol    = 1
+-- lain.layout.termfair.nmaster = 2
+-- lain.layout.termfair.ncol    = 1
+-- lain.layout.termfair.center.nmaster = 2
+-- lain.layout.termfair.center.ncol    = 1
 
 -- Include config customisation to override previous default values
 -- This file should return a table, for exemple:

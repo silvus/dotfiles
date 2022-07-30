@@ -124,33 +124,50 @@ local rules = {
 	-- Specifics rules
 
 	-- Web
-	{ rule_any = { class = {"Firefox"}},
+	{ rule_any = { class = {"firefox", "Firefox"}},
 		-- except = { type = "dialog" },
 		properties = {
 			tag = desktops.tags_names[1],
+			titlebars_enabled = false,
+		}
+	},
+	-- Notes
+	{ rule_any = { class = {"obsidian", "Zim"}},
+		properties = {
+			tag = desktops.tags_names[2],
+			titlebars_enabled = false,
 		}
 	},
 	-- Dev
-	{ rule_any = { class = { "VSCodium", "Zim" }},
+	{ rule_any = { class = {"VSCodium"}},
 		properties = {
-			tag = desktops.tags_names[2],
+			tag = desktops.tags_names[3],
+			titlebars_enabled = false,
 		}
 	},
 	{ rule = { class = "jetbrains-phpstorm"},
 		properties = {
-			tag = desktops.tags_names[1],
+			tag = desktops.tags_names[3],
+			titlebars_enabled = false,
 			-- screen = screens.count(),
+		}
+	},
+	-- Files explorer
+	{ rule_any = { class = {"Pcmanfm", "Thunar", "Nemo"} },
+		properties = {
+			tag = desktops.tags_names[4],
 		}
 	},
 	-- Mail
 	{ rule_any = { class = {"thunderbird", "Thunderbird"} },
 		properties = {
-			tag = desktops.tags_names[3],
+			tag = desktops.tags_names[5],
+			titlebars_enabled = false,
 		}
 	},
 	{ rule_any = { instance = {"Msgcompose"} },
 		properties = {
-			tag = desktops.tags_names[3],
+			tag = desktops.tags_names[5],
 			floating = true,
 			ontop = true,
 			callback = function(c)
@@ -162,26 +179,15 @@ local rules = {
 			end
 		}
 	},
-	-- Slack
-	{ rule_any = { class = {"Slack"} },
-		properties = {
-			tag = desktops.tags_names[3],
-		}
-	},
-	-- Files explorer
-	{ rule_any = { class = {"Pcmanfm", "Thunar", "Nemo"} },
-		properties = {
-			tag = desktops.tags_names[4],
-		}
-	},
+	
 	-- Mixed
-	{ rule_any = { class = { "Godot", "Keybase", "balena-etcher-electron", "GParted", "Transmission" }},
+	{ rule_any = { class = { "Godot", "Keybase", "balena-etcher-electron", "GParted", "Transmission", "Slack" }},
 		properties = {
-			tag = desktops.tags_names[5],
+			tag = desktops.tags_names[6],
 		}
 	},
-	-- Graphics
-	{ rule_any = { class = { "Gimp", "Krita", }},
+	-- Games
+	{ rule_any = { class = {"Steam", "discord"} },
 		properties = {
 			tag = desktops.tags_names[6],
 		}
@@ -192,8 +198,8 @@ local rules = {
 			tag = desktops.tags_names[7],
 		}
 	},
-	-- Games
-	{ rule_any = { class = {"Steam", "discord"} },
+	-- Graphics
+	{ rule_any = { class = { "Gimp", "Krita", }},
 		properties = {
 			tag = desktops.tags_names[8],
 		}

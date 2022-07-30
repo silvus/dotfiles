@@ -95,11 +95,14 @@ theme.mail                                      = theme.dir .. "/icons/mail.png"
 theme.mail_on                                   = theme.dir .. "/icons/mail_on.png"
 theme.mem                                       = theme.dir .. "/icons/mem.png"
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
+theme.microphone                                = theme.dir .. "/icons/microphone.png"
+theme.microphone_off                            = theme.dir .. "/icons/microphone_off.png"
 theme.mpd_on                                    = theme.dir .. "/icons/mpd_on.png"
 theme.mpdl                                      = theme.dir .. "/icons/mpd.png"
 theme.music                                     = theme.dir .. "/icons/music.png"
+theme.music_note                                = theme.dir .. "/icons/music_note.png"
+theme.music_note_on                             = theme.dir .. "/icons/music_note_on.png"
 theme.note                                      = theme.dir .. "/icons/note.png"
-theme.note_on                                   = theme.dir .. "/icons/note_on.png"
 theme.net                                       = theme.dir .. "/icons/net.png"
 theme.net_down                                  = theme.dir .. "/icons/net_down.png"
 theme.net_up                                    = theme.dir .. "/icons/net_up.png"
@@ -215,6 +218,7 @@ function bar(s)
 	local widget_tasks_vertical = require("widgets.tasks_vertical")
 	local widget_clock = require("widgets.clock")
 	local widget_clock_vertical = require("widgets.clock_vertical")
+	local widget_volumecapture = require("widgets.volumecapture")
 	local widget_volume = require("widgets.volume")
 	local widget_notifications = require("widgets.notifications")
 	local widget_cpu = require("widgets.cpu")
@@ -276,7 +280,7 @@ function bar(s)
 				widget_rotate(widget_keyboardlayout.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
-				-- widget_volumecapture.widget,
+				widget_volumecapture.widget,
 				widget_volume.widget,
 				widget_separator_vertical.widget,
 				widget_rotate(widget_systray.widget),

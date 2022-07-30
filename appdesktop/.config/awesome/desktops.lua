@@ -19,11 +19,11 @@ local function init(s)
 			},
 			{
 				name   = tags_names[2],
-				icon   = beautiful.code,
+				icon   = beautiful.note,
 			},
 			{
 				name   = tags_names[3],
-				icon   = beautiful.mail,
+				icon   = beautiful.code,
 			},
 			{
 				name   = tags_names[4],
@@ -31,11 +31,11 @@ local function init(s)
 			},
 			{
 				name   = tags_names[5],
-				icon   = beautiful.fire,
+				icon   = beautiful.mail,
 			},
 			{
 				name   = tags_names[6],
-				icon   = beautiful.paint,
+				icon   = beautiful.fire,
 			},
 			{
 				name   = tags_names[7],
@@ -43,8 +43,8 @@ local function init(s)
 			},
 			{
 				name   = tags_names[8],
-				layout = awful.layout.suit.max,
-				icon   = beautiful.gamepad,
+				-- layout = awful.layout.suit.max,
+				icon   = beautiful.paint,
 			},
 			{
 				name   = tags_names[9],
