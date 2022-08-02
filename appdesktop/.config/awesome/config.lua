@@ -18,6 +18,7 @@ config.home = os.getenv("HOME")
 
 -- config.theme = "lagoon"
 config.theme = "matrix"
+-- config.theme = "bloodmoon"
 
 -- This is used later as the default terminal and editor to run.
 config.terminal = "rxvt-unicode"
