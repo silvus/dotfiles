@@ -153,7 +153,7 @@ local rules = {
 		}
 	},
 	-- Files explorer
-	{ rule_any = { class = {"Pcmanfm", "Thunar", "Nemo"} },
+	{ rule_any = { class = {"Pcmanfm", "pcmanfm-qt", "Thunar", "Nemo"} },
 		properties = {
 			tag = desktops.tags_names[4],
 		}

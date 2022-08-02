@@ -13,19 +13,19 @@ local theme   = {}
 -- Config
 -- ---------------------------------------------------------------------
 
-theme.name = "matrix"
+theme.name = "bloodmoon"
 
-theme.info                                      = "#074d0b"
-theme.error                                     = "#b01c09"
-theme.success                                   = "#009914"
-theme.primary                                   = "#074f00"
+theme.info                                      = "#941e22"
+theme.error                                     = "#ff4129"
+theme.success                                   = "#7d1318"
+theme.primary                                   = "#4a030a"
 
-theme.notification_position                     = "bottom_right"
+theme.notification_position                     = "bottom_left"
 theme.notification_max_width                    = 500
 theme.notification_icon_size                    = 50
 
 theme.dir                                       = gears.filesystem.get_configuration_dir() .. "themes/" .. theme.name
-theme.wallpaper                                 = theme.dir .. "/wallpaper.png"
+theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
 theme.font                                      = "DejaVu Sans Mono 9"
 
 theme.fg_normal                                 = theme.info
@@ -48,8 +48,8 @@ theme.tasklist_spacing                          = 15
 theme.tasklist_fg_normal                        = "#FFFFFF"
 
 theme.titlebar_fg_normal                        = "#333333"
-theme.titlebar_bg_normal                        = "#1c2b25"
-theme.titlebar_bg_focus                         = "#022603"
+theme.titlebar_bg_normal                        = "#2b1c1c"
+theme.titlebar_bg_focus                         = "#400202"
 
 theme.snap_bg                                   = theme.primary
 theme.snap_border_width                         = 5
