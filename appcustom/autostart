@@ -1,5 +1,7 @@
-# run lxqt-powermanagement
+# Sourced from ~/.dotfiles/bin/autostart
 
+# Exemples
+# ------------------------------------------------------
 # run firefox
 
 # run codium

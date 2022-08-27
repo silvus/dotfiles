@@ -10,8 +10,6 @@ local config = require("config")
 
 -- Execute specific xrandr script
 local function init()
-	awful.spawn.with_shell(config.home .. "/.dotfiles/bin/autostart_screen")
-
 	-- Update primary and screens change after xrandr command
 	-- TODO: how to update wibar and tags on primary changed ?
 	screen.emit_signal("list")

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Script launched at the end of awesome/i3 config
+
+
 # Run in background if not already started
 # ------------------------------------------------------
 function run {
@@ -43,10 +46,15 @@ fi
 # 	run blueman-applet
 # fi
 
+# Batterie management
+if [[ -x $(which lxqt-powermanagement) ]]; then
+	run lxqt-powermanagement
+fi
+
 # Environment specific configuration
 # ------------------------------------------------------
 # if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" || $(hostname --short) == "orcus" ]]; then
-# 	run firefox
+#	run firefox
 #	run thunderbird
 # fi
 
