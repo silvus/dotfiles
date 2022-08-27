@@ -15,8 +15,8 @@ local theme   = {}
 
 theme.name = "bloodmoon"
 
-theme.info                                      = "#941e22"
-theme.error                                     = "#ff4129"
+theme.info                                      = "#400d0f"
+theme.error                                     = "#821a78"
 theme.success                                   = "#7d1318"
 theme.primary                                   = "#4a030a"
 
@@ -189,20 +189,14 @@ function bar(s)
 	local widget_tags_vertical = require("widgets.tags_vertical")
 	local widget_tasks = require("widgets.tasks")
 	local widget_tasks_vertical = require("widgets.tasks_vertical")
-	local widget_clock = require("widgets.clock")
 	local widget_clock_vertical = require("widgets.clock_vertical")
 	local widget_volumecapture = require("widgets.volumecapture")
 	local widget_volume = require("widgets.volume")
 	local widget_notifications = require("widgets.notifications")
-	local widget_cpu = require("widgets.cpu")
-	local widget_ram = require("widgets.ram")
 	local widget_net = require("widgets.net")
 	local widget_vpn = require("widgets.vpn")
-	local widget_moc = require("widgets.moc")
 	local widget_systray = require("widgets.systray")
 	local widget_prompt = require("widgets.prompt")
-	local widget_keyboardlayout = require("widgets.keyboardlayout")
-	local widget_battery = require("widgets.battery")
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
 	local layoutbox = widget_layout.widget(s)
@@ -234,23 +228,10 @@ function bar(s)
 			},
 			{ -- Right widgets
 				layout = wibox.layout.fixed.vertical,
-				widget_moc.icon,
-				widget_moc.widgetbar,
-				-- widget_rotate(widget_moc.widget),
 				widget_vpn.icon,
-				-- widget_vpn.widget,
-				widget_battery.icon,
-				widget_rotate(widget_battery.widget),
 				widget_separator_vertical.widget,
 				widget_net.icon,
 				widget_rotate(widget_net.widget, true),
-				widget_separator_vertical.widget,
-				widget_cpu.icon,
-				widget_rotate(widget_cpu.widget, true),
-				widget_separator_vertical.widget,
-				widget_ram.icon,
-				widget_rotate(widget_ram.widget),
-				widget_rotate(widget_keyboardlayout.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
 				widget_volumecapture.widget,
@@ -258,7 +239,7 @@ function bar(s)
 				widget_separator_vertical.widget,
 				widget_rotate(widget_systray.widget),
 				widget_separator_vertical.widget,
-				widget_clock.icon,
+				widget_clock_vertical.icon,
 				widget_clock_vertical.widget,
 				widget_separator_vertical.widget,
 				{

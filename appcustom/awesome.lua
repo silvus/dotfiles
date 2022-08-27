@@ -2,6 +2,7 @@ local config = {}
 
 -- config.theme = "lagoon"
 -- config.theme = "matrix"
+-- config.theme = "bloodmoon"
 
 -- Videos windows placement (auto, float, fullscreen)
 -- config.rules_videos = "auto"

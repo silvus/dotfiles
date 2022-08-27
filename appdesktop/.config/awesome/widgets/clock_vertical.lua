@@ -5,7 +5,8 @@ local globalos = require("os")
 
 local customwidget = {}
 
-customwidget.icon = wibox.widget.imagebox(beautiful.clock)
+icon = wibox.widget.imagebox(beautiful.clock)
+customwidget.icon = wibox.container.margin(icon, 3, 4, 3, 4)
 
 -- Textclock widget
 
