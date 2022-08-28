@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Script launched at the end of awesome/i3 config
+# Used to start programs
+
+# Run in background if not already started
+# ------------------------------------------------------
+function run {
+	if ! pgrep $1;	then
+		$@ &
+	fi
+}
+
+# Auto start progs
+# ------------------------------------------------------
+# Network applet
+if [[ -x $(which nm-applet) ]]; then
+	run nm-applet
+fi
+
+# Broken with Apparmor profile https://github.com/jonls/redshift/issues/708
+# run redshift-gtk
+
+# Bluetooth applet if installed
+# if [[ -x $(which blueman-applet) ]]; then
+# 	run blueman-applet
+# fi
+
+# Batterie management
+if [[ -x $(which lxqt-powermanagement) ]]; then
+	run lxqt-powermanagement
+fi
+
+# Environment specific configuration
+# ------------------------------------------------------
+# if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" || $(hostname --short) == "orcus" ]]; then
+#	run firefox
+#	run thunderbird
+# fi
+
+if [[ -f "$HOME/.dotfiles_custom/autostart_launcher" ]]; then
+	source "$HOME/.dotfiles_custom/autostart_launcher"
+fi

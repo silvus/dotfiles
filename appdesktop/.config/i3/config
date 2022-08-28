@@ -329,4 +329,4 @@ workspace $WS9 output HDMI-0
 workspace $WS2 output VGA-0
 
 # Autostart
-exec --no-startup-id ~/.dotfiles/bin/autostart
+exec --no-startup-id ~/.dotfiles/bin/autostart_launcher

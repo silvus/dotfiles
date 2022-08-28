@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# Include specific screen (xrandr) configuration script if needed
-# Launched from ~/.xinitrc
-# ------------------------------------------------------
-
-if [[ -f "$HOME/.dotfiles_custom/autostart_screen" ]]; then
-	source "$HOME/.dotfiles_custom/autostart_screen"
-fi

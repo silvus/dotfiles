@@ -222,4 +222,4 @@ globalclient.connect_signal("property::fullscreen", function(c) if not c.fullscr
 -- ---------------------------------------------------------------------
 -- Auto start
 -- ---------------------------------------------------------------------
-awful.spawn.with_shell(config.home .. "/.dotfiles/bin/autostart")
+awful.spawn.with_shell(config.home .. "/.dotfiles/bin/autostart_launcher")
