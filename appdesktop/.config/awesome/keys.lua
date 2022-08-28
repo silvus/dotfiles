@@ -170,10 +170,16 @@ keys.global = awful.util.table.join(
 
 	awful.key({ modkey, "Shift" }, "Right", function()
 			awful.client.swap.global_bydirection('right')
-		end, {description = "swap with next client by index", group = "client"}),
+		end, {description = "swap with right client", group = "client"}),
 	awful.key({ modkey, "Shift" }, "Left", function()
 			awful.client.swap.global_bydirection('left')
-		end, {description = "swap with previous client by index", group = "client"}),
+		end, {description = "swap with left client", group = "client"}),
+	awful.key({ modkey, "Shift" }, "Up", function()
+			awful.client.swap.global_bydirection('up')
+		end, {description = "swap with top client", group = "client"}),
+	awful.key({ modkey, "Shift" }, "Down", function()
+			awful.client.swap.global_bydirection('down')
+		end, {description = "swap with bottom client", group = "client"}),
 
 	awful.key({ modkey, "Shift" }, "Up", function()
 			awful.tag.incmwfact(0.05)
@@ -183,11 +189,17 @@ keys.global = awful.util.table.join(
 		end, {description = "Decrease master width", group = "client"}),
 
 	awful.key({ modkey, "Control" }, "Right", function()
-			awful.screen.focus_relative(1)
-		end, {description = "focus the next screen", group = "screen"}),
+			awful.screen.focus_bydirection('right')
+		end, {description = "focus the right screen", group = "screen"}),
 	awful.key({ modkey, "Control" }, "Left", function()
-			awful.screen.focus_relative(-1)
-		end, {description = "focus the previous screen", group = "screen"}),
+			awful.screen.focus_bydirection('left')
+		end, {description = "focus the left screen", group = "screen"}),
+	awful.key({ modkey, "Control" }, "Up", function()
+			awful.screen.focus_bydirection('up')
+		end, {description = "focus the top screen", group = "screen"}),
+	awful.key({ modkey, "Control" }, "down", function()
+			awful.screen.focus_bydirection('down')
+		end, {description = "focus the bottom screen", group = "screen"}),
 
 	awful.key({ modkey }, "u", function()
 			awful.client.urgent.jumpto()
