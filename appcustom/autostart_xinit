@@ -1,0 +1,7 @@
+# Sourced from ~/.dotfiles/bin/autostart_xinit
+
+# Screens setup
+# xrandr --output eDP-1 --primary --mode 1920x1080
+
+# Launch WM
+# exec /usr/bin/awesome

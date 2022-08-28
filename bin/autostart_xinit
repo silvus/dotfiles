@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 
-# Script launched at the end of awesome/i3 config
+# Launched from ~/.xinitrc
 
 
-# Run in background if not already started
+# Update Xresources
 # ------------------------------------------------------
-function run {
-	if ! pgrep $1;	then
-		$@ &
-	fi
-}
+xrdb -merge -I$HOME ~/.Xresources
 
 # Keyboard config
 # ------------------------------------------------------
@@ -31,33 +27,13 @@ setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option "grp:shift_caps_t
 xset s 3600 3600
 xset dpms 3600 3600 3600
 
-# Auto start progs
+
+# Include specific screen (xrandr) configuration script if needed
 # ------------------------------------------------------
-# Network applet
-if [[ -x $(which nm-applet) ]]; then
-	run nm-applet
+if [[ -f "$HOME/.dotfiles_custom/autostart_xinit" ]]; then
+	source "$HOME/.dotfiles_custom/autostart_xinit"
 fi
 
-# Broken with Apparmor profile https://github.com/jonls/redshift/issues/708
-# run redshift-gtk
-
-# Bluetooth applet if installed
-# if [[ -x $(which blueman-applet) ]]; then
-# 	run blueman-applet
-# fi
-
-# Batterie management
-if [[ -x $(which lxqt-powermanagement) ]]; then
-	run lxqt-powermanagement
-fi
-
-# Environment specific configuration
+# Launch default WM, if not already do in autostart_xinit
 # ------------------------------------------------------
-# if [[ $(hostname --short) == "mars" || $(hostname --short) == "helios" || $(hostname --short) == "orcus" ]]; then
-#	run firefox
-#	run thunderbird
-# fi
-
-if [[ -f "$HOME/.dotfiles_custom/autostart" ]]; then
-	source "$HOME/.dotfiles_custom/autostart"
-fi
+exec /usr/bin/awesome
