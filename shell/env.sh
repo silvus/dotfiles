@@ -20,7 +20,7 @@ export PAPERSIZE=a4
 # Programs
 # -----------------------------------------------------------------------------
 # Editor
-export EDITOR=macro
+export EDITOR=micro
 
 # Browser
 if [[ -n "$DISPLAY" ]]; then
