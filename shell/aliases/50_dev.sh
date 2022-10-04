@@ -29,6 +29,13 @@ if command -v pyenv 1>/dev/null 2>&1; then
 	eval "$(pyenv init -)"
 fi
 
+# PHP
+# ------------------------------------------------------
+# Composer
+if [[ -d "$HOME/.config/composer/vendor/bin" ]]; then
+	export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+fi
+
 # Rust
 # ------------------------------------------------------
 export RUSTUP_HOME="$HOME/.config/rustup"
