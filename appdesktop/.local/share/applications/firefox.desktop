@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Firefox
+GenericName=Firefox
+Exec=/opt/firefox/firefox %u
+Terminal=false
+Icon=firefox
+Type=Application
+Categories=Application;Network;X-Developer;
+Comment=Firefox Web Browser.
