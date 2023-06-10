@@ -42,7 +42,9 @@ export RUSTUP_HOME="$HOME/.config/rustup"
 export CARGO_HOME="$HOME/.config/cargo"
 export PATH="${CARGO_HOME}/bin:$PATH"
 
-source "$CARGO_HOME/env"
+if [[ -d "$CARGO_HOME" ]]; then
+	source "$CARGO_HOME/env"
+fi
 
 
 # Go to projects folder and git pull
