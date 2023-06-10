@@ -1,6 +1,6 @@
 Personals dotfiles for Bash, Tmux, Vim, AwesomeWm, etc...
 
-ependancL# Installation
+# Installation
 
 ```shell
 sudo apt install fish git python3 curl tmux ssh mosh vim dfc ncdu gawk xdotool
