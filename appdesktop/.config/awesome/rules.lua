@@ -187,7 +187,7 @@ local rules = {
 		}
 	},
 	-- Games
-	{ rule_any = { class = {"Steam", "discord"} },
+	{ rule_any = { class = {"steam", "Steam", "discord"} },
 		properties = {
 			tag = desktops.tags_names[6],
 		}
