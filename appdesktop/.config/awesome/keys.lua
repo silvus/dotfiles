@@ -220,9 +220,9 @@ keys.global = awful.util.table.join(
 	-- awful.key({}, "²", function () awful.spawn(config.home .. "/.dotfiles/bin/guakify 'rxvt-unicode.URxvt' '" .. terminal .. " -e " .. config.home .. "/.dotfiles/bin/tmuxdev'") end, {description = "open a terminal", group = "launcher"}),
 
 	-- Prompt
-	awful.key({ modkey }, "x", function()
-			screens.get_primary().promptbox:run()
-		end, {description = "run prompt", group = "launcher"}),
+	-- awful.key({ modkey }, "x", function()
+	-- 		screens.get_primary().promptbox:run()
+	-- 	end, {description = "run prompt", group = "launcher"}),
 
 	-- Clients menu
 	-- awful.key({ modkey, "Shift"}, "e", function()

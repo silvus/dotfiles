@@ -196,7 +196,6 @@ function bar(s)
 	local widget_net = require("widgets.net")
 	local widget_vpn = require("widgets.vpn")
 	local widget_systray = require("widgets.systray")
-	local widget_prompt = require("widgets.prompt")
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
 	local layoutbox = widget_layout.widget(s)
@@ -205,9 +204,6 @@ function bar(s)
 	
 	-- Widget for main screen only
 	if s == screens.get_primary() then
-		-- Create a promptbox (on screen object to trigger in keys bindings)
-		s.promptbox = widget_prompt.widget
-
 		-- Create a vertical wibox
 		wibox_custom = awful.wibar({
 			position = "left",
@@ -222,7 +218,6 @@ function bar(s)
 				layout = wibox.layout.fixed.vertical,
 				widget_tags_vertical.widget(s),
 				widget_separator_vertical.widget,
-				s.promptbox,
 			},
 			{ -- Middle widget
 				layout = wibox.layout.fixed.vertical,
