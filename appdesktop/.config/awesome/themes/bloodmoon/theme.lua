@@ -20,7 +20,7 @@ theme.error                                     = "#821a78"
 theme.success                                   = "#7d1318"
 theme.primary                                   = "#4a030a"
 
-theme.notification_position                     = "bottom_left"
+theme.notification_position                     = "bottom_right"
 theme.notification_max_width                    = 500
 theme.notification_icon_size                    = 50
 
@@ -200,6 +200,8 @@ function bar(s)
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
 	local layoutbox = widget_layout.widget(s)
+
+	local wibox_custom = nil
 	
 	-- Widget for main screen only
 	if s == screens.get_primary() then
@@ -207,7 +209,7 @@ function bar(s)
 		s.promptbox = widget_prompt.widget
 
 		-- Create a vertical wibox
-		local wibox_custom = awful.wibar({
+		wibox_custom = awful.wibar({
 			position = "left",
 			screen = s,
 			bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
@@ -251,7 +253,7 @@ function bar(s)
 			
 	else
 		-- secondary screen (always horizontal)
-		local wibox_custom = awful.wibar({
+		wibox_custom = awful.wibar({
 			position = "top",
 			screen = s,
 			--height = 25

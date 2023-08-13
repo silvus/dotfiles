@@ -2,7 +2,7 @@ local awful = require("awful")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
-local menubar = require("menubar")
+-- local menubar = require("menubar")
 local screens = require("screens")
 local desktops = require("desktops")
 local config = require("config")
@@ -121,7 +121,7 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey }, "h", hotkeys_popup.show_help, {description="show help", group="awesome"}),
 
 	-- Next/previous tag
-	awful.key({ modkey }, "<",   awful.tag.viewprev, {description = "view previous tag", group = "tag"}),
+	awful.key({ modkey }, "<", awful.tag.viewprev, {description = "view previous tag", group = "tag"}),
 	awful.key({ modkey }, ">", awful.tag.viewnext, {description = "view next tag", group = "tag"}),
 	-- Go back to previous tag
 	awful.key({ modkey }, "Tab", function()
@@ -129,9 +129,17 @@ keys.global = awful.util.table.join(
 			awful.tag.history.restore(screen)
 		end, {description = "go back to previous tag", group = "tag"}),
 
-	-- awful.key({ modkey,		   }, "w", function()
-	--		mymainmenu:show()
-	--	end, {description = "show main menu", group = "awesome"}),
+	awful.key({ modkey }, "w", function()
+			-- Toggle all bars
+			for s in screen do
+				s.bar.visible = not s.bar.visible
+				
+				-- Toggle titlebars
+				for _, c in ipairs(globalclient.get()) do
+					awful.titlebar.toggle(c)
+				end
+			end
+		end, {description = "toggle Wibar", group = "awesome"}),
 
 	 -- By direction client focus
 	awful.key({ modkey }, "Down", function()
