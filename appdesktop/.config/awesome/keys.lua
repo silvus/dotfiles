@@ -135,9 +135,9 @@ keys.global = awful.util.table.join(
 				s.bar.visible = not s.bar.visible
 				
 				-- Toggle titlebars
-				for _, c in ipairs(globalclient.get()) do
-					awful.titlebar.toggle(c)
-				end
+				-- for _, c in ipairs(globalclient.get()) do
+				-- 	awful.titlebar.toggle(c)
+				-- end
 			end
 		end, {description = "toggle Wibar", group = "awesome"}),
 
