@@ -44,7 +44,7 @@ apply_colors() {
 	fi
 }
 
-# Print the battery status
+# Print the sound status
 print_status() {
 	GRAPH_ASCII=""
 	if ((VOL_ON)); then
