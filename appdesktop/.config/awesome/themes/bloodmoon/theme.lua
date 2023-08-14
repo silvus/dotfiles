@@ -47,6 +47,10 @@ theme.tasklist_bg_focus                         = theme.bg_normal
 theme.tasklist_spacing                          = 15
 theme.tasklist_fg_normal                        = "#FFFFFF"
 
+-- Height/width rotated
+theme.graph_height                              = 15
+theme.graph_width                               = 50
+
 theme.titlebar_fg_normal                        = "#333333"
 theme.titlebar_bg_normal                        = "#2b1c1c"
 theme.titlebar_bg_focus                         = "#400202"
@@ -194,6 +198,7 @@ function bar(s)
 	local widget_volume = require("widgets.volume")
 	local widget_notifications = require("widgets.notifications")
 	local widget_net = require("widgets.net")
+	local widget_sysload = require("widgets.sysload")
 	local widget_vpn = require("widgets.vpn")
 	local widget_systray = require("widgets.systray")
 
@@ -229,6 +234,7 @@ function bar(s)
 				widget_separator_vertical.widget,
 				widget_net.icon,
 				widget_rotate(widget_net.widget, true),
+				widget_rotate(widget_sysload.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
 				widget_volumecapture.widget,

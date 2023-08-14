@@ -10,8 +10,8 @@ customwidget.icon = wibox.widget.imagebox(beautiful.net)
 -- Net bar
 
 local netbar = wibox.widget {
-	forced_height 	= 1,
-	forced_width 	= 75,
+	forced_height 	= beautiful.graph_height or 1,
+	forced_width 	= beautiful.graph_width or 75,
 	margins 		= 1,
 	paddings 		= 1,
 	ticks 			= true,
