@@ -24,8 +24,6 @@ local netbar = wibox.widget {
 	border_color 	= beautiful.info,
 	-- widget 			= wibox.widget.progressbar
 	widget 			= wibox.widget.graph,
-	-- TODO: not autodetected ?
-	iface = 'enp2s0'
 }
 local net = lain.widget.net({
 	-- width = 100, border_width = 0, ticks = true, ticks_size = 100,
