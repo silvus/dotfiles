@@ -12,8 +12,8 @@ customwidget.icon = wibox.widget.imagebox(beautiful.mem)
 -- Ram bar
 
 local membar = wibox.widget {
-	forced_height	= 1,
-	forced_width	= 75,
+	forced_height	= beautiful.graph_height or 1,
+	forced_width	= beautiful.graph_width or 75,
 	margins			= 1,
 	paddings		= 1,
 	ticks			= true,
@@ -25,10 +25,9 @@ local membar = wibox.widget {
 	color 			= beautiful.success,
 	background_color = beautiful.bg_normal,
 	border_color	= beautiful.info,
-	widget		   = wibox.widget.progressbar
-	-- widget			= wibox.widget.graph
+	widget			= wibox.widget.progressbar,
 }
-local mem = lain.widget.mem({
+lain.widget.mem({
 	width = 100, border_width = 0, ticks = true, ticks_size = 10,
 	settings = function()
 		membar:set_value(mem_now.perc)
