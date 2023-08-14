@@ -11,19 +11,18 @@ local focused      = require("awful.screen").focused
 local escape_f     = require("awful.util").escape
 local naughty      = require("naughty")
 local wibox        = require("wibox")
-local os           = { getenv = os.getenv }
-local string       = { format = string.format,
-                       gmatch = string.gmatch }
+local os           = os
+local string       = string
 
 -- MOC audio player
 -- lain.widget.contrib.moc
 
 local function factory(args)
-    local moc           = { widget = wibox.widget.textbox() }
-    local args          = args or {}
+    args                = args or {}
+
+    local moc           = { widget = args.widget or wibox.widget.textbox() }
     local timeout       = args.timeout or 2
     local music_dir     = args.music_dir or os.getenv("HOME") .. "/Music"
-    local moc_dir       = os.getenv("HOME") .. "/.config/moc"
     local cover_pattern = args.cover_pattern or "*\\.(jpg|jpeg|png|gif)$"
     local cover_size    = args.cover_size or 100
     local default_art   = args.default_art or ""
@@ -35,7 +34,7 @@ local function factory(args)
     helpers.set_map("current moc track", nil)
 
     function moc.update()
-        helpers.async("mocp -M " .. moc_dir .. " -i", function(f)
+        helpers.async("mocp -i", function(f)
             moc_now = {
                 state   = "N/A",
                 file    = "N/A",
@@ -77,13 +76,12 @@ local function factory(args)
                         replaces_id = moc.id,
                     }
 
-                    -- local path   = string.format("%s/%s", music_dir, string.match(moc_now.file, ".*/"))
-                    -- local cover  = string.format("find '%s' -maxdepth 1 -type f | egrep -i -m1 '%s'", path, cover_pattern)
-                    -- helpers.async({ shell, "-c", cover }, function(current_icon)
-                    --     common.icon = current_icon:gsub("\n", "")
-                    --     moc.id = naughty.notify(common).id
-                    -- end)
-                    moc.id = naughty.notify(common).id
+                    local path   = string.format("%s/%s", music_dir, string.match(moc_now.file, ".*/"))
+                    local cover  = string.format("find '%s' -maxdepth 1 -type f | egrep -i -m1 '%s'", path, cover_pattern)
+                    helpers.async({ shell, "-c", cover }, function(current_icon)
+                        common.icon = current_icon:gsub("\n", "")
+                        moc.id = naughty.notify(common).id
+                    end)
                 end
             elseif  moc_now.state ~= "PAUSE" then
                 helpers.set_map("current moc track", nil)
