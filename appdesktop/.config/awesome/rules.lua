@@ -152,6 +152,14 @@ local rules = {
 			-- screen = screens.count(),
 		}
 	},
+	-- Guake like terminal
+	{ rule = { instance = "guaketerm"},
+		properties = {
+			titlebars_enabled = false,
+			maximized = true,
+			fullscreen = false,
+		}
+	},
 	-- Files explorer
 	{ rule_any = { class = {"Pcmanfm", "pcmanfm-qt", "Thunar", "Nemo"} },
 		properties = {
