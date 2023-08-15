@@ -19,7 +19,7 @@ quake.term = lain.util.quake({
 	-- initially visible
 	-- visible = false,
 	-- Overlap the wibox or not
-	overlap = true,
+	overlap = false,
 	-- always spawn on currently focused screen
 	followtag = false,
 	-- On primary screen
@@ -34,10 +34,11 @@ quake.term = lain.util.quake({
 	horiz = "center",
 	-- settings is a function which takes the client as input, and can be used to customize its properties
 	settings = function(c)
-		c.fullscreen = true
+		c.fullscreen = false
 		-- c.ontop = true -- Not compatible with fullscreen
 		-- c.sticky = true
 		c.floating = true
+		c.maximized = true
 		-- c.maximized_vertical = true
 		-- c.maximized_horizontal = true
 	end
