@@ -38,7 +38,7 @@ quake.term = lain.util.quake({
 	-- settings is a function which takes the client as input, and can be used to customize its properties
 	settings = function(c)
 		c.fullscreen = false
-		c.ontop = true -- Not compatible with fullscreen
+		c.ontop = false -- Not compatible with fullscreen
 		c.sticky = true
 		c.floating = true
 		c.maximized = true
