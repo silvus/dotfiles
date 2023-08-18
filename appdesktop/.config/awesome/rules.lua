@@ -156,8 +156,6 @@ local rules = {
 	{ rule = { instance = "guaketerm"},
 		properties = {
 			titlebars_enabled = false,
-			maximized = true,
-			fullscreen = false,
 		}
 	},
 	-- Files explorer
