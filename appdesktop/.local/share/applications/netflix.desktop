@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Netflix
-GenericName=Netflix
-Exec=google-chrome --app=https://www.netflix.com/browse
-Icon=netflix
-Type=Application
-Categories=Application;Network;
-Terminal=false
