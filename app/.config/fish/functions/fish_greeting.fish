@@ -32,34 +32,6 @@ function fish_logo \
                        (UU)'(set_color normal)
 end
 
-function cromulon \
-    --description "Planet Music audition call"
-    # https://github.com/romulof/fish-cromulon
-    
-    set_color yellow
-    echo "        ___"
-    echo "    . -^   `--,        ┌─┐┬ ┬┌─┐┬ ┬  ┌┬┐┌─┐"
-    echo "   /# =========`-_     └─┐├─┤│ ││││  │││├┤ "
-    echo "  /# (--====___====\\   └─┘┴ ┴└─┘└┴┘  ┴ ┴└─┘"
-    echo " /#   .- --.  . --.|   ┬ ┬┬ ┬┌─┐┌┬┐  ┬ ┬┌─┐┬ ┬  ┌─┐┌─┐┌┬┐"
-    echo "/##   |  * ) (   * ),  │││├─┤├─┤ │   └┬┘│ ││ │  │ ┬│ │ │ "
-    echo "|##   \    /\ \   / |  └┴┘┴ ┴┴ ┴ ┴    ┴ └─┘└─┘  └─┘└─┘ ┴ "
-    echo "|###   ---   \ ---  |"
-    echo "|####      ___)    #|"
-    echo  "|######           ##|"
-    echo " \\##### ---------- /"
-    echo "  \\####           ("
-    echo "   `\\###          |"
-    echo "     \\###         |"
-    echo "      \\##        |"
-    echo "       \\###.    .)"
-    echo "        `======/"
-    echo ""
-    set_color normal
-end
-
 function fish_greeting
-	# cromulon
 	fish_logo
 end
-
