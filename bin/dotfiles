@@ -87,13 +87,18 @@ def exec_command(command, show_errors=True):
 
 def check_requirements():
     """
-    Exit if git isn't installed or Github isn't reachable
+    Exit if git isn't installed
     """
     # Need git
     if not shutil.which("git"):
         print_error("Git is missing. Aborting.")
         sys.exit(2)
 
+
+def check_network():
+    """
+    Return False if Github isn't reachable
+    """
     # Github access
     try:
         # DNS listening
@@ -101,8 +106,7 @@ def check_requirements():
         # Host is actually reachable
         socket.create_connection((host, 80), 2)
     except:
-        print_error("Github can't be reach")
-        sys.exit(3)
+        print_error("Github can't be reach, no update")
 
 
 def X_is_installed():
@@ -346,9 +350,10 @@ def launch(dotfilespath, restarted):
     check_requirements()
 
     # Self update
-    git_clone_or_update_dotfiles(
-        "git@github.com:silvus/dotfiles.git", dotfilespath, restarted
-    )
+    if check_network():
+        git_clone_or_update_dotfiles(
+            "git@github.com:silvus/dotfiles.git", dotfilespath, restarted
+        )
 
     # Make symlinks
     print_header("Symlinks apps")
@@ -379,8 +384,12 @@ def launch(dotfilespath, restarted):
                 )
 
             # Reload .Xresources
-            os.environ["DISPLAY"] = ":0"  # Assure DISPLAY is set if launched from SSH
-            exec_command(["xrdb", os.path.expanduser("~/.Xresources")])
+            if shutil.which("xrdb"):
+                # Assure DISPLAY is set if launched from SSH
+                os.environ["DISPLAY"] = ":0"
+                exec_command(["xrdb", os.path.expanduser("~/.Xresources")])
+            else:
+                print_error("xrdb not found.")
 
         # Generate ~/.dotfiles_custom files if not exists
         print_header("Generate {}_custom files".format(os.path.basename(dotfilespath)))
