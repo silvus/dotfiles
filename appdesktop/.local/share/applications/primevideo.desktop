@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Prime Video
-GenericName=PrimeVideo
-Exec=google-chrome --app=https://www.primevideo.com/
-Icon=primevideo
-Type=Application
-Categories=Application;Network;
-Terminal=false
