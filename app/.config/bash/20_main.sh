@@ -10,8 +10,6 @@ alias ......='cd ../../../../../'
 alias dotreload="source $HOME/.bashrc"
 alias dot="cd $SILVUSDOTFILES"
 alias doc="cd $SILVUSDOC"
-alias data="cd $SILVUSHOME"
-alias media="cd $SILVUSMEDIA"
 
 # from http://news.ycombinator.com/item?id=4492682
 alias tree1="tree --dirsfirst -ChFLQ 1"
@@ -51,12 +49,24 @@ alias findandmovehereallfiles="find . -mindepth 2 -type f -print -exec mv {} . \
 # -----------------------------------------------------------------------------
 alias diskusage='ncdu'
 alias copy='xclip -selection clipboard'
-alias clipboard='copy' # Same as copy alias
+alias copytoclipboard='copy' # Same as copy alias
 alias calculator='bc -l'
 alias photo='eom' # Eye of Mate
 alias lynx="lynx -cfg=$HOME/.config/lynx/lynxrc -lss=$HOME/.config/lynx/lynx.lss"
 alias tmux="tmux -2" # Make 256 colors work in tmux
 alias g='git'
+
+# Enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
 
 # Screen
 # -----------------------------------------------------------------------------

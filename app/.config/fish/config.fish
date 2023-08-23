@@ -1,29 +1,14 @@
 # Init
 # -----------------------------------------------------------------------------
-# NOPE: Need a most recent fish shell (2.6.0) to use bass
-# For now I will let bash init fish, so .profile are sourced and other env variables are set
-# Aliases are not herited
-#
-# if status --is-interactive
-# 	# Disable flow control (bind Ctrl+s in vim)
-# 	stty -ixon
-# 	# Stop backward-kill-word on directory delimiter (bind Ctrl+w in bash / zsh)
-# 	stty werase undef
-# end
-#
-# Source env variables
-# bass source ~/.dotfiles/shell/aliases/10_env.sh
-
-# Export a global env variable to tel bash to not start fish again (if we try to launch a bash shell inside a fish shell)
-# ($FISH_VERSION doesn't work outside of fish ?)
-set --global -x FISH_IS_STARTED 1
+# Source .profile with the help of Foreign Environment Plugin https://github.com/oh-my-fish/plugin-foreign-env
+fenv source ~/.profile
 
 # Stop changing clipboard content on kill
 # https://github.com/fish-shell/fish-shell/issues/772
 set --global -x FISH_CLIPBOARD_CMD "cat"
 
-# Fish style
-# https://fishshell.com/docs/current/index.html#variables-color
+
+# Fish style # https://fishshell.com/docs/current/index.html#variables-color
 # -----------------------------------------------------------------------------
 # fish_color_normal, the default color
 # fish_color_command, the color for commands
@@ -55,20 +40,32 @@ set --global fish_color_search_match --background='green'
 
 # Aliases
 # -----------------------------------------------------------------------------
-# Source bash aliases
-source ~/.dotfiles/shell/aliases/20_main.sh
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
 
-if test -f "$SILVUSDOTFILES_CUSTOM/shellfish"
-	source "$SILVUSDOTFILES_CUSTOM/shellfish"
-end
-
-# Differents alias
 alias l='env LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 
 function mkcd --description 'Create a folder and go into it'
-	mkdir -p "$argv"
-	cd "$argv"
+    mkdir -p "$argv"
+    cd "$argv"
 end
+
+alias diskusage='ncdu'
+alias calculator='bc -l'
+alias copytoclipboard='xclip -selection clipboard'
+alias keymapazerty="setxkbmap -model pc105 -layout fr -variant oss"
+
+alias tree1="tree --dirsfirst -ChFLQ 1"
+alias tree2="tree --dirsfirst -ChFLQ 2"
+alias tree3="tree --dirsfirst -ChFLQ 3"
+alias tree4="tree --dirsfirst -ChFLQ 4"
+alias tree5="tree --dirsfirst -ChFLQ 5"
+alias tree6="tree --dirsfirst -ChFLQ 6"
+
 
 # Bindings
 # -----------------------------------------------------------------------------
@@ -77,3 +74,10 @@ bind \cp fzf-file-widget
 
 # Fzf trigger history with CTRL+H
 bind \ch fzf-history-widget
+
+
+# Environment specific configuration
+# -----------------------------------------------------------------------------
+if test -f "$SILVUSDOTFILES_CUSTOM/shellfish"
+    source "$SILVUSDOTFILES_CUSTOM/shellfish"
+end

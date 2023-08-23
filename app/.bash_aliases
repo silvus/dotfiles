@@ -1,12 +1,6 @@
-# Source files from bash and aliases folder
+# Source files from bash config folder
 # ------------------------------------------------------
-for file in "$SILVUSDOTFILES/shell/aliases/"*; do
-	if [[ -f "$file" ]]; then
-		source "$file"
-	fi
-done
-
-for file in "$SILVUSDOTFILES/shell/bash/"*; do
+for file in "$SILVUSDOTFILES/app/.config/bash/"*; do
 	if [[ -f "$file" ]]; then
 		source "$file"
 	fi
