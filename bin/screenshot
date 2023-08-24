@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-scrot "$(xdg-user-dir DOWNLOAD)/screenshot_%Y_%m_%d_%T.png" --select --quality 75
