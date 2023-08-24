@@ -7,7 +7,6 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-alias dotreload="source $HOME/.bashrc"
 alias dot="cd $SILVUSDOTFILES"
 alias doc="cd $SILVUSDOC"
 
