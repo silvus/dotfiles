@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# Run `dig` and display the most useful info
-# From https://github.com/jessfraz/dotfiles/blob/master/.functions
-
-dig +nocmd "$1" any +multiline +noall +answer

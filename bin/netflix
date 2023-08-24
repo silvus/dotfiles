@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ -x $(which google-chrome) ]]; then
-	nohup google-chrome --app=https://www.netflix.com/browse >/dev/null 2>&1 &
-elif [[ -x $(which google-chrome-stable) ]]; then
-	nohup google-chrome-stable --app=https://www.netflix.com/browse >/dev/null 2>&1 &
-else
-	echo "Google Chrome is not installed"
-fi
