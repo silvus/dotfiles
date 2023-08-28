@@ -60,7 +60,7 @@ end
 alias diskusage='ncdu'
 alias calculator='bc -l'
 alias copytoclipboard='xclip -selection clipboard'
-alias keymapazerty="setxkbmap -model pc105 -layout fr -variant oss"
+alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option \"grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e\""
 
 alias tree1="tree --dirsfirst -ChFLQ 1"
 alias tree2="tree --dirsfirst -ChFLQ 2"
