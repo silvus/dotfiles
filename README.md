@@ -3,13 +3,13 @@ Personals dotfiles for Bash, Tmux, Vim, AwesomeWm, etc...
 # Installation
 
 ```shell
-sudo apt install fish git python3 curl tmux ssh mosh vim dfc ncdu gawk xdotool
+sudo apt install fish git python3 curl tmux ssh mosh vim dfc ncdu gawk xdotool ripgrep
 curl -sS https://raw.githubusercontent.com/silvus/dotfiles/master/bin/dotfiles | python3
 ```
 
 # Fish shell
 
-No more fish auto start from bash, used this command instead to defined a default shell:
+Use this command to defined `fish` has a default shell:
 ```shell
 chsh -s $(which fish)
 ```
