@@ -176,4 +176,7 @@
     "editor.unicodeHighlight.invisibleCharacters": true,
     "editor.unicodeHighlight.ambiguousCharacters": true,
     "git.autofetch": true,
+    "[lua]": {
+        "editor.defaultFormatter": "sumneko.lua"
+    },
 }
