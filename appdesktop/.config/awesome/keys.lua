@@ -270,7 +270,7 @@ keys.global = awful.util.table.join(
 		widget_volume.volume.update()
 	end, { description = "Volume down", group = "audio" }),
 	awful.key({}, "XF86AudioMute", function()
-		awful.util.spawn("amixer -D pulse sset Master toggle", false)
+		awful.util.spawn("amixer -q sset Master toggle", false)
 		widget_volume.volume.update()
 	end, { description = "volume mute", group = "audio" }),
 	-- Simulated volume keys
@@ -282,17 +282,12 @@ keys.global = awful.util.table.join(
 		awful.util.spawn("amixer -q sset Master 5%+", false)
 		widget_volume.volume.update()
 	end, { description = "Volume down", group = "audio" }),
-	awful.key({ modkey }, "Scroll_Lock", function()
-		awful.util.spawn("amixer -D pulse sset Master toggle", false)
+	awful.key({ modkey }, "End", function()
+		awful.util.spawn("amixer -q sset Master toggle", false)
 		widget_volume.volume.update()
-	end, { description = "volume mute", group = "audio" }),
+	end, { description = "volume mute toggle", group = "audio" }),
+
 	-- Media Keys
-	-- awful.key({}, "XF86Tools", function()
-	-- 		awful.util.spawn(config.home .. "/.dotfiles/bin/clips", false)
-	-- 	end, {description = "Sport launcher", group = "audio"}),
-	awful.key({}, "Pause", function()
-		awful.util.spawn("playerctl play-pause", false)
-	end, { description = "audio toggle play/pause", group = "audio" }),
 	awful.key({}, "XF86AudioPlay", function()
 		awful.util.spawn("playerctl play-pause", false)
 	end, { description = "audio toggle play/pause", group = "audio" }),
@@ -303,6 +298,16 @@ keys.global = awful.util.table.join(
 		awful.util.spawn("playerctl next", false)
 	end, { description = "music next", group = "audio" }),
 	awful.key({}, "XF86AudioPrev", function()
+		awful.util.spawn("playerctl previous", false)
+	end, { description = "music previous", group = "audio" }),
+	-- Simulate Media Keys
+	awful.key({}, "Pause", function()
+		awful.util.spawn("playerctl play-pause", false)
+	end, { description = "audio toggle play/pause", group = "audio" }),
+	awful.key({ modkey }, "Home", function()
+		awful.util.spawn("playerctl next", false)
+	end, { description = "music next", group = "audio" }),
+	awful.key({ modkey }, "Insert", function()
 		awful.util.spawn("playerctl previous", false)
 	end, { description = "music previous", group = "audio" }),
 
