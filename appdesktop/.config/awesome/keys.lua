@@ -289,26 +289,26 @@ keys.global = awful.util.table.join(
 
 	-- Media Keys
 	awful.key({}, "XF86AudioPlay", function()
-		awful.util.spawn("playerctl play-pause", false)
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
 	end, { description = "audio toggle play/pause", group = "audio" }),
 	awful.key({}, "XF86AudioStop", function()
-		awful.util.spawn("playerctl stop", false)
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicstop", false)
 	end, { description = "music stop", group = "audio" }),
 	awful.key({}, "XF86AudioNext", function()
-		awful.util.spawn("playerctl next", false)
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicnext", false)
 	end, { description = "music next", group = "audio" }),
 	awful.key({}, "XF86AudioPrev", function()
-		awful.util.spawn("playerctl previous", false)
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
 	end, { description = "music previous", group = "audio" }),
 	-- Simulate Media Keys
 	awful.key({}, "Pause", function()
-		awful.util.spawn("playerctl play-pause", false)
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
 	end, { description = "audio toggle play/pause", group = "audio" }),
 	awful.key({ modkey }, "Home", function()
-		awful.util.spawn("playerctl next", false)
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicnext", false)
 	end, { description = "music next", group = "audio" }),
 	awful.key({ modkey }, "Insert", function()
-		awful.util.spawn("playerctl previous", false)
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
 	end, { description = "music previous", group = "audio" }),
 
 	-- Notifications toogle
