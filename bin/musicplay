@@ -9,9 +9,9 @@ if pgrep "mpv" >/dev/null 2>&1 ; then
 elif pgrep "mocp" >/dev/null 2>&1 ; then
 	# Moc
 	${HOME}/.dotfiles/bin/music --toggle-pause
+
 else
-	# Start sport playlist
-	/data/doc/.bin/sport
+	playerctl play-pause
 fi
 
 exit 0

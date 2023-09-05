@@ -9,6 +9,9 @@ if pgrep "mpv" >/dev/null 2>&1 ; then
 elif pgrep "mocp" >/dev/null 2>&1 ; then
 	# Moc
 	${HOME}/.dotfiles/bin/music --previous
+
+else
+	playerctl previous
 fi
 
 exit 0
