@@ -1,18 +1,18 @@
 require("telescope").setup {
-  defaults = {
-    mappings = {
-      i = {
-        ["<Esc>"] = require('telescope.actions').close
-      }
-    },
-    -- The below pattern is lua regex and not wildcard
-    file_ignore_patterns = {"node_modules","%.out"},
-  },
-  extensions = {
-    file_browser = {
-      -- hidden = true
-    },
-  },
+	defaults = {
+		mappings = {
+			i = {
+				["<Esc>"] = require('telescope.actions').close
+			}
+		},
+		-- The below pattern is lua regex and not wildcard
+		file_ignore_patterns = {"node_modules","%.out"},
+	},
+	extensions = {
+		file_browser = {
+			-- hidden = true
+		},
+	},
 }
 
 
