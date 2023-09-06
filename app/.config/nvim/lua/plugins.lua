@@ -18,7 +18,6 @@ return require('packer').startup(function(use)
 
 	use 'navarasu/onedark.nvim'
 
-
 	use {
 		'nvim-treesitter/nvim-treesitter',
 		run = function()
@@ -29,7 +28,7 @@ return require('packer').startup(function(use)
 
 	use {
 		'nvim-telescope/telescope.nvim', tag = '0.1.2',
-		requires = { { 'nvim-lua/plenary.nvim' } }
+		requires = { 'nvim-lua/plenary.nvim' },
 	}
 
 	use 'mbbill/undotree'
@@ -37,7 +36,10 @@ return require('packer').startup(function(use)
 	use 'lewis6991/gitsigns.nvim'
 
 	use 'nvim-orgmode/orgmode'
-	use 'lukas-reineke/headlines.nvim'
+	use {
+		'lukas-reineke/headlines.nvim',
+		after = 'nvim-treesitter',
+	}
 
 	use {
 		'nvim-lualine/lualine.nvim',
@@ -49,14 +51,14 @@ return require('packer').startup(function(use)
 		branch = 'v2.x',
 		requires = {
 			-- LSP Support
-			{'neovim/nvim-lspconfig'},             -- Required
-			{'williamboman/mason.nvim'},           -- Optional
-			{'williamboman/mason-lspconfig.nvim'}, -- Optional
+			{ 'neovim/nvim-lspconfig' },    -- Required
+			{ 'williamboman/mason.nvim' },  -- Optional
+			{ 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
 			-- Autocompletion
-			{'hrsh7th/nvim-cmp'},     -- Required
-			{'hrsh7th/cmp-nvim-lsp'}, -- Required
-			{'L3MON4D3/LuaSnip'},     -- Required
+			{ 'hrsh7th/nvim-cmp' }, -- Required
+			{ 'hrsh7th/cmp-nvim-lsp' }, -- Required
+			{ 'L3MON4D3/LuaSnip' }, -- Required
 		}
 	}
 
