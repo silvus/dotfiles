@@ -28,6 +28,7 @@ local org = orgmode.setup({
 		},
 		org = {
 			org_todo = { 'cit', '<prefix>t' },
+			org_agenda_set_tags = '<prefix>g',
 			org_time_stamp = { '<prefix>i.', '<prefix>d' },
 			org_change_date = { 'cid', '<prefix>D' },
 			org_clock_in = { '<prefix>xi', '<prefix>i' },
@@ -48,6 +49,14 @@ local org = orgmode.setup({
 
 -- Load custom treesitter grammar for org filetype
 orgmode.setup_ts_grammar()
+
+-- Enable autocomplete
+require 'cmp'.setup({
+	sources = {
+		{ name = 'orgmode' }
+	}
+})
+
 
 -- Global key bindings
 vim.keymap.set('n', '<leader>a', function()
