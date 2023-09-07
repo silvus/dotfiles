@@ -1,7 +1,10 @@
 local orgmode = require('orgmode')
 
 local org = orgmode.setup({
-	org_agenda_files = { '/data/doc/orgmode/**/*' },
+	org_agenda_files = {
+		'/data/doc/**/*',
+		'/data/work/**/*'
+	},
 	org_default_notes_file = '/data/doc/orgmode/todo.org',
 	org_indent_mode = 'noindent', -- Disable indentation. All lines start from 1st column
 	org_todo_keywords = {
