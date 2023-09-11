@@ -105,8 +105,11 @@ def check_network():
         host = socket.gethostbyname("github.com")
         # Host is actually reachable
         socket.create_connection((host, 80), 2)
+        return True
     except:
         print_error("Github can't be reach, no update")
+
+    return False
 
 
 def X_is_installed():
