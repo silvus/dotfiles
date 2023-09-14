@@ -43,3 +43,7 @@ vim.opt.signcolumn = "yes"
 
 -- Update
 vim.opt.updatetime = 50
+
+-- Netrw
+vim.g.netrw_banner = 0    -- Disables the Netrw banner. Press 'I' to toggle.
+vim.g.netrw_liststyle = 3 -- tree style listing
