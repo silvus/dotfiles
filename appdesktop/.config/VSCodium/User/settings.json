@@ -179,4 +179,5 @@
     "[lua]": {
         "editor.defaultFormatter": "sumneko.lua"
     },
+    "editor.fontFamily": "'DejaVu Sans Mono', 'Droid Sans Mono', 'monospace', monospace",
 }
