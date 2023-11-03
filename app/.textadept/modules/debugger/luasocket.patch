@@ -1,0 +1,74 @@
+--- a/src/socket.lua	2021-02-14 16:11:00.198125139 -0500
++++ b/src/socket.lua	2021-02-14 16:12:20.958616941 -0500
+@@ -9,7 +9,9 @@
+ local base = _G
+ local string = require("string")
+ local math = require("math")
+-local socket = require("socket.core")
++local lib = 'socket.core'
++if OSX then lib = lib .. 'osx' end
++local socket = require(lib)
+ 
+ local _M = socket
+ 
+--- a/src/luasocket.c	2021-02-14 17:09:14.466231703 -0500
++++ b/src/luasocket.c	2021-02-14 17:09:31.922343447 -0500
+@@ -64,7 +64,7 @@
+ * Skip a few arguments
+ \*-------------------------------------------------------------------------*/
+ static int global_skip(lua_State *L) {
+-    int amount = luaL_checkint(L, 1);
++    int amount = luaL_checkinteger(L, 1);
+     int ret = lua_gettop(L) - amount - 1;
+     return ret >= 0 ? ret : 0;
+ }
+@@ -124,3 +124,7 @@
+     for (i = 0; mod[i].name; i++) mod[i].func(L);
+     return 1;
+ }
++
++LUASOCKET_API int luaopen_socket_coreosx(lua_State *L) {
++    return luaopen_socket_core(L);
++}
+--- a/src/luasocket.h	2022-01-06 14:56:30.000000000 -0500
++++ b/src/luasocket.h	2022-01-06 14:57:15.000000000 -0500
+@@ -18,7 +18,11 @@
+ * This macro prefixes all exported API functions
+ \*-------------------------------------------------------------------------*/
+ #ifndef LUASOCKET_API
+-#define LUASOCKET_API extern
++#if !_WIN32
++#define LUASOCKET_API __attribute__((visibility("default")))
++#else
++#define LUASOCKET_API __declspec(dllexport)
++#endif
+ #endif
+ 
+ /*-------------------------------------------------------------------------*\
+@@ -25,5 +25,6 @@
+ * Initializes the library.
+ \*-------------------------------------------------------------------------*/
+ LUASOCKET_API int luaopen_socket_core(lua_State *L);
++LUASOCKET_API int luaopen_socket_coreosx(lua_State *L);
+ 
+ #endif /* LUASOCKET_H */
+--- a/src/buffer.c	2022-03-02 15:27:17.369303209 -0500
++++ b/src/buffer.c	2022-03-02 15:28:24.992010340 -0500
+@@ -107,13 +107,16 @@
+ * object:receive() interface
+ \*-------------------------------------------------------------------------*/
+ int buffer_meth_receive(lua_State *L, p_buffer buf) {
+-    int err = IO_DONE, top = lua_gettop(L);
++    int err = IO_DONE, top;
+     luaL_Buffer b;
+     size_t size;
+     const char *part = luaL_optlstring(L, 3, "", &size);
+ #ifdef LUASOCKET_DEBUG
+     p_timeout tm = timeout_markstart(buf->tm);
+ #endif
++    /* make sure we don't confuse buffer stuff with arguments */
++    lua_settop(L, 3);
++    top = lua_gettop(L);
+     /* initialize buffer with optional extra prefix 
+      * (useful for concatenating previous partial results) */
+     luaL_buffinit(L, &b);
