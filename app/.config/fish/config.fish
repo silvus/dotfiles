@@ -69,6 +69,20 @@ alias tree4="tree --dirsfirst -ChFLQ 4"
 alias tree5="tree --dirsfirst -ChFLQ 5"
 alias tree6="tree --dirsfirst -ChFLQ 6"
 
+# Xset
+# -----------------------------------------------------------------------------
+# Set keyboard repeat delay and rate
+if type -q xset
+    # If X is running
+    if xset q &>/dev/null
+        # Default: xset r rate 660 25
+        xset r rate 200 30
+
+        # Disable beeps
+        xset b off
+    end
+end
+
 
 # Bindings
 # -----------------------------------------------------------------------------
