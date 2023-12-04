@@ -17,6 +17,7 @@ local org = orgmode.setup({
 		'DELEGATED(g@)',
 		'INACTIVE(i@)' },
 	win_split_mode = '80vsplit', -- auto, horizontal, vertical, { 'float', 0.3 }, tabnew
+	org_startup_folded = 'content', -- Only show the first two levels
 	org_log_into_drawer = 'LOGBOOK',
 	org_log_done = 'time',
 	org_agenda_span = 'day', -- day/week/month/year/number of days
@@ -30,19 +31,22 @@ local org = orgmode.setup({
 			org_capture = { 'gC', '<prefix>c' },
 		},
 		org = {
-			org_todo = { 'cit', '<prefix>t' },
+			org_todo = { 'cit', '<prefix>t'},
 			org_agenda_set_tags = '<prefix>g',
 			org_time_stamp = { '<prefix>i.', '<prefix>d' },
 			org_change_date = { 'cid', '<prefix>D' },
 			org_clock_in = { '<prefix>xi', '<prefix>i' },
 			org_clock_out = { '<prefix>xo', '<prefix>x' },
 			org_schedule = { '<prefix>is', '<prefix>s' },
-			org_meta_return = '<CR>', -- Add heading, item or row (context-dependent)
-			org_return = '<Leader><CR>',
+			-- org_meta_return = '<CR>', -- Add heading, item or row (context-dependent)
+			-- org_return = '<Leader><CR>',
+			org_timestamp_up_day = false,
+			org_timestamp_down_day = false,
+			-- org_toggle_checkbox = '<C-Space>',
 		},
 		agenda = {
-			org_agenda_later = '>',
-			org_agenda_earlier = '<',
+			org_agenda_later = '<',
+			org_agenda_earlier = '>',
 			org_agenda_goto_today = { '.', 'T' },
 			org_agenda_switch_to = '<TAB>',
 			org_agenda_goto = '<CR>',
