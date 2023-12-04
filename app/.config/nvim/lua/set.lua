@@ -9,8 +9,8 @@ vim.opt.relativenumber = true
 vim.opt.tabstop = 4     -- width used to display an actual tabulation character
 vim.opt.softtabstop = 4 -- how wide an indentation is supposed to span
 vim.opt.shiftwidth = 4  -- width used for shifting commands
--- vim.opt.expandtab = true -- Tabs are spaces
-vim.opt.smartindent = true
+vim.opt.expandtab = false -- Tabs are spaces?
+vim.opt.smartindent = false
 
 -- Wrap
 vim.opt.wrap = false
