@@ -1,8 +1,8 @@
 require('headlines').setup {
 	markdown = {
-		fat_headlines = false,
+		fat_headline_lower_string = "_",
 	},
 	org = {
-		fat_headlines = false,
+		fat_headline_lower_string = "_",
 	},
 }
