@@ -1,58 +1,82 @@
--- Packer auto setup
-local ensure_packer = function()
-	local fn = vim.fn
-	local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-	if fn.empty(fn.glob(install_path)) > 0 then
-		fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-		vim.cmd [[packadd packer.nvim]]
-		return true
-	end
-	return false
+-- Lazynvim auto setup
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+	"git",
+	"clone",
+	"--filter=blob:none",
+	"https://github.com/folke/lazy.nvim.git",
+	"--branch=stable", -- latest stable release
+	lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-local packer_bootstrap = ensure_packer()
+require("lazy").setup({
+	{
+		"navarasu/onedark.nvim",
+		lazy = false, -- make sure we load this during startup if it is your main colorscheme
+		priority = 1000, -- make sure to load this before all the other start plugins
+		-- config = function()
+		-- 	-- load the colorscheme here
+		-- 	vim.cmd([[colorscheme onedark]])
+		-- end,
+	},
 
--- Packer init
-return require('packer').startup(function(use)
-	use 'wbthomason/packer.nvim'
-
-	use 'navarasu/onedark.nvim'
-
-	use {
+	{
 		'nvim-treesitter/nvim-treesitter',
-		run = function()
-			local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-			ts_update()
-		end
-	}
+		lazy = false,
+		build = function()
+			ts_update = require('nvim-treesitter.install').update({ with_sync = true })()
+		end,
+	},
 
-	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.2',
-		requires = { 'nvim-lua/plenary.nvim' },
-	}
+	{
+		'nvim-telescope/telescope.nvim', branch = '0.1.x',
+		dependencies = { 'nvim-lua/plenary.nvim' }
+	},
 
-	use 'mbbill/undotree'
-	use 'tpope/vim-fugitive'
-	use 'lewis6991/gitsigns.nvim'
+	{
+		'mbbill/undotree',
+		lazy = true,
+	},
 
-	use 'nvim-orgmode/orgmode'
-	use {
-		'lukas-reineke/headlines.nvim',
-		after = 'nvim-treesitter',
-	}
+	{
+		'tpope/vim-fugitive',
+		lazy = true,
+	},
 
-	use {
+	{
+		'lewis6991/gitsigns.nvim',
+		lazy = true,
+	},
+
+	{
+		'nvim-orgmode/orgmode',
+		dependencies = {
+		  { 'nvim-treesitter/nvim-treesitter', lazy = true },
+		},
+		event = 'VeryLazy',
+	},
+
+	{
+		"lukas-reineke/headlines.nvim",
+		dependencies = "nvim-treesitter/nvim-treesitter",
+		config = true, -- or `opts = {}`
+	},
+
+	{
 		'nvim-lualine/lualine.nvim',
-		requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-	}
+		dependencies = 'nvim-tree/nvim-web-devicons',
+	},
 
-	use {
+	{
 		'VonHeikemen/lsp-zero.nvim',
 		branch = 'v2.x',
-		requires = {
+		dependencies = {
 			-- LSP Support
-			{ 'neovim/nvim-lspconfig' },    -- Required
-			{ 'williamboman/mason.nvim' },  -- Optional
+			{ 'neovim/nvim-lspconfig' }, -- Required
+			{ 'williamboman/mason.nvim' }, -- Optional
 			{ 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
 			-- Autocompletion
@@ -60,11 +84,6 @@ return require('packer').startup(function(use)
 			{ 'hrsh7th/cmp-nvim-lsp' }, -- Required
 			{ 'L3MON4D3/LuaSnip' }, -- Required
 		}
-	}
+	},
 
-	-- Automatically set up your configuration after cloning packer.nvim
-	-- Put this at the end after all plugins
-	if packer_bootstrap then
-		require('packer').sync()
-	end
-end)
+})

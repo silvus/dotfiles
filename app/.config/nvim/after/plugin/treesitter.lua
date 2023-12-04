@@ -9,6 +9,9 @@ require'nvim-treesitter.configs'.setup {
 	-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
 	auto_install = true,
 
+	-- Install parsers synchronously (only applied to `ensure_installed`)
+	sync_install = false,
+
 	highlight = {
 		-- `false` will disable the whole extension
 		enable = true,
