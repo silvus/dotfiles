@@ -187,7 +187,7 @@ local rules = {
 	},
 	
 	-- Mixed
-	{ rule_any = { class = { "Godot", "Keybase", "balena-etcher-electron", "GParted", "Transmission", "Slack" }},
+	{ rule_any = { class = { "Godot", "Keybase", "balena-etcher-electron", "GParted", "Transmission", "Slack", "JoalDesktop" }},
 		properties = {
 			tag = desktops.tags_names[6],
 		}
