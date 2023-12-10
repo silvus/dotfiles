@@ -1,3 +1,5 @@
+-- https://neovim.io/doc/user/options.html
+
 -- Fat cursor
 -- vim.opt.guicursor = ""
 
@@ -29,7 +31,8 @@ vim.opt.smartcase = true
 
 -- Sync clipboard between OS and Neovim.
 -- Remove this option if you want your OS clipboard to remain independent.
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = 'unnamed' -- PRIMARY selections
+-- vim.opt.clipboard = 'unnamedplus' -- CLIPBOARD selections
 
 -- Style
 vim.opt.termguicolors = true
