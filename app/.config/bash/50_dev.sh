@@ -23,7 +23,7 @@ alias pythonvenvpip=".venv/bin/pip3"
 export PIPSI_BIN_DIR="$HOME/bin"
 
 # Pyenv (Python version management)
-export PYENV_ROOT="$HOME/.config/pyenv"
+export PYENV_ROOT="$XDG_CONFIG_HOME/pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
 	eval "$(pyenv init -)"
@@ -32,18 +32,8 @@ fi
 # PHP
 # ------------------------------------------------------
 # Composer
-if [[ -d "$HOME/.config/composer/vendor/bin" ]]; then
-	export PATH="$HOME/.config/composer/vendor/bin:$PATH"
-fi
-
-# Rust
-# ------------------------------------------------------
-export RUSTUP_HOME="$HOME/.config/rustup"
-export CARGO_HOME="$HOME/.config/cargo"
-export PATH="${CARGO_HOME}/bin:$PATH"
-
-if [[ -d "$CARGO_HOME" ]]; then
-	source "$CARGO_HOME/env"
+if [[ -d "$XDG_CONFIG_HOME/composer/vendor/bin" ]]; then
+	export PATH="$XDG_CONFIG_HOME/composer/vendor/bin:$PATH"
 fi
 
 
