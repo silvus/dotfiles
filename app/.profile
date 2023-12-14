@@ -103,7 +103,7 @@ export ELINKS_CONFDIR="$XDG_CONFIG_HOME"/elinks
 export GNUPGHOME="$XDG_CONFIG_HOME"/gnupg
 
 # Gpodder
-export GPODDER_HOME="$XDG_CONFIG_HOME"/gpodder
+export GPODDER_HOME="$XDG_DATA_HOME"/gpodder
 
 
 # History
@@ -123,6 +123,17 @@ export HISTCONTROL=ignoreboth # Don't put duplicate lines or lines starting with
 # Do not ignore hiddens files (except .git and .svn)
 export FZF_DEFAULT_COMMAND="find . -type f -not -path '*/\.git/*' -not -path '*/\.svn/*' -print -o -type l -print 2> /dev/null | sed s/^..//"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+
+# Rust
+# -----------------------------------------------------------------------------
+# Use XDG
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+if [[ -d "$CARGO_HOME" ]]; then
+	# rustup shell setup ($PATH)
+	source "$CARGO_HOME/env"
+fi
 
 
 # X auto start
