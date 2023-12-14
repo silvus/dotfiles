@@ -43,19 +43,6 @@ export LC_IDENTIFICATION=fr_FR.UTF-8
 export PAPERSIZE=a4
 
 
-# Programs
-# -----------------------------------------------------------------------------
-# Editor
-export EDITOR=micro
-
-# Browser
-if [[ -n "$DISPLAY" ]]; then
-    export BROWSER=firefox
-else
-    export BROWSER=elinks
-fi
-
-
 # PATH
 # ------------------------------------------------------
 if [[ -d "${HOME}/bin" ]]; then
@@ -133,6 +120,33 @@ export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 if [[ -d "$CARGO_HOME" ]]; then
 	# rustup shell setup ($PATH)
 	source "$CARGO_HOME/env"
+fi
+
+
+# Defaults Programs
+# -----------------------------------------------------------------------------
+# Editor
+if [[ -x "$(which nvim)" ]]; then
+	export EDITOR="$(which nvim)"
+elif [[ -x "$(which vim)" ]]; then
+	export EDITOR="$(which vim)"
+else
+	export EDITOR="$(which vi)"
+fi
+
+# Browser
+if [[ -n "$DISPLAY" ]]; then
+	if [[ -x "$(which firefox)" ]]; then
+		export BROWSER="$(which firefox)"
+	elif [[ -x "$(which chromium)" ]]; then
+		export BROWSER="$(which chromium)"
+	fi
+elif [[ -x "$(which elinks)" ]]; then
+	export BROWSER="$(which elinks)"
+elif [[ -x "$(which links)" ]]; then
+	export BROWSER="$(which links)"
+elif [[ -x "$(which w3m)" ]]; then
+	export BROWSER="$(which w3m)"
 fi
 
 
