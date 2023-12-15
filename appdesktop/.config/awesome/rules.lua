@@ -237,7 +237,11 @@ local rules = {
 		}
 	},
 	-- MPV and streaming services
-	{ rule_any = { class = { "mpv", "Emby Theater" }, instance = { "www.netflix.com__browse", "www.primevideo.com" }},
+	{ rule_any = {
+			class = { "mpv", "Emby Theater" },
+			instance = { "www.netflix.com__browse", "www.primevideo.com" },
+			role = { "PictureInPicture" },
+		},
 		properties = {
 			-- focus = false,
 			placement = awful.placement.no_offscreen + awful.placement.bottom_right,
