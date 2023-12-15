@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Rotate 13 characters
+# Usage: rot13'A String to look Ciphered'
+
+tr 'A-Za-z' 'N-ZA-Mn-za-m' <<< "$1"
+
+exit $?
