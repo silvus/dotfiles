@@ -59,7 +59,9 @@ end
 
 alias diskusage='ncdu'
 alias calculator='bc -l'
+alias copy='xclip -selection clipboard'
 alias copytoclipboard='xclip -selection clipboard'
+alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
 alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option \"grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e\""
 
 alias tree1="tree --dirsfirst -ChFLQ 1"
