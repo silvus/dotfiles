@@ -16,7 +16,7 @@ local theme   = {}
 theme.name = "bloodmoon"
 
 theme.info                                      = "#400d0f"
-theme.error                                     = "#821a78"
+theme.error                                     = "#FFA500"
 theme.success                                   = "#7d1318"
 theme.primary                                   = "#4a030a"
 
@@ -49,7 +49,7 @@ theme.tasklist_fg_normal                        = "#FFFFFF"
 
 -- Height/width rotated
 theme.graph_height                              = 15
-theme.graph_width                               = 50
+theme.graph_width                               = 30
 
 theme.titlebar_fg_normal                        = "#333333"
 theme.titlebar_bg_normal                        = "#2b1c1c"
@@ -234,7 +234,8 @@ function bar(s)
 				widget_separator_vertical.widget,
 				widget_net.icon,
 				widget_rotate(widget_net.widget, true),
-				widget_rotate(widget_sysload.widget),
+				widget_sysload.icon,
+				widget_rotate(widget_sysload.widget, true),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
 				widget_volumecapture.widget,
@@ -242,9 +243,7 @@ function bar(s)
 				widget_separator_vertical.widget,
 				widget_rotate(widget_systray.widget),
 				widget_separator_vertical.widget,
-				widget_clock_vertical.icon,
 				widget_clock_vertical.widget,
-				widget_separator_vertical.widget,
 				{
 					layoutbox,
 					layout = wibox.container.margin(layoutbox ,0 ,0 ,0 ,-5)
