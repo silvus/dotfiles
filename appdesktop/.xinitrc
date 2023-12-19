@@ -34,6 +34,7 @@ setxkbmap -option 'eurosign:e'
 # https://askubuntu.com/a/82734
 setxkbmap -option 'caps:backspace'
 setxkbmap -option 'shift:both_capslock'
+xmodmap -e "clear Lock"
 
 
 # Sleep time
