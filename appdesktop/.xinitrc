@@ -6,18 +6,35 @@ xrdb -merge -I$HOME ~/.Xresources
 
 # Keyboard config
 # ------------------------------------------------------
-setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option "grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e"
-# TODO: -variant intl or altgr-intl ?
 # TODO: handle tty layout (/etc/default/keyboard)
+setxkbmap -model pc105 -layout fr,gb -variant oss,intl
 
 # https://gist.github.com/jatcwang/ae3b7019f219b8cdc6798329108c9aee
-# grp:shift_caps_toggle : Shift+Caps Lock to switch to another layout
-# grp_led:scroll : Use keyboard LED to show alternative layout
-# nbsp:level3 : Usual space on AltGr + Space
-# nbsp:level4 : Usual space on Shift + AltGr Space
-# lv3:ralt_switch : Alt_R to AltGr
-# compose:menu : Menu is compose key
-# eurosign:e : AltGr+e to €
+
+# Menu is compose key
+setxkbmap -option 'compose:menu'
+
+# Enable AltGr on Alt Right
+setxkbmap -option 'lv3:ralt_switch'
+
+# Non-breakable space character with AltGrSpace
+setxkbmap -option 'nbsp:level3'
+
+# Use keyboard LED to show alternative layout
+setxkbmap -option 'grp_led:scroll'
+
+# Shift+Caps to switch to another keyboard layout
+setxkbmap -option 'grp:shift_caps_toggle'
+
+# Euro sign on 'AltGr+e'
+setxkbmap -option 'eurosign:e'
+
+# Swap Capslock for Backspace
+# Capslock is now shift left and right
+# https://askubuntu.com/a/82734
+setxkbmap -option 'caps:backspace'
+setxkbmap -option 'shift:both_capslock'
+
 
 # Sleep time
 # ------------------------------------------------------
