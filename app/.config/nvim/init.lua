@@ -1,4 +1,4 @@
 require('set')
 require('keymap')
 require('mswin')
-require('plugins')
+require('plugins_lazy')
