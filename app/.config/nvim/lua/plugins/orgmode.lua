@@ -3,7 +3,10 @@ return {
 	dependencies = {
 		{ 'nvim-treesitter/nvim-treesitter', lazy = true },
 	},
+	-- VeryLazy event for things that can load later and are not important for the initial UI
 	event = 'VeryLazy',
+	-- lazy-load on filetype
+	-- ft = "org",
 	config = function()
 		local orgmode = require('orgmode')
 
