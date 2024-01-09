@@ -33,6 +33,7 @@ return {
 			-- And you can configure cmp even more, if you want to.
 			local cmp = require('cmp')
 			local cmp_action = lsp_zero.cmp_action()
+			local cmp_select = {behavior = cmp.SelectBehavior.Select}
 
 			cmp.setup({
 				sources = {
@@ -41,6 +42,7 @@ return {
 					{name = 'nvim_lua'},
 					{name = 'luasnip', keyword_length = 2},
 					{name = 'buffer', keyword_length = 3},
+					{name = 'orgmode'},
 				},
 				formatting = lsp_zero.cmp_format(),
 				mapping = cmp.mapping.preset.insert({
