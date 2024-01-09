@@ -128,7 +128,7 @@ keys.global = awful.util.table.join(
 		awful.tag.history.restore(screen)
 	end, { description = "go back to previous tag", group = "tag" }),
 
-	awful.key({ modkey }, "w", function()
+	awful.key({ modkey }, "b", function()
 		-- Toggle all bars
 		for s in screen do
 			s.bar.visible = not s.bar.visible
