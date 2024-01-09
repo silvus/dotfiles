@@ -2,6 +2,7 @@ return {
 	'nvim-orgmode/orgmode',
 	dependencies = {
 		{ 'nvim-treesitter/nvim-treesitter', lazy = true },
+		{ 'hrsh7th/nvim-cmp' },
 	},
 	-- VeryLazy event for things that can load later and are not important for the initial UI
 	event = 'VeryLazy',
@@ -68,11 +69,12 @@ return {
 		orgmode.setup_ts_grammar()
 		
 		-- Enable autocomplete
-		require 'cmp'.setup({
-			sources = {
-				{ name = 'orgmode' }
-			}
-		})
+		-- TODO: Broken source name?
+		-- require('cmp').setup({
+		-- 	sources = {
+		-- 		{ name = 'orgmode' }
+		-- 	}
+		-- })
 		
 		
 		-- Global key bindings
