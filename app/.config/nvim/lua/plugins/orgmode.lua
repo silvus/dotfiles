@@ -5,9 +5,9 @@ return {
 		{ 'hrsh7th/nvim-cmp' },
 	},
 	-- VeryLazy event for things that can load later and are not important for the initial UI
-	event = 'VeryLazy',
+	-- event = 'VeryLazy',
 	-- lazy-load on filetype
-	-- ft = "org",
+	ft = "org",
 	config = function()
 		local orgmode = require('orgmode')
 
