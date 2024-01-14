@@ -71,6 +71,19 @@ alias tree4="tree --dirsfirst -ChFLQ 4"
 alias tree5="tree --dirsfirst -ChFLQ 5"
 alias tree6="tree --dirsfirst -ChFLQ 6"
 
+
+# Nvim profiles
+# -----------------------------------------------------------------------------
+alias v='nvim'
+
+alias nvim-custom='NVIM_APPNAME=nvim-custom nvim'
+alias nvim-kickstart='NVIM_APPNAME=nvim-kickstart nvim'
+alias nvim-lazyvim='NVIM_APPNAME=nvim-lazyvim nvim'
+alias nvim-nvchad='NVIM_APPNAME=nvim-nvchad nvim'
+alias nvim-astrovim='NVIM_APPNAME=nvim-astrovim nvim'
+alias nvim-lunarvim='NVIM_APPNAME=nvim-lunarvim nvim'
+
+
 # Xset
 # -----------------------------------------------------------------------------
 # Set keyboard repeat delay and rate
