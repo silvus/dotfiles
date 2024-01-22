@@ -48,7 +48,6 @@ alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
 alias dot="cd $SILVUSDOTFILES"
-alias doc="cd $SILVUSDOC"
 
 alias l='env LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 
