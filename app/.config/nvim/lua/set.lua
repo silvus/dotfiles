@@ -50,3 +50,14 @@ vim.opt.updatetime = 50
 -- Netrw
 vim.g.netrw_banner = 0    -- Disables the Netrw banner. Press 'I' to toggle.
 vim.g.netrw_liststyle = 3 -- tree style listing
+
+-- Open Help in a vertical split
+vim.api.nvim_create_autocmd('BufWinEnter', {
+	-- pattern = '*',
+	group = vim.api.nvim_create_augroup("HelpVerticalSplit", { clear = true }),
+	callback = function(event)
+		if vim.bo[event.buf].filetype == 'help' then 
+			vim.cmd("wincmd L")
+		end
+	end,
+})
