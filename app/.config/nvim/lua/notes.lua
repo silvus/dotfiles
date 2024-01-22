@@ -1,3 +1,4 @@
+-- Create a command and a binding to open today's note.
 function NoteOpenToday()
 	-- TODO: get note dir path from en variable
 	local today_note_path = '/tmp/test/' .. os.date("%Y-%m-%d") .. '.md'
@@ -16,3 +17,6 @@ end
 
 vim.keymap.set('n', '<C-l>', NoteOpenToday , { silent = true, desc = 'Open today\'s note' })
 vim.api.nvim_create_user_command('NoteToday', NoteOpenToday, {})
+
+-- Ensure that changes to buffers are saved when you navigate away from that buffer
+vim.api.nvim_create_autocmd("FileType", {pattern = "markdown", command = "set awa"})
