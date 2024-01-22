@@ -8,7 +8,6 @@ alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
 alias dot="cd $SILVUSDOTFILES"
-alias doc="cd $SILVUSDOC"
 
 # from http://news.ycombinator.com/item?id=4492682
 alias tree1="tree --dirsfirst -ChFLQ 1"
