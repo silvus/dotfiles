@@ -2,4 +2,6 @@
 
 set -e
 
-(cd /data/work && nvim .)
+export NOTE_PATH="/data/work"
+
+(cd $NOTE_PATH && nvim .)
