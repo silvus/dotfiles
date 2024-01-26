@@ -11,14 +11,25 @@ return {
 			require('onedark').load()
 
 			vim.cmd.colorscheme('onedark')
-
-			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-
-			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 		end,
 	},
+	-- {
+	-- 	'EdenEast/nightfox.nvim',
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	opts = {},
+	-- 	config = function()
+	-- 		vim.cmd.colorscheme('carbonfox')
+	-- 	end,
+	-- },
+	-- {
+	-- 	"folke/tokyonight.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		vim.cmd.colorscheme('tokyonight-night')
+	-- 	end,
+	-- },
 	{
 		'nvim-tree/nvim-web-devicons',
 		lazy = true,
@@ -61,21 +72,6 @@ return {
 				background_colour = "#000000",
 			})
 			vim.notify = require("notify")
-		end,
-	},
-	{
-		"lukas-reineke/headlines.nvim",
-		dependencies = "nvim-treesitter/nvim-treesitter",
-		event = "VeryLazy",
-		config = function() -- or `opts = {}`
-			require('headlines').setup({
-				-- markdown = {
-				-- 	fat_headline_lower_string = "_",
-				-- },
-				-- org = {
-				-- 	fat_headline_lower_string = "_",
-				-- },
-			})
 		end,
 	},
 }

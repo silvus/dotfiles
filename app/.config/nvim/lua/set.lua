@@ -37,6 +37,7 @@ vim.opt.clipboard = 'unnamed' -- PRIMARY selections
 -- Style
 vim.opt.termguicolors = true
 -- vim.opt.colorcolumn = "80"
+vim.wo.conceallevel = 2
 
 -- Scroll
 vim.opt.scrolloff = 10     -- Places a line between the current line and the screen edge

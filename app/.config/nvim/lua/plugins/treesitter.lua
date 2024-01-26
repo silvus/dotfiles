@@ -6,7 +6,23 @@ return {
 
 		configs.setup({
 			-- A list of parser names, or "all"
-			ensure_installed = { "vim", "vimdoc", "javascript", "c", "lua", "rust", "org", "markdown", "fish", "bash", "python" },
+			ensure_installed = {
+				"vim",
+				"vimdoc",
+				"javascript",
+				"c",
+				"fish",
+				"bash",
+				"lua",
+				"rust",
+				"python",
+				"org",
+			},
+			ignore_install = {
+				-- For now, markdown render all titles with sames colors
+				"markdown",
+				"markdown_inline",
+			 },
 
 			-- Install parsers synchronously (only applied to `ensure_installed`)
 			sync_install = false,
@@ -21,6 +37,11 @@ return {
 			highlight = {
 				-- `false` will disable the whole extension
 				enable = true,
+				disable = {
+					-- For now, markdown render all titles with sames colors
+					"markdown",
+					"markdown_inline",
+				},
 
 				-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
 				-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
