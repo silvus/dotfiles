@@ -49,6 +49,7 @@ return {
 					{name = 'luasnip', keyword_length = 2},
 					{name = 'buffer', keyword_length = 3},
 					{name = 'calc'},
+					{name = 'mkdnflow'},
 					{name = 'orgmode'},
 				},
 				formatting = lsp_zero.cmp_format(),
@@ -102,7 +103,7 @@ return {
 			end)
 
 			require('mason-lspconfig').setup({
-				ensure_installed = {'pylsp', 'marksman', 'lua_ls', 'rust_analyzer'},
+				ensure_installed = {'pylsp', 'lua_ls', 'rust_analyzer'},
 				handlers = {
 					lsp_zero.default_setup,
 					lua_ls = function()
