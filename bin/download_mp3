@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# Check if youtube-dl is installed
-if [[ -x "$(which youtube-dl)" ]]; then
-	youtube-dl --ignore-errors --extract-audio --audio-format mp3 --output "%(artist,uploader)s - %(track,title)s.%(ext)s" "$@"
+# Check if yt-dlp is installed
+if [[ -x "$(which yt-dlp)" ]]; then
+	yt-dlp --ignore-errors --extract-audio --audio-format mp3 --output "%(artist,uploader)s - %(track,title)s.%(ext)s" "$@"
 	exit 0
 else
-	echo "youtube-dl is not installed"
+	echo "yt-dlp is not installed"
 	exit 1
 fi
