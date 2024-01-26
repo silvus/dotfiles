@@ -24,9 +24,9 @@ config.theme = "matrix"
 if file_exists('/usr/bin/wezterm') then
 	config.terminal = '/usr/bin/wezterm'
 	config.terminal_quake = '/usr/bin/wezterm start --class guaketerm -- "' .. config.dotfiles .. '/bin/tmuxdev"'
-elseif file_exists('/usr/bin/rxvt-unicode') then
-	config.terminal = '/usr/bin/rxvt-unicode'
-	config.terminal_quake = '/usr/bin/rxvt-unicode -name guaketerm -title terminal -e "' .. config.dotfiles .. '/bin/tmuxdev"'
+elseif file_exists('/usr/bin/urxvt') then
+	config.terminal = '/usr/bin/urxvt'
+	config.terminal_quake = '/usr/bin/urxvt -name guaketerm -title terminal -e "' .. config.dotfiles .. '/bin/tmuxdev"'
 else
 	config.terminal = "xterm"
 end

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# '-m'is expensive https://github.com/noctuid/tdrop/issues/36
+
+TDROP="$SILVUSDOTFILES/bin/tdrop"
+TMUXDEV="$SILVUSDOTFILES/bin/tmuxdev"
+
+if [[ -x $(which wezterm) ]]; then
+# TODO: Doesn't work. See https://github.com/wez/wezterm/issues/1751#issuecomment-1250314820
+	"$TDROP" -ma -h '100%' --class "tdropterm" -f "start --class tdropterm" wezterm
+elif [[ -x $(which urxvt) ]]; then
+	"$TDROP" -ma -h '100%' --class "tdropterm" -f "-name tdropterm -title terminal -e $TMUXDEV" urxvt
+fi

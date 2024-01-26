@@ -153,7 +153,7 @@ local rules = {
 		}
 	},
 	-- Guake like terminal
-	{ rule_any = { instance = {"guaketerm"}, class={"guaketerm"} },
+	{ rule_any = { instance = {"guaketerm", "tdropterm"}, class={"guaketerm", "tdropterm"} },
 		properties = {
 			titlebars_enabled = false,
 		}
