@@ -14,7 +14,7 @@ config.color_scheme = 'Elementary'
 -- config.color_scheme = 'Pro'
 
 config.font = wezterm.font 'Hack Nerd Font'
-config.font_size = 8
+config.font_size = 9
 
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = true
@@ -53,6 +53,41 @@ config.keys = {
 	{ key = '8', mods = 'SUPER', action = 'DisableDefaultAssignment' },
 	{ key = '9', mods = 'SUPER', action = 'DisableDefaultAssignment' },
 }
+
+-- Return if a file is readable
+function file_exists(name)
+	local f=io.open(name,"r")
+	if f~=nil then io.close(f) return true else return false end
+end
+
+--- Override elements in the target table with values from the source table.
+--
+-- Note that this method doesn't copy entries found in `__index`.
+-- Nested tables are copied by reference and not recursed into.
+function table_crush(target, source, raw)
+    if raw then
+        for k, v in pairs(source) do
+            rawset(target, k, v)
+        end
+    else
+        for k, v in pairs(source) do
+            target[k] = v
+        end
+    end
+
+    return target
+end
+
+-- Include dotfile_custom config if exist
+local dotfile_custom_path = os.getenv("SILVUSDOTFILES_CUSTOM") .. '/wezterm.lua'
+print(dotfile_custom_path)
+if file_exists(dotfile_custom_path) then
+	local config_custom = dofile(dotfile_custom_path)
+	if config_custom then
+		-- Override elements in the first table by the one in the second.
+		table_crush(config, config_custom) 
+	end
+end
 
 -- and finally, return the configuration to wezterm
 return config
