@@ -1,6 +1,5 @@
 -- Pull in the wezterm API
 local wezterm = require('wezterm')
-local mux = wezterm.mux
 
 -- This table will hold the configuration.
 local config = {}

@@ -253,14 +253,7 @@ keys.global = awful.util.table.join(
 
 	-- Quake-like terminal (²)
 	awful.key({}, "#49", function()
-		-- TODO: à déplacer dans un script dans dotfiles
-		-- TODO: '-m' coute beaucoup en perfs https://github.com/noctuid/tdrop/issues/36
-		-- awful.spawn(config.home .. '/.dotfiles/bin/tdrop -ma -h \'100%\' --class "guaketerm" -f "start -- "' .. config.home .. '/.dotfiles/bin/tmuxdev" --class guaketerm" wezterm')
-		-- awful.spawn(config.home .. '/.dotfiles/bin/tdrop -m -a --class "guaketerm" -f "start -- "' .. config.home .. '/.dotfiles/bin/tmuxdev" --class guaketerm" /usr/local/bin/wezterm')
-
 		quake.term:toggle()
-
-		-- quake.term:toggle()
 	end, { description = "Toggle guake like terminal", group = "launcher" }),
 	awful.key({ modkey }, "Escape", function()
 		quake.term:toggle()
