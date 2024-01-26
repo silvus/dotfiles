@@ -142,7 +142,6 @@ end
 function quake.new(conf)
     conf = conf or {}
 
-    conf.app        = conf.app       or "xterm"    -- application to spawn
     conf.name       = conf.name      or "QuakeDD"  -- window name
     conf.spawn      = conf.spawn     or string.format("%s --class %s", conf.app, conf.name) -- how to launch a new instance
     conf.border     = conf.border    or 1          -- client border width
@@ -183,12 +182,10 @@ local _M = {}
 
 -- Quake like terminal (single instance for all screens)
 _M.term = quake.new({
-	-- client name (class)
+	-- client name (instance)
 	name = "guaketerm",
-	-- client to spawn
-	app = config.terminal,
 	-- command to launch a new instance
-	spawn = 'wezterm-gui start --class guaketerm -- "' .. config.home .. '/.dotfiles/bin/tmuxdev"',
+	spawn = config.terminal_quake,
 	-- border width
 	border = 0,
 	-- initially visible
