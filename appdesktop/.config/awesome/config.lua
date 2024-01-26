@@ -79,7 +79,7 @@ config.layouts = {
 -- local config = {}
 -- config.theme = "customblue"
 -- return config
-local config_custom_path = config.home .. '/.dotfiles_custom/awesome.lua'
+local config_custom_path = os.getenv("SILVUSDOTFILES_CUSTOM") .. '/awesome.lua'
 if file_exists(config_custom_path) then
 	local config_custom = dofile(config_custom_path)
 	if config_custom then
