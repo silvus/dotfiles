@@ -1,4 +1,3 @@
-
 local os = require("os")
 local awful = require("awful")
 local table = require("gears.table")
@@ -21,7 +20,13 @@ config.theme = "matrix"
 -- config.theme = "bloodmoon"
 
 -- This is used later as the default terminal and editor to run.
-config.terminal = "rxvt-unicode"
+if file_exists('/usr/bin/wezterm') then
+	config.terminal = '/usr/bin/wezterm start -- "' .. config.home .. '/.dotfiles/bin/tmuxdev"'
+elseif file_exists('/usr/bin/rxvt-unicode') then
+	config.terminal = '/usr/bin/rxvt-unicode -title terminal -e "' .. config.home .. '/.dotfiles/bin/tmuxdev"'
+else
+	config.terminal = "/usr/bin/xterm"
+end
 -- editor = os.getenv("EDITOR") or "editor"
 -- editor_cmd = terminal .. " -e " .. editor
 

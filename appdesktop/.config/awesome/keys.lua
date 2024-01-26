@@ -213,7 +213,7 @@ keys.global = awful.util.table.join(
 
 	-- Terminal
 	awful.key({ modkey }, "Return", function()
-		awful.spawn(config.terminal .. " -title terminal -e " .. config.home .. "/.dotfiles/bin/tmuxdev")
+		awful.spawn(config.terminal)
 	end, { description = "open a terminal", group = "launcher" }),
 	-- awful.key({}, "²", function () awful.spawn(config.home .. "/.dotfiles/bin/guakify 'rxvt-unicode.URxvt' '" .. terminal .. " -e " .. config.home .. "/.dotfiles/bin/tmuxdev'") end, {description = "open a terminal", group = "launcher"}),
 
@@ -253,7 +253,14 @@ keys.global = awful.util.table.join(
 
 	-- Quake-like terminal (²)
 	awful.key({}, "#49", function()
+		-- TODO: à déplacer dans un script dans dotfiles
+		-- TODO: '-m' coute beaucoup en perfs https://github.com/noctuid/tdrop/issues/36
+		-- awful.spawn(config.home .. '/.dotfiles/bin/tdrop -ma -h \'100%\' --class "guaketerm" -f "start -- "' .. config.home .. '/.dotfiles/bin/tmuxdev" --class guaketerm" wezterm')
+		-- awful.spawn(config.home .. '/.dotfiles/bin/tdrop -m -a --class "guaketerm" -f "start -- "' .. config.home .. '/.dotfiles/bin/tmuxdev" --class guaketerm" /usr/local/bin/wezterm')
+
 		quake.term:toggle()
+
+		-- quake.term:toggle()
 	end, { description = "Toggle guake like terminal", group = "launcher" }),
 	awful.key({ modkey }, "Escape", function()
 		quake.term:toggle()
