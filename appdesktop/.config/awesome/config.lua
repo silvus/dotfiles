@@ -14,18 +14,21 @@ end
 local config = {}
 
 config.home = os.getenv("HOME")
+config.dotfiles = os.getenv("SILVUSDOTFILES")
 
 -- config.theme = "lagoon"
 config.theme = "matrix"
 -- config.theme = "bloodmoon"
 
--- This is used later as the default terminal and editor to run.
+-- This is used later as the default terminal and guake-like terminal to run.
 if file_exists('/usr/bin/wezterm') then
-	config.terminal = '/usr/bin/wezterm start -- "' .. config.home .. '/.dotfiles/bin/tmuxdev"'
+	config.terminal = '/usr/bin/wezterm'
+	config.terminal_quake = '/usr/bin/wezterm start --class guaketerm -- "' .. config.dotfiles .. '/bin/tmuxdev"'
 elseif file_exists('/usr/bin/rxvt-unicode') then
-	config.terminal = '/usr/bin/rxvt-unicode -title terminal -e "' .. config.home .. '/.dotfiles/bin/tmuxdev"'
+	config.terminal = '/usr/bin/rxvt-unicode'
+	config.terminal_quake = '/usr/bin/rxvt-unicode -name guaketerm -title terminal -e "' .. config.dotfiles .. '/bin/tmuxdev"'
 else
-	config.terminal = "/usr/bin/xterm"
+	config.terminal = "xterm"
 end
 -- editor = os.getenv("EDITOR") or "editor"
 -- editor_cmd = terminal .. " -e " .. editor
