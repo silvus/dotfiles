@@ -440,20 +440,20 @@ update_geometry_settings_for_monitor() {
 map_and_reset_geometry() {
 	if [[ -n $width ]] && [[ -n $height ]] && [[ -n $xoff ]] \
 		   && [[ -n $yoff ]]; then
-		xdotool windowmap "$wid" windowmove "$wid" "$xoff" "$yoff" \
+		xdotool windowmap --sync "$wid" windowmove "$wid" "$xoff" "$yoff" \
 				windowsize "$wid" "$width" "$height" 2> /dev/null
 	elif [[ -n $width ]] && [[ -n $height ]]; then
-		xdotool windowmap "$wid" windowsize "$wid" "$width" "$height" \
+		xdotool windowmap --sync "$wid" windowsize "$wid" "$width" "$height" \
 				2> /dev/null
 	elif [[ -n $xoff ]] && [[ -n $yoff ]]; then
-		xdotool windowmap "$wid" windowmove "$wid" "$xoff" "$yoff" \
+		xdotool windowmap --sync "$wid" windowmove "$wid" "$xoff" "$yoff" \
 				2> /dev/null
 	else
-		xdotool windowmap "$wid" 2> /dev/null
+		xdotool windowmap --sync "$wid" 2> /dev/null
 	fi
-	# windowmap does not activate for all window managers; windowactivate should
-	# be run separately or can activate window on another desktop on some window
-	# managers (e.g. bspwm)
+	# windowmap does not activate the window for all window managers;
+	# windowactivate should be run separately after windowmap --sync or it can
+	# activate a window on another desktop on some window managers (e.g. bspwm)
 	xdotool windowactivate "$wid" 2> /dev/null
 }
 
@@ -836,15 +836,15 @@ create_win_return_wid() {
 	visible_wid=false
 	counter=0
 	while : ; do
-		if [[ $program == gnome-terminal ]]; then
-			# only 1 pid; changes at some point after first run
-			# actual process name for me is gnome-terminal-
-			pid=$(pgrep gnome-terminal)
-		fi
 		if ((counter==0)); then
 			debug "pid: $pid"
 		fi
-		if [[ $program == discord ]]; then
+		if [[ $program == gnome-terminal ]]; then
+			wids=""
+			for pid in $(pgrep gnome-terminal); do
+				wids+=$(xdotool search --pid "$pid")
+			done
+		elif [[ $program == discord ]]; then
 			wids=$(xdotool search --classname discord)
 			blacklist=
 		elif [[ $program =~ ^(qutebrowser|brave|spotify|wezterm)$ ]]; then
@@ -946,7 +946,9 @@ program_start() {
 		elif [[ $program == kitty ]]; then
 			program_command+=(bash -c "$tmux_command")
 		elif [[ $program == wezterm || $class =~ ^(org\.wezfurlong\.)?wezterm$ ]]; then
-			program_command+=(start -- bash -c "$tmux_command")
+			program_command+=(start --always-new-process -- bash -c "$tmux_command")
+		elif [[ $program == gnome-terminal ]]; then
+			program_command+=(-- bash -c "$tmux_command")
 		else
 			program_command+=(-e "bash -c '$tmux_command'")
 		fi
