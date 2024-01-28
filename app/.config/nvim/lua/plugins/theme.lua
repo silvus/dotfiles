@@ -66,6 +66,17 @@ return {
 		end
 	},
 	{
+		"nvim-tree/nvim-tree.lua",
+		version = "*",
+		lazy = false,
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("nvim-tree").setup({})
+		end,
+	},
+	{
 		'rcarriga/nvim-notify',
 		config = function()
 			require("notify").setup({
@@ -73,5 +84,14 @@ return {
 			})
 			vim.notify = require("notify")
 		end,
+	},
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		init = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
+		end,
+		opts = {},
 	},
 }
