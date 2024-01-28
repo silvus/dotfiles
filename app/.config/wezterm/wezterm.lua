@@ -9,6 +9,9 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
+-- Disaable update notifications
+config.check_for_updates = false
+
 -- See https://gogh-co.github.io/Gogh/
 config.color_scheme = 'Elementary'
 -- config.color_scheme = 'Pro'
