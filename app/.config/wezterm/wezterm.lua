@@ -13,16 +13,23 @@ end
 config.check_for_updates = false
 
 -- See https://gogh-co.github.io/Gogh/
-config.color_scheme = 'Elementary'
+config.color_scheme = 'Tango (terminal.sexy)'
+-- config.color_scheme = 'Elementary'
 -- config.color_scheme = 'Pro'
 
-config.font = wezterm.font 'Hack Nerd Font'
+config.font = wezterm.font('Hack Nerd Font')
 config.font_size = 9
 
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = true
 
-config.enable_scroll_bar = true
+config.enable_scroll_bar = false
+config.window_padding = {
+	left = 1,
+	right = 1,
+	top = 0,
+	bottom = 0,
+}
 
 -- Reset some bindings
 config.keys = {
