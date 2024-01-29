@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
-# '-m'is expensive https://github.com/noctuid/tdrop/issues/36
+# Use Tdrop to toggle a terminal, like Guake.
+# Work only on Xorg
 
 TDROP="$SILVUSDOTFILES/bin/tdrop"
 TMUXDEV="$SILVUSDOTFILES/bin/tmuxdev"
 
 if [[ -x $(which wezterm) ]]; then
-# TODO: Doesn't work. See https://github.com/wez/wezterm/issues/1751#issuecomment-1250314820
-	"$TDROP" -ma -h '100%' --class "tdropterm" -f "start --class tdropterm" wezterm
+	# Inspired from https://github.com/wez/wezterm/issues/1751#issuecomment-1250314820
+	# Tdrop timeout with other classname, not sure why but force "wezterm" for now.
+	WAYLAND_DISPLAY=no "$TDROP" -ma -h '100%' --class "wezterm" -f "start --class wezterm -- $TMUXDEV" wezterm
 elif [[ -x $(which urxvt) ]]; then
 	"$TDROP" -ma -h '100%' --class "tdropterm" -f "-name tdropterm -title terminal -e $TMUXDEV" urxvt
+else
+	echo "No compatible terminal emulator found" 1>&2;
+	exit 1
 fi
+
+exit 0
