@@ -22,6 +22,8 @@ config.font_size = 9
 
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = true
+-- Place window management buttons (minimize, maximize, close) into the tab bar instead of showing a title bar
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
 config.enable_scroll_bar = false
 config.window_padding = {
