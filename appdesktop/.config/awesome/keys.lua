@@ -304,6 +304,9 @@ keys.global = awful.util.table.join(
 	awful.key({}, "Pause", function()
 		awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
 	end, { description = "audio toggle play/pause", group = "audio" }),
+	awful.key({ modkey }, "p", function()
+		awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
+	end, { description = "audio toggle play/pause", group = "audio" }),
 	awful.key({ modkey }, "Home", function()
 		awful.util.spawn(config.home .. "/.dotfiles/bin/musicnext", false)
 	end, { description = "music next", group = "audio" }),
