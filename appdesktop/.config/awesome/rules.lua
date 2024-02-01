@@ -197,7 +197,7 @@ local rules = {
 			"Slack",
 			"JoalDesktop",
 			"Pavucontrol",
-		}},
+		},
 		properties = {
 			tag = desktops.tags_names[6],
 		}
