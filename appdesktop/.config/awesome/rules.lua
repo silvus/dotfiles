@@ -187,7 +187,17 @@ local rules = {
 	},
 	
 	-- Mixed
-	{ rule_any = { class = { "Godot", "Keybase", "balena-etcher-electron", "GParted", "Transmission", "Slack", "JoalDesktop" }},
+	{ rule_any = {
+		class =
+			"Godot",
+			"Keybase",
+			"balena-etcher-electron",
+			"GParted",
+			"Transmission",
+			"Slack",
+			"JoalDesktop",
+			"Pavucontrol",
+		}},
 		properties = {
 			tag = desktops.tags_names[6],
 		}
@@ -199,7 +209,17 @@ local rules = {
 		}
 	},
 	-- Office
-	{ rule_any = { instance={"libreoffice"}, class = { "libreoffice-startcenter", "libreoffice-writer", "libreoffice-calc", "libreoffice-impress", "Simple-scan" }},
+	{ rule_any = {
+		instance={
+			"libreoffice"
+		},
+		class = {
+			"libreoffice-startcenter",
+			"libreoffice-writer",
+			"libreoffice-calc",
+			"libreoffice-impress",
+			"Simple-scan"
+		}},
 		properties = {
 			tag = desktops.tags_names[7],
 		}
