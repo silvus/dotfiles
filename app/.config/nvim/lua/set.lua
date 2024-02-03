@@ -31,8 +31,8 @@ vim.opt.smartcase = true
 
 -- Sync clipboard between OS and Neovim.
 -- Remove this option if you want your OS clipboard to remain independent.
-vim.opt.clipboard = 'unnamed' -- PRIMARY selections
--- vim.opt.clipboard = 'unnamedplus' -- CLIPBOARD selections
+-- vim.opt.clipboard = 'unnamed' -- PRIMARY selections (copy-on-select, pasted with the middle mouse)
+vim.opt.clipboard = 'unnamedplus' -- CLIPBOARD selections (^C)
 
 -- Style
 vim.opt.termguicolors = true
