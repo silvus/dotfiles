@@ -132,7 +132,7 @@ local rules = {
 		}
 	},
 	-- Notes
-	{ rule_any = { class = {"obsidian", "Zim"}},
+	{ rule_any = { class = {"obsidian", "Zim", "VNote"}},
 		properties = {
 			tag = desktops.tags_names[2],
 			titlebars_enabled = false,
