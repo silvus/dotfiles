@@ -20,16 +20,14 @@ return {
 
 	-- Autocompletion
 	{
-		'hrsh7th/cmp-calc',
-		dependencies = {
-			{'hrsh7th/nvim-cmp'},
-		},
-	},
-	{
 		'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
 		dependencies = {
-			{'L3MON4D3/LuaSnip'},
+			{
+				'hrsh7th/cmp-calc',
+				'L3MON4D3/LuaSnip',
+				'saadparwaiz1/cmp_luasnip',
+			},
 		},
 		config = function()
 			-- Here is where you configure the autocompletion settings.
@@ -55,7 +53,9 @@ return {
 				formatting = lsp_zero.cmp_format(),
 				mapping = cmp.mapping.preset.insert({
 					['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+					['<S-Tab>'] = cmp.mapping.select_prev_item(cmp_select),
 					['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+					['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
 					['<C-y>'] = cmp.mapping.confirm({ select = true }),
 
 					-- `Enter` key to confirm completion
@@ -66,6 +66,16 @@ return {
 				})
 			})
 		end
+	},
+
+	-- Snippets
+	{
+		'L3MON4D3/LuaSnip',
+		dependencies = { "rafamadriz/friendly-snippets" },
+		build = "make install_jsregexp",
+		config = function()
+			require("luasnip.loaders.from_vscode").lazy_load()
+		end,
 	},
 
 	-- LSP
