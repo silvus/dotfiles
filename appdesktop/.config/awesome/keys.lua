@@ -175,6 +175,19 @@ keys.global = awful.util.table.join(
 		awful.layout.inc(-1)
 	end, { description = "select previous", group = "layout" }),
 
+	awful.key({ modkey, "Control" }, "Right", function()
+		awful.tag.incmwfact(0.05)
+	end, { description = "Bigger clients", group = "client" }),
+	awful.key({ modkey, "Control" }, "Left", function()
+		awful.tag.incmwfact(-0.05)
+	end, { description = "Smaller clients", group = "client" }),
+	awful.key({ modkey, "Control" }, "Up", function()
+		awful.tag.incnmaster(-1, nil, true)
+	end, { description = "Decrease the number of master clients", group = "client" }),
+	awful.key({ modkey, "Control" }, "Down", function()
+		awful.tag.incnmaster(1, nil, true)
+	end, { description = "Increase the number of master clients", group = "client" }),
+
 	awful.key({ modkey, "Shift" }, "Right", function()
 		awful.client.swap.global_bydirection('right')
 	end, { description = "swap with right client", group = "client" }),
