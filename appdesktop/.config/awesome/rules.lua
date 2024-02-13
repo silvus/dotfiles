@@ -18,6 +18,15 @@ local function get_video_rule(c)
 		c.floating = false
 		c.ontop = false -- Not compatible with fullscreen
 		c.screen = screens.count() -- On last screen
+
+	elseif config.rules_videos == "tiled" then
+		
+		-- Tiled but sticky
+		c.sticky = true
+		c.fullscreen = false
+		c.floating = false
+		c.ontop = true -- Not compatible with fullscreen
+		c.screen = screens.get_primary() -- On primary screen
 	else
 		-- Défault to float mode
 
