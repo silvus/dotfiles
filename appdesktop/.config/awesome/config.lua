@@ -37,7 +37,7 @@ end
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 config.modkey = "Mod4"
 
--- Videos windows placement (auto, float, fullscreen)
+-- Videos windows placement (auto, float, fullscreen, tiled)
 config.rules_videos = "auto"
 
 -- Set a different wallpaper for each tag (and each screen), else take a random on init
