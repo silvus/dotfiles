@@ -212,7 +212,11 @@ local rules = {
 		}
 	},
 	-- Games
-	{ rule_any = { class = {"steam", "Steam", "discord"} },
+	{ rule_any = { class = {
+		"steam",
+		"Steam",
+		"discord",
+		}},
 		properties = {
 			tag = desktops.tags_names[6],
 		}
@@ -220,14 +224,15 @@ local rules = {
 	-- Office
 	{ rule_any = {
 		instance={
-			"libreoffice"
+			"libreoffice",
 		},
 		class = {
 			"libreoffice-startcenter",
 			"libreoffice-writer",
 			"libreoffice-calc",
 			"libreoffice-impress",
-			"Simple-scan"
+			"Simple-scan",
+			"Gnumeric",
 		}},
 		properties = {
 			tag = desktops.tags_names[7],
