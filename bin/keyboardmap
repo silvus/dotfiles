@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# This script is sourced in xinitrc
+# TODO: handle tty layout (/etc/default/keyboard)
+
+# Customized layout
+# -----------------------------------------------------------------------------
+# Load a customized layout configuration
+# Cannot use $DOTFILES_PATH in a xinitrc context
+xkbcomp $HOME/.config/xkb/keymap.xkb $DISPLAY -w 3

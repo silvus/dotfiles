@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# Layout
+# -----------------------------------------------------------------------------
+# See /usr/share/X11/xkb/symbols/fr
+# See /usr/share/X11/xkb/symbols/gb
+setxkbmap -model pc105 -layout fr,gb -variant oss,intl
+
+# Options, see man xkeyboard-config
+# -----------------------------------------------------------------------------
+# https://gist.github.com/jatcwang/ae3b7019f219b8cdc6798329108c9aee
+# - Level1 is normal keys.
+# - Level2 is normal keys + Shift.
+# - Level3 is AltGr.
+# - Level4 is AltGr + Shift.
+
+# Compose key goodies
+#   Compose + space + space = NBSP
+#   Compose + e + "=" = €
+#   Compose + < + 3 = ♥
+#   Compose + "=" + > = ⇒
+# Menu is compose key
+# setxkbmap -option 'compose:menu'
+# Right windows is compose key
+setxkbmap -option 'compose:rwin'
+
+# Use keyboard LED to show alternative layout (qwerty)
+setxkbmap -option 'grp_led:scroll'
+
+# Shift+Caps to switch to another keyboard layout (qwerty)
+# setxkbmap -option 'grp:shift_caps_toggle'
+# Alt+Caps Lock to switch to another keyboard layout (qwerty)
+setxkbmap -option 'grp:alt_caps_toggle'
+
+# Swap Capslock for Backspace
+# https://askubuntu.com/a/82734
+# setxkbmap -option 'caps:backspace'
+# xmodmap -e "clear Lock"
+
+# Enable AltGr on Alt Right
+setxkbmap -option 'lv3:ralt_switch'
+
+# Euro sign on AltGr + e
+# setxkbmap -option 'eurosign:e'
+
+# Non-breakable space character with AltGrSpace
+# setxkbmap -option 'nbsp:level3'
+# Disable non-breakable space character (annoying for markdown titles)
+setxkbmap -option 'nbsp:none'
+
+# Shift left and Shift right to Caps lock
+setxkbmap -option 'shift:both_capslock'
+
+# Caps lock is a second AltGr (to rebind arrows on zqsd / ijkl)
+setxkbmap -option 'lv3:caps_switch'
