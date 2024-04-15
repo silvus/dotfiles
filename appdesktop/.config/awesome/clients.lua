@@ -20,6 +20,12 @@ clients.keys = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "q", function(c)
 			c:kill()
 		end, {description = "close", group = "client"}),
+	awful.key({ modkey, "Shift" }, "Escape", function(c)
+			c:kill()
+		end, {description = "close", group = "client"}),
+	awful.key({ modkey, }, "F4", function(c)
+		c:kill()
+		end, {description = "close", group = "client"}),
 	awful.key({ modkey, }, "space", function(c)
 			awful.client.floating.toggle()
 		end, {description = "toggle floating", group = "client"}),
