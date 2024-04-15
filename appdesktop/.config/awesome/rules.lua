@@ -164,6 +164,7 @@ local rules = {
 	-- Guake like terminal
 	{ rule_any = { instance = {"guaketerm", "tdropterm"}, class={"guaketerm", "tdropterm"} },
 		properties = {
+			floating = true,
 			titlebars_enabled = false,
 		}
 	},
