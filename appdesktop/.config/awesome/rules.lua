@@ -5,7 +5,7 @@ local desktops = require("desktops")
 local config = require("config")
 local screens = require("screens")
 local globalclient = client
-local clients = require("clients")
+local keys = require("keys")
 
 
 local function get_video_rule(c)
@@ -57,8 +57,8 @@ local rules = {
 			border_color = beautiful.border_normal,
 			focus = awful.client.focus.filter,
 			raise = true,
-			keys = clients.keys,
-			buttons = clients.buttons,
+			keys = keys.clients.keys,
+			buttons = keys.clients.buttons,
 			screen = awful.screen.preferred,
 			titlebars_enabled = true,
 			placement = awful.placement.no_overlap + awful.placement.no_offscreen + awful.placement.top,
