@@ -6,8 +6,11 @@ xrdb -merge -I$HOME ~/.Xresources
 
 # Keyboard config
 # ------------------------------------------------------
-if [[ -f "$HOME/.dotfiles/bin/keyboardmap" ]]; then
-	source "$HOME/.dotfiles/bin/keyboardmap"
+# if [[ -f "$HOME/.dotfiles/bin/keyboardmap" ]]; then
+# 	source "$HOME/.dotfiles/bin/keyboardmap"
+# fi
+if [[ -f "$HOME/.dotfiles/bin/keyboardmapsimple" ]]; then
+	source "$HOME/.dotfiles/bin/keyboardmapsimple"
 fi
 
 # Sleep time
