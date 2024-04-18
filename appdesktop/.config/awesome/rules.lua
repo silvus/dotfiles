@@ -166,6 +166,7 @@ local rules = {
 		properties = {
 			floating = true,
 			titlebars_enabled = false,
+			maximized = true,
 		}
 	},
 	-- Files explorer

@@ -206,14 +206,16 @@ function bar(s)
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
 	local layoutbox = widget_layout.widget(s)
+
+	local wibox_custom = nil
 	
 	-- Widget for main screen only
 	if s == screens.get_primary() then
 		-- Create a promptbox (on screen object to trigger in keys bindings)
-		s.promptbox = widget_prompt.widget
+		-- s.promptbox = widget_prompt.widget
 
 		-- Create a vertical wibox
-		local wibox_custom = awful.wibar({
+		wibox_custom = awful.wibar({
 			position = "left",
 			screen = s,
 			bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
@@ -226,7 +228,7 @@ function bar(s)
 				layout = wibox.layout.fixed.vertical,
 				widget_tags_vertical.widget(s),
 				widget_separator_vertical.widget,
-				s.promptbox,
+				-- s.promptbox,
 			},
 			{ -- Middle widget
 				layout = wibox.layout.fixed.vertical,
@@ -270,7 +272,7 @@ function bar(s)
 			
 	else
 		-- secondary screen (always horizontal)
-		local wibox_custom = awful.wibar({
+		wibox_custom = awful.wibar({
 			position = "top",
 			screen = s,
 			--height = 25

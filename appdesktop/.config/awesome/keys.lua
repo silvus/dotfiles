@@ -129,9 +129,10 @@ keys.global = awful.util.table.join(
 	end, { description = "go back to previous tag", group = "tag" }),
 
 	awful.key({ modkey }, "b", function()
-		-- Toggle all bars
 		for s in screen do
-			s.bar.visible = not s.bar.visible
+			if s.bar then
+				s.bar.visible = not s.bar.visible
+			end
 
 			-- Toggle titlebars
 			-- for _, c in ipairs(globalclient.get()) do
