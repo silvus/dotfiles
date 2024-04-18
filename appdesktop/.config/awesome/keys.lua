@@ -182,12 +182,12 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Control" }, "Left", function()
 		awful.tag.incmwfact(-0.05)
 	end, { description = "Smaller clients", group = "client" }),
-	awful.key({ modkey, "Control" }, "Up", function()
-		awful.tag.incnmaster(-1, nil, true)
-	end, { description = "Decrease the number of master clients", group = "client" }),
-	awful.key({ modkey, "Control" }, "Down", function()
-		awful.tag.incnmaster(1, nil, true)
-	end, { description = "Increase the number of master clients", group = "client" }),
+	-- awful.key({ modkey, "Shift" }, "Up", function()
+	-- 	awful.tag.incmwfact(0.05)
+	-- end, { description = "Increase master width", group = "client" }),
+	-- awful.key({ modkey, "Shift" }, "Down", function()
+	-- 	awful.tag.incmwfact(-0.05)
+	-- end, { description = "Decrease master width", group = "client" }),
 
 	awful.key({ modkey, "Shift" }, "Right", function()
 		awful.client.swap.global_bydirection('right')
@@ -201,25 +201,18 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "Down", function()
 		awful.client.swap.global_bydirection('down')
 	end, { description = "swap with bottom client", group = "client" }),
-
-	awful.key({ modkey, "Shift" }, "Up", function()
-		awful.tag.incmwfact(0.05)
-	end, { description = "Increase master width", group = "client" }),
-	awful.key({ modkey, "Shift" }, "Down", function()
-		awful.tag.incmwfact(-0.05)
-	end, { description = "Decrease master width", group = "client" }),
-	awful.key({ modkey, "Control" }, "Right", function()
-		awful.screen.focus_bydirection('right')
-	end, { description = "focus the right screen", group = "screen" }),
-	awful.key({ modkey, "Control" }, "Left", function()
-		awful.screen.focus_bydirection('left')
-	end, { description = "focus the left screen", group = "screen" }),
-	awful.key({ modkey, "Control" }, "Up", function()
-		awful.screen.focus_bydirection('up')
-	end, { description = "focus the top screen", group = "screen" }),
-	awful.key({ modkey, "Control" }, "down", function()
-		awful.screen.focus_bydirection('down')
-	end, { description = "focus the bottom screen", group = "screen" }),
+	-- awful.key({ modkey, "Control" }, "Right", function()
+	-- 	awful.screen.focus_bydirection('right')
+	-- end, { description = "focus the right screen", group = "screen" }),
+	-- awful.key({ modkey, "Control" }, "Left", function()
+	-- 	awful.screen.focus_bydirection('left')
+	-- end, { description = "focus the left screen", group = "screen" }),
+	-- awful.key({ modkey, "Control" }, "Up", function()
+	-- 	awful.screen.focus_bydirection('up')
+	-- end, { description = "focus the top screen", group = "screen" }),
+	-- awful.key({ modkey, "Control" }, "down", function()
+	-- 	awful.screen.focus_bydirection('down')
+	-- end, { description = "focus the bottom screen", group = "screen" }),
 
 	awful.key({ modkey }, "u", function()
 		awful.client.urgent.jumpto()
