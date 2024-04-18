@@ -218,6 +218,7 @@ function bar(s)
 		wibox_custom = awful.wibar({
 			position = "left",
 			screen = s,
+			visible = true,
 			bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
 		})
 
@@ -275,6 +276,7 @@ function bar(s)
 		wibox_custom = awful.wibar({
 			position = "top",
 			screen = s,
+			visible = false,
 			--height = 25
 		})
 		wibox_custom:setup {
