@@ -115,6 +115,33 @@ function focus_client(direction)
 	end
 end
 
+-- Change client size (different when floating)
+function resize_client(direction)
+	local c = client.focus
+	local floating_resize_factor = 10
+	local master_resize_factor = 0.01
+
+	if c.floating then
+		if direction == "up" then
+            client:relative_move(0, floating_resize_factor, 0, -floating_resize_factor * 2)
+        elseif direction == "down" then
+            client:relative_move(0,  -floating_resize_factor, 0, floating_resize_factor * 2)
+        elseif direction == "left" then
+            client:relative_move(floating_resize_factor, 0, -floating_resize_factor * 2, 0)
+        elseif direction == "right" then
+            client:relative_move(-floating_resize_factor, 0, floating_resize_factor * 2, 0)
+		end
+	elseif client then
+		if direction == "up" or direction == "right" then
+			awful.tag.incmwfact(master_resize_factor)
+		elseif direction == "down" or direction == "left" then
+			awful.tag.incmwfact(-master_resize_factor)
+		end
+	end
+
+end
+
+
 -- Globals keys
 -- ----------------------------------------------------------------------------
 keys.global = awful.util.table.join(
@@ -178,11 +205,18 @@ keys.global = awful.util.table.join(
 	end, { description = "select previous", group = "layout" }),
 
 	awful.key({ modkey, "Control" }, "Right", function()
-		awful.tag.incmwfact(0.05)
+		resize_client('right')
 	end, { description = "Bigger clients", group = "client" }),
 	awful.key({ modkey, "Control" }, "Left", function()
-		awful.tag.incmwfact(-0.05)
+		resize_client('left')
 	end, { description = "Smaller clients", group = "client" }),
+	awful.key({ modkey, "Control" }, "Up", function()
+		resize_client('up')
+	end, { description = "Bigger clients", group = "client" }),
+	awful.key({ modkey, "Control" }, "Down", function()
+		resize_client('down')
+	end, { description = "Smaller clients", group = "client" }),
+	
 	-- awful.key({ modkey, "Shift" }, "Up", function()
 	-- 	awful.tag.incmwfact(0.05)
 	-- end, { description = "Increase master width", group = "client" }),
