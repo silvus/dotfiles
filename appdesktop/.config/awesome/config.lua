@@ -40,6 +40,9 @@ config.modkey = "Mod4"
 -- Videos windows placement (auto, float, fullscreen, tiled)
 config.rules_videos = "auto"
 
+-- Show bar at start
+config.show_bar = true
+
 -- Set a different wallpaper for each tag (and each screen), else take a random on init
 config.wallpapers_by_tag = false
 
