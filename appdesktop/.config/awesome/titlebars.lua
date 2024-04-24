@@ -6,7 +6,7 @@ local wibox = require("wibox")
 local titlebars = {}
 
 
-function setup_titlebars(c)
+function setup_titlebar(c)
 
 	-- buttons for the titlebar
 	local buttons = awful.util.table.join(
@@ -22,11 +22,22 @@ function setup_titlebars(c)
 		end)
 	)
 
-	return awful.titlebar(c):setup {
+	local titlebar = awful.titlebar(c, {
+		size = 18,
+	})
+
+	return titlebar:setup {
 		{ -- Left
-			awful.titlebar.widget.iconwidget(c),
-			buttons = buttons,
-			layout  = wibox.layout.fixed.horizontal
+			{
+				awful.titlebar.widget.iconwidget(c),
+				buttons = buttons,
+				layout  = wibox.layout.fixed.horizontal
+			},
+			top = 3,
+			bottom = 3,
+			left = 3,
+			right = 6,
+			widget = wibox.container.margin,
 		},
 		{ -- Middle
 			{ -- Title
@@ -41,9 +52,17 @@ function setup_titlebars(c)
 			awful.titlebar.widget.stickybutton(c),
 			awful.titlebar.widget.ontopbutton(c),
 			awful.titlebar.widget.maximizedbutton(c),
-			awful.titlebar.widget.minimizebutton(c),
+			{
+				{
+					awful.titlebar.widget.minimizebutton(c),
+					layout  = wibox.layout.fixed.horizontal
+				},
+				left = 20,
+				widget = wibox.container.margin,
+			},
 			awful.titlebar.widget.closebutton(c),
-			layout = wibox.layout.fixed.horizontal()
+
+			layout = wibox.layout.fixed.horizontal
 		},
 		layout = wibox.layout.align.horizontal
 	}
@@ -51,6 +70,6 @@ function setup_titlebars(c)
 end
 
 
-titlebars.setup_titlebars = setup_titlebars
+titlebars.setup_titlebar = setup_titlebar
 
 return titlebars
