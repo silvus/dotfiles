@@ -6,8 +6,9 @@ local awful  = require("awful")
 local gears  = require("gears")
 local wibox = require("wibox")
 local screens = require("screens")
+local config = require('config')
 
-local theme   = {}
+local theme = {}
 
 -- ---------------------------------------------------------------------
 -- Config
@@ -218,7 +219,7 @@ function bar(s)
 		wibox_custom = awful.wibar({
 			position = "left",
 			screen = s,
-			visible = true,
+			visible = config.show_bar,
 			bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
 		})
 

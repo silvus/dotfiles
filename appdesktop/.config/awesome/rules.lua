@@ -164,9 +164,13 @@ local rules = {
 	-- Guake like terminal
 	{ rule_any = { instance = {"guaketerm", "tdropterm"}, class={"guaketerm", "tdropterm"} },
 		properties = {
+			-- TODO: init is not on place (too small or too big)
 			floating = true,
 			titlebars_enabled = false,
+			fullscreen = false,
 			maximized = true,
+			maximized_vertical = true,
+			maximized_horizontal = true,
 		}
 	},
 	-- Files explorer
@@ -279,6 +283,7 @@ local rules = {
 			role = { "PictureInPicture" },
 		},
 		properties = {
+			titlebars_enabled = true,
 			-- focus = false,
 			placement = awful.placement.no_offscreen + awful.placement.bottom_right,
 			-- Floating on top and sticky or full screen on secondary
