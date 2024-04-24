@@ -214,26 +214,6 @@ globalclient.connect_signal("unfocus", function(c) c.border_color = beautiful.bo
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 globalclient.connect_signal("request::titlebars", titlebars.setup_titlebar)
 
--- Remove titlebar on maximized clients
-local function set_titlebar(c)
-	local s = awful.screen.focused()
-
-	local max = s.selected_tag.layout == awful.layout.suit.max
-
-	for _, c in pairs(s.clients) do
-		if max or c.maximized then
-			awful.titlebar.hide(c)
-		else
-			awful.titlebar.show(c)
-		end
-	end
-end
-
-tag.connect_signal("property::layout", set_titlebar) -- Tag layyout is changed
-client.connect_signal("property::maximized", set_titlebar) -- Client is maximized
-client.connect_signal("manage", set_titlebar) -- client is added
-
-
 -- Force ontop on client fullscreen exit (fullscreen unsets ontop)
 globalclient.connect_signal("property::fullscreen", function(c) if not c.fullscreen then c.ontop = true end end)
 
