@@ -6,8 +6,9 @@ local awful  = require("awful")
 local gears  = require("gears")
 local wibox = require("wibox")
 local screens = require("screens")
+local config = require('config')
 
-local theme   = {}
+local theme = {}
 
 -- ---------------------------------------------------------------------
 -- Config
@@ -52,7 +53,7 @@ theme.graph_height                              = 15
 theme.graph_width                               = 30
 
 theme.titlebar_fg_normal                        = "#333333"
-theme.titlebar_bg_normal                        = "#2b1c1c"
+theme.titlebar_bg_normal                        = "#1c0d0d"
 theme.titlebar_bg_focus                         = "#400202"
 
 theme.snap_bg                                   = theme.primary
@@ -164,7 +165,8 @@ end
 theme.tasklist_disable_task_name = true
 -- theme.tasklist_plain_task_name = true
 -- theme.tasklist_disable_icon = true
-
+theme.maximized_hide_border = true
+theme.fullscreen_hide_border = true
 
 -- Bar (Wibar) management
 
@@ -213,7 +215,7 @@ function bar(s)
 		wibox_custom = awful.wibar({
 			position = "left",
 			screen = s,
-			visible = false, -- Init hidden but toggle with "Super+b"
+			visible = config.show_bar,
 			bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
 		})
 

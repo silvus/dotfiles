@@ -217,7 +217,7 @@ _M.term = quake.new({
 		-- c.maximized_vertical = true
 		-- c.maximized_horizontal = true
 		c.border_width = 0
-
+		c.titlebars_enabled = false
 	end
 })
 
