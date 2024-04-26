@@ -203,22 +203,24 @@ _M.term = quake.new({
 	-- vertical position (string, possible values: "top", "bottom", "center")
 	vert = "top",
 	-- horizontal position (string, possible values: "left", "right", "center")
-	horiz = "center",
+	horiz = "left",
 
-	maximized = true,
-	fullscreen = true,
+	-- maximized = true,
+	-- fullscreen = false,
+
 	-- settings is a function which takes the client as input, and can be used to customize its properties
-	settings = function(c)
-		c.fullscreen = false
-		c.ontop = false -- Not compatible with fullscreen
-		c.sticky = true
-		c.floating = true
-		c.maximized = true
-		-- c.maximized_vertical = true
-		-- c.maximized_horizontal = true
-		c.border_width = 0
-		c.titlebars_enabled = false
-	end
+	-- settings = function(c)
+	-- c.fullscreen = false
+	-- c.ontop = true -- Not compatible with fullscreen
+	-- c.sticky = true
+	-- c.floating = true
+	-- c.maximized = true
+	-- c.maximized_vertical = true
+	-- c.maximized_horizontal = true
+	-- c.border_width = 0
+	-- Cannot be done here; see rules.lua
+	-- c.titlebars_enabled = false
+	-- end
 })
 
 

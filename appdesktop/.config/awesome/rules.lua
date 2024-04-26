@@ -164,13 +164,8 @@ local rules = {
 	-- Guake like terminal
 	{ rule_any = { instance = {"guaketerm", "tdropterm"}, class={"guaketerm", "tdropterm"} },
 		properties = {
-			-- TODO: init is not on place (too small or too big)
-			floating = true,
+			-- Only property needed on rules, other are set in quake.lua
 			titlebars_enabled = false,
-			fullscreen = false,
-			maximized = true,
-			maximized_vertical = true,
-			maximized_horizontal = true,
 		}
 	},
 	-- Files explorer
