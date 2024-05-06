@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Invoke global X session script
+# ------------------------------------------------------
+if [[ -f "/etc/X11/xinit/xinitrc" ]]; then
+	source "/etc/X11/xinit/xinitrc"
+fi
+
 # Update Xresources
 # ------------------------------------------------------
 xrdb -merge -I$HOME ~/.Xresources
