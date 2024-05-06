@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Copy alls desktops files in home to disable auto start apps.
+# -----------------------------------------------------------------------------
+
+mkdir -p $HOME/.config/autostart
+cp /etc/xdg/autostart/*.desktop $HOME/.config/autostart
+
+DESKTOP_ENTRY="[Desktop Entry]\nHidden=true\n"
+
+for file in $HOME/.config/autostart/*; do
+	if [ -f "$file" ]; then
+		echo -e "$DESKTOP_ENTRY" > "$file"
+	fi
+done
+
+exit 0
