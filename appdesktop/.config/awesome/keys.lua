@@ -38,7 +38,7 @@ function panic_key()
 	end
 
 	-- Mute sound
-	awful.util.spawn("amixer -D pulse sset Master mute", false)
+	awful.spawn("amixer -D pulse sset Master mute", false)
 	widget_volume.volume.update()
 
 	-- Clear all notifications
@@ -49,7 +49,7 @@ function panic_key()
 	widget_notifications.update()
 
 	-- Focus on first window in tmux
-	awful.util.spawn("tmux select-window -t 1", false)
+	awful.spawn("tmux select-window -t 1", false)
 
 	-- Clients loop
 	for _, c in ipairs(globalclient.get()) do
@@ -57,7 +57,7 @@ function panic_key()
 		if c.class == "mpv" then
 			-- c:kill()  -- kill doesn't preserve video position
 			-- Simulate "q" keypress
-			awful.util.spawn("xdotool key --window " .. c.window .. " q")
+			awful.spawn("xdotool key --window " .. c.window .. " q")
 		end
 
 		-- Unpin and minimize all sticky clients
@@ -83,7 +83,7 @@ function unpanic_key(restaure_tag)
 	widget_notifications.update()
 
 	-- Unmute sound
-	awful.util.spawn("amixer -D pulse sset Master unmute", false)
+	awful.spawn("amixer -D pulse sset Master unmute", false)
 	widget_volume.volume.update()
 
 	-- Restaure previous tag
@@ -277,7 +277,7 @@ keys.global = awful.util.table.join(
 		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
 		-- Default to mouse.coords()
 		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
-		awful.util.spawn("rofi -show drun")
+		awful.spawn("rofi -show drun")
 	end, { description = "Rofi launch", group = "launcher" }),
 	-- Menubar
 	-- awful.key({ modkey, "Shift"}, "e", function()
@@ -286,11 +286,11 @@ keys.global = awful.util.table.join(
 
 	-- Editor
 	awful.key({ modkey, "Shift" }, "e", function()
-		awful.util.spawn("codium")
+		awful.spawn("codium")
 	end, { description = "open editor", group = "launcher" }),
 	-- File Manager
 	awful.key({ modkey, "Shift" }, "f", function()
-		awful.util.spawn("thunar")
+		awful.spawn("thunar")
 	end, { description = "open file manager", group = "launcher" }),
 
 	-- Quake-like terminal (²)
@@ -303,57 +303,57 @@ keys.global = awful.util.table.join(
 
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function()
-		awful.util.spawn("amixer -q sset Master 5%-", false)
+		awful.spawn("amixer -q sset Master 5%-", false)
 		-- trigger widget update
 		widget_volume.volume.update()
 	end, { description = "Volume up", group = "audio" }),
 	awful.key({}, "XF86AudioRaiseVolume", function()
-		awful.util.spawn("amixer -q sset Master 5%+", false)
+		awful.spawn("amixer -q sset Master 5%+", false)
 		widget_volume.volume.update()
 	end, { description = "Volume down", group = "audio" }),
 	awful.key({}, "XF86AudioMute", function()
-		awful.util.spawn("amixer -q sset Master toggle", false)
+		awful.spawn("amixer -q sset Master toggle", false)
 		widget_volume.volume.update()
 	end, { description = "volume mute", group = "audio" }),
 	-- Simulated volume keys
 	awful.key({ modkey }, "Page_Down", function()
-		awful.util.spawn("amixer -q sset Master 5%-", false)
+		awful.spawn("amixer -q sset Master 5%-", false)
 		widget_volume.volume.update()
 	end, { description = "Volume up", group = "audio" }),
 	awful.key({ modkey }, "Page_Up", function()
-		awful.util.spawn("amixer -q sset Master 5%+", false)
+		awful.spawn("amixer -q sset Master 5%+", false)
 		widget_volume.volume.update()
 	end, { description = "Volume down", group = "audio" }),
 	awful.key({ modkey }, "End", function()
-		awful.util.spawn("amixer -q sset Master toggle", false)
+		awful.spawn("amixer -q sset Master toggle", false)
 		widget_volume.volume.update()
 	end, { description = "volume mute toggle", group = "audio" }),
 
 	-- Media Keys
 	awful.key({}, "XF86AudioPlay", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
 	end, { description = "audio toggle play/pause", group = "audio" }),
 	awful.key({}, "XF86AudioStop", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/musicstop", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/musicstop", false)
 	end, { description = "music stop", group = "audio" }),
 	awful.key({}, "XF86AudioNext", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/musicnext", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/musicnext", false)
 	end, { description = "music next", group = "audio" }),
 	awful.key({}, "XF86AudioPrev", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
 	end, { description = "music previous", group = "audio" }),
 	-- Simulate Media Keys
 	awful.key({}, "Pause", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
 	end, { description = "audio toggle play/pause", group = "audio" }),
 	awful.key({ modkey }, "p", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
 	end, { description = "audio toggle play/pause", group = "audio" }),
 	awful.key({ modkey }, "Home", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/musicnext", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/musicnext", false)
 	end, { description = "music next", group = "audio" }),
 	awful.key({ modkey }, "Insert", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
 	end, { description = "music previous", group = "audio" }),
 
 	-- Notifications toogle
@@ -364,12 +364,12 @@ keys.global = awful.util.table.join(
 
 	-- Touchpad Toggle
 	awful.key({}, "XF86TouchpadToggle", function()
-		awful.util.spawn_with_shell("synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')")
+		awful.spawn_with_shell("synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')")
 	end, { description = "toggle touchpad", group = "launcher" }),
 
 	-- Print screen
 	awful.key({}, "Print", function()
-		awful.util.spawn("ksnip", false)
+		awful.spawn("ksnip", false)
 	end, { description = "make a printscreen with ksnip", group = "launcher" }),
 
 	-- Reload
@@ -378,8 +378,8 @@ keys.global = awful.util.table.join(
 
 	-- Lock
 	awful.key({ modkey, "Shift" }, "l", function()
-		-- awful.util.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
-		awful.util.spawn(
+		-- awful.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
+		awful.spawn(
 			"i3lock --color 000305 -t -i " ..
 			config.home ..
 			"/.dotfiles/appdesktop/.config/awesome/wallpapers/lock_1.png --show-failed-attempts --ignore-empty-password",
@@ -388,17 +388,17 @@ keys.global = awful.util.table.join(
 
 	-- Shutdown or restart
 	awful.key({ modkey, "Shift" }, "s", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_shutdown", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/dmenu_shutdown", false)
 	end, { description = "shutdown", group = "launcher" }),
 
 	-- VPN
 	-- awful.key({ modkey, "Shift" }, "v", function()
-	-- 		awful.util.spawn(config.home .. "/.dotfiles/bin/dmenu_vpn", false)
+	-- 		awful.spawn(config.home .. "/.dotfiles/bin/dmenu_vpn", false)
 	-- 	end, {description = "launch vpn", group = "launcher"}),
 
 	-- Firefox refresh
 	awful.key({ modkey }, "r", function()
-		awful.util.spawn(config.home .. "/.dotfiles/bin/refresh_firefox", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/refresh_firefox", false)
 	end, { description = "refresh firefox", group = "launcher" }),
 
 	-- Toggle scratchpad tag (²)
