@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# Invoke global X session script
-# ------------------------------------------------------
-if [[ -f "/etc/X11/xinit/xinitrc" ]]; then
-	source "/etc/X11/xinit/xinitrc"
-fi
-
 # Update Xresources
 # ------------------------------------------------------
 xrdb -merge -I$HOME ~/.Xresources
@@ -24,13 +18,19 @@ fi
 xset s 3600 3600
 xset dpms 3600 3600 3600
 
-
 # Include specific screen (xrandr) configuration script if needed
 # ------------------------------------------------------
 if [[ -f "$HOME/.dotfiles_custom/autostart_xinit" ]]; then
 	source "$HOME/.dotfiles_custom/autostart_xinit"
 fi
 
-# Launch default WM, if not already do in autostart_xinit
+# Invoke global X session script
+# This script will launch defaut desktop, so call it last
+# ------------------------------------------------------
+if [[ -f "/etc/X11/xinit/xinitrc" ]]; then
+	/etc/X11/xinit/xinitrc
+fi
+
+# Launch default WM, if not already do in global xinitrc
 # ------------------------------------------------------
 exec /usr/bin/awesome
