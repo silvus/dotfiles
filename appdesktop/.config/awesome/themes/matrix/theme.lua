@@ -162,6 +162,7 @@ theme.tasklist_disable_task_name = true
 -- theme.tasklist_plain_task_name = true
 -- theme.tasklist_disable_icon = true
 
+theme.master_width_factor = 0.66
 
 -- Bar (Wibar) management
 
