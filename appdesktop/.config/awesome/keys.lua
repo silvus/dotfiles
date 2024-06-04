@@ -157,9 +157,10 @@ keys.global = awful.util.table.join(
 	end, { description = "go back to previous tag", group = "tag" }),
 
 	awful.key({ modkey }, "b", function()
+		local screen_focused_status = screen.primary.bar.visible
 		for s in screen do
 			if s.bar then
-				s.bar.visible = not s.bar.visible
+				s.bar.visible = not screen_primary_status
 			end
 
 			-- Toggle titlebars
