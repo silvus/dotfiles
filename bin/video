@@ -3,10 +3,4 @@
 MPV_EXEC="$(which mpv) --vo=gpu,drm"
 MPV_FORMAT='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]'
 
-# $MPV_EXEC --ytdl-format="$MPV_FORMAT" "$@"
-
-
-echo $MPV_EXEC --ytdl-format="$MPV_FORMAT" "$@"
-
-# TODO:
-# ssh -t orcus "DISPLAY=:0 video 'https://www.youtube.com/watch?v=IKKsREAlkoE'"
+$MPV_EXEC --ytdl-format="$MPV_FORMAT" "$@"
