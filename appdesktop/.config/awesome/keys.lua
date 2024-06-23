@@ -123,13 +123,13 @@ function resize_client(direction)
 
 	if c.floating then
 		if direction == "up" then
-            client:relative_move(0, floating_resize_factor, 0, -floating_resize_factor * 2)
+            c:relative_move(0, floating_resize_factor, 0, -floating_resize_factor * 2)
         elseif direction == "down" then
-            client:relative_move(0,  -floating_resize_factor, 0, floating_resize_factor * 2)
+            c:relative_move(0, -floating_resize_factor, 0, floating_resize_factor * 2)
         elseif direction == "left" then
-            client:relative_move(floating_resize_factor, 0, -floating_resize_factor * 2, 0)
+            c:relative_move(floating_resize_factor, 0, -floating_resize_factor * 2, 0)
         elseif direction == "right" then
-            client:relative_move(-floating_resize_factor, 0, floating_resize_factor * 2, 0)
+            c:relative_move(-floating_resize_factor, 0, floating_resize_factor * 2, 0)
 		end
 	elseif client then
 		if direction == "up" or direction == "right" then
@@ -157,7 +157,7 @@ keys.global = awful.util.table.join(
 	end, { description = "go back to previous tag", group = "tag" }),
 
 	awful.key({ modkey }, "b", function()
-		local screen_focused_status = screen.primary.bar.visible
+		local screen_focused_status = screens.get_primary().bar.visible
 		for s in screen do
 			if s.bar then
 				s.bar.visible = not screen_primary_status
