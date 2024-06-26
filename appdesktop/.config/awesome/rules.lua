@@ -246,9 +246,10 @@ local rules = {
 		}
 	},
 	-- Privacy
-	{ rule_any = { class = {"Tor Browser"} },
+	{ rule_any = { class = {"Tor Browser", "firefox-aurora"} },
 		properties = {
 			tag = desktops.tags_names[9],
+			titlebars_enabled = false,
 		}
 	},
 	-- Ksnip (screenshots)
