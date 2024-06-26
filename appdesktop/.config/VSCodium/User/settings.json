@@ -184,4 +184,6 @@
     "workbench.editor.editorActionsLocation": "titleBar",
     "git.confirmSync": false,
     "window.commandCenter": false,
+    "notebook.formatOnSave.enabled": true,
+    "notebook.insertFinalNewline": true,
 }
