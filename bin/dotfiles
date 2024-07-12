@@ -281,7 +281,7 @@ def git_changelog(destination):
     changelog, errors = p.communicate()
     if p.returncode != 0:
         print_error(errors.decode("UTF-8"))
-        return False
+        return []
     else:
         return changelog.decode("UTF-8").strip().split("\n")
 
@@ -325,8 +325,7 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
         # Fetch
         git_fetch(dotfilespath)
         # Build changelog
-        changelog_val = git_changelog(dotfilespath)
-        for line in changelog_val:
+        for line in git_changelog(dotfilespath):
             if line:
                 print_success(line)
         # Pull
