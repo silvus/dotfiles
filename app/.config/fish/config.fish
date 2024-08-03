@@ -100,6 +100,8 @@ end
 
 # Bindings
 # -----------------------------------------------------------------------------
+bind \ce fzf-editor-open
+
 # Fzf trigger file with CTRL+P
 bind \cp fzf-file-widget
 
