@@ -155,6 +155,17 @@ fi
 export CUSTOM_AUTO_START_X=1
 
 
+# Nix
+# ------------------------------------------------------
+if [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+	source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+fi
+# Home Manager
+if [[ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]]; then
+	source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+fi
+
+
 # Environment specific configuration
 # ------------------------------------------------------
 if [[ -f "$SILVUSDOTFILES_CUSTOM/env.sh" ]]; then
