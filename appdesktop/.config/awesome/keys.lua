@@ -205,16 +205,16 @@ keys.global = awful.util.table.join(
 		awful.layout.inc(-1)
 	end, { description = "select previous", group = "layout" }),
 
-	awful.key({ modkey, "Control" }, "Right", function()
+	awful.key({ modkey, "Shift" }, "Right", function()
 		resize_client('right')
 	end, { description = "Bigger clients", group = "client" }),
-	awful.key({ modkey, "Control" }, "Left", function()
+	awful.key({ modkey, "Shift" }, "Left", function()
 		resize_client('left')
 	end, { description = "Smaller clients", group = "client" }),
-	awful.key({ modkey, "Control" }, "Up", function()
+	awful.key({ modkey, "Shift" }, "Up", function()
 		resize_client('up')
 	end, { description = "Bigger clients", group = "client" }),
-	awful.key({ modkey, "Control" }, "Down", function()
+	awful.key({ modkey, "Shift" }, "Down", function()
 		resize_client('down')
 	end, { description = "Smaller clients", group = "client" }),
 	
@@ -225,16 +225,16 @@ keys.global = awful.util.table.join(
 	-- 	awful.tag.incmwfact(-0.05)
 	-- end, { description = "Decrease master width", group = "client" }),
 
-	awful.key({ modkey, "Shift" }, "Right", function()
+	awful.key({ modkey, "Control" }, "Right", function()
 		awful.client.swap.global_bydirection('right')
 	end, { description = "swap with right client", group = "client" }),
-	awful.key({ modkey, "Shift" }, "Left", function()
+	awful.key({ modkey, "Control" }, "Left", function()
 		awful.client.swap.global_bydirection('left')
 	end, { description = "swap with left client", group = "client" }),
-	awful.key({ modkey, "Shift" }, "Up", function()
+	awful.key({ modkey, "Control" }, "Up", function()
 		awful.client.swap.global_bydirection('up')
 	end, { description = "swap with top client", group = "client" }),
-	awful.key({ modkey, "Shift" }, "Down", function()
+	awful.key({ modkey, "Control" }, "Down", function()
 		awful.client.swap.global_bydirection('down')
 	end, { description = "swap with bottom client", group = "client" }),
 	-- awful.key({ modkey, "Control" }, "Right", function()
@@ -285,6 +285,36 @@ keys.global = awful.util.table.join(
 	-- 	menubar.show(screens.get_primary())
 	-- end, {description = "show the menubar", group = "launcher"}),
 
+	-- Alt+number to toggle a program (Doesn't work on Electron apps)
+	-- awful.key({ "Mod1" }, "&", function()
+	-- 	-- 1 - Browser
+	-- 	local rule = {class = "firefox" }
+	-- 	awful.spawn.raise_or_spawn("firefox", rule, function(c)
+	-- 		return awful.rules.match(c, rule)
+	-- 	end)
+	-- end, { description = "open Firefox", group = "launcher" }),
+	-- awful.key({ "Mod1" }, "é", function()
+	-- 	-- 2 - Notes
+	-- 	local rule = {class = "Obsidian" }
+	-- 	awful.spawn.raise_or_spawn("obsidian", rule, function(c)
+	-- 		return awful.rules.match(c, rule)
+	-- 	end)
+	-- end, { description = "open Obsidian", group = "launcher" }),
+	-- awful.key({ "Mod1" }, "\"", function()
+	-- 	-- 3 - Editor
+	-- 	local rule = {class = "VSCodium" }
+	-- 	awful.spawn.raise_or_spawn("codium", rule, function(c)
+	-- 		return awful.rules.match(c, rule)
+	-- 	end)
+	-- end, { description = "open editor", group = "launcher" }),
+	-- awful.key({ "Mod1" }, "'", function()
+	-- 	-- 4 - File Manager
+	-- 	local rule = {class = "Thunar" }
+	-- 	awful.spawn.raise_or_spawn("thunar", rule, function(c)
+	-- 		return awful.rules.match(c, rule)
+	-- 	end)
+	-- end, { description = "open file manager", group = "launcher" }),
+	
 	-- Editor
 	awful.key({ modkey, "Shift" }, "e", function()
 		awful.spawn("codium")
@@ -519,6 +549,9 @@ keys.clients.keys = awful.util.table.join(
 		end, {description = "close", group = "client"}),
 	awful.key({ modkey, }, "F4", function(c)
 		c:kill()
+		end, {description = "close", group = "client"}),
+	awful.key({ modkey, }, "w", function(c)
+			c:kill()
 		end, {description = "close", group = "client"}),
 	awful.key({ modkey, }, "space", function(c)
 			awful.client.floating.toggle()
