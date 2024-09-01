@@ -3,6 +3,10 @@
 # Update Xresources
 # ------------------------------------------------------
 xrdb -merge -I$HOME ~/.Xresources
+# Include specific Xresources if needed
+if [[ -f "$HOME/.dotfiles_custom/Xresources" ]]; then
+	xrdb -merge -I$HOME/.dotfiles_custom/Xresources
+fi
 
 # Keyboard config
 # ------------------------------------------------------
