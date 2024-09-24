@@ -1,4 +1,6 @@
 ! Changes take effect after running: xrdb -merge ~/.Xresources
+! If file "~/.dotfiles_custom/Xresources" exist, it will be used also.
+! In this case to reload, use "xrdb -merge ~/.dotfiles_custom/Xresources".
 
 Xft.dpi: 96
 Xft.antialias: true
