@@ -3,7 +3,7 @@ vim.g.mapleader = ' '
 -- vim.g.maplocalleader = ' '
 
 -- Netw
-vim.keymap.set('n', "<leader>pv", vim.cmd.Ex)
+vim.keymap.set('n', "<leader>pv", vim.cmd.Ex, { desc = 'Netw' })
 
 -- Delete line
 vim.keymap.set('n', '<C-d>', 'dd', { silent = true, desc = 'Delete line' })

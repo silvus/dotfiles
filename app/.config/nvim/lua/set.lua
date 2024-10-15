@@ -38,6 +38,22 @@ vim.opt.clipboard = 'unnamedplus' -- CLIPBOARD selections (^C)
 vim.opt.termguicolors = true
 -- vim.opt.colorcolumn = "80"
 vim.wo.conceallevel = 2
+-- Show whitespaces and trailing 
+vim.opt.list = true
+vim.opt.listchars = {
+	tab = '→ ',
+	trail = "·",
+	lead = "·",
+	nbsp = '␣',
+	-- space = "·",
+	--eol = '↲',
+	-- precedes = "<",
+	-- extends = ">",
+	-- leadmultispace = "┊ ",
+}
+
+-- Set showbreak
+vim.opt.showbreak = '↳ '
 
 -- Scroll
 vim.opt.scrolloff = 10     -- Places a line between the current line and the screen edge
@@ -57,7 +73,7 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 	-- pattern = '*',
 	group = vim.api.nvim_create_augroup("HelpVerticalSplit", { clear = true }),
 	callback = function(event)
-		if vim.bo[event.buf].filetype == 'help' then 
+		if vim.bo[event.buf].filetype == 'help' then
 			vim.cmd("wincmd L")
 		end
 	end,
