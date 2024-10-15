@@ -15,10 +15,15 @@ return {
 					-- The below pattern is lua regex and not wildcard
 					file_ignore_patterns = {"node_modules","%.out"},
 				},
+				pickers = {
+					find_files = {
+						hidden = true
+					}
+				},
 				extensions = {
-					file_browser = {
-						-- hidden = true,
-					},
+					-- file_browser = {
+					-- 	hidden = true,
+					-- },
 					heading = {
 						treesitter = true,
 					}

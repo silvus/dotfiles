@@ -48,6 +48,11 @@ return {
 			require('lualine').setup({
 				options = {
 					theme = 'codedark',
+					-- theme = 'wombat',
+
+					-- Disable Powerline separators
+					section_separators = '',
+					component_separators = '',
 				},
 				sections = {
 					lualine_c = {
@@ -75,6 +80,14 @@ return {
 		config = function()
 			require("nvim-tree").setup({
 				sync_root_with_cwd = true,
+				update_focused_file = {
+					enable = true,
+					update_root = {
+						enable = false,
+						ignore_list = {},
+					},
+					exclude = false,
+				},
 			})
 
 			vim.keymap.set({'n', 'i', 'v'}, '<C-b>', ":NvimTreeToggle<cr>", {silent = true, noremap = true})

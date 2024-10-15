@@ -14,7 +14,7 @@ return {
 		local org = orgmode.setup({
 			org_agenda_files = {
 				'/data/doc/**/*',
-				'/data/work/**/*'
+				'/data/work/**/*',
 			},
 			org_default_notes_file = '/data/doc/orgmode/todo.org',
 			org_indent_mode = 'noindent', -- Disable indentation. All lines start from 1st column
@@ -26,7 +26,8 @@ return {
 				'DONE(d!)',
 				'CANCELED(c@)',
 				'DELEGATED(g@)',
-				'INACTIVE(i@)' },
+				'INACTIVE(i@)',
+			},
 			win_split_mode = '80vsplit', -- auto, horizontal, vertical, { 'float', 0.3 }, tabnew
 			org_startup_folded = 'content', -- Only show the first two levels
 			org_log_into_drawer = 'LOGBOOK',
@@ -35,7 +36,7 @@ return {
 			-- org_agenda_skip_scheduled_if_done = false,
 			-- org_agenda_skip_deadline_if_done = false,
 			-- org_time_stamp_rounding_minutes = 5,
-		
+
 			mappings = {
 				global = {
 					org_agenda = { 'gA', '<prefix>a' },
