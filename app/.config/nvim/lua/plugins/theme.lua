@@ -7,10 +7,44 @@ return {
 			require('onedark').setup({
 				style = 'darker',
 				transparent = true,
+				highlights = {
+					["Normal"] = {fg = '#cdd0d4'},
+					["@markup.list"] = {fg = '#286920'},
+					["@markup.list.checked"] = {fg = '#779e4d', fmt = 'italic'},
+					["@markup.list.unchecked"] = {fg = '#286920'},
+				  },
 			})
 			require('onedark').load()
 
 			vim.cmd.colorscheme('onedark')
+
+			-- Markdown colors (see :highlight)
+			vim.api.nvim_set_hl(0, 'markdownH1', { fg = '#02B33E' })
+			vim.api.nvim_set_hl(0, 'markdownH2', { fg = '#1D96D1' })
+			vim.api.nvim_set_hl(0, 'markdownH3', { fg = '#203880' })
+			vim.api.nvim_set_hl(0, 'markdownH4', { fg = '#6543fa' })
+			vim.api.nvim_set_hl(0, 'markdownH5', { fg = '#07420f' })
+			vim.api.nvim_set_hl(0, 'markdownH6', { fg = '#707a62' })
+			vim.api.nvim_set_hl(0, 'markdownH1Delimiter', { fg = '#02B33E', bold = true })
+			vim.api.nvim_set_hl(0, 'markdownH2Delimiter', { fg = '#1D96D1', bold = true })
+			vim.api.nvim_set_hl(0, 'markdownH3Delimiter', { fg = '#203880', bold = true })
+			vim.api.nvim_set_hl(0, 'markdownH4Delimiter', { fg = '#6543fa', bold = true })
+			vim.api.nvim_set_hl(0, 'markdownH5Delimiter', { fg = '#07420f', bold = true })
+			vim.api.nvim_set_hl(0, 'markdownH6Delimiter', { fg = '#FFAAAA', bold = true })
+			
+			vim.api.nvim_set_hl(0, '@markup.heading.1.markdown', { link = 'markdownH1' })
+			vim.api.nvim_set_hl(0, '@markup.heading.2.markdown', { link = 'markdownH2' })
+			vim.api.nvim_set_hl(0, '@markup.heading.3.markdown', { link = 'markdownH3' })
+			vim.api.nvim_set_hl(0, '@markup.heading.4.markdown', { link = 'markdownH4' })
+			vim.api.nvim_set_hl(0, '@markup.heading.5.markdown', { link = 'markdownH5' })
+			vim.api.nvim_set_hl(0, '@markup.heading.6.markdown', { link = 'markdownH6' })
+			vim.api.nvim_set_hl(0, '@markup.heading.1.marker.markdown', { link = 'markdownH1Delimiter' })
+			vim.api.nvim_set_hl(0, '@markup.heading.2.marker.markdown', { link = 'markdownH2Delimiter' })
+			vim.api.nvim_set_hl(0, '@markup.heading.3.marker.markdown', { link = 'markdownH3Delimiter' })
+			vim.api.nvim_set_hl(0, '@markup.heading.4.marker.markdown', { link = 'markdownH4Delimiter' })
+			vim.api.nvim_set_hl(0, '@markup.heading.5.marker.markdown', { link = 'markdownH5Delimiter' })
+			vim.api.nvim_set_hl(0, '@markup.heading.6.marker.markdown', { link = 'markdownH6Delimiter' })
+
 		end,
 	},
 	-- {
@@ -108,6 +142,25 @@ return {
 		init = function()
 			vim.o.timeout = true
 			vim.o.timeoutlen = 300
+		end,
+		opts = {},
+	},
+	{
+		"folke/paint.nvim",
+		config = function()
+			require("paint").setup({
+				---@type PaintHighlight[]
+				highlights = {
+				  {
+					-- filter can be a table of buffer options that should match,
+					-- or a function called with buf as param that should return true.
+					-- The example below will paint @something in comments with Constant
+					filter = { filetype = "markdown" },
+					pattern = "%s*%-%-%-%s*(@%w+)",
+					hl = "Constant",
+				  },
+				},
+			  })
 		end,
 		opts = {},
 	},
