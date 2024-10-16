@@ -17,7 +17,7 @@ return {
 				'/data/work/**/*',
 			},
 			org_default_notes_file = '/data/doc/orgmode/todo.org',
-			org_indent_mode = 'noindent', -- Disable indentation. All lines start from 1st column
+			org_startup_indented = true, -- Use virtual indent
 			org_todo_keywords = {
 				'TODO(t)',
 				'NEXT(n)',
@@ -28,6 +28,11 @@ return {
 				'DELEGATED(g@)',
 				'INACTIVE(i@)',
 			},
+			-- org_todo_keyword_faces = {
+			-- 	WAIT = ':foreground blue :weight bold',
+			-- 	DELEGATED = ':background #FFFFFF :slant italic :underline on',
+			-- 	INACTIVE = ':background #000000 :foreground red', -- overrides builtin color for `TODO` keyword
+			-- },
 			win_split_mode = '80vsplit', -- auto, horizontal, vertical, { 'float', 0.3 }, tabnew
 			org_startup_folded = 'content', -- Only show the first two levels
 			org_log_into_drawer = 'LOGBOOK',
@@ -35,7 +40,7 @@ return {
 			org_agenda_span = 'day', -- day/week/month/year/number of days
 			-- org_agenda_skip_scheduled_if_done = false,
 			-- org_agenda_skip_deadline_if_done = false,
-			-- org_time_stamp_rounding_minutes = 5,
+			org_time_stamp_rounding_minutes = 15,
 
 			mappings = {
 				global = {
@@ -66,23 +71,28 @@ return {
 			}
 		})
 		
-		-- Load custom treesitter grammar for org filetype
-		orgmode.setup_ts_grammar()
-		
-		-- Enable autocomplete
-		-- TODO: Broken source name?
-		-- require('cmp').setup({
-		-- 	sources = {
-		-- 		{ name = 'orgmode' }
-		-- 	}
-		-- })
-		
-		
 		-- Global key bindings
 		vim.keymap.set('n', '<leader>a', function()
 			-- org.agenda:agenda({ org_agenda_start_day = '-3d', show_clock_report = true })
 			org.agenda:agenda({ show_clock_report = true })
 		end)
-		
+
+		-- Custom org colors
+		vim.api.nvim_set_hl(0, '@org.headline.level1', { link = 'markdownH1' })
+		vim.api.nvim_set_hl(0, '@org.headline.level2', { link = 'markdownH2' })
+		vim.api.nvim_set_hl(0, '@org.headline.level3', { link = 'markdownH3' })
+		vim.api.nvim_set_hl(0, '@org.headline.level4', { link = 'markdownH4' })
+		vim.api.nvim_set_hl(0, '@org.headline.level5', { link = 'markdownH5' })
+		vim.api.nvim_set_hl(0, '@org.headline.level6', { link = 'markdownH6' })
+		vim.api.nvim_set_hl(0, '@org.headline.level7', { link = 'markdownH6' })
+		vim.api.nvim_set_hl(0, '@org.headline.level8', { link = 'markdownH6' })
+		vim.api.nvim_set_hl(0, '@org.keyword.todo', { fg = '#9c1919', bold = true })
+		vim.api.nvim_set_hl(0, '@org.keyword.done', { fg = '#779e4d', bold = true })
+		vim.api.nvim_set_hl(0, '@org.keyword.plan', { fg = '#e334fa' })
+		vim.api.nvim_set_hl(0, '@org.timestamp.active', { fg = '#e334fa' })
+		vim.api.nvim_set_hl(0, '@org.properties', { fg = '#91866a' })
+		vim.api.nvim_set_hl(0, '@org.drawer', { fg = '#8f8774' })
+		vim.api.nvim_set_hl(0, '@org.table.delimiter', { fg = '#8f8774' })
+		vim.api.nvim_set_hl(0, '@org.table.heading', { fg = '#a0a8b7' })
 	end,
 }
