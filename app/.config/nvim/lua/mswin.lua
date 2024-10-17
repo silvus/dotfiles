@@ -19,12 +19,16 @@ vim.keymap.set('v', '<C-X>', 'x')
 vim.keymap.set('v', '<S-Del>', 'x')
 
 -- CTRL-C and CTRL-Insert are Copy
-vim.keymap.set('v', '<C-C> ', 'y')
-vim.keymap.set('v', '<C-Insert>', 'y')
+vim.keymap.set('v', '<C-c>', '"+y')
+vim.keymap.set('v', '<C-C>', '"+y')
+vim.keymap.set('v', '<C-Insert>', '"+y')
 
 -- CTRL-V and SHIFT-Insert are Paste
-vim.keymap.set({'n', 'i', 'v'}, '<C-V>', 'P')
-vim.keymap.set({'n', 'i', 'v'}, '<S-Insert>', 'P')
+-- vim.keymap.set('n', '<C-v>', 'P<CR>')
+-- vim.keymap.set('i', '<C-v>', '<ESC>P<CR>i')
+-- vim.keymap.set('v', '<C-v>', '<C-o>P<CR>v')
+vim.keymap.set('n', '<C-v>', 'p')
+vim.keymap.set({'i', 'v'}, '<C-v>', '<C-o>p')
 
 -- CTRL-A is Select all
 -- vim.keymap.set('n' , '<C-A>', 'gggH<C-O>G')
