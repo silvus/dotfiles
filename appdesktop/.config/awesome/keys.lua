@@ -331,6 +331,21 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey }, "Escape", function()
 		quake.term:toggle()
 	end, { description = "Toggle guake like terminal", group = "launcher" }),
+	
+	-- Keyboard layout
+	awful.key({ modkey, "Shift" }, "k", function()
+		local layout_group = awesome.xkb_get_layout_group()
+		if layout_group == 0 then
+			awesome.xkb_set_layout_group(1)
+		else
+			awesome.xkb_set_layout_group(0)
+		end
+	end, { description = "Next keyboard layout", group = "awesome" }),
+	awful.key({ modkey }, "k", function()
+		local layout_group = awesome.xkb_get_layout_group()
+		--sudo apt install gkbd-capplet
+		awful.spawn("gkbd-keyboard-display -g " .. layout_group + 1)
+	end, { description = "Show keyboard layout", group = "awesome" }),
 
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function()
