@@ -4,7 +4,16 @@
 # -----------------------------------------------------------------------------
 # See /usr/share/X11/xkb/symbols/fr
 # See /usr/share/X11/xkb/symbols/gb
-setxkbmap -model pc105 -layout fr,gb -variant oss,intl
+
+# sudo dpkg-reconfigure keyboard-configuration
+# TODO: handle tty layout (/etc/default/keyboard)
+# XKBMODEL="pc105"
+# XKBLAYOUT="gb,fr"
+# XKBVARIANT="intl,oss"
+# XKBOPTIONS="compose:rwin,grp_led:scroll,grp:alt_caps_toggle,lv3:ralt_switch,nbsp:none,shift:both_capslock,lv3:caps_switch"
+
+# setxkbmap -model pc105 -layout fr,gb -variant oss,intl
+setxkbmap -model pc105 -layout gb,fr -variant intl,oss
 
 # Options, see man xkeyboard-config
 # -----------------------------------------------------------------------------

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # This script is sourced in xinitrc
-# TODO: handle tty layout (/etc/default/keyboard)
 
 # Customized layout
 # -----------------------------------------------------------------------------
