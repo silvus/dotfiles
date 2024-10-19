@@ -212,4 +212,13 @@
 		"command": "-markdown.extension.editing.toggleBold",
 		"when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
 	},
+	{
+		"key": "ctrl+alt+c",
+		"command": "copyFilePath"
+	},
+	{
+		"key": "ctrl+alt+c",
+		"command": "-copyFilePath",
+		"when": "!editorFocus"
+	},
 ]
