@@ -1,4 +1,4 @@
-# Sourced from ~/.dotfiles/bin/autostart_xinit
+# Sourced from ~/.dotfiles/appdesktop/.xinitrc
 
 # Screens setup
 # xrandr --output eDP-1 --primary --mode 1920x1080
