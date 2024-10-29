@@ -92,7 +92,6 @@ end
 
 -- Include dotfile_custom config if exist
 local dotfile_custom_path = os.getenv("SILVUSDOTFILES_CUSTOM") .. '/wezterm.lua'
-print(dotfile_custom_path)
 if file_exists(dotfile_custom_path) then
 	local config_custom = dofile(dotfile_custom_path)
 	if config_custom then
