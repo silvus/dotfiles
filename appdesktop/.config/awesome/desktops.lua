@@ -35,7 +35,8 @@ local function init(s)
 			},
 			{
 				name   = tags_names[6],
-				icon   = beautiful.fire,
+				icon   = beautiful.gamepad,
+				layout = awful.layout.suit.max,
 			},
 			{
 				name   = tags_names[7],
@@ -44,7 +45,7 @@ local function init(s)
 			{
 				name   = tags_names[8],
 				-- layout = awful.layout.suit.max,
-				icon   = beautiful.paint,
+				icon   = beautiful.fire,
 			},
 			{
 				name   = tags_names[9],
