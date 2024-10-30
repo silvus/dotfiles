@@ -118,29 +118,53 @@ end
 -- Change client size (different when floating)
 function resize_client(direction)
 	local c = client.focus
-	local floating_resize_factor = 10
+	local floating_resize_factor = 50
 	local master_resize_factor = 0.01
 
 	if c.floating then
 		if direction == "up" then
-            c:relative_move(0, floating_resize_factor, 0, -floating_resize_factor * 2)
-        elseif direction == "down" then
-            c:relative_move(0, -floating_resize_factor, 0, floating_resize_factor * 2)
-        elseif direction == "left" then
-            c:relative_move(floating_resize_factor, 0, -floating_resize_factor * 2, 0)
-        elseif direction == "right" then
-            c:relative_move(-floating_resize_factor, 0, floating_resize_factor * 2, 0)
+			c:relative_move(0, 0, 0, -floating_resize_factor)
+		elseif direction == "down" then
+			c:relative_move(0, 0, 0, floating_resize_factor)
+		elseif direction == "left" then
+			c:relative_move(0, 0, -floating_resize_factor, 0)
+		elseif direction == "right" then
+			c:relative_move(0, 0, floating_resize_factor, 0)
 		end
 	elseif client then
-		if direction == "up" or direction == "right" then
+		if direction == "right" then
 			awful.tag.incmwfact(master_resize_factor)
-		elseif direction == "down" or direction == "left" then
+		elseif direction == "left" then
 			awful.tag.incmwfact(-master_resize_factor)
+		elseif direction == "up" then
+			awful.client.incwfact(master_resize_factor * 10)
+		elseif direction == "down" then
+			awful.client.incwfact(-master_resize_factor * 10)
 		end
 	end
-
 end
 
+-- Move client (different when floating)
+function move_client(direction)
+	local c = client.focus
+	local floating_move_factor = 75
+
+	if c.floating then
+		if direction == "up" then
+			c:relative_move(0, -floating_move_factor, 0, 0)
+		elseif direction == "down" then
+			c:relative_move(0, floating_move_factor, 0, 0)
+		elseif direction == "left" then
+			c:relative_move(-floating_move_factor, 0, 0, 0)
+		elseif direction == "right" then
+			c:relative_move(floating_move_factor, 0, 0, 0)
+		end
+	elseif client then
+		awful.client.swap.bydirection(direction)
+		--  Swaps across screens
+		-- awful.client.swap.global_bydirection(direction)
+	end
+end
 
 -- Globals keys
 -- ----------------------------------------------------------------------------
@@ -184,18 +208,18 @@ keys.global = awful.util.table.join(
 		focus_client("right")
 	end, { description = "change client focus", group = "client" }),
 
-	awful.key({ modkey }, "s", function()
-		focus_client("down")
-	end, { description = "change client focus", group = "client" }),
-	awful.key({ modkey }, "z", function()
-		focus_client("up")
-	end, { description = "change client focus", group = "client" }),
-	awful.key({ modkey }, "q", function()
-		focus_client("left")
-	end, { description = "change client focus", group = "client" }),
-	awful.key({ modkey }, "d", function()
-		focus_client("right")
-	end, { description = "change client focus", group = "client" }),
+	-- awful.key({ modkey }, "i", function()
+	-- 	focus_client("up")
+	-- end, { description = "change client focus", group = "client" }),
+	-- awful.key({ modkey }, "k", function()
+	-- 	focus_client("down")
+	-- end, { description = "change client focus", group = "client" }),
+	-- awful.key({ modkey }, "j", function()
+	-- 	focus_client("left")
+	-- end, { description = "change client focus", group = "client" }),
+	-- awful.key({ modkey }, "l", function()
+	-- 	focus_client("right")
+	-- end, { description = "change client focus", group = "client" }),
 
 	-- Layout manipulation
 	awful.key({ modkey, "Control" }, "space", function()
@@ -218,37 +242,19 @@ keys.global = awful.util.table.join(
 		resize_client('down')
 	end, { description = "Smaller clients", group = "client" }),
 	
-	-- awful.key({ modkey, "Shift" }, "Up", function()
-	-- 	awful.tag.incmwfact(0.05)
-	-- end, { description = "Increase master width", group = "client" }),
-	-- awful.key({ modkey, "Shift" }, "Down", function()
-	-- 	awful.tag.incmwfact(-0.05)
-	-- end, { description = "Decrease master width", group = "client" }),
-
+	-- Move client
 	awful.key({ modkey, "Control" }, "Right", function()
-		awful.client.swap.global_bydirection('right')
+		move_client('right')
 	end, { description = "swap with right client", group = "client" }),
 	awful.key({ modkey, "Control" }, "Left", function()
-		awful.client.swap.global_bydirection('left')
+		move_client('left')
 	end, { description = "swap with left client", group = "client" }),
 	awful.key({ modkey, "Control" }, "Up", function()
-		awful.client.swap.global_bydirection('up')
+		move_client('up')
 	end, { description = "swap with top client", group = "client" }),
 	awful.key({ modkey, "Control" }, "Down", function()
-		awful.client.swap.global_bydirection('down')
+		move_client('down')
 	end, { description = "swap with bottom client", group = "client" }),
-	-- awful.key({ modkey, "Control" }, "Right", function()
-	-- 	awful.screen.focus_bydirection('right')
-	-- end, { description = "focus the right screen", group = "screen" }),
-	-- awful.key({ modkey, "Control" }, "Left", function()
-	-- 	awful.screen.focus_bydirection('left')
-	-- end, { description = "focus the left screen", group = "screen" }),
-	-- awful.key({ modkey, "Control" }, "Up", function()
-	-- 	awful.screen.focus_bydirection('up')
-	-- end, { description = "focus the top screen", group = "screen" }),
-	-- awful.key({ modkey, "Control" }, "down", function()
-	-- 	awful.screen.focus_bydirection('down')
-	-- end, { description = "focus the bottom screen", group = "screen" }),
 
 	awful.key({ modkey }, "u", function()
 		awful.client.urgent.jumpto()
@@ -549,43 +555,46 @@ keys.clients = {}
 
 keys.clients.keys = awful.util.table.join(
 	awful.key({ modkey, }, "m", function(c)
-			c.fullscreen = not c.fullscreen
-			c:raise()
-		end, {description = "toggle fullscreen", group = "client"}),
+		c.fullscreen = not c.fullscreen
+		c:raise()
+	end, {description = "toggle fullscreen", group = "client"}),
 	awful.key({ modkey, }, "c", function(c)
-		   -- toggle titlebar
-		   awful.titlebar.toggle(c)
-	   end, {description = "toggle titlebar", group = "client"}),
+		-- toggle titlebar
+		awful.titlebar.toggle(c)
+	end, {description = "toggle titlebar", group = "client"}),
+
+	awful.key({ modkey, }, "space", function(c)
+		awful.client.floating.toggle()
+	end, {description = "toggle floating", group = "client"}),
+	awful.key({ modkey, }, "o", function(c)
+		c:move_to_screen()
+	end, {description = "move to screen", group = "client"}),
+	awful.key({ modkey,	}, "t", function(c)
+		c.ontop = not c.ontop
+	end, {description = "toggle keep on top", group = "client"}),
+	awful.key({ modkey, }, "l", function(c)
+		-- The client currently has the input focus, so it cannot be
+		-- minimized, since minimized clients can't have the focus.
+		c.minimized = true
+	end, {description = "minimize", group = "client"}),
+	awful.key({ modkey, }, "f", function(c)
+		c.maximized = not c.maximized
+		c:raise()
+	end, {description = "maximize", group = "client"}),
+
+	-- Kill clients
 	awful.key({ modkey, "Shift" }, "q", function(c)
-			c:kill()
-		end, {description = "close", group = "client"}),
+		c:kill()
+	end, {description = "close", group = "client"}),
 	awful.key({ modkey, "Shift" }, "Escape", function(c)
-			c:kill()
-		end, {description = "close", group = "client"}),
+		c:kill()
+	end, {description = "close", group = "client"}),
 	awful.key({ modkey, }, "F4", function(c)
 		c:kill()
-		end, {description = "close", group = "client"}),
+	end, {description = "close", group = "client"}),
 	awful.key({ modkey, }, "w", function(c)
-			c:kill()
-		end, {description = "close", group = "client"}),
-	awful.key({ modkey, }, "space", function(c)
-			awful.client.floating.toggle()
-		end, {description = "toggle floating", group = "client"}),
-	awful.key({ modkey, }, "o", function(c)
-			c:move_to_screen()
-		end, {description = "move to screen", group = "client"}),
-	awful.key({ modkey,	}, "t", function(c)
-			c.ontop = not c.ontop
-		end, {description = "toggle keep on top", group = "client"}),
-	awful.key({ modkey, }, "l", function(c)
-			-- The client currently has the input focus, so it cannot be
-			-- minimized, since minimized clients can't have the focus.
-			c.minimized = true
-		end, {description = "minimize", group = "client"}),
-	awful.key({ modkey, }, "f", function(c)
-			c.maximized = not c.maximized
-			c:raise()
-		end, {description = "maximize", group = "client"})
+		c:kill()
+	end, {description = "close", group = "client"})
 )
 
 -- Client button
