@@ -61,12 +61,12 @@ theme.snap_border_width                         = 5
 
 theme.border_normal                             = "#141414"
 theme.border_focus                              = theme.success
-theme.border_width                              = 1
+theme.border_width                              = 2
 
 -- theme.useless_gap                               = 5
 -- theme.gap_single_client                         = true
 theme.gap_single_client                         = false
-theme.useless_gap                               = 0
+theme.useless_gap                               = 4
 
 theme.menu_height                               = 16
 theme.menu_width                                = 250
@@ -198,7 +198,7 @@ function bar(s)
 	local widget_tasks = require("widgets.tasks")
 	local widget_tasks_vertical = require("widgets.tasks_vertical")
 	local widget_clock_vertical = require("widgets.clock_vertical")
-	local widget_volumecapture = require("widgets.volumecapture")
+	-- local widget_volumecapture = require("widgets.volumecapture")
 	local widget_volume = require("widgets.volume")
 	local widget_keyboardlayout = require("widgets.keyboardlayout")
 	local widget_notifications = require("widgets.notifications")
@@ -245,7 +245,7 @@ function bar(s)
 				widget_rotate(widget_keyboardlayout.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
-				widget_volumecapture.widget,
+				-- widget_volumecapture.widget,
 				widget_volume.widget,
 				widget_separator_vertical.widget,
 				widget_rotate(widget_systray.widget),
