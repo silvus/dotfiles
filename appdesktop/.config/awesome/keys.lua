@@ -9,6 +9,7 @@ local config = require("config")
 local quake = require("utils.quake")
 local widget_volume = require("widgets.volume")
 local widget_notifications = require("widgets.notifications")
+local menubar = require("menubar")
 
 -- Set a global variable, a local one
 local globalclient = client
@@ -169,7 +170,7 @@ end
 -- Globals keys
 -- ----------------------------------------------------------------------------
 keys.global = awful.util.table.join(
-	awful.key({ modkey }, "h", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
+	awful.key({ modkey }, "F1", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
 
 	-- Next/previous tag
 	awful.key({ modkey }, "<", awful.tag.viewprev, { description = "view previous tag", group = "tag" }),
@@ -208,18 +209,18 @@ keys.global = awful.util.table.join(
 		focus_client("right")
 	end, { description = "change client focus", group = "client" }),
 
-	-- awful.key({ modkey }, "i", function()
-	-- 	focus_client("up")
-	-- end, { description = "change client focus", group = "client" }),
-	-- awful.key({ modkey }, "k", function()
-	-- 	focus_client("down")
-	-- end, { description = "change client focus", group = "client" }),
-	-- awful.key({ modkey }, "j", function()
-	-- 	focus_client("left")
-	-- end, { description = "change client focus", group = "client" }),
-	-- awful.key({ modkey }, "l", function()
-	-- 	focus_client("right")
-	-- end, { description = "change client focus", group = "client" }),
+	awful.key({ modkey }, "h", function()
+		focus_client("down")
+	end, { description = "change client focus", group = "client" }),
+	awful.key({ modkey }, "l", function()
+		focus_client("up")
+	end, { description = "change client focus", group = "client" }),
+	awful.key({ modkey }, "j", function()
+		focus_client("left")
+	end, { description = "change client focus", group = "client" }),
+	awful.key({ modkey }, "k", function()
+		focus_client("right")
+	end, { description = "change client focus", group = "client" }),
 
 	-- Layout manipulation
 	awful.key({ modkey, "Control" }, "space", function()
@@ -228,33 +229,47 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "space", function()
 		awful.layout.inc(-1)
 	end, { description = "select previous", group = "layout" }),
-
-	awful.key({ modkey, "Shift" }, "Right", function()
-		resize_client('right')
-	end, { description = "Bigger clients", group = "client" }),
-	awful.key({ modkey, "Shift" }, "Left", function()
-		resize_client('left')
-	end, { description = "Smaller clients", group = "client" }),
-	awful.key({ modkey, "Shift" }, "Up", function()
-		resize_client('up')
-	end, { description = "Bigger clients", group = "client" }),
-	awful.key({ modkey, "Shift" }, "Down", function()
+	
+	awful.key({ modkey, "Shift" }, "h", function()
 		resize_client('down')
 	end, { description = "Smaller clients", group = "client" }),
+	awful.key({ modkey, "Shift" }, "l", function()
+		resize_client('up')
+	end, { description = "Bigger clients", group = "client" }),
+	awful.key({ modkey, "Shift" }, "j", function()
+		resize_client('left')
+	end, { description = "Smaller clients", group = "client" }),
+	awful.key({ modkey, "Shift" }, "k", function()
+		resize_client('right')
+	end, { description = "Bigger clients", group = "client" }),
 	
 	-- Move client
-	awful.key({ modkey, "Control" }, "Right", function()
-		move_client('right')
-	end, { description = "swap with right client", group = "client" }),
-	awful.key({ modkey, "Control" }, "Left", function()
-		move_client('left')
-	end, { description = "swap with left client", group = "client" }),
-	awful.key({ modkey, "Control" }, "Up", function()
-		move_client('up')
-	end, { description = "swap with top client", group = "client" }),
 	awful.key({ modkey, "Control" }, "Down", function()
 		move_client('down')
 	end, { description = "swap with bottom client", group = "client" }),
+	awful.key({ modkey, "Control" }, "Up", function()
+		move_client('up')
+	end, { description = "swap with top client", group = "client" }),
+	awful.key({ modkey, "Control" }, "Left", function()
+		move_client('left')
+	end, { description = "swap with left client", group = "client" }),
+	awful.key({ modkey, "Control" }, "Right", function()
+		move_client('right')
+	end, { description = "swap with right client", group = "client" }),
+
+	awful.key({ modkey, "Control" }, "h", function()
+		move_client('down')
+	end, { description = "swap with bottom client", group = "client" }),
+	awful.key({ modkey, "Control" }, "l", function()
+		move_client('up')
+	end, { description = "swap with top client", group = "client" }),
+	awful.key({ modkey, "Control" }, "j", function()
+		move_client('left')
+	end, { description = "swap with left client", group = "client" }),
+	awful.key({ modkey, "Control" }, "k", function()
+		move_client('right')
+	end, { description = "swap with right client", group = "client" }),
+
 
 	awful.key({ modkey }, "u", function()
 		awful.client.urgent.jumpto()
@@ -272,25 +287,20 @@ keys.global = awful.util.table.join(
 	-- 	end, {description = "run prompt", group = "launcher"}),
 
 	-- Clients menu
-	-- awful.key({ modkey, "Shift"}, "e", function()
-	-- 		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
-	-- 		-- Default to mouse.coords()
-	-- 		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
-	-- 		awful.menu.clients({theme = { width = 500} })
-	-- 	end, {description="client menu", group="launcher"}),
-
-	-- Rofi
-	awful.key({ modkey }, "e", function()
+	-- awful.key({ modkey }, "Space", function()
 		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
 		-- Default to mouse.coords()
 		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
+	-- end, { description = "Menu launch", group = "launcher" }),
+	-- Menubar
+	awful.key({ modkey,}, "space", function()
+		menubar.show(screens.get_primary())
+	end, {description = "show the menubar", group = "launcher"}),
+	-- Rofi
+	awful.key({ modkey }, "e", function()
 		awful.spawn("rofi -show drun")
 	end, { description = "Rofi launch", group = "launcher" }),
-	-- Menubar
-	-- awful.key({ modkey, "Shift"}, "e", function()
-	-- 	menubar.show(screens.get_primary())
-	-- end, {description = "show the menubar", group = "launcher"}),
-
+	
 	-- Alt+number to toggle a program (Doesn't work on Electron apps)
 	-- awful.key({ "Mod1" }, "&", function()
 	-- 	-- 1 - Browser
@@ -339,7 +349,7 @@ keys.global = awful.util.table.join(
 	end, { description = "Toggle guake like terminal", group = "launcher" }),
 	
 	-- Keyboard layout
-	awful.key({ modkey, "Shift" }, "k", function()
+	awful.key({ modkey, "Shift" }, "F2", function()
 		local layout_group = awesome.xkb_get_layout_group()
 		if layout_group == 0 then
 			awesome.xkb_set_layout_group(1)
@@ -347,7 +357,7 @@ keys.global = awful.util.table.join(
 			awesome.xkb_set_layout_group(0)
 		end
 	end, { description = "Next keyboard layout", group = "awesome" }),
-	awful.key({ modkey }, "k", function()
+	awful.key({ modkey }, "F2", function()
 		local layout_group = awesome.xkb_get_layout_group()
 		--sudo apt install gkbd-capplet
 		awful.spawn("gkbd-keyboard-display -g " .. layout_group + 1)
@@ -426,10 +436,11 @@ keys.global = awful.util.table.join(
 
 	-- Reload
 	awful.key({ modkey, "Shift" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
+	awful.key({ modkey, "Ctrl" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
 	-- awful.key({ modkey, "Shift" }, "s", awesome.quit, {description = "quit awesome", group = "awesome"}),
 
 	-- Lock
-	awful.key({ modkey, "Shift" }, "l", function()
+	awful.key({ modkey, }, "Delete", function()
 		-- awful.spawn("i3lock --color 001905 --show-failed-attempts --ignore-empty-password", false)
 		awful.spawn(
 			"i3lock --color 000305 -t -i " ..
@@ -563,7 +574,7 @@ keys.clients.keys = awful.util.table.join(
 		awful.titlebar.toggle(c)
 	end, {description = "toggle titlebar", group = "client"}),
 
-	awful.key({ modkey, }, "space", function(c)
+	awful.key({ modkey, }, "y", function(c)
 		awful.client.floating.toggle()
 	end, {description = "toggle floating", group = "client"}),
 	awful.key({ modkey, }, "o", function(c)
