@@ -158,10 +158,13 @@ else
 	theme.icon_theme = nil
 end
 
+-- Disable the tasklist client titles.
 theme.tasklist_disable_task_name = true
--- theme.tasklist_plain_task_name = true
+--  Disable the extra tasklist client property notification icons.
+theme.tasklist_plain_task_name = false
 -- theme.tasklist_disable_icon = true
-
+-- theme.maximized_hide_border = true
+-- theme.fullscreen_hide_border = true
 theme.master_width_factor = 0.66
 
 -- Bar (Wibar) management

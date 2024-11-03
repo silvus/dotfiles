@@ -25,11 +25,11 @@ customwidget.buttons = awful.util.table.join(
 	end)
 )
 
--- Build tasks widget list 
+-- Create a tasklist widget
 function widget(s)
-	-- Create a tasklist widget for minimized clients only
 	return awful.widget.tasklist({
 		screen   = s,
+		-- For minimized clients only
 		-- filter   = awful.widget.tasklist.filter.minimizedcurrenttags,
 		filter   = awful.widget.tasklist.filter.currenttags,
 		buttons  = customwidget.buttons,
