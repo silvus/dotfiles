@@ -460,9 +460,9 @@ keys.global = awful.util.table.join(
 	-- 	end, {description = "launch vpn", group = "launcher"}),
 
 	-- Firefox refresh
-	awful.key({ modkey }, "r", function()
-		awful.spawn(config.home .. "/.dotfiles/bin/refresh_firefox", false)
-	end, { description = "refresh firefox", group = "launcher" }),
+	-- awful.key({ modkey }, "r", function()
+	-- 	awful.spawn(config.home .. "/.dotfiles/bin/refresh_firefox", false)
+	-- end, { description = "refresh firefox", group = "launcher" }),
 
 	-- Toggle scratchpad tag (²)
 	awful.key({ modkey }, "#49", function()
@@ -583,11 +583,14 @@ keys.clients.keys = awful.util.table.join(
 	awful.key({ modkey,	}, "t", function(c)
 		c.ontop = not c.ontop
 	end, {description = "toggle keep on top", group = "client"}),
-	awful.key({ modkey, }, "l", function(c)
-		-- The client currently has the input focus, so it cannot be
-		-- minimized, since minimized clients can't have the focus.
-		c.minimized = true
-	end, {description = "minimize", group = "client"}),
+	awful.key({ modkey,	}, "r", function(c)
+		c.sticky = not c.sticky
+	end, {description = "toggle sticky (pin)", group = "client"}),
+	-- awful.key({ modkey, }, "l", function(c)
+	-- 	-- The client currently has the input focus, so it cannot be
+	-- 	-- minimized, since minimized clients can't have the focus.
+	-- 	c.minimized = true
+	-- end, {description = "minimize", group = "client"}),
 	awful.key({ modkey, }, "f", function(c)
 		c.maximized = not c.maximized
 		c:raise()
