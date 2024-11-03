@@ -150,7 +150,7 @@ local rules = {
     },
     -- Dev
     {
-        rule_any = { class = { "VSCodium", "dev.zed.Zed" } },
+        rule_any = { class = { "VSCodium", "dev.zed.Zed", "lite-xl" } },
         properties = {
             tag = desktops.tags_names[3],
             titlebars_enabled = false,

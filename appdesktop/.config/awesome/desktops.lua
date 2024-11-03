@@ -24,6 +24,7 @@ local function init(s)
 			{
 				name   = tags_names[3],
 				icon   = beautiful.code,
+				layout = awful.layout.suit.fair,
 			},
 			{
 				name   = tags_names[4],
