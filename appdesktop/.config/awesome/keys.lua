@@ -229,6 +229,20 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "space", function()
 		awful.layout.inc(-1)
 	end, { description = "select previous", group = "layout" }),
+
+	-- Client resize
+	awful.key({ modkey, "Shift" }, "Down", function()
+		resize_client('down')
+	end, { description = "Smaller clients", group = "client" }),
+	awful.key({ modkey, "Shift" }, "Up", function()
+		resize_client('up')
+	end, { description = "Bigger clients", group = "client" }),
+	awful.key({ modkey, "Shift" }, "Left", function()
+		resize_client('left')
+	end, { description = "Smaller clients", group = "client" }),
+	awful.key({ modkey, "Shift" }, "Right", function()
+		resize_client('right')
+	end, { description = "Bigger clients", group = "client" }),
 	
 	awful.key({ modkey, "Shift" }, "h", function()
 		resize_client('down')
