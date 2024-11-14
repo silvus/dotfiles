@@ -33,37 +33,44 @@ config.window_padding = {
 	bottom = 0,
 }
 
--- Reset some bindings
+-- Reset all bindings (https://wezfurlong.org/wezterm/config/default-keys.html)
+config.disable_default_key_bindings = true
 config.keys = {
 
 	-- Fullscreen toggle
 	{ key = 'F11', mods = '', action = 'ToggleFullScreen' },
 
-	-- Hide
-	{ key = 'm', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- -- Hide
+	-- { key = 'm', mods = 'SUPER', action = 'DisableDefaultAssignment' },
 	
-	-- Open new Window
-	{ key = 'n', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = 'n', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
+	-- -- ToggleFullScreen
+	-- { key = 'Enter', mods = 'ALT', action = 'DisableDefaultAssignment' },
 	
-	-- Open new tab
-	{ key = 't', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = 't', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
-	{ key = 'T', mods = 'SHIFT|SUPER', action = 'DisableDefaultAssignment' },
+	-- -- ShowDebugOverlay
+	-- { key = 'L', mods = 'CTRL|SHIFT', action = 'DisableDefaultAssignment' },
+
+	-- -- Open new Window
+	-- { key = 'n', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = 'n', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
 	
-	-- Close tab
-	{ key = 'w', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
+	-- -- Open new tab
+	-- { key = 't', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = 't', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
+	-- { key = 'T', mods = 'SHIFT|SUPER', action = 'DisableDefaultAssignment' },
 	
-	-- Tabs Navigation
-	{ key = '1', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = '2', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = '3', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = '4', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = '5', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = '6', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = '7', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = '8', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	{ key = '9', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- -- Close tab
+	-- { key = 'w', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
+	
+	-- -- Tabs Navigation
+	-- { key = '1', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = '2', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = '3', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = '4', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = '5', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = '6', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = '7', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = '8', mods = 'SUPER', action = 'DisableDefaultAssignment' },
+	-- { key = '9', mods = 'SUPER', action = 'DisableDefaultAssignment' },
 }
 
 -- Return if a file is readable
