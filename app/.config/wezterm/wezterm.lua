@@ -1,5 +1,6 @@
 -- Pull in the wezterm API
 local wezterm = require('wezterm')
+local act = wezterm.action
 
 -- This table will hold the configuration.
 local config = {}
@@ -38,7 +39,26 @@ config.disable_default_key_bindings = true
 config.keys = {
 
 	-- Fullscreen toggle
-	{ key = 'F11', mods = '', action = 'ToggleFullScreen' },
+	{ key = 'F11', mods = '', action = act.ToggleFullScreen },
+
+	-- Font size
+	{ key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
+	{ key = '+', mods = 'CTRL|SHIFT', action = act.IncreaseFontSize },
+	{ key = '0', mods = 'CTRL', action = act.ResetFontSize },
+
+	-- Copy
+	{ key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
+	{ key = 'Copy', mods = '', action = act.CopyTo('Clipboard') },
+
+	-- Paste
+	{ key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
+	{ key = 'Paste', mods = '', action = act.PasteFrom('Clipboard') },
+
+	-- Quickselect
+	{ key = 'b', mods = 'CTRL|SHIFT', action = act.QuickSelect },
+	
+	-- Command Palette
+	{ key = 'p', mods = 'CTRL|SHIFT', action = act.ActivateCommandPalette },
 
 	-- -- Hide
 	-- { key = 'm', mods = 'SUPER', action = 'DisableDefaultAssignment' },
