@@ -28,18 +28,50 @@ core.reload_module("colors.bearded-theme-vivid-black")
 
 keymap.add({ ["ctrl+e"] = "core:find-file" })
 keymap.add({ ["ctrl+d"] = "doc:delete-lines" })
+keymap.add({ ["ctrl+l"] = "doc:select-word" })
+keymap.add({ ["ctrl+l"] = "find-replace:select-add-next" })
+
 keymap.add({ ["ctrl+b"] = "treeview:toggle" })
 keymap.add({ ["ctrl+t"] = "core:new-doc" })
 keymap.add({ ["ctrl+q"] = "core:quit" })
+
+keymap.add({ ["ctrl+pagedown"] = "root:switch-to-next-tab" })
+keymap.add({ ["ctrl+pageup"] = "root:switch-to-previous-tab" })
+keymap.add({ ["ctrl+shift+pagedown"] = "root:move-tab-right" })
+keymap.add({ ["ctrl+shift+pageup"] = "root:move-tab-left" })
+
+keymap.add({ ["alt+down"] = "root:switch-to-down" })
+keymap.add({ ["alt+up"] = "root:switch-to-up" })
+keymap.add({ ["alt+left"] = "root:switch-to-left" })
+keymap.add({ ["alt+right"] = "root:switch-to-right" })
+
+keymap.add({ ["shift+alt+down"] = "root:split-down" })
+keymap.add({ ["shift+alt+up"] = "root:split-up" })
+keymap.add({ ["shift+alt+left"] = "root:split-left" })
+keymap.add({ ["shift+alt+right"] = "root:split-right" })
+
 keymap.add({ ["return"] = "autocomplete:complete" })
 keymap.add({ ["ctrl+shift+w"] = "core:change-project-folder" })
+keymap.add({ ["ctrl+alt+s"] = "ui:settings" })
 
 
 ------------------------------- Fonts ----------------------------------------
 
 -- customize fonts:
-style.font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 11 * SCALE)
+-- style.font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 11 * SCALE)
+-- style.code_font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 12 * SCALE, {
+-- 	antialiasing = "subpixel",
+-- 	hinting = "slight",
+-- 	smoothing = false,
+-- 	bold = false,
+-- 	italic = false,
+-- 	underline = false,
+-- 	strikethrough = false
+-- })
 style.code_font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 12 * SCALE)
+style.font = renderer.font.load("/usr/share/fonts/truetype/firacode/FiraCode-Regular.ttf", 11 * SCALE)
+-- style.code_font = renderer.font.load("/usr/share/fonts/truetype/firacode/FiraCode-Regular.ttf", 12 * SCALE)
+
 
 -- style.font = renderer.font.load(DATADIR .. "/fonts/FiraSans-Regular.ttf", 14 * SCALE)
 -- style.code_font = renderer.font.load(DATADIR .. "/fonts/JetBrainsMono-Regular.ttf", 14 * SCALE)
@@ -75,6 +107,30 @@ style.code_font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSan
 -- disable plugin detectindent, otherwise it is enabled by default:
 -- config.plugins.detectindent = false
 
+-- Show whitespaces
+config.plugins.drawwhitespace = {
+	enabled = true,
+	show_middle = false,
+	show_trailing_error = false
+}
+-- Trim whitespaces
+config.plugins.trimwhitespace = {
+	enabled = true,
+	-- TODO: How to keep one line?
+	trim_empty_end_lines = false
+}
+
+-- Disable ctrl+ mousewheel to zoom
+config.plugins.scale = {
+	use_mousewheel = false
+}
+
+-- Hide treeview on startup
+-- TODO: Work only in user_settings.lua?
+config.plugins.treeview = {
+	visible = true
+}
+
 ---------------------------- Miscellaneous -------------------------------------
 
 -- modify list of files to ignore when indexing the project:
@@ -89,6 +145,18 @@ style.code_font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSan
 --   "^desktop%.ini$", "^%.DS_Store$", "^%.directory$",
 -- }
 
+-- Indents
 config.tab_type = "hard"
 config.indent_size = 4
+
+-- Small line height
 config.line_height = 1.1
+
+-- Allow scanning of big projets
+config.max_project_files = 10000
+
+-- Show only a small scrollbar
+config.force_scrollbar_status = "contracted"
+
+config.max_tabs = 4
+
