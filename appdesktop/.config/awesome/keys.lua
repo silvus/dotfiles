@@ -600,11 +600,11 @@ keys.clients.keys = awful.util.table.join(
 	awful.key({ modkey,	}, "r", function(c)
 		c.sticky = not c.sticky
 	end, {description = "toggle sticky (pin)", group = "client"}),
-	-- awful.key({ modkey, }, "l", function(c)
-	-- 	-- The client currently has the input focus, so it cannot be
-	-- 	-- minimized, since minimized clients can't have the focus.
-	-- 	c.minimized = true
-	-- end, {description = "minimize", group = "client"}),
+	awful.key({ modkey, }, "g", function(c)
+		-- The client currently has the input focus, so it cannot be
+		-- minimized, since minimized clients can't have the focus.
+		c.minimized = true
+	end, {description = "minimize", group = "client"}),
 	awful.key({ modkey, }, "f", function(c)
 		c.maximized = not c.maximized
 		c:raise()
