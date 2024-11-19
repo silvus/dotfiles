@@ -15,43 +15,43 @@ customwidget.icon.visible = false
 
 -- First widget, a bar
 customwidget.widgetbar = wibox.widget {
-	visible = false,
-	colors = {
+	visible          = false,
+	colors           = {
 		beautiful.success,
 		-- beautiful.bg_normal,
 		-- beautiful.bg_highlight,
 		-- beautiful.border_color,
 	},
-	value = 0,
-	max_value    = 100,
-	min_value    = 0,
-	rounded_edge = false,
+	value            = 0,
+	max_value        = 100,
+	min_value        = 0,
+	rounded_edge     = false,
 	background_color = beautiful.error,
-	bg = beautiful.info,
-	border_width = 1,
-	border_color = beautiful.border_focus,
-	paddings     = {
+	bg               = beautiful.info,
+	border_width     = 1,
+	border_color     = beautiful.border_focus,
+	paddings         = {
 		left   = 6,
 		right  = 6,
 		top    = 6,
 		bottom = 6,
 	},
-	start_angle = 3*math.pi/2,
-	thickness = 2,
-	forced_width = 18,
-	forced_height = 18,
-	widget = wibox.container.arcchart,
+	start_angle      = 3 * math.pi / 2,
+	thickness        = 2,
+	forced_width     = 18,
+	forced_height    = 18,
+	widget           = wibox.container.arcchart,
 }
 
 -- second widget, current song and update bar and icon
 local moc = lain.widget.contrib.moc({
-	music_dir = "/data/media/music",
-	cover_size = 50,
+	music_dir   = "/data/media/music",
+	cover_size  = 50,
 	default_art = beautiful.music,
-	settings  = function()
-		moc_notification_preset = naughty.config.presets.low
+	settings    = function()
+		moc_notification_preset       = naughty.config.presets.low
 		moc_notification_preset.title = moc_now.artist .. " - " .. moc_now.title
-		moc_notification_preset.text    = string.format("%s (%s) - %s", moc_now.artist, moc_now.album, moc_now.title)
+		moc_notification_preset.text  = string.format("%s (%s) - %s", moc_now.artist, moc_now.album, moc_now.title)
 
 		if moc_now.state == 'PLAY' or moc_now.state == 'PAUSE' then
 			customwidget.icon.visible = true
@@ -67,9 +67,11 @@ local moc = lain.widget.contrib.moc({
 				end
 			else
 				-- Local file
-				widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. "</span>")
+				widget:set_markup("<span color='#ffffff'>" ..
+				string.sub(moc_now.file:match("([^/]+)$"), 0, 30) .. "</span>")
 				-- widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. ' | ' .. moc_now.elapsed .. ' / ' .. moc_now.total .. "</span>")
-				customwidget.customtooltip:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. "</span>")
+				customwidget.customtooltip:set_markup("<span color='#ffffff'>" ..
+				string.sub(moc_now.file:match("([^/]+)$"), 0, 30) .. "</span>")
 
 				local time_pattern = "(%d+):(%d+)"
 				local totalminute, totalseconds = moc_now.total:match(time_pattern)
@@ -102,7 +104,7 @@ local mocbg = wibox.container.background(moc.widget, beautiful.bg_normal, gears.
 customwidget.widget = wibox.container.margin(mocbg, 2, 4, 4, 4)
 
 -- Events
-local events_actions = awful.util.table.join (
+local events_actions = awful.util.table.join(
 	awful.button({}, 1, function()
 		awful.util.spawn("music --toggle-pause", false)
 	end),
@@ -119,9 +121,10 @@ customwidget.widget:buttons(events_actions)
 
 -- Tooltip
 customwidget.customtooltip = awful.tooltip {
-	objects = { customwidget.icon, customwidget.widgetbar, customwidget.widget},
+	objects = { customwidget.icon, customwidget.widgetbar, customwidget.widget },
 	text = '',
 }
 
 
 return customwidget
+

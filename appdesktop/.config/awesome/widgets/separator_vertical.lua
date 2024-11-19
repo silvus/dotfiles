@@ -16,3 +16,4 @@ customwidget.widget = wibox.widget {
 }
 
 return customwidget
+

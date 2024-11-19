@@ -10,24 +10,27 @@ customwidget.icon = wibox.widget.imagebox(beautiful.cpu)
 -- Cpu bar
 
 local cpubar = wibox.widget {
-	forced_height 	= beautiful.graph_height or 1,
-	forced_width 	= beautiful.graph_width or 75,
-	margins 		= 1,
-	paddings 		= 1,
-	ticks 			= true,
-	ticks_size 		= 10,
-	step_width 		= 3,
-	max_value 		= 100,
-	min_value 		= 0,
-	value 			= 0,
-	color 			= beautiful.success,
+	forced_height    = beautiful.graph_height or 1,
+	forced_width     = beautiful.graph_width or 75,
+	margins          = 1,
+	paddings         = 1,
+	ticks            = true,
+	ticks_size       = 10,
+	step_width       = 3,
+	max_value        = 100,
+	min_value        = 0,
+	value            = 0,
+	color            = beautiful.success,
 	background_color = beautiful.bg_normal,
-	border_color 	= beautiful.info,
+	border_color     = beautiful.info,
 	-- widget		   = wibox.widget.progressbar
-	widget 			= wibox.widget.graph
+	widget           = wibox.widget.graph
 }
 local cpu = lain.widget.cpu({
-	width = 100, border_width = 0, ticks = true, ticks_size = 10,
+	width = 100,
+	border_width = 0,
+	ticks = true,
+	ticks_size = 10,
 	settings = function()
 		-- cpubar:set_value(cpu_now.usage)
 		cpubar:add_value(cpu_now.usage)
@@ -39,3 +42,4 @@ local cpubg = wibox.container.background(cpubar, beautiful.info, gears.shape.rec
 customwidget.widget = wibox.container.margin(cpubg, 2, 4, 4, 4)
 
 return customwidget
+

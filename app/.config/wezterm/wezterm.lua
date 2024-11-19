@@ -39,48 +39,48 @@ config.disable_default_key_bindings = true
 config.keys = {
 
 	-- Fullscreen toggle
-	{ key = 'F11', mods = '', action = act.ToggleFullScreen },
+	{ key = 'F11',   mods = '',           action = act.ToggleFullScreen },
 
 	-- Font size
-	{ key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
-	{ key = '+', mods = 'CTRL|SHIFT', action = act.IncreaseFontSize },
-	{ key = '0', mods = 'CTRL', action = act.ResetFontSize },
+	{ key = '-',     mods = 'CTRL',       action = act.DecreaseFontSize },
+	{ key = '+',     mods = 'CTRL|SHIFT', action = act.IncreaseFontSize },
+	{ key = '0',     mods = 'CTRL',       action = act.ResetFontSize },
 
 	-- Copy
-	{ key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
-	{ key = 'Copy', mods = '', action = act.CopyTo('Clipboard') },
+	{ key = 'c',     mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
+	{ key = 'Copy',  mods = '',           action = act.CopyTo('Clipboard') },
 
 	-- Paste
-	{ key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
-	{ key = 'Paste', mods = '', action = act.PasteFrom('Clipboard') },
+	{ key = 'v',     mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
+	{ key = 'Paste', mods = '',           action = act.PasteFrom('Clipboard') },
 
 	-- Quickselect
-	{ key = 'b', mods = 'CTRL|SHIFT', action = act.QuickSelect },
-	
+	{ key = 'b',     mods = 'CTRL|SHIFT', action = act.QuickSelect },
+
 	-- Command Palette
-	{ key = 'p', mods = 'CTRL|SHIFT', action = act.ActivateCommandPalette },
+	{ key = 'p',     mods = 'CTRL|SHIFT', action = act.ActivateCommandPalette },
 
 	-- -- Hide
 	-- { key = 'm', mods = 'SUPER', action = 'DisableDefaultAssignment' },
-	
+
 	-- -- ToggleFullScreen
 	-- { key = 'Enter', mods = 'ALT', action = 'DisableDefaultAssignment' },
-	
+
 	-- -- ShowDebugOverlay
 	-- { key = 'L', mods = 'CTRL|SHIFT', action = 'DisableDefaultAssignment' },
 
 	-- -- Open new Window
 	-- { key = 'n', mods = 'SUPER', action = 'DisableDefaultAssignment' },
 	-- { key = 'n', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
-	
+
 	-- -- Open new tab
 	-- { key = 't', mods = 'SUPER', action = 'DisableDefaultAssignment' },
 	-- { key = 't', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
 	-- { key = 'T', mods = 'SHIFT|SUPER', action = 'DisableDefaultAssignment' },
-	
+
 	-- -- Close tab
 	-- { key = 'w', mods = 'SHIFT|CTRL', action = 'DisableDefaultAssignment' },
-	
+
 	-- -- Tabs Navigation
 	-- { key = '1', mods = 'SUPER', action = 'DisableDefaultAssignment' },
 	-- { key = '2', mods = 'SUPER', action = 'DisableDefaultAssignment' },
@@ -95,8 +95,11 @@ config.keys = {
 
 -- Return if a file is readable
 function file_exists(name)
-	local f=io.open(name,"r")
-	if f~=nil then io.close(f) return true else return false end
+	local f = io.open(name, "r")
+	if f ~= nil then
+		io.close(f)
+		return true
+	else return false end
 end
 
 --- Override elements in the target table with values from the source table.
@@ -104,17 +107,17 @@ end
 -- Note that this method doesn't copy entries found in `__index`.
 -- Nested tables are copied by reference and not recursed into.
 function table_crush(target, source, raw)
-    if raw then
-        for k, v in pairs(source) do
-            rawset(target, k, v)
-        end
-    else
-        for k, v in pairs(source) do
-            target[k] = v
-        end
-    end
+	if raw then
+		for k, v in pairs(source) do
+			rawset(target, k, v)
+		end
+	else
+		for k, v in pairs(source) do
+			target[k] = v
+		end
+	end
 
-    return target
+	return target
 end
 
 -- Include dotfile_custom config if exist
@@ -123,9 +126,10 @@ if file_exists(dotfile_custom_path) then
 	local config_custom = dofile(dotfile_custom_path)
 	if config_custom then
 		-- Override elements in the first table by the one in the second.
-		table_crush(config, config_custom) 
+		table_crush(config, config_custom)
 	end
 end
 
 -- and finally, return the configuration to wezterm
 return config
+

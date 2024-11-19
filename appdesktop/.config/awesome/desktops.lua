@@ -57,7 +57,7 @@ local function init(s)
 				icon   = beautiful.terminal,
 			},
 		}
-		
+
 		-- Primary screen
 		for i, tag in pairs(tags_definitions) do
 			awful.tag.add(tag.name, {
@@ -80,3 +80,4 @@ desktops.init = init
 desktops.tags_names = tags_names
 
 return desktops
+

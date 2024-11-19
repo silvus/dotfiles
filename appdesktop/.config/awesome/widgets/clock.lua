@@ -21,3 +21,4 @@ local widget_tooltip = awful.tooltip {
 }
 
 return customwidget
+

@@ -243,7 +243,7 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "Right", function()
 		resize_client('right')
 	end, { description = "Bigger clients", group = "client" }),
-	
+
 	awful.key({ modkey, "Shift" }, "h", function()
 		resize_client('down')
 	end, { description = "Smaller clients", group = "client" }),
@@ -256,7 +256,7 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey, "Shift" }, "k", function()
 		resize_client('right')
 	end, { description = "Bigger clients", group = "client" }),
-	
+
 	-- Move client
 	awful.key({ modkey, "Control" }, "Down", function()
 		move_client('down')
@@ -302,19 +302,19 @@ keys.global = awful.util.table.join(
 
 	-- Clients menu
 	-- awful.key({ modkey }, "Space", function()
-		-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
-		-- Default to mouse.coords()
-		-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
+	-- "coords" doesn't work: https://github.com/awesomeWM/awesome/issues/2349
+	-- Default to mouse.coords()
+	-- awful.menu.clients({theme = { width = 500 }}, { keygrabber=true, coords={x=525, y=330} })
 	-- end, { description = "Menu launch", group = "launcher" }),
 	-- Menubar
-	awful.key({ modkey,}, "space", function()
+	awful.key({ modkey, }, "space", function()
 		menubar.show(screens.get_primary())
-	end, {description = "show the menubar", group = "launcher"}),
+	end, { description = "show the menubar", group = "launcher" }),
 	-- Rofi
 	awful.key({ modkey }, "e", function()
 		awful.spawn("rofi -show drun")
 	end, { description = "Rofi launch", group = "launcher" }),
-	
+
 	-- Alt+number to toggle a program (Doesn't work on Electron apps)
 	-- awful.key({ "Mod1" }, "&", function()
 	-- 	-- 1 - Browser
@@ -344,7 +344,7 @@ keys.global = awful.util.table.join(
 	-- 		return awful.rules.match(c, rule)
 	-- 	end)
 	-- end, { description = "open file manager", group = "launcher" }),
-	
+
 	-- Editor
 	awful.key({ modkey, "Shift" }, "e", function()
 		awful.spawn("codium")
@@ -361,7 +361,7 @@ keys.global = awful.util.table.join(
 	awful.key({ modkey }, "Escape", function()
 		quake.term:toggle()
 	end, { description = "Toggle guake like terminal", group = "launcher" }),
-	
+
 	-- Keyboard layout
 	awful.key({ modkey, "Shift" }, "F2", function()
 		local layout_group = awesome.xkb_get_layout_group()
@@ -582,55 +582,58 @@ keys.clients.keys = awful.util.table.join(
 	awful.key({ modkey, }, "m", function(c)
 		c.fullscreen = not c.fullscreen
 		c:raise()
-	end, {description = "toggle fullscreen", group = "client"}),
+	end, { description = "toggle fullscreen", group = "client" }),
 	awful.key({ modkey, }, "c", function(c)
 		-- toggle titlebar
 		awful.titlebar.toggle(c)
-	end, {description = "toggle titlebar", group = "client"}),
+	end, { description = "toggle titlebar", group = "client" }),
 
 	awful.key({ modkey, }, "y", function(c)
 		awful.client.floating.toggle()
-	end, {description = "toggle floating", group = "client"}),
+	end, { description = "toggle floating", group = "client" }),
 	awful.key({ modkey, }, "o", function(c)
 		c:move_to_screen()
-	end, {description = "move to screen", group = "client"}),
-	awful.key({ modkey,	}, "t", function(c)
+	end, { description = "move to screen", group = "client" }),
+	awful.key({ modkey, }, "t", function(c)
 		c.ontop = not c.ontop
-	end, {description = "toggle keep on top", group = "client"}),
-	awful.key({ modkey,	}, "r", function(c)
+	end, { description = "toggle keep on top", group = "client" }),
+	awful.key({ modkey, }, "r", function(c)
 		c.sticky = not c.sticky
-	end, {description = "toggle sticky (pin)", group = "client"}),
+	end, { description = "toggle sticky (pin)", group = "client" }),
 	awful.key({ modkey, }, "g", function(c)
 		-- The client currently has the input focus, so it cannot be
 		-- minimized, since minimized clients can't have the focus.
 		c.minimized = true
-	end, {description = "minimize", group = "client"}),
+	end, { description = "minimize", group = "client" }),
 	awful.key({ modkey, }, "f", function(c)
 		c.maximized = not c.maximized
 		c:raise()
-	end, {description = "maximize", group = "client"}),
+	end, { description = "maximize", group = "client" }),
 
 	-- Kill clients
 	awful.key({ modkey, "Shift" }, "q", function(c)
 		c:kill()
-	end, {description = "close", group = "client"}),
+	end, { description = "close", group = "client" }),
 	awful.key({ modkey, "Shift" }, "Escape", function(c)
 		c:kill()
-	end, {description = "close", group = "client"}),
+	end, { description = "close", group = "client" }),
 	awful.key({ modkey, }, "F4", function(c)
 		c:kill()
-	end, {description = "close", group = "client"}),
+	end, { description = "close", group = "client" }),
 	awful.key({ modkey, }, "w", function(c)
 		c:kill()
-	end, {description = "close", group = "client"})
+	end, { description = "close", group = "client" })
 )
 
 -- Client button
 -- ----------------------------------------------------------------------------
 keys.clients.buttons = awful.util.table.join(
-	awful.button({ }, 1, function(c) globalclient.focus = c; c:raise() end),
+	awful.button({}, 1, function(c)
+		globalclient.focus = c; c:raise()
+	end),
 	awful.button({ modkey }, 1, awful.mouse.client.move),
 	awful.button({ modkey }, 3, awful.mouse.client.resize))
 
 
 return keys
+

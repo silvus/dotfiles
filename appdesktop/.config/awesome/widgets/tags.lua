@@ -10,7 +10,7 @@ local customwidget = {}
 
 -- buttons
 customwidget.buttons = awful.util.table.join(
-	awful.button({ }, 1, function(t)
+	awful.button({}, 1, function(t)
 		t:view_only()
 	end),
 	awful.button({ config.modkey }, 1, function(t)
@@ -18,7 +18,7 @@ customwidget.buttons = awful.util.table.join(
 			client.focus:move_to_tag(t)
 		end
 	end),
-	awful.button({ }, 3, function(t)
+	awful.button({}, 3, function(t)
 		awful.tag.viewtoggle(t)
 	end),
 	awful.button({ config.modkey }, 3, function(t)
@@ -26,22 +26,22 @@ customwidget.buttons = awful.util.table.join(
 			client.focus:toggle_tag(t)
 		end
 	end),
-	awful.button({ }, 4, function(t)
+	awful.button({}, 4, function(t)
 		awful.tag.viewnext(t.screen)
 	end),
-	awful.button({ }, 5, function(t)
+	awful.button({}, 5, function(t)
 		awful.tag.viewprev(t.screen)
 	end)
 )
 
--- Build tag widget list 
+-- Build tag widget list
 -- https://awesomewm.org/doc/api/classes/awful.widget.taglist.html
 function widget(s)
 	if s == screens.get_primary() then
 		return awful.widget.taglist({
-			screen  = s,
-			filter  = customwidget.tags_filter,
-			buttons = customwidget.buttons,
+			screen          = s,
+			filter          = customwidget.tags_filter,
+			buttons         = customwidget.buttons,
 			widget_template = {
 				{
 					{
@@ -56,7 +56,7 @@ function widget(s)
 							layout = wibox.container.margin,
 							top = 2,
 							right = 2,
-							bottom= 2,
+							bottom = 2,
 							left = 8,
 						},
 						{
@@ -84,10 +84,10 @@ function widget(s)
 					-- right = 1,
 					widget = wibox.container.margin
 				},
-				id     = 'background_role',
-				widget = wibox.container.background,
+				id            = 'background_role',
+				widget        = wibox.container.background,
 				forced_height = 32,
-				forced_width = 32,
+				forced_width  = 32,
 			},
 		})
 	else
@@ -96,15 +96,14 @@ function widget(s)
 	end
 end
 
-
 -- Filter for tags widgets
 function tags_filter(t)
 	-- No empty and not the scratchpad (except if selected)
 	return (#t:clients() > 0 or t.selected) and (t.name ~= "0" or t.selected) and (t.name ~= "x" or t.selected)
 end
 
-
 customwidget.widget = widget
 customwidget.tags_filter = tags_filter
 
 return customwidget
+

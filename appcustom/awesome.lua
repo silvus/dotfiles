@@ -14,3 +14,4 @@ local config = {}
 -- config.wallpapers_by_tag = false
 
 return config
+

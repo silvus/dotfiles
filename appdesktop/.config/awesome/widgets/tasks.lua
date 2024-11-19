@@ -7,7 +7,7 @@ local customwidget = {}
 -- Apps list
 
 customwidget.buttons = awful.util.table.join(
-	awful.button({ }, 1, function (c)
+	awful.button({}, 1, function(c)
 		if c == client.focus then
 			c.minimized = true
 		else
@@ -21,16 +21,16 @@ customwidget.buttons = awful.util.table.join(
 			c:raise()
 		end
 	end)
-	-- awful.button({ }, 3, client_menu_toggle_fn())
-	-- awful.button({ }, 4, function ()
-	--						  awful.client.focus.byidx(1)
-	--					  end),
-	-- awful.button({ }, 5, function ()
-	--						  awful.client.focus.byidx(-1)
-	--					  end))
+-- awful.button({ }, 3, client_menu_toggle_fn())
+-- awful.button({ }, 4, function ()
+--						  awful.client.focus.byidx(1)
+--					  end),
+-- awful.button({ }, 5, function ()
+--						  awful.client.focus.byidx(-1)
+--					  end))
 )
 
--- Build tasks widget list 
+-- Build tasks widget list
 function widget(s)
 	-- Create a tasklist widget
 	-- return awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, customwidget.buttons)
@@ -45,14 +45,14 @@ function widget(s)
 	-- return awful.widget.tasklist(s, awful.widget.tasklist.filter.minimizedcurrenttags, customwidget.buttons)
 
 	-- Create a tasklist widget for minimized clients only with a max width
-	return awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, customwidget.buttons, nil, function(w, buttons, label, data, objects)
-		widget_common.list_update(w, buttons, label, data, objects)
-		w:set_max_widget_size(300)
-	end, wibox.layout.flex.horizontal())
-	
+	return awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, customwidget.buttons, nil,
+		function(w, buttons, label, data, objects)
+			widget_common.list_update(w, buttons, label, data, objects)
+			w:set_max_widget_size(300)
+		end, wibox.layout.flex.horizontal())
 end
-
 
 customwidget.widget = widget
 
 return customwidget
+

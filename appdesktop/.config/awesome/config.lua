@@ -7,8 +7,11 @@ local menubar = require("menubar")
 
 -- Return if a file is readable
 function file_exists(name)
-	local f=io.open(name,"r")
-	if f~=nil then io.close(f) return true else return false end
+	local f = io.open(name, "r")
+	if f ~= nil then
+		io.close(f)
+		return true
+	else return false end
 end
 
 local config = {}
@@ -64,7 +67,7 @@ config.layouts = {
 	-- lain.layout.cascade.tile,
 	-- lain.layout.centerwork,
 	-- lain.layout.centerwork.horizontal,
-	
+
 	-- awful.layout.suit.tile.top,
 	-- awful.layout.suit.spiral,
 	-- awful.layout.suit.spiral.dwindle,
@@ -95,7 +98,7 @@ if file_exists(config_custom_path) then
 	local config_custom = dofile(config_custom_path)
 	if config_custom then
 		-- Override elements in the first table by the one in the second.
-		table.crush(config, config_custom) 
+		table.crush(config, config_custom)
 	end
 end
 
@@ -105,3 +108,4 @@ menubar.utils.terminal = config.terminal
 
 
 return config
+

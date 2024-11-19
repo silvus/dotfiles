@@ -9,7 +9,7 @@ local customwidget = {}
 -- Apps list
 
 customwidget.buttons = awful.util.table.join(
-	awful.button({ }, 1, function (c)
+	awful.button({}, 1, function(c)
 		if c == client.focus then
 			c.minimized = true
 		else
@@ -28,17 +28,17 @@ customwidget.buttons = awful.util.table.join(
 -- Create a tasklist widget
 function widget(s)
 	return awful.widget.tasklist({
-		screen   = s,
+		screen          = s,
 		-- For minimized clients only
 		-- filter   = awful.widget.tasklist.filter.minimizedcurrenttags,
-		filter   = awful.widget.tasklist.filter.currenttags,
-		buttons  = customwidget.buttons,
+		filter          = awful.widget.tasklist.filter.currenttags,
+		buttons         = customwidget.buttons,
 		-- style    = {
 		-- 	shape_border_width = 1,
 		-- 	shape_border_color = '#777777',
 		-- 	shape  = gears.shape.rounded_bar,
 		-- },
-		layout   = {
+		layout          = {
 			spacing = 1,
 			-- spacing_widget = widget_separator_vertical.widget,
 			layout  = wibox.layout.fixed.vertical,
@@ -51,23 +51,23 @@ function widget(s)
 						id     = 'icon_role',
 						widget = wibox.widget.imagebox,
 					},
-					widget  = wibox.container.margin,
+					widget = wibox.container.margin,
 				},
-				left  = 3,
-				right = 3,
-				top  = 3,
+				left   = 3,
+				right  = 3,
+				top    = 3,
 				bottom = 3,
 				widget = wibox.container.margin
 			},
-			id     = 'background_role',
-			widget = wibox.container.background,
+			id            = 'background_role',
+			widget        = wibox.container.background,
 			forced_height = 20,
-			forced_width = 20,
+			forced_width  = 20,
 		},
 	})
 end
 
-
 customwidget.widget = widget
 
 return customwidget
+
