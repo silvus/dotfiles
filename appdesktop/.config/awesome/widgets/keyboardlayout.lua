@@ -8,3 +8,4 @@ local customwidget = {}
 customwidget.widget = awful.widget.keyboardlayout()
 
 return customwidget
+

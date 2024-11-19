@@ -9,3 +9,4 @@ customwidget.icon = nil
 customwidget.widget = awful.widget.prompt()
 
 return customwidget
+

@@ -41,50 +41,50 @@ customwidget.volume = lain.widget.alsa({
 
 -- Widget bar
 customwidget.widgetbar = wibox.widget {
-	colors = {
+	colors           = {
 		beautiful.success,
 		-- beautiful.bg_normal,
 		-- beautiful.bg_highlight,
 		-- beautiful.border_color,
 	},
-	value = 0,
-	max_value = 100,
-	min_value = 0,
-	rounded_edge = false,
+	value            = 0,
+	max_value        = 100,
+	min_value        = 0,
+	rounded_edge     = false,
 	background_color = beautiful.info,
-	bg = beautiful.info,
-	border_width = 1,
-	border_color = beautiful.border_focus,
-	paddings     = {
+	bg               = beautiful.info,
+	border_width     = 1,
+	border_color     = beautiful.border_focus,
+	paddings         = {
 		left   = 6,
 		right  = 6,
 		top    = 6,
 		bottom = 6,
 	},
-	start_angle = 3*math.pi/2,
-	thickness = 2,
-	forced_width = 18,
-	forced_height = 18,
-	widget = wibox.container.arcchart,
+	start_angle      = 3 * math.pi / 2,
+	thickness        = 2,
+	forced_width     = 18,
+	forced_height    = 18,
+	widget           = wibox.container.arcchart,
 }
 
 -- Stack icon + bar
 customwidget.widget = wibox.widget {
 	wibox.container.margin(customwidget.widgetbar, 0, 1, 0, 1),
 	customwidget.icon,
-	layout  = wibox.layout.stack
+	layout = wibox.layout.stack
 }
 
 -- Tooltip
 local widget_tooltip = awful.tooltip {
-	objects        = { customwidget.widget},
+	objects        = { customwidget.widget },
 	timer_function = function()
 		return string.format("%d%%", volume_value)
 	end,
 }
 
 -- events
-buttons_event = awful.util.table.join (
+buttons_event = awful.util.table.join(
 	awful.button({}, 1, function()
 		-- awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
 		awful.spawn.with_shell('pavucontrol')
@@ -94,7 +94,8 @@ buttons_event = awful.util.table.join (
 		customwidget.volume.update()
 	end),
 	awful.button({}, 3, function()
-		awful.spawn(string.format("%s -D pulse set %s toggle", customwidget.volume.cmd, customwidget.volume.togglechannel or customwidget.volume.channel))
+		awful.spawn(string.format("%s -D pulse set %s toggle", customwidget.volume.cmd,
+			customwidget.volume.togglechannel or customwidget.volume.channel))
 		customwidget.volume.update()
 	end),
 	awful.button({}, 4, function()
@@ -110,3 +111,4 @@ buttons_event = awful.util.table.join (
 customwidget.widget:buttons(buttons_event)
 
 return customwidget
+

@@ -6,40 +6,40 @@ local naughty = require("naughty")
 local lain = require("lain")
 
 
-local customwidget = {}
-local battery_value = 0
+local customwidget        = {}
+local battery_value       = 0
 
-customwidget.icon = wibox.widget.imagebox(beautiful.battery)
+customwidget.icon         = wibox.widget.imagebox(beautiful.battery)
 customwidget.icon.visible = false
 
 -- Battery
 
-local batbar = wibox.widget {
-	forced_height	= 1,
-	forced_width	= 75,
-	margins			= 1,
-	paddings		= 1,
-	ticks			= true,
-	ticks_size		= 10,
-	step_width		= 10,
-	max_value		= 100,
-	min_value		= 0,
-	value			= 0,
-	color 			= beautiful.success,
+local batbar              = wibox.widget {
+	forced_height    = 1,
+	forced_width     = 75,
+	margins          = 1,
+	paddings         = 1,
+	ticks            = true,
+	ticks_size       = 10,
+	step_width       = 10,
+	max_value        = 100,
+	min_value        = 0,
+	value            = 0,
+	color            = beautiful.success,
 	background_color = beautiful.bg_normal,
-	border_color	= beautiful.info,
-	widget			= wibox.widget.progressbar
+	border_color     = beautiful.info,
+	widget           = wibox.widget.progressbar
 }
-batbar.visible  = false
+batbar.visible            = false
 
-local battery = lain.widget.bat({
+local battery             = lain.widget.bat({
 	settings = function()
 		if bat_now.status == "N/A" then
 			-- No battery
-			batbar.visible  = false
+			batbar.visible            = false
 			customwidget.icon.visible = false
 		else
-			batbar.visible  = true
+			batbar.visible            = true
 			customwidget.icon.visible = true
 			batbar:set_value(bat_now.perc)
 			battery_value = bat_now.perc
@@ -61,7 +61,6 @@ local battery = lain.widget.bat({
 					batbar.color = beautiful.success
 				elseif bat_now.status == "Charging" then
 					batbar.color = beautiful.info
-
 				end
 			end
 		end
@@ -93,16 +92,17 @@ local battery = lain.widget.bat({
 		preset = naughty.config.presets.critical
 	},
 })
-local batbg = wibox.container.background(batbar, beautiful.info, gears.shape.rectangle)
+local batbg               = wibox.container.background(batbar, beautiful.info, gears.shape.rectangle)
 
-customwidget.widget = wibox.container.margin(batbg, 2, 4, 4, 4)
+customwidget.widget       = wibox.container.margin(batbg, 2, 4, 4, 4)
 
 -- Tooltip
-local widget_tooltip = awful.tooltip {
-	objects        = { customwidget.widget},
+local widget_tooltip      = awful.tooltip {
+	objects        = { customwidget.widget },
 	timer_function = function()
 		return string.format("%d%%", battery_value)
 	end,
 }
 
 return customwidget
+

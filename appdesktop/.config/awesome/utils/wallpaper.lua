@@ -16,7 +16,7 @@ function scandir(directory, filter)
 	if not filter then
 		filter = function(s) return true end
 	end
-	for filename in popen('ls -a "'..directory..'"'):lines() do
+	for filename in popen('ls -a "' .. directory .. '"'):lines() do
 		if filter(filename) then
 			i = i + 1
 			t[i] = filename
@@ -40,8 +40,7 @@ local function _get_wallpaper_path(s, tag_based)
 	elseif awful.util.file_readable(config.home .. '/.wallpaper.jpg') then
 		-- if ~/.wallpaper is a file, use it
 		wallpaper_next = config.home .. '/.wallpaper.jpg'
-
-	elseif awful.util.dir_readable (config.home .. '/.wallpapers') then
+	elseif awful.util.dir_readable(config.home .. '/.wallpapers') then
 		-- if ~/.wallpapers is a directory, pick one into it (if name match pattern wallpaper_tagindex.ext)
 		local wallpapers_dir = config.home .. '/.wallpapers'
 		-- else fallback to default wallpapers directory
@@ -79,11 +78,12 @@ local function _get_wallpaper_path(s, tag_based)
 					break
 				end
 			end
-		else 
+		else
 			-- Take a random wallpaper from ~/.wallpapers
-			local wallpaper_filter = function(s) 
+			local wallpaper_filter = function(s)
 				-- image only and exclude hiddens files
-				return (string.match(s,"%.png$") or string.match(s,"%.jpg$") or string.match(s,"%.jpeg$")) and string.sub(s, 1, 1) ~= '.'
+				return (string.match(s, "%.png$") or string.match(s, "%.jpg$") or string.match(s, "%.jpeg$")) and
+				string.sub(s, 1, 1) ~= '.'
 			end
 			wallpapers_files = scandir(wallpapers_dir, wallpaper_filter)
 			wallpapers_random_index = math.random(1, #wallpapers_files)
@@ -131,3 +131,4 @@ end
 wallpaper.update = update
 
 return wallpaper
+

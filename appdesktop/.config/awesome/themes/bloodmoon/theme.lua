@@ -179,7 +179,7 @@ function widget_rotate(w, inverse)
 	if inverse then
 		direction = 'west'
 	end
-		
+
 	return wibox.container {
 		w,
 		direction = direction,
@@ -213,7 +213,7 @@ function bar(s)
 	local layoutbox = widget_layout.widget(s)
 
 	local wibox_custom = nil
-	
+
 	-- Widget for main screen only
 	if s == screens.get_primary() then
 		-- Create a vertical wibox
@@ -259,7 +259,7 @@ function bar(s)
 				},
 			},
 		}
-			
+
 	else
 		-- secondary screen (always horizontal)
 		wibox_custom = awful.wibar({
@@ -294,3 +294,4 @@ theme.bar = bar
 
 
 return theme
+

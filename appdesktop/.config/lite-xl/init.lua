@@ -72,7 +72,6 @@ style.code_font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSan
 style.font = renderer.font.load("/usr/share/fonts/truetype/firacode/FiraCode-Regular.ttf", 11 * SCALE)
 -- style.code_font = renderer.font.load("/usr/share/fonts/truetype/firacode/FiraCode-Regular.ttf", 12 * SCALE)
 
-
 -- style.font = renderer.font.load(DATADIR .. "/fonts/FiraSans-Regular.ttf", 14 * SCALE)
 -- style.code_font = renderer.font.load(DATADIR .. "/fonts/JetBrainsMono-Regular.ttf", 14 * SCALE)
 --

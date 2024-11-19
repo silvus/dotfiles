@@ -30,3 +30,4 @@ awful.widget.watch(
 customwidget.widget = wibox.container.margin(customwidget.vpn_text, 1, 1, 1, 1)
 
 return customwidget
+

@@ -1,13 +1,13 @@
-local awful  = require("awful")
-local beautiful = require("beautiful")
-local wibox = require("wibox")
-local naughty = require("naughty")
+local awful         = require("awful")
+local beautiful     = require("beautiful")
+local wibox         = require("wibox")
+local naughty       = require("naughty")
 
-local customwidget = {}
+local customwidget  = {}
 
 -- Notifications status
 
-customwidget.icon = wibox.widget.imagebox(beautiful.bell)
+customwidget.icon   = wibox.widget.imagebox(beautiful.bell)
 customwidget.widget = wibox.container.margin(customwidget.icon, 3, 4, 3, 4)
 
 
@@ -22,7 +22,7 @@ end
 customwidget.update = update
 
 -- clics events
-buttons_event = awful.util.table.join (
+buttons_event = awful.util.table.join(
 	awful.button({}, 1, function()
 		naughty.toggle()
 		update()
@@ -44,3 +44,4 @@ customwidget.widget:buttons(buttons_event)
 
 
 return customwidget
+

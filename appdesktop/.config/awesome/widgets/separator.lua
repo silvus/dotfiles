@@ -7,3 +7,4 @@ local customwidget = {}
 customwidget.widget = wibox.widget.textbox('  ')
 
 return customwidget
+
