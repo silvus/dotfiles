@@ -319,7 +319,7 @@ browser_display_mode = columns
 #progressbar_look = =>
 progressbar_look = "▃▃ "
 
-progressbar_boldness = no
+# progressbar_boldness = no
 
 ## Available values: database, playlist.
 ##
@@ -537,10 +537,10 @@ state_flags_color = "black"
 main_window_color = "white"
 color1 = "cyan"
 color2 = "black"
-main_window_highlight_color = "green"
+# main_window_highlight_color = "green"
 progressbar_color = "black"
 statusbar_color = "black"
-active_column_color = "red"
+# active_column_color = "red"
 visualizer_color = "cyan"
 
 # Cheat sheet
