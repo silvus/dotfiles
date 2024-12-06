@@ -7,6 +7,7 @@ import os
 import sys
 import shutil
 import socket
+import filecmp
 import fileinput
 import argparse
 from subprocess import Popen, PIPE
@@ -62,7 +63,6 @@ def print_error(message):
 # --------------------------------------------------------------------
 # Helpers
 # --------------------------------------------------------------------
-
 
 def assure_dir_exist(path):
     """Create parents folders for file path"""
@@ -130,17 +130,24 @@ def count_files(rootFolder):
 
 
 def copy_if_not_exist(source, destination):
-    """Copy file if destination doesn't exist"""
+    """
+    Copy file if destination doesn't exist
+    """
     if not os.path.exists(destination):
         assure_dir_exist(destination)
         return shutil.copy(source, destination)
     return True
 
+def copy_has_root(source, destination):
+    """
+    Copy file has root. Use cp to not launch this script has root
+    """
+    return exec_command(['sudo', 'cp', source, destination])
+
 
 # --------------------------------------------------------------------
 # Symlinks
 # --------------------------------------------------------------------
-
 
 def symlink_arbo(rootSource, rootDestination):
     """
@@ -197,10 +204,9 @@ def symlink(src, dest):
 # Copy
 # --------------------------------------------------------------------
 
-
 def copy_arbo(rootSource, rootDestination):
     """
-    Scan "appcustom" directory and create an equivalent file copy in home for each file.
+    Scan dotfiles directory and create an equivalent file copy in home for each file.
     """
     count = 0
     total = count_files(rootSource)
@@ -216,8 +222,9 @@ def copy_arbo(rootSource, rootDestination):
             source = os.path.join(rootSource, relativeFile)
             destination = os.path.join(rootDestination, relativeFile)
 
-            count += 1
-            if not copy_if_not_exist(source, destination):
+            if copy_if_not_exist(source, destination):
+                count += 1
+            else:
                 print_error("Error copying {}".format(source))
                 return False
 
@@ -228,10 +235,59 @@ def copy_arbo(rootSource, rootDestination):
     return True
 
 
+def copy_files_has_root(sourcePathRoot, filesTarget = []):
+    """
+    Copy each dotfiles path in filesSource to a root counterpart, event if exist.
+    filesSource is a list of absolutes file paths.
+    sourcePathRoot is the absolute dotfiles path.
+    """
+    for fileTarget in filesTarget:
+            # Get relative dir from dotfiles root
+            fileSource = os.path.normpath(os.path.join(sourcePathRoot, fileTarget.strip("/")))
+
+            # Copy has root, even if the file exist
+            if copy_has_root(fileSource, fileTarget):
+                print_success("Copy {}".format(fileTarget))
+            else:
+                print_error("Error force copying to {}".format(fileTarget))
+                return False
+
+    print()
+    return True
+
+
+# --------------------------------------------------------------------
+# Scan diff
+# --------------------------------------------------------------------
+
+def get_files_different_arbo(rootSource, rootDestination):
+    """
+    Scan directory and for each file check if the root counterpart is the same.
+    """
+    diff_files = []
+
+    for dirName, subdirList, fileList in os.walk(rootSource):
+        for fileName in fileList:
+            # Get relative dir from dotfiles root
+            relativeDir = os.path.relpath(dirName, rootSource)
+            # Add file name and handle "." (with normpath)
+            relativeFile = os.path.normpath(os.path.join(relativeDir, fileName))
+
+            # Create absolutes paths
+            source = os.path.join(rootSource, relativeFile)
+            destination = os.path.join(rootDestination, relativeFile)
+
+            # Compare diff
+            if not filecmp.cmp(source, destination):
+                diff_files.append(os.path.join('/', relativeFile))
+
+    return diff_files
+
+
+
 # --------------------------------------------------------------------
 # Git
 # --------------------------------------------------------------------
-
 
 def git_clone(url, destination):
     return exec_command(["git", "clone", "--recursive", url, destination])
@@ -344,8 +400,7 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
 # Main
 # --------------------------------------------------------------------
 
-
-def launch(dotfilespath, restarted):
+def launch(dotfilespath, restarted, root):
     hostname = socket.gethostname()
 
     # Requirements
@@ -393,6 +448,18 @@ def launch(dotfilespath, restarted):
             else:
                 print_error("xrdb not found.")
 
+        # Check if approot files are different
+        approot_files = get_files_different_arbo(os.path.join(dotfilespath, "approot"), '/')
+        if approot_files:
+            if root:
+                print_header("Copy root files")
+                copy_files_has_root(os.path.join(dotfilespath, "approot"), approot_files)
+            
+            else:
+                print_header("Diff in root files (no --root argument)")
+                for approot_file in approot_files:
+                    print_warning('Diff in file {}'.format(approot_file))
+
         # Generate ~/.dotfiles_custom files if not exists
         print_header("Generate {}_custom files".format(os.path.basename(dotfilespath)))
         copy_arbo(
@@ -412,7 +479,10 @@ def init_cli_arg():
         default=os.path.expanduser("~/.dotfiles"),
     )
     parser.add_argument(
-        "-r", "--restart", help=argparse.SUPPRESS, action="store_true", default=False
+        "--restart", help=argparse.SUPPRESS, action="store_true", default=False
+    )
+    parser.add_argument(
+        "-r", "--root", help=argparse.SUPPRESS, action="store_true", default=False
     )
 
     return parser.parse_args()
@@ -424,7 +494,7 @@ def main():
     args = init_cli_arg()
 
     try:
-        launch(args.path, args.restart)
+        launch(args.path, args.restart, args.root)
 
     except KeyboardInterrupt:
         print_error("Aborting...")
