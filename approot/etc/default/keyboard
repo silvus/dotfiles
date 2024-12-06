@@ -1,0 +1,20 @@
+# This file comes from dotfiles.
+
+# KEYBOARD CONFIGURATION FILE
+
+# Consult the keyboard(5) manual page.
+
+# Generated from:
+# sudo dpkg-reconfigure keyboard-configuration
+
+# XKBMODEL="pc105"
+# XKBLAYOUT="fr"
+# XKBVARIANT="azerty"
+# XKBOPTIONS="compose:ralt"
+
+XKBMODEL="pc105"
+XKBLAYOUT="custom"
+XKBVARIANT=""
+XKBOPTIONS="compose:rwin,grp_led:scroll,grp:alt_caps_toggle,lv3:ralt_switch,nbsp:none,shift:both_capslock,lv3:caps_switch"
+
+BACKSPACE="guess"
