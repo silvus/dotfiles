@@ -278,7 +278,10 @@ def get_files_different_arbo(rootSource, rootDestination):
             destination = os.path.join(rootDestination, relativeFile)
 
             # Compare diff
-            if not filecmp.cmp(source, destination):
+            try:
+                if not filecmp.cmp(source, destination):
+                    diff_files.append(os.path.join('/', relativeFile))
+            except FileNotFoundError:
                 diff_files.append(os.path.join('/', relativeFile))
 
     return diff_files
@@ -456,7 +459,7 @@ def launch(dotfilespath, restarted, root):
                 copy_files_has_root(os.path.join(dotfilespath, "approot"), approot_files)
             
             else:
-                print_header("Diff in root files (no --root argument)")
+                print_header("Difference in root files (no --root argument)")
                 for approot_file in approot_files:
                     print_warning('Diff in file {}'.format(approot_file))
 
