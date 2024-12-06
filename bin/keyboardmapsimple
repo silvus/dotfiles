@@ -14,7 +14,8 @@
 
 # setxkbmap -model pc105 -layout fr,gb -variant oss,intl
 # setxkbmap -model pc105 -layout us,fr -variant intl,oss
-setxkbmap -model pc105 -layout us,fr -variant qwerty-fr,oss
+# setxkbmap -model pc105 -layout us,fr -variant qwerty-fr,oss
+setxkbmap -model pc105 -layout custom
 
 # Options, see man xkeyboard-config
 # -----------------------------------------------------------------------------
