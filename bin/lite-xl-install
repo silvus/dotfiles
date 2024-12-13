@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd /tmp
+
+curl -s https://api.github.com/repos/lite-xl/lite-xl/releases/latest \
+| grep "browser_download_url.*addons-x86_64.AppImage" \
+| cut -d : -f 2,3 \
+| tr -d \" \
+| wget -qi -
+
+
+sudo mv LiteXL-v*-addons-x86_64.AppImage /usr/local/bin/lite-xl
+
+sudo chmod 755 /usr/local/bin/lite-xl
+
+cd -
+
