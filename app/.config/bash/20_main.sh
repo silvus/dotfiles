@@ -52,6 +52,7 @@ alias photo='eom' # Eye of Mate
 alias lynx="lynx -cfg=$HOME/.config/lynx/lynxrc -lss=$HOME/.config/lynx/lynx.lss"
 alias bat='batcat'
 alias fd='fdfind'
+alias lz='lazygit'
 
 # Enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -83,3 +84,4 @@ alias mountshow='mount |column -t'
 # Keymap
 # -----------------------------------------------------------------------------
 alias keymapazerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option \"grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e\""
+
