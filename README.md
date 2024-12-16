@@ -3,7 +3,7 @@ Personals dotfiles for Bash, Tmux, Vim, AwesomeWm, etc...
 # Installation
 
 ```sh
-sudo apt install fish git python3 curl tmux ssh mosh vim dfc ncdu gawk xdotool ripgrep build-essential
+sudo apt install fish git python3 curl tmux ssh mosh vim fzf bat dfc ncdu htop btop fd-find gawk ripgrep build-essential apache2-utils tldr xdotool command-not-found
 curl -sS https://raw.githubusercontent.com/silvus/dotfiles/master/bin/dotfiles | python3
 ```
 

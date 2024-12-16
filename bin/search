@@ -2,7 +2,9 @@
 
 # Quick search in a directory for a string ($1).
 # -----------------------------------------------------------------------------
-if [[ -x "$(which pt 2>/dev/null)" ]]; then
+if [[ -x "$(which rg 2>/dev/null)" ]]; then
+	rg --no-ignore --hidden "$1" .
+elif [[ -x "$(which pt 2>/dev/null)" ]]; then
 	pt --hidden --follow "$1" .
 elif [[ -x "$(which ack-grep 2>/dev/null)" ]]; then
 	ack-grep "$1" .
