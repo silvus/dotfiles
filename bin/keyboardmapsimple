@@ -41,7 +41,7 @@ setxkbmap -option 'grp_led:scroll'
 # Shift+Caps to switch to another keyboard layout (qwerty)
 # setxkbmap -option 'grp:shift_caps_toggle'
 # Alt+Caps Lock to switch to another keyboard layout (qwerty)
-setxkbmap -option 'grp:alt_caps_toggle'
+# setxkbmap -option 'grp:alt_caps_toggle'
 
 # Swap Capslock for Backspace
 # https://askubuntu.com/a/82734
@@ -50,6 +50,12 @@ setxkbmap -option 'grp:alt_caps_toggle'
 
 # Enable AltGr on Alt Right
 setxkbmap -option 'lv3:ralt_switch'
+
+# Caps lock is a second AltGr (to rebind arrows on zqsd / ijkl)
+# setxkbmap -option 'lv3:caps_switch'
+
+# Caps lock is a level 5 layer shift
+setxkbmap -option 'lv5:caps_switch'
 
 # Euro sign on AltGr + e
 # setxkbmap -option 'eurosign:e'
@@ -61,6 +67,3 @@ setxkbmap -option 'nbsp:none'
 
 # Shift left and Shift right to Caps lock
 setxkbmap -option 'shift:both_capslock'
-
-# Caps lock is a second AltGr (to rebind arrows on zqsd / ijkl)
-setxkbmap -option 'lv3:caps_switch'
