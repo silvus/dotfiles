@@ -8,3 +8,5 @@ curl -sLo lite-xl "https://github.com/lite-xl/lite-xl/releases/download/v${LATES
 sudo chmod 755 lite-xl
 sudo install lite-xl /usr/local/bin
 
+rm lite-xl
+
