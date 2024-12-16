@@ -64,6 +64,7 @@ alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
 alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option \"grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e\""
 alias bat='batcat'
 alias fd='fdfind'
+alias lz='lazygit'
 
 alias tree1="tree --dirsfirst -ChFLQ 1"
 alias tree2="tree --dirsfirst -ChFLQ 2"
@@ -116,3 +117,4 @@ bind \ch fzf-history-widget
 if test -f "$SILVUSDOTFILES_CUSTOM/shellfish"
     source "$SILVUSDOTFILES_CUSTOM/shellfish"
 end
+
