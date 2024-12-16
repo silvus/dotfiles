@@ -10,11 +10,12 @@
 # XKBMODEL="pc105"
 # XKBLAYOUT="fr"
 # XKBVARIANT="azerty"
-# XKBOPTIONS="compose:ralt"
+# XKBOPTIONS=""
 
 XKBMODEL="pc105"
 XKBLAYOUT="custom"
 XKBVARIANT=""
-XKBOPTIONS="compose:rwin,grp_led:scroll,grp:alt_caps_toggle,lv3:ralt_switch,nbsp:none,shift:both_capslock,lv3:caps_switch"
+XKBOPTIONS="compose:rwin,grp_led:scroll,lv3:ralt_switch,lv5:caps_switch,nbsp:none,shift:both_capslock"
 
 BACKSPACE="guess"
+

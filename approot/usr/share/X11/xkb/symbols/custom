@@ -1,61 +1,65 @@
 # This file comes from dotfiles.
 
-# sudo cp ~/.dotfiles/approot/usr/share/X11/xkb/symbols/custom /usr/share/X11/xkb/symbols/custom
-# setxkbmap custom
+# sudo cp ~/.dotfiles/approot/usr/share/X11/xkb/symbols/custom /usr/share/X11/xkb/symbols/custom && setxkbmap custom -option ''
 
 # Installation method from https://github.com/OneDeadKey/kalamine (xkb_symbols part)
-# Forked from https://github.com/qwerty-fr/qwerty-fr 
+# Forked from https://github.com/qwerty-fr/qwerty-fr
 # - Invert egrave and eacute
 # - Invert colon and semicolon
-# - Add arrows to ijkl
-# - Add PageUp/Down to p:
+# - Caps lock is level 5 Shift
+# - Caps lock + ijkl is arrows
+# - Caps lock + u/o is PageUp/Down
+# - Caps lock + wasd is arrows
+# - Caps lock + q/e is PageUp/Down
 
-
-partial alphanumeric_keys 
+default partial alphanumeric_keys modifier_keys
 xkb_symbols "qwerty-fr-custom"
 {
     include "us(basic)"
+    include "shift(both_capslock)"
     include "level3(ralt_switch)"
+    include "level5(caps_switch)"
 
-    name[Group1]= "US keyboard with french symbols - AltGr combination";
+    name[Group1]= "US keyboard with french symbols - Custom";
+    key.type[Group1] = "EIGHT_LEVEL";
 
     key <TLDE> { [ grave,        asciitilde,  dead_grave,             dead_tilde           ] };
     key <AE01> { [ 1,            exclam,      onesuperior,            exclamdown           ] };
     key <AE02> { [ 2,            at,          twosuperior,            dead_doubleacute     ] };
     key <AE03> { [ 3,            numbersign,  ecircumflex,            Ecircumflex          ] };
-    key <AE04> { [ 4,            dollar,      EuroSign,               dead_currency        ] }; // FIXME: dead_currency has a different mapping than the one we want for qwerty-fr. Need to define a custom dead key instead. See Windows layout for dead key definition.
+    key <AE04> { [ 4,            dollar,      EuroSign,               dead_currency        ] };
     key <AE05> { [ 5,            percent,     dead_macron,            dead_abovedot        ] };
     key <AE06> { [ 6,            asciicircum, dead_circumflex,        dead_caron           ] };
     key <AE07> { [ 7,            ampersand,   ucircumflex,            Ucircumflex          ] };
     key <AE08> { [ 8,            asterisk,    icircumflex,            Icircumflex          ] };
-    key <AE09> { [ 9,            parenleft,   Home,                   Home                 ] };
-    key <AE10> { [ 0,            parenright,  End,                    End                  ] };
+    key <AE09> { [ 9,            parenleft,   ocircumflex,            Ocircumflex          ] };
+    key <AE10> { [ 0,            parenright,  oslash,                 Oslash               ] };
     key <AE11> { [ minus,        underscore,  endash,                 emdash               ] };
     key <AE12> { [ equal,        plus,        notequal,               approxeq             ] };
-    
-    key <AD01> { [ q,            Q,           acircumflex,            Acircumflex          ] };
-    key <AD02> { [ w,            W,           egrave,                 Egrave               ] };
-    key <AD03> { [ e,            E,           eacute,                 Eacute               ] };
+
+    key <AD01> { [ q,            Q,           acircumflex,            Acircumflex          , Prior                 ] };
+    key <AD02> { [ w,            W,           egrave,                 Egrave               , Up                    ] };
+    key <AD03> { [ e,            E,           eacute,                 Eacute               , Next                  ] };
     key <AD04> { [ r,            R,           registered,             copyright            ] };
     key <AD05> { [ t,            T,           thorn,                  THORN                ] };
     key <AD06> { [ y,            Y,           dead_invertedbreve,     dead_breve           ] };
-    key <AD07> { [ u,            U,           ugrave,                 Ugrave               ] };
-    key <AD08> { [ i,            I,           Up,                     Up                   ] };
-    key <AD09> { [ o,            O,           ograve,                 ocircumflex          ] };
-    key <AD10> { [ p,            P,           Prior,                  Prior                ] };
+    key <AD07> { [ u,            U,           ugrave,                 Ugrave               , Prior                 ] };
+    key <AD08> { [ i,            I,           igrave,                 Igrave               , Up                    ] };
+    key <AD09> { [ o,            O,           ograve,                 ocircumflex          , Next                  ] };
+    key <AD10> { [ p,            P,           oe,                     OE                   ] };
     key <AD11> { [ bracketleft,  braceleft,   guillemotleft,          leftdoublequotemark  ] };
     key <AD12> { [ bracketright, braceright,  guillemotright,         rightdoublequotemark ] };
 
-    key <AC01> { [ a,            A,           agrave,                 Agrave               ] };
-    key <AC02> { [ s,            S,           ae,                     AE                   ] };
-    key <AC03> { [ d,            D,           ediaeresis,             Ediaeresis           ] };
+    key <AC01> { [ a,            A,           agrave,                 Agrave               , Left                  ] };
+    key <AC02> { [ s,            S,           ae,                     AE                   , Down                  ] };
+    key <AC03> { [ d,            D,           ediaeresis,             Ediaeresis           , Right                 ] };
     key <AC04> { [ f,            F,           VoidSymbol,             VoidSymbol           ] };
-    key <AC05> { [ g,            G,           dead_greek,             VoidSymbol           ] }; // FIXME: dead_greek has a different mapping than the one we want for qwerty-fr. Need to define a custom dead key instead. See Windows layout for dead key definition.
+    key <AC05> { [ g,            G,           dead_greek,             VoidSymbol           ] };
     key <AC06> { [ h,            H,           ydiaeresis,             Ydiaeresis           ] };
-    key <AC07> { [ j,            J,           Left,                   Left                 ] };
-    key <AC08> { [ k,            K,           Down,                   Down                 ] };
-    key <AC09> { [ l,            L,           Right,                  Right                ] };
-    key <AC10> { [ colon,        semicolon,   Next,                   Next                 ] };
+    key <AC07> { [ j,            J,           udiaeresis,             Udiaeresis           , Left                  ] };
+    key <AC08> { [ k,            K,           idiaeresis,             Idiaeresis           , Down                  ] };
+    key <AC09> { [ l,            L,           odiaeresis,             Odiaeresis           , Right                 ] };
+    key <AC10> { [ colon,        semicolon,   dead_acute,             dead_abovering       ] };
     key <AC11> { [ apostrophe,   quotedbl,    dead_grave,             dead_diaeresis       ] };
     key <BKSL> { [ backslash,    bar,         VoidSymbol,             doublelowquotemark   ] }; // „
 
