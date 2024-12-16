@@ -50,6 +50,8 @@ alias copytoclipboard='copy' # Same as copy alias
 alias calculator='bc -l'
 alias photo='eom' # Eye of Mate
 alias lynx="lynx -cfg=$HOME/.config/lynx/lynxrc -lss=$HOME/.config/lynx/lynx.lss"
+alias bat='batcat'
+alias fd='fdfind'
 
 # Enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
