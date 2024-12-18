@@ -37,7 +37,10 @@
 	default = current
 [pull]
 	default = current
+	rebase = true
 [status]
 	submoduleSummary = true
 [user]
 	useConfigOnly = true
+[rebase]
+	autoStash = true
