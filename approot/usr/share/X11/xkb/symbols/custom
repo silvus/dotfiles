@@ -45,7 +45,10 @@ xkb_symbols "qwerty-fr-custom"
     key <AD06> { [ y,            Y,           dead_invertedbreve,     dead_breve           ] };
     key <AD07> { [ u,            U,           ugrave,                 Ugrave               , Prior                 ] };
     key <AD08> { [ i,            I,           igrave,                 Igrave               , Up                    ] };
-    key <AD09> { [ o,            O,           ograve,                 ocircumflex          , Next                  ] };
+    
+    # Break Super+o ?
+    # key <AD09> { [ o,            O,           ograve,                 ocircumflex          , Next                  ] };
+    key <AD09> { [ o,            O,           ograve,                 ocircumflex          ] };
     key <AD10> { [ p,            P,           oe,                     OE                   ] };
     key <AD11> { [ bracketleft,  braceleft,   guillemotleft,          leftdoublequotemark  ] };
     key <AD12> { [ bracketright, braceright,  guillemotright,         rightdoublequotemark ] };
