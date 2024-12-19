@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Bind to "media rewind" (XF86AudioRewind)
+
+if pgrep "mpv" >/dev/null 2>&1 ; then
+	# Mpv
+	echo "seek -10" | socat - "/tmp/mpv-socket"
+
+elif pgrep "mocp" >/dev/null 2>&1 ; then
+	# Moc
+	${HOME}/.dotfiles/bin/music --seek=-10
+
+else
+	playerctl position 10-
+fi
+
+exit 0
