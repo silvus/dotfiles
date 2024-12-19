@@ -418,6 +418,13 @@ keys.global = awful.util.table.join(
 	awful.key({}, "XF86AudioPrev", function()
 		awful.spawn(config.home .. "/.dotfiles/bin/musicprevious", false)
 	end, { description = "music previous", group = "audio" }),
+	awful.key({}, "XF86AudioRewind", function()
+		awful.spawn(config.home .. "/.dotfiles/bin/musicrewind", false)
+	end, { description = "music previous", group = "audio" }),
+	awful.key({}, "XF86AudioForward", function()
+		awful.spawn(config.home .. "/.dotfiles/bin/musicforward", false)
+	end, { description = "music previous", group = "audio" }),
+	
 	-- Simulate Media Keys
 	awful.key({}, "Pause", function()
 		awful.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
@@ -636,4 +643,3 @@ keys.clients.buttons = awful.util.table.join(
 
 
 return keys
-
