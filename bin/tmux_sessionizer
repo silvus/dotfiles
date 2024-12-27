@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# Inspired from https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
+
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+	# tmux new-session -s $selected_name -c $selected
+	echo 'Tmux is not running'
+	exit 1
+fi
+
+if [[ $# -eq 1 ]]; then
+	selected=$1
+else
+	selected_paths=''
+	if [ -d "/data/dev" ]; then
+		selected_paths+="/data/dev "
+	fi
+	if [ -d "/data/projects" ]; then
+		selected_paths+="/data/projects "
+	fi
+	selected_paths=$(echo "$selected_paths" | sed 's/ $//')
+	results=$(fdfind . "$selected_paths" -t d -d 1)
+
+	complete_paths=''
+	if [ -d "$HOME/.dotfiles" ]; then
+		complete_paths+="~/.dotfiles\n"
+	fi
+	if [ -d "$HOME/.dotfiles_custom" ]; then
+		complete_paths+="~/.dotfiles_custom\n"
+	fi
+	if [ -d "/data/doc" ]; then
+		complete_paths+="/data/doc\n"
+	fi
+	selected=$(echo -e "${complete_paths}${results}" | fzf --no-sort)
+fi
+
+if [[ -z $selected ]]; then
+	exit 0
+fi
+
+selected_name=$(basename "$selected" | tr . _)
+
+if ! tmux has-session -t=$selected_name 2> /dev/null; then
+	tmux new-session -ds $selected_name -c $selected
+fi
+
+tmux switch-client -t $selected_name
