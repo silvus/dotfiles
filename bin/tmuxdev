@@ -3,17 +3,10 @@
 # Launch tmux
 # -----------------------------------------------------------------------------
 _launch_tmux() {
-	local _TMUX_SESSION_NAME="${USER}_dev"
+	local _TMUX_SESSION_NAME="main"
 
 	# Make sure Fish is flagged as not started at this point
 	unset FISH_IS_STARTED
-
-	if [[ -z "${SSH_CLIENT}" ]]; then
-		local _WINDOWS_MAIN='Dev'
-	else
-		# On remote sessions (nested)
-		local _WINDOWS_MAIN='Main'
-	fi
 
 	# make sure tmux server is running
 	tmux start-server
@@ -23,7 +16,7 @@ _launch_tmux() {
 	if [[ "$?" != 0 ]]; then
 
 		# Launch session
-		tmux -2 new-session -s "${_TMUX_SESSION_NAME}" -d -n "$_WINDOWS_MAIN"
+		tmux new-session -s "${_TMUX_SESSION_NAME}" -d
 
 		# Remind stuff
 		# if [[ -x "$(which remind 2>/dev/null)" ]]; then
@@ -47,14 +40,14 @@ _launch_tmux() {
 		fi
 
 		# Focus on first window
-		tmux select-window -t "$_WINDOWS_MAIN"
+		tmux select-window -t 1
 
 		# Attach to session
-		tmux -2 attach -t "${_TMUX_SESSION_NAME}"
+		tmux attach -t "${_TMUX_SESSION_NAME}"
 
 	else
 		# Attach to session without disturbing the others clients
-		tmux -2 new-session -t "${_TMUX_SESSION_NAME}"
+		tmux new-session -t "${_TMUX_SESSION_NAME}"
 	fi
 }
 
