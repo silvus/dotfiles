@@ -38,6 +38,6 @@ fi
 #	run thunderbird
 # fi
 
-if [[ -f "$HOME/.dotfiles_custom/autostart_launcher" ]]; then
-	source "$HOME/.dotfiles_custom/autostart_launcher"
+if [[ -f "$HOME/.dotfiles/custom/autostart_launcher" ]]; then
+	source "$HOME/.dotfiles/custom/autostart_launcher"
 fi
