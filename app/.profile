@@ -15,7 +15,7 @@ while [ -h "$_bash_source" ]; do # resolve $_bash_source until the file is no lo
 done
 
 export SILVUSDOTFILES="$( cd -P "$( dirname "$_bash_source" )"/../ && pwd )"
-export SILVUSDOTFILES_CUSTOM="${SILVUSDOTFILES}_custom"
+export SILVUSDOTFILES_CUSTOM="${SILVUSDOTFILES}/custom"
 
 
 # Customs paths

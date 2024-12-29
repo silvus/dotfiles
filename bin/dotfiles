@@ -463,11 +463,16 @@ def launch(dotfilespath, restarted, root):
                 for approot_file in approot_files:
                     print_warning('Diff in file {}'.format(approot_file))
 
-        # Generate ~/.dotfiles_custom files if not exists
-        print_header("Generate {}_custom files".format(os.path.basename(dotfilespath)))
+        # Tempory: Migrate dotfiles_custom to new version
+        if os.path.exists(os.path.expanduser('~/.dotfiles_custom')):
+            print_header("Migrate ~/.dotfiles_custom to ~/.dotfiles/custom")
+            shutil.move(os.path.expanduser('~/.dotfiles_custom'), os.path.join(dotfilespath, "custom"))
+
+        # Generate ~/.dotfiles/custom files if not exists
+        print_header("Generate {}/custom files".format(os.path.basename(dotfilespath)))
         copy_arbo(
-            os.path.join(dotfilespath, "appcustom"),
-            "{}_custom".format(dotfilespath),
+            os.path.join(dotfilespath, "custom_templates"),
+            os.path.join(dotfilespath, "custom")
         )
 
         print()

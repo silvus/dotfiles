@@ -1,6 +1,5 @@
 [include]
-	path = ~/.gituser  # Deprecated
-	path = ~/.dotfiles_custom/gitconfig
+	path = ~/.dotfiles/custom/gitconfig
 [color]
 	ui = auto
 [core]
