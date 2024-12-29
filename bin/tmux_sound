@@ -53,14 +53,33 @@ print_status() {
 		GRAPH_ASCII="X"
 	fi
 
-	ascii_bar='=========='
-	barlength=${#ascii_bar}
-
-	# Battery percentage rounded to the lenght of ascii_bar
-	rounded_n=$(( $barlength * $VOL_PCT / 100))
-
-	# Create the bar
-	GRAPH=$(printf "%-${barlength}s" "${ascii_bar:0:rounded_n}")
+	# Inspired from https://github.com/tmux-plugins/tmux-battery/blob/master/scripts/battery_graph.sh
+	GRAPH=""
+	if [ $VOL_PCT -gt 5 ]; then
+		GRAPH=$GRAPH"▁"
+	else
+		GRAPH=$GRAPH" "
+	fi
+	if [ $VOL_PCT -ge 25 ]; then
+		GRAPH=$GRAPH"▂"
+	else
+		GRAPH=$GRAPH" "
+	fi
+	if [ $VOL_PCT -ge 50 ]; then
+		GRAPH=$GRAPH"▄"
+	else
+		GRAPH=$GRAPH" "
+	fi
+	if [ $VOL_PCT -ge 75 ]; then
+		GRAPH=$GRAPH"▆"
+	else
+		GRAPH=$GRAPH" "
+	fi
+	if [ $VOL_PCT -ge 95 ]; then
+		GRAPH=$GRAPH"█"
+	else
+		GRAPH=$GRAPH" "
+	fi
 
 	printf "#[bg=black]#[fg=%s] %s #[fg=black]#[bg=green] %s #[default] " "$COLOR" "$GRAPH_ASCII" "$GRAPH"
 }
