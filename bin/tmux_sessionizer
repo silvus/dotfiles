@@ -21,9 +21,9 @@ else
 		selected_paths+="/data/projects "
 	fi
 	selected_paths=$(echo "$selected_paths" | sed 's/ $//')
-	results=$(fdfind . "$selected_paths" -t d -d 1)
+	results=$(find "$selected_paths" -not -name '.*' -mindepth 1 -maxdepth 1 -type d)
 
-	complete_paths=''
+	complete_paths='main\n'
 	if [ -d "$HOME/.dotfiles" ]; then
 		complete_paths+="~/.dotfiles\n"
 	fi
