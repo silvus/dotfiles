@@ -4,8 +4,8 @@
 # ------------------------------------------------------
 xrdb -merge -I$HOME ~/.Xresources
 # Include specific Xresources if needed
-if [[ -f "$HOME/.dotfiles_custom/Xresources" ]]; then
-	xrdb -merge -I$HOME/.dotfiles_custom/Xresources
+if [[ -f "$HOME/.dotfiles/custom/Xresources" ]]; then
+	xrdb -merge -I$HOME/.dotfiles/custom/Xresources
 fi
 
 # Keyboard config
@@ -24,8 +24,8 @@ xset dpms 3600 3600 3600
 
 # Include specific screen (xrandr) configuration script if needed
 # ------------------------------------------------------
-if [[ -f "$HOME/.dotfiles_custom/autostart_xinit" ]]; then
-	source "$HOME/.dotfiles_custom/autostart_xinit"
+if [[ -f "$HOME/.dotfiles/custom/autostart_xinit" ]]; then
+	source "$HOME/.dotfiles/custom/autostart_xinit"
 fi
 
 # Invoke global X session script

@@ -27,9 +27,6 @@ else
 	if [ -d "$HOME/.dotfiles" ]; then
 		complete_paths+="~/.dotfiles\n"
 	fi
-	if [ -d "$HOME/.dotfiles_custom" ]; then
-		complete_paths+="~/.dotfiles_custom\n"
-	fi
 	if [ -d "/data/doc" ]; then
 		complete_paths+="/data/doc\n"
 	fi

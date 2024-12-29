@@ -34,9 +34,9 @@ _launch_tmux() {
 		# Source env script
 		if [[ -f "${SILVUSDOTFILES_CUSTOM}/tmuxdev" ]]; then
 			source "${SILVUSDOTFILES_CUSTOM}/tmuxdev"
-		elif [[ -f "$HOME/.dotfiles_custom/tmuxdev" ]]; then
+		elif [[ -f "$HOME/.dotfiles/custom/tmuxdev" ]]; then
 			# When urxvt is started by Awesomewm, bash_aliases is not sourced and env variables are missing
-			source "$HOME/.dotfiles_custom/tmuxdev"
+			source "$HOME/.dotfiles/custom/tmuxdev"
 		fi
 
 		# Focus on first window
