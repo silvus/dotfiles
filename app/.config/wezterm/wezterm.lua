@@ -18,7 +18,18 @@ config.color_scheme = 'Tango (terminal.sexy)'
 -- config.color_scheme = 'Elementary'
 -- config.color_scheme = 'Pro'
 
-config.font = wezterm.font('Hack Nerd Font')
+config.use_cap_height_to_scale_fallback_fonts = true
+config.font = wezterm.font_with_fallback({
+	'Hack Nerd Font',
+	'Hack',
+	{
+		family = 'Noto Color Emoji',
+		-- scale = 0.7,
+		assume_emoji_presentation = true,
+	},
+	'DejaVu Sans Mono',
+	'JetBrains Mono',
+})
 config.font_size = 9
 
 config.hide_tab_bar_if_only_one_tab = true
@@ -132,4 +143,3 @@ end
 
 -- and finally, return the configuration to wezterm
 return config
-
