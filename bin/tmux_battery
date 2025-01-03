@@ -51,12 +51,12 @@ battery_charge() {
 		battery_current="$battery_path/charge_now"
 	else 
 		# Debian 10
-		battery_state=$(cat $battery_path/energy_now)
+		battery_state=$(cat $battery_path/status)
 		battery_full="$battery_path/energy_full"
 		battery_current="$battery_path/energy_now"
 	fi
 
-	if [ $battery_state == 'Discharging' ]; then
+	if [[ $battery_state == 'Discharging' ]] || [[ "$battery_state" == "Not charging" ]]; then
 		BATT_CONNECTED=0
 	else
 		BATT_CONNECTED=1
@@ -103,8 +103,12 @@ apply_colors() {
 # Print the battery status
 print_status() {
 	GRAPH_ASCII=""
-	if ((emoji)) && ((BATT_CONNECTED)); then
-		GRAPH_ASCII="⚡"
+	if ((emoji)); then
+		if ((BATT_CONNECTED)); then
+			GRAPH_ASCII="⚡"
+		else
+			GRAPH_ASCII="🔋"
+		fi
 	else
 		if command -v spark &>/dev/null; then
 			sparks=$(spark 0 ${BATT_PCT} 100)
@@ -125,7 +129,50 @@ print_status() {
 	fi
 
 	if ((output_tmux)); then
+		# Inspired from https://github.com/tmux-plugins/tmux-battery/blob/master/scripts/battery_graph.sh
+		GRAPH=""
+		if [ $BATT_PCT -gt 5 ]; then
+			GRAPH=$GRAPH"▁"
+		else
+			GRAPH=$GRAPH" "
+		fi
+		if [ $BATT_PCT -gt 18 ]; then
+			GRAPH=$GRAPH"▂"
+		else
+			GRAPH=$GRAPH" "
+		fi
+		if [ $BATT_PCT -gt 30 ]; then
+			GRAPH=$GRAPH"▃"
+		else
+			GRAPH=$GRAPH" "
+		fi
+		if [ $BATT_PCT -gt 43 ]; then
+			GRAPH=$GRAPH"▄"
+		else
+			GRAPH=$GRAPH" "
+		fi
+		if [ $BATT_PCT -ge 56 ]; then
+			GRAPH=$GRAPH"▅"
+		else
+			GRAPH=$GRAPH" "
+		fi
+		if [ $BATT_PCT -ge 69 ]; then
+			GRAPH=$GRAPH"▆"
+		else
+			GRAPH=$GRAPH" "
+		fi
+		if [ $BATT_PCT -ge 82 ]; then
+			GRAPH=$GRAPH"▇"
+		else
+			GRAPH=$GRAPH" "
+		fi
+		if [ $BATT_PCT -ge 95 ]; then
+			GRAPH=$GRAPH"█"
+		else
+			GRAPH=$GRAPH" "
+		fi
 		printf "#[bg=black]#[fg=white] %s #[fg=black]#[bg=%s] %s #[default] " "$GRAPH_ASCII" "$COLOR" "$GRAPH"
+
 	elif ((output_zsh)); then
 		printf "%%B%s%s %s" "$COLOR" "[$BATT_PCT%%]" "$GRAPH"
 	else

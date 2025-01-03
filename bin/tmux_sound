@@ -33,7 +33,7 @@ volume_status() {
 	VOL_PCT=${vol_now::-1}
 }
 
-# Apply the correct color to the battery status prompt
+# Apply the correct color to the volume status prompt
 apply_colors() {
 	if [[ "$VOL_ON" -eq 1 ]]; then
 		COLOR="white"
@@ -48,9 +48,9 @@ apply_colors() {
 print_status() {
 	GRAPH_ASCII=""
 	if ((VOL_ON)); then
-		GRAPH_ASCII="V"
+		GRAPH_ASCII="🔊"
 	else
-		GRAPH_ASCII="X"
+		GRAPH_ASCII="🔇"
 	fi
 
 	# Inspired from https://github.com/tmux-plugins/tmux-battery/blob/master/scripts/battery_graph.sh
@@ -60,18 +60,33 @@ print_status() {
 	else
 		GRAPH=$GRAPH" "
 	fi
-	if [ $VOL_PCT -ge 25 ]; then
+	if [ $VOL_PCT -gt 18 ]; then
 		GRAPH=$GRAPH"▂"
 	else
 		GRAPH=$GRAPH" "
 	fi
-	if [ $VOL_PCT -ge 50 ]; then
+	if [ $VOL_PCT -gt 30 ]; then
+		GRAPH=$GRAPH"▃"
+	else
+		GRAPH=$GRAPH" "
+	fi
+	if [ $VOL_PCT -gt 43 ]; then
 		GRAPH=$GRAPH"▄"
 	else
 		GRAPH=$GRAPH" "
 	fi
-	if [ $VOL_PCT -ge 75 ]; then
+	if [ $VOL_PCT -ge 56 ]; then
+		GRAPH=$GRAPH"▅"
+	else
+		GRAPH=$GRAPH" "
+	fi
+	if [ $VOL_PCT -ge 69 ]; then
 		GRAPH=$GRAPH"▆"
+	else
+		GRAPH=$GRAPH" "
+	fi
+	if [ $VOL_PCT -ge 82 ]; then
+		GRAPH=$GRAPH"▇"
 	else
 		GRAPH=$GRAPH" "
 	fi
