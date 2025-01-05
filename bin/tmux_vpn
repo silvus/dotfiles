@@ -1,0 +1,54 @@
+#!/bin/bash
+
+usage() {
+cat <<EOF
+tmux vpn widget usage:
+  general:
+	-h, --help    print this message
+EOF
+}
+
+if [[ $1 == '-h' || $1 == '--help' || $1 == '-?' ]]; then
+	usage
+	exit 0
+fi
+
+# Determine vpn state
+vpn_status() {
+
+	# Get volume state
+	VPN_ON=0
+	if ip a show tun0 up >/dev/null; then
+		VPN_ON=1
+	fi
+
+	# Silent exit if vpn is off
+	if [[ "$VPN_ON" -eq 0 ]]; then
+		exit 0
+	fi
+}
+
+# Apply the correct color to the volume status prompt
+apply_colors() {
+	if [[ "$VPN_ON" -eq 1 ]]; then
+		COLOR="white"
+	elif [[ "$VPN_ON" -eq 0 ]]; then
+		COLOR="red"
+	else
+		COLOR="yellow"
+	fi
+}
+
+# Print the vpn status
+print_status() {
+	ASCII=""
+	if ((VPN_ON)); then
+		ASCII="🛡️"
+	fi
+
+	printf "#[bg=black]#[fg=%s] %s #[default] " "$COLOR" "$ASCII"
+}
+
+vpn_status
+apply_colors
+print_status
