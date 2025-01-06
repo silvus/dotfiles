@@ -3,9 +3,10 @@
 # Executed from Tmux hook session-created and window-linked
 
 
-SESSION_NAME="$1"
+PROJECT_NAME="$1"
+PROJECT_PATH="$2"
 
-case "$SESSION_NAME" in
+case "$PROJECT_NAME" in
 	"main")
 		;;
 
