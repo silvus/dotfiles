@@ -11,16 +11,18 @@ if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
 fi
 
 main() {
-	selected_paths=''
+	projects=''
 	if [ -d "/data/dev" ]; then
-		selected_paths+="/data/dev "
+		projects+=$(find /data/dev -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort)
+	fi
+	if [ -d "/data/prod" ]; then
+		projects+=$(find /data/prod -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort)
 	fi
 	if [ -d "/data/projects" ]; then
-		selected_paths+="/data/projects "
+		# More depth here
+		projects+=$(find /data/projects -mindepth 1 -maxdepth 2 -type d -not -name '.*' | sort)
 	fi
-	selected_paths=$(echo "$selected_paths" | sed 's/ $//')
-	results=$(find "$selected_paths" -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort)
-
+	
 	complete_paths='main\n'
 	if [ -d "$HOME/.dotfiles" ]; then
 		complete_paths+="~/.dotfiles\n"
@@ -28,7 +30,7 @@ main() {
 	if [ -d "/data/doc" ]; then
 		complete_paths+="/data/doc\n"
 	fi
-	selected=$(echo -e "${complete_paths}${results}" | fzf)
+	selected=$(echo -e "${complete_paths}${projects}" | fzf)
 
 	if [[ -z $selected ]]; then
 		exit 0
