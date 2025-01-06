@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Executed from Tmux hook session-created
+# Executed from Tmux hook session-created and window-linked
 
 
 SESSION_NAME="$1"

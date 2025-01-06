@@ -32,6 +32,8 @@ _launch_tmux() {
 		# fi
 
 		# Source env script
+		# /!\ DEPRECATED
+		# Use tmux_session_init_custom instead
 		if [[ -f "${SILVUSDOTFILES_CUSTOM}/tmuxdev" ]]; then
 			source "${SILVUSDOTFILES_CUSTOM}/tmuxdev"
 		elif [[ -f "$HOME/.dotfiles/custom/tmuxdev" ]]; then
