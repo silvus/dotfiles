@@ -10,9 +10,7 @@ if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
 	exit 1
 fi
 
-if [[ $# -eq 1 ]]; then
-	selected=$1
-else
+main() {
 	selected_paths=''
 	if [ -d "/data/dev" ]; then
 		selected_paths+="/data/dev "
@@ -31,17 +29,38 @@ else
 		complete_paths+="/data/doc\n"
 	fi
 	selected=$(echo -e "${complete_paths}${results}" | fzf)
-fi
 
-if [[ -z $selected ]]; then
-	exit 0
-fi
+	if [[ -z $selected ]]; then
+		exit 0
+	fi
 
-selected_name=$(basename "$selected" | tr . _)
-selected="${selected/#\~/$HOME}"
+	selected_name=$(basename "$selected" | tr . _ | tr ' ' '_')
+	selected="${selected/#\~/$HOME}"
 
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-	tmux new-session -ds $selected_name -c $selected
-fi
+	if ((SESSION_MODE)); then
+		# Session mode
+		if ! tmux has-session -t="$selected_name" 2> /dev/null; then
+			tmux new-session -ds "$selected_name" -c "$selected"
+		fi
+		tmux switch-client -t "$selected_name"
+	else
+		# Window mode
+		tmux new-window -t "main" -n "$selected_name" -c "$selected"
+	fi
 
-tmux switch-client -t $selected_name
+}
+
+
+# Launch in window or session (default window)
+SESSION_MODE=0
+
+# Read args
+while getopts ":ws" opt; do
+	case $opt in
+		s)
+			SESSION_MODE=1
+			;;
+	esac
+done
+
+main

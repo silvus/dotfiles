@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Executed from Tmux hook session-created.
+# Executed from Tmux hook session-created and window-linked.
 # If a file is called .tmux-init in a projet directory, execute it.
 
 SESSION_NAME="$1"
@@ -9,7 +9,7 @@ SESSION_PROJECT_PATH=$(pwd)
 SESSION_PROJECT_SCRIPT_PATH=$SESSION_PROJECT_PATH/$SESSION_PROJECT_SCRIPT
 
 # Execute global init script
-(exec "$HOME/.dotfiles/custom/tmux-init-global" $SESSION_NAME)
+(exec "$HOME/.dotfiles/custom/tmux_session_init_custom" $SESSION_NAME)
 
 # Execute projet init script
 if [ -f "$SESSION_PROJECT_SCRIPT_PATH" ] && [ -x "$SESSION_PROJECT_SCRIPT_PATH" ]; then
