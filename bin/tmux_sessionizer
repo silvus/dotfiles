@@ -1,70 +1,120 @@
 #!/usr/bin/env bash
 
-# Inspired from https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
+# Tracks usage and prioritizes most recently used results in the fzf list
+HISTORY_TRACK="$HOME/.tmux_sessionizer_history"
+# Max number of history entries
+MAX_HISTORY_SIZE=100
 
 tmux_running=$(pgrep tmux)
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-	# tmux new-session -s $selected_name -c $selected
-	echo 'Tmux is not running'
+	echo "Tmux is not running"
 	exit 1
 fi
 
+get_project_paths() {
+	local paths=()
+	[[ -d "/data/dev" ]] && paths+=($(find /data/dev -mindepth 1 -maxdepth 1 -type d -not -name '.*'))
+	[[ -d "/data/prod" ]] && paths+=($(find /data/prod -mindepth 1 -maxdepth 1 -type d -not -name '.*'))
+	[[ -d "/data/projects" ]] && paths+=($(find /data/projects -mindepth 1 -maxdepth 2 -type d -not -name '.*'))
+	# Use printf to ensure newline-separated output
+	printf "%s\n" "${paths[@]}"
+}
+
+get_complete_paths() {
+	local paths=()
+	[[ -d "$HOME/.dotfiles" ]] && paths+=("$HOME/.dotfiles")
+	[[ -d "/data/doc" ]] && paths+=("/data/doc")
+	[[ -d "/data/work" ]] && paths+=("/data/work")
+	# Use printf to ensure newline-separated output
+	printf "%s\n" "${paths[@]}"
+}
+
+# Sort paths by last usage (more recent first)
+get_prioritized_paths() {
+	local all_paths=("$@")
+	local sorted=()
+
+	# Read existing history from HISTORY_TRACK (timestamp path)
+	local history_entries
+	history_entries=$(awk '{print $1, $2}' "$HISTORY_TRACK" 2>/dev/null)
+
+	# Store each path with its last access timestamp
+	for path in "${all_paths[@]}"; do
+		# Find last access timestamp in history or default to 0
+		local last_used=$(echo "$history_entries" | awk -v p="$path" '$2 == p {print $1}' | sort -nr | head -n 1)
+		if [[ -z $last_used ]]; then
+			last_used=0  # If path doesn't exist in history, assign old timestamp
+		fi
+		sorted+=("$last_used $path")
+	done
+
+	# Sort paths by last usage time (descending)
+	printf "%s\n" "${sorted[@]}" | sort -nr | awk '{$1=""; print substr($0,2)}'
+}
+
+
+# Keep the HISTORY_TRACK file within the max size
+limit_history_size() {
+	local history_count
+	history_count=$(wc -l < "$HISTORY_TRACK")
+
+	if ((history_count > MAX_HISTORY_SIZE)); then
+		# Remove the oldest entries if the history exceeds the maximum size
+		sed -i '1,'$((history_count - MAX_HISTORY_SIZE))'d' "$HISTORY_TRACK"
+	fi
+}
+
 main() {
-	projects=''
-	if [ -d "/data/dev" ]; then
-		projects+=$(find /data/dev -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort)
-	fi
-	if [ -d "/data/prod" ]; then
-		projects+=$(find /data/prod -mindepth 1 -maxdepth 1 -type d -not -name '.*' | sort)
-	fi
-	if [ -d "/data/projects" ]; then
-		# More depth here
-		projects+=$(find /data/projects -mindepth 1 -maxdepth 2 -type d -not -name '.*' | sort)
-	fi
-	
-	complete_paths='main\n'
-	if [ -d "$HOME/.dotfiles" ]; then
-		complete_paths+="~/.dotfiles\n"
-	fi
-	if [ -d "/data/doc" ]; then
-		complete_paths+="/data/doc\n"
-	fi
-	if [ -d "/data/work" ]; then
-		complete_paths+="/data/work\n"
-	fi
-	selected=$(echo -e "${complete_paths}${projects}" | fzf)
+	local project_paths=$(get_project_paths)
+	local complete_paths=$(get_complete_paths)
+
+	# Combine paths
+	local all_paths=($(printf "%s\n" "${project_paths[@]}" "${complete_paths[@]}" | awk '!seen[$0]++'))
+
+	# Prioritize paths by most recent usage
+	local prioritized_paths=$(get_prioritized_paths "${all_paths[@]}")
+
+	# Convert HOME to ~ for a
+	prioritized_paths="${prioritized_paths/$HOME/\~}"
+	# Launch fzf
+	local selected=$(echo -e "$prioritized_paths" | fzf --tmux)
+	# Revert convert ~ to HOME
+	selected="${selected/\~/$HOME}"
 
 	if [[ -z $selected ]]; then
 		exit 0
 	fi
 
-	selected_name=$(basename "$selected" | tr . _ | tr ' ' '_')
-	selected="${selected/#\~/$HOME}"
+	# Prepare session/window name
+	local selected_name=$(basename "$selected" | tr . _ | tr ' ' '_')
+
+	# Log selection to HISTORY_TRACK with the current timestamp
+	echo "$(date +%s) $selected" >> "$HISTORY_TRACK"
+
+	# Limit the size of HISTORY_TRACK
+	limit_history_size
 
 	if ((SESSION_MODE)); then
-		# Session mode
-		if ! tmux has-session -t="$selected_name" 2> /dev/null; then
+		if ! tmux has-session -t="$selected_name" 2>/dev/null; then
 			tmux new-session -ds "$selected_name" -c "$selected"
 		fi
 		tmux switch-client -t "$selected_name"
 	else
-		# Window mode
+		# Open Window on main session and focus it
 		tmux new-window -t "main" -n "$selected_name" -c "$selected"
+		tmux switch-client -t "main"
 	fi
-
 }
 
-
-# Launch in window or session (default window)
+# Default mode: window
 SESSION_MODE=0
 
-# Read args
+# Read arguments
 while getopts ":ws" opt; do
 	case $opt in
-		s)
-			SESSION_MODE=1
-			;;
+		s) SESSION_MODE=1 ;;
+		*) echo "Usage: $0 [-s]"; exit 1 ;;
 	esac
 done
 
