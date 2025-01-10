@@ -53,6 +53,10 @@ get_prioritized_paths() {
 	printf "%s\n" "${sorted[@]}" | sort -nr | awk '{$1=""; print substr($0,2)}'
 }
 
+deduplicate_history() {
+    # Sort by timestamp (numerical, descending), keep only the most recent entry per path
+    tac "$HISTORY_TRACK" | awk '!seen[$2]++' | tac > "$HISTORY_TRACK.tmp" && mv "$HISTORY_TRACK.tmp" "$HISTORY_TRACK"
+}
 
 # Keep the HISTORY_TRACK file within the max size
 limit_history_size() {
@@ -92,7 +96,9 @@ main() {
 	# Log selection to HISTORY_TRACK with the current timestamp
 	echo "$(date +%s) $selected" >> "$HISTORY_TRACK"
 
-	# Limit the size of HISTORY_TRACK
+	# Remove duplicates from history
+	deduplicate_history
+	# Limit the size of history
 	limit_history_size
 
 	if ((SESSION_MODE)); then
