@@ -30,6 +30,9 @@ main() {
 	if [ -d "/data/doc" ]; then
 		complete_paths+="/data/doc\n"
 	fi
+	if [ -d "/data/work" ]; then
+		complete_paths+="/data/work\n"
+	fi
 	selected=$(echo -e "${complete_paths}${projects}" | fzf)
 
 	if [[ -z $selected ]]; then
