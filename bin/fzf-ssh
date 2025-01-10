@@ -16,7 +16,7 @@ function print_usage() {
 }
 
 function fzf-ssh () {
-	local selected_host=$(grep "Host " $HOME/.ssh/config | grep -v '*' | awk '{print $2}' | $HOME/.fzf/bin/fzf-tmux -d 35% -m -0 --no-preview --no-border --ansi --reverse --prompt="$SSH_LABEL Remote > ")
+	local selected_host=$(grep "Host " $HOME/.ssh/config | grep -v '*' | awk '{print $2}' | $HOME/.fzf/bin/fzf --tmux --prompt="$SSH_LABEL Remote > ")
 
 	if [ -n "$selected_host" ]; then
 
