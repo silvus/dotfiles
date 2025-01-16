@@ -54,8 +54,8 @@ get_prioritized_paths() {
 }
 
 deduplicate_history() {
-    # Sort by timestamp (numerical, descending), keep only the most recent entry per path
-    tac "$HISTORY_TRACK" | awk '!seen[$2]++' | tac > "$HISTORY_TRACK.tmp" && mv "$HISTORY_TRACK.tmp" "$HISTORY_TRACK"
+	# Sort by timestamp (numerical, descending), keep only the most recent entry per path
+	tac "$HISTORY_TRACK" | awk '!seen[$2]++' | tac > "$HISTORY_TRACK.tmp" && mv "$HISTORY_TRACK.tmp" "$HISTORY_TRACK"
 }
 
 # Keep the HISTORY_TRACK file within the max size
@@ -81,8 +81,10 @@ main() {
 
 	# Convert HOME to ~ for a
 	prioritized_paths="${prioritized_paths/$HOME/\~}"
+	
 	# Launch fzf
-	local selected=$(echo -e "$prioritized_paths" | fzf --tmux)
+	local fzf_path="$HOME/.fzf/bin/fzf"
+	local selected=$(echo -e "$prioritized_paths" | "$fzf_path" --tmux)
 	# Revert convert ~ to HOME
 	selected="${selected/\~/$HOME}"
 
