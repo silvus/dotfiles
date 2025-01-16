@@ -26,7 +26,8 @@ function fzf-url () {
 	[ -z "$items" ] && exit
 
 	# Launch fzf
-	local chosen="$(echo -e "$items" | $HOME/.fzf/bin/fzf-tmux -d 35% -m -0 --no-preview --no-border | awk '{print $2}')"
+	local fzf_path="$HOME/.fzf/bin/fzf"
+	local chosen="$(echo -e "$items" | "$fzf_path" --tmux -d 35% -m -0 --no-preview --no-border | awk '{print $2}')"
 
 	if [ -n "$chosen" ]; then
 		# Open with browse script
