@@ -1,4 +1,5 @@
 *.bak
 __pycache__
 
+custom
 custom/
