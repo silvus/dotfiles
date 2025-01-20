@@ -61,7 +61,7 @@ local function init(s)
 		-- Primary screen
 		for i, tag in pairs(tags_definitions) do
 			awful.tag.add(tag.name, {
-				layout = (tag.layout or awful.layout.suit.tile),
+				layout = (tag.layout or awful.layout.suit.spiral.dwindle),
 				icon = tag.icon,
 				screen = s,
 				selected = (i == 1),
@@ -70,7 +70,7 @@ local function init(s)
 		end
 	else
 		-- secondary screens (One tag only)
-		awful.tag({"S"..s.index}, s, awful.layout.suit.tile)
+		awful.tag({"S"..s.index}, s, awful.layout.suit.spiral.dwindle)
 
 	end
 end
@@ -80,4 +80,3 @@ desktops.init = init
 desktops.tags_names = tags_names
 
 return desktops
-
