@@ -90,7 +90,7 @@ buttons_event = awful.util.table.join(
 		awful.spawn.with_shell('pavucontrol')
 	end),
 	awful.button({}, 2, function()
-		awful.spawn(string.format("%s -D pulse set %s 100%%", customwidget.volume.cmd, customwidget.volume.channel))
+		awful.spawn('pactl set-sink-volume @DEFAULT_SINK@ 150%')
 		customwidget.volume.update()
 	end),
 	awful.button({}, 3, function()
@@ -111,4 +111,3 @@ buttons_event = awful.util.table.join(
 customwidget.widget:buttons(buttons_event)
 
 return customwidget
-
