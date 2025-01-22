@@ -165,7 +165,7 @@ theme.tasklist_plain_task_name = false
 -- theme.tasklist_disable_icon = true
 -- theme.maximized_hide_border = true
 -- theme.fullscreen_hide_border = true
-theme.master_width_factor = 0.66
+theme.master_width_factor = config.layouts_master_width
 
 -- Bar (Wibar) management
 
