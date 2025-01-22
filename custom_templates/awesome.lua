@@ -13,5 +13,7 @@ local config = {}
 -- Set a different wallpaper for each tag (and each screen), else take a random on init
 -- config.wallpapers_by_tag = false
 
-return config
+-- Default layout master width
+-- config.layouts_master_width = 0.5
 
+return config

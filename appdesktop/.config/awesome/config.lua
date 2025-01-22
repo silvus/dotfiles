@@ -1,9 +1,6 @@
 local os = require("os")
 local awful = require("awful")
 local table = require("gears.table")
--- Dmenu-like launcher
-local menubar = require("menubar")
-
 
 -- Return if a file is readable
 function file_exists(name)
@@ -57,16 +54,16 @@ end
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 config.layouts = {
-	-- awful.layout.suit.spiral,
-	awful.layout.suit.spiral.dwindle,
-
-	awful.layout.suit.tile,
+	awful.layout.suit.tile, -- Can be resized
 	-- awful.layout.suit.tile.left,
 	-- awful.layout.suit.tile.bottom,
 	-- awful.layout.suit.tile.top,
 
 	awful.layout.suit.fair,
 	-- awful.layout.suit.fair.horizontal,
+
+	-- awful.layout.suit.spiral,
+	-- awful.layout.suit.spiral.dwindle,
 
 	awful.layout.suit.max,
 	-- awful.layout.suit.max.fullscreen,
@@ -78,11 +75,8 @@ config.layouts = {
 	-- awful.layout.suit.corner.sw,
 	-- awful.layout.suit.corner.se,
 }
-
--- lain.layout.termfair.nmaster = 2
--- lain.layout.termfair.ncol    = 1
--- lain.layout.termfair.center.nmaster = 2
--- lain.layout.termfair.center.ncol    = 1
+-- Default layout
+config.layouts_default = awful.layout.suit.spiral.dwindle
 
 -- Include config customisation to override previous default values
 -- This file should return a table, for exemple:
@@ -97,10 +91,5 @@ if file_exists(config_custom_path) then
 		table.crush(config, config_custom)
 	end
 end
-
-
--- Menubar configuration : Set the terminal for applications that require it
-menubar.utils.terminal = config.terminal
-
 
 return config
