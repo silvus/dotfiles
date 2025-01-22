@@ -13,6 +13,9 @@ math.randomseed(os.time());
 local gears = require("gears")
 local awful = require("awful")
 
+-- Dmenu-like launcher
+local menubar = require("menubar")
+
 -- Makes sure that there's always a client that will have focus on events such as tag switching, client unmanaging, etc
 require("awful.autofocus")
 
@@ -147,6 +150,9 @@ naughty.config.presets.critical.border_color = beautiful.fg_urgent
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = config.layouts
 
+-- Menubar configuration : Set the terminal for applications that require it
+menubar.utils.terminal = config.terminal
+
 -- ---------------------------------------------------------------------
 -- Status bar
 -- ---------------------------------------------------------------------
@@ -241,4 +247,3 @@ globalclient.connect_signal("property::fullscreen", function(c) if not c.fullscr
 -- Auto start
 -- ---------------------------------------------------------------------
 awful.spawn.with_shell(config.home .. "/.dotfiles/bin/autostart_launcher")
-
