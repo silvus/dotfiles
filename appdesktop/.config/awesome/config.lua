@@ -75,8 +75,6 @@ config.layouts = {
 	-- awful.layout.suit.corner.sw,
 	-- awful.layout.suit.corner.se,
 }
--- Default layout
-config.layouts_default = awful.layout.suit.spiral.dwindle
 
 -- Include config customisation to override previous default values
 -- This file should return a table, for exemple:
