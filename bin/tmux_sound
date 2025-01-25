@@ -48,9 +48,11 @@ apply_colors() {
 print_status() {
 	GRAPH_ASCII=""
 	if ((VOL_ON)); then
-		GRAPH_ASCII="🔊"
+		# Sound from nerdfonts (https://www.nerdfonts.com/cheat-sheet)
+		GRAPH_ASCII="$(printf "\Uf057e")"
 	else
-		GRAPH_ASCII="🔇"
+		# No sound from nerdfonts
+		GRAPH_ASCII="$(printf "\Uf0e08")"
 	fi
 
 	# Inspired from https://github.com/tmux-plugins/tmux-battery/blob/master/scripts/battery_graph.sh
