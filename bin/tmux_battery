@@ -105,9 +105,11 @@ print_status() {
 	GRAPH_ASCII=""
 	if ((emoji)); then
 		if ((BATT_CONNECTED)); then
-			GRAPH_ASCII="⚡"
+			# Connected icon, from nerdfonts (https://www.nerdfonts.com/cheat-sheet)
+			GRAPH_ASCII="$(printf "\Uf1616")"
 		else
-			GRAPH_ASCII="🔋"
+			# Battery from nerdfonts
+			GRAPH_ASCII="$(printf "\Uf0079")"
 		fi
 	else
 		if command -v spark &>/dev/null; then
