@@ -1,129 +1,196 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-# Tracks usage and prioritizes most recently used results in the fzf list
-HISTORY_TRACK="$HOME/.tmux_sessionizer_history"
-# Max number of history entries
-MAX_HISTORY_SIZE=100
+import os
+import sys
+import subprocess
+import time
+import shlex
+import shutil
+import logging
+from pathlib import Path
+import argparse
 
-tmux_running=$(pgrep tmux)
+__author__ = "Silvus"
+__version__ = "2025.02"
 
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-	echo "Tmux is not running"
-	exit 1
-fi
+HISTORY_TRACK = Path.home() / ".tmux_sessionizer_history"
+MAX_HISTORY_SIZE = 100
 
-get_project_paths() {
-	local paths=()
-	[[ -d "/data/dev" ]] && paths+=($(find /data/dev -mindepth 1 -maxdepth 1 -type d -not -name '.*'))
-	[[ -d "/data/prod" ]] && paths+=($(find /data/prod -mindepth 1 -maxdepth 1 -type d -not -name '.*'))
-	[[ -d "/data/projects" ]] && paths+=($(find /data/projects -mindepth 1 -maxdepth 2 -type d -not -name '.*'))
-	# Use printf to ensure newline-separated output
-	printf "%s\n" "${paths[@]}"
-}
+PATH_SCRIPT = os.path.basename(__file__)
 
-get_complete_paths() {
-	local paths=()
-	[[ -d "$HOME/.dotfiles" ]] && paths+=("$HOME/.dotfiles")
-	[[ -d "/data/doc" ]] && paths+=("/data/doc")
-	[[ -d "/data/work" ]] && paths+=("/data/work")
-	# Use printf to ensure newline-separated output
-	printf "%s\n" "${paths[@]}"
-}
+DEBUG = False
 
-# Sort paths by last usage (more recent first)
-get_prioritized_paths() {
-	local all_paths=("$@")
-	local sorted=()
+# Logs
+logging.basicConfig(
+    stream=sys.stdout, level=logging.INFO, format="[%(levelname)s] %(message)s"
+)
+log = logging.getLogger(PATH_SCRIPT)
 
-	# Read existing history from HISTORY_TRACK (timestamp path)
-	local history_entries
-	history_entries=$(awk '{print $1, $2}' "$HISTORY_TRACK" 2>/dev/null)
 
-	# Store each path with its last access timestamp
-	for path in "${all_paths[@]}"; do
-		# Find last access timestamp in history or default to 0
-		local last_used=$(echo "$history_entries" | awk -v p="$path" '$2 == p {print $1}' | sort -nr | head -n 1)
-		if [[ -z $last_used ]]; then
-			last_used=0  # If path doesn't exist in history, assign old timestamp
-		fi
-		sorted+=("$last_used $path")
-	done
+def is_tmux_running():
+    result = subprocess.run(["pgrep", "tmux"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return result.returncode == 0
 
-	# Sort paths by last usage time (descending)
-	printf "%s\n" "${sorted[@]}" | sort -nr | awk '{$1=""; print substr($0,2)}'
-}
 
-deduplicate_history() {
-	# Sort by timestamp (numerical, descending), keep only the most recent entry per path
-	tac "$HISTORY_TRACK" | awk '!seen[$2]++' | tac > "$HISTORY_TRACK.tmp" && mv "$HISTORY_TRACK.tmp" "$HISTORY_TRACK"
-}
+def get_project_paths():
+    paths = []
 
-# Keep the HISTORY_TRACK file within the max size
-limit_history_size() {
-	local history_count
-	history_count=$(wc -l < "$HISTORY_TRACK")
+    # Simple paths
+    for path in ["~/.dotfiles", "/data/doc", "/data/work"]:
+        expanded_path = os.path.expanduser(path)
+        if os.path.isdir(expanded_path):
+            paths.append(expanded_path)
 
-	if ((history_count > MAX_HISTORY_SIZE)); then
-		# Remove the oldest entries if the history exceeds the maximum size
-		sed -i '1,'$((history_count - MAX_HISTORY_SIZE))'d' "$HISTORY_TRACK"
-	fi
-}
+    # Scanned path
+    for base_path in ["/data/dev", "/data/prod", "/data/projects"]:
+        path_obj = Path(base_path)
+        if path_obj.is_dir():
+            depth = 1 if base_path != "/data/projects" else 2
+            paths.extend(str(p) for p in path_obj.glob(f"{'*/' * depth}"))
+    return paths
 
-main() {
-	local project_paths=$(get_project_paths)
-	local complete_paths=$(get_complete_paths)
 
-	# Combine paths
-	local all_paths=($(printf "%s\n" "${project_paths[@]}" "${complete_paths[@]}" | awk '!seen[$0]++'))
+def get_prioritized_paths(all_paths):
+    history_entries = {}
 
-	# Prioritize paths by most recent usage
-	local prioritized_paths=$(get_prioritized_paths "${all_paths[@]}")
+    if HISTORY_TRACK.exists():
+        with open(HISTORY_TRACK, "r") as file:
+            for line in file:
+                timestamp, path = line.strip().split(maxsplit=1)
+                history_entries[path] = int(timestamp)
 
-	# Convert HOME to ~ for a
-	prioritized_paths="${prioritized_paths/$HOME/\~}"
-	
-	# Launch fzf
-	local fzf_path="$HOME/.fzf/bin/fzf"
-	local selected=$(echo -e "$prioritized_paths" | "$fzf_path" --tmux)
-	# Revert convert ~ to HOME
-	selected="${selected/\~/$HOME}"
+    # Sort paths by last usage timestamp, defaulting to 0 if not in history
+    return sorted(all_paths, key=lambda p: history_entries.get(p, 0), reverse=True)
 
-	if [[ -z $selected ]]; then
-		exit 0
-	fi
 
-	# Prepare session/window name
-	local selected_name=$(basename "$selected" | tr . _ | tr ' ' '_')
+def deduplicate_history():
+    if not HISTORY_TRACK.exists():
+        return
 
-	# Log selection to HISTORY_TRACK with the current timestamp
-	echo "$(date +%s) $selected" >> "$HISTORY_TRACK"
+    seen = set()
+    unique_entries = []
 
-	# Remove duplicates from history
-	deduplicate_history
-	# Limit the size of history
-	limit_history_size
+    with open(HISTORY_TRACK, "r") as file:
+        for line in reversed(file.readlines()):
+            _, path = line.strip().split(maxsplit=1)
+            if path not in seen:
+                seen.add(path)
+                unique_entries.append(line)
 
-	if ((SESSION_MODE)); then
-		if ! tmux has-session -t="$selected_name" 2>/dev/null; then
-			tmux new-session -ds "$selected_name" -c "$selected"
-		fi
-		tmux switch-client -t "$selected_name"
-	else
-		# Open Window on main session and focus it
-		tmux new-window -t "main" -n "$selected_name" -c "$selected"
-		tmux switch-client -t "main"
-	fi
-}
+    unique_entries.reverse()
 
-# Default mode: window
-SESSION_MODE=0
+    with open(HISTORY_TRACK, "w") as file:
+        file.writelines(unique_entries)
 
-# Read arguments
-while getopts ":ws" opt; do
-	case $opt in
-		s) SESSION_MODE=1 ;;
-		*) echo "Usage: $0 [-s]"; exit 1 ;;
-	esac
-done
 
-main
+def limit_history_size():
+    if not HISTORY_TRACK.exists():
+        return
+
+    with open(HISTORY_TRACK, "r") as file:
+        lines = file.readlines()
+
+    if len(lines) > MAX_HISTORY_SIZE:
+        with open(HISTORY_TRACK, "w") as file:
+            file.writelines(lines[-MAX_HISTORY_SIZE:])
+
+
+def run_fzf(paths):
+    fzf_path = shutil.which("fzf")
+    if not fzf_path:
+        fzf_path = Path.home() / ".fzf/bin/fzf"
+        if not fzf_path.exists():
+            log.error(f"fzf not found at expected path {fzf_path}")
+            return None
+
+    # Display a tilde for clarity.
+    paths = [s.replace(Path.home().absolute().as_posix(), '~') for s in paths]
+    
+    process = subprocess.Popen([fzf_path, '--tmux'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    stdout, _ = process.communicate(input="\n".join(paths).encode())
+    return os.path.expanduser(stdout.decode().strip())
+
+
+def init_cli_arg():
+    """Parse args"""
+    parser = argparse.ArgumentParser(description="Sessionizer script for TMUX")
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s {0}".format(__version__),
+        help="show program's version number and exit",
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="Debug flag", default=DEBUG
+    )
+    parser.add_argument("-s", "--session-mode", action="store_true", help="Start in session mode")
+
+    return parser.parse_args()
+
+
+def main():
+    global DEBUG
+
+    # Parse args
+    args = init_cli_arg()
+    DEBUG = args.debug
+    session_mode = args.session_mode
+
+    log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+
+    try:
+        log.debug("start")
+        log.debug(args)
+
+        if not is_tmux_running():
+            log.error("Tmux is not running")
+            return
+
+        project_paths = get_project_paths()
+        prioritized_paths = get_prioritized_paths(project_paths)
+
+        # Launch fzf
+        selected = run_fzf(prioritized_paths)
+
+        if not selected:
+            log.debug('No fzf selection')
+            return
+
+        selected_name = os.path.basename(selected).replace(".", "_").replace(" ", "_")
+
+        # Log selection to HISTORY_TRACK with the current timestamp
+        with open(HISTORY_TRACK, "a") as file:
+            file.write(f"{int(time.time())} {selected}\n")
+
+        # Remove duplicates and limit history size
+        deduplicate_history()
+        limit_history_size()
+
+        if session_mode:
+            # Session mode
+            session_check_cmd = ["tmux", "has-session", f"-t={selected_name}"]
+            session_exists = subprocess.run(session_check_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode == 0
+
+            if not session_exists:
+                subprocess.run(["tmux", "new-session", "-ds", selected_name, "-c", selected], check=False)
+            subprocess.run(["tmux", "switch-client", "-t", selected_name], check=False)
+        else:
+            # Window mode
+            subprocess.run(["tmux", "new-window", "-t", "main", "-n", selected_name, "-c", selected], check=False)
+            subprocess.run(["tmux", "switch-client", "-t", "main"], check=False)
+
+
+        log.debug("end")
+
+    except Exception as exc:
+        log.error(exc)
+        if DEBUG:
+            raise
+
+    except KeyboardInterrupt:
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
