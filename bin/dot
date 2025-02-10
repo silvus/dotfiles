@@ -2,12 +2,12 @@
 
 set -e
 
-export NOTE_PATH="/data/doc"
+export DOT_PATH="$HOME/.dotfiles"
 
 tmux_running=$(pgrep tmux)
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-	(cd $NOTE_PATH && nvim .)
+	(cd $DOT_PATH && nvim .)
 else
-	tmux_sessionizer -p "$NOTE_PATH"
+	tmux_sessionizer -p "$DOT_PATH"
 fi

@@ -125,6 +125,8 @@ def init_cli_arg():
         "-d", "--debug", action="store_true", help="Debug flag", default=DEBUG
     )
     parser.add_argument("-s", "--session-mode", action="store_true", help="Start in session mode")
+    parser.add_argument("-p", "--project", help="Open a project in a non interactive way")
+
 
     return parser.parse_args()
 
@@ -136,6 +138,7 @@ def main():
     args = init_cli_arg()
     DEBUG = args.debug
     session_mode = args.session_mode
+    project = args.project
 
     log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
 
@@ -150,11 +153,17 @@ def main():
         project_paths = get_project_paths()
         prioritized_paths = get_prioritized_paths(project_paths)
 
-        # Launch fzf
-        selected = run_fzf(prioritized_paths)
+        if project:
+            selected = project
+        else :
+            # Launch fzf
+            selected = run_fzf(prioritized_paths)
 
         if not selected:
-            log.debug('No fzf selection')
+            log.debug('No selection to open')
+            return
+        if not os.path.isdir(selected):
+            log.error(f'Selected projet does not exit {selected}')
             return
 
         selected_name = os.path.basename(selected).replace(".", "_").replace(" ", "_")
@@ -177,9 +186,15 @@ def main():
             subprocess.run(["tmux", "switch-client", "-t", selected_name], check=False)
         else:
             # Window mode
-            subprocess.run(["tmux", "new-window", "-t", "main", "-n", selected_name, "-c", selected], check=False)
-            subprocess.run(["tmux", "switch-client", "-t", "main"], check=False)
+            # Check if a window with the selected name exists
+            window_list_cmd = ["tmux", "list-windows", "-F", "#W"]
+            window_list = subprocess.run(window_list_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            window_names = window_list.stdout.decode().splitlines()
 
+            if selected_name not in window_names:
+                subprocess.run(["tmux", "new-window", "-t", "main", "-n", selected_name, "-c", selected], check=False)
+            subprocess.run(["tmux", "select-window", "-t", selected_name], check=False)
+            subprocess.run(["tmux", "switch-client", "-t", "main"], check=False)
 
         log.debug("end")
 
