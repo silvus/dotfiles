@@ -7,8 +7,6 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-alias dot="cd $SILVUSDOTFILES"
-
 # from http://news.ycombinator.com/item?id=4492682
 alias tree1="tree --dirsfirst -ChFLQ 1"
 alias tree2="tree --dirsfirst -ChFLQ 2"
@@ -84,4 +82,3 @@ alias mountshow='mount |column -t'
 # Keymap
 # -----------------------------------------------------------------------------
 alias keymapazerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option \"grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e\""
-

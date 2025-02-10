@@ -47,8 +47,6 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-alias dot="cd $SILVUSDOTFILES"
-
 alias l='env LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 
 function mkcd --description 'Create a folder and go into it'
@@ -117,4 +115,3 @@ bind \ch fzf-history-widget
 if test -f "$SILVUSDOTFILES_CUSTOM/shellfish"
     source "$SILVUSDOTFILES_CUSTOM/shellfish"
 end
-
