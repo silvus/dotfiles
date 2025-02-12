@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -e
+
+export TODO_PATH="/data/doc/01_todo.md"
+
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+	(cd $NOTE_PATH && nvim "$TODO_PATH")
+else
+	tmux_sessionizer -p "$TODO_PATH"
+fi
