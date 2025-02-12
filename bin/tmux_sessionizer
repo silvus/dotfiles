@@ -36,9 +36,9 @@ def get_project_paths():
     paths = []
 
     # Simple paths
-    for path in ["~/.dotfiles", "/data/doc", "/data/work"]:
+    for path in ["/data/doc/01_todo.md", "~/.dotfiles", "/data/doc", "/data/work"]:
         expanded_path = os.path.expanduser(path)
-        if os.path.isdir(expanded_path):
+        if os.path.isfile(expanded_path) or os.path.isdir(expanded_path):
             paths.append(expanded_path)
 
     # Scanned path
@@ -127,7 +127,6 @@ def init_cli_arg():
     parser.add_argument("-s", "--session-mode", action="store_true", help="Start in session mode")
     parser.add_argument("-p", "--project", help="Open a project in a non interactive way")
 
-
     return parser.parse_args()
 
 
@@ -153,16 +152,20 @@ def main():
         project_paths = get_project_paths()
         prioritized_paths = get_prioritized_paths(project_paths)
 
+        open_has_file = False
         if project:
             selected = project
-        else :
+        else:
             # Launch fzf
             selected = run_fzf(prioritized_paths)
 
         if not selected:
             log.debug('No selection to open')
             return
-        if not os.path.isdir(selected):
+        
+        if os.path.isfile(selected):
+            open_has_file = True
+        elif not os.path.isdir(selected):
             log.error(f'Selected projet does not exit {selected}')
             return
 
@@ -176,13 +179,20 @@ def main():
         deduplicate_history()
         limit_history_size()
 
+        tmux_open_command = ''
+        if open_has_file:
+            tmux_open_command = "{} \"{}\"".format(os.getenv('EDITOR', shutil.which('vim')), selected)
+
         if session_mode:
             # Session mode
             session_check_cmd = ["tmux", "has-session", f"-t={selected_name}"]
             session_exists = subprocess.run(session_check_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode == 0
 
             if not session_exists:
-                subprocess.run(["tmux", "new-session", "-ds", selected_name, "-c", selected], check=False)
+                if open_has_file:
+                    subprocess.run(["tmux", "new-session", "-n", selected_name, "-ds", selected_name, "-c", os.path.dirname(selected), tmux_open_command], check=False)
+                else:
+                    subprocess.run(["tmux", "new-session", "-n", selected_name, "-ds", selected_name, "-c", selected], check=False)
             subprocess.run(["tmux", "switch-client", "-t", selected_name], check=False)
         else:
             # Window mode
@@ -190,9 +200,12 @@ def main():
             window_list_cmd = ["tmux", "list-windows", "-F", "#W"]
             window_list = subprocess.run(window_list_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             window_names = window_list.stdout.decode().splitlines()
-
             if selected_name not in window_names:
-                subprocess.run(["tmux", "new-window", "-t", "main", "-n", selected_name, "-c", selected], check=False)
+                if open_has_file:
+                    subprocess.run(["tmux", "new-window", "-t", "main", "-n", selected_name, "-c", os.path.dirname(selected), tmux_open_command], check=False)
+                else:
+                    subprocess.run(["tmux", "new-window", "-t", "main", "-n", selected_name, "-c", selected], check=False)
+
             subprocess.run(["tmux", "select-window", "-t", selected_name], check=False)
             subprocess.run(["tmux", "switch-client", "-t", "main"], check=False)
 
