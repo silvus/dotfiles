@@ -109,7 +109,7 @@ export HISTCONTROL=ignoreboth # Don't put duplicate lines or lines starting with
 # export FZF_DEFAULT_COMMAND="find . -path '*/\.*' -type d -prune -o -type f -print -o -type l -print 2> /dev/null | sed s/^..//"
 # Do not ignore hiddens files (except .git and .svn)
 export FZF_DEFAULT_COMMAND="find . -type f -not -path '*/\.git/*' -not -path '*/\.svn/*' -print -o -type l -print 2> /dev/null | sed s/^..//"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_COMMAND=
 
 
 # Rust
