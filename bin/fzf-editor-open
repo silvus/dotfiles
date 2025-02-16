@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Choose a file to open with EDITOR
+# ------------------------------------------------------------
+fzf-editor-open() {
+	local path="${1:-$(pwd)}"
+
+	# If no argument is provided or $1 is empty, default to PWD
+	if [[ -z "$path" ]]; then
+		path=$(pwd)
+	fi
+
+	if [[ -d "$path" ]]; then
+		cd "$path" || return 1
+	else
+		echo "Error: Path '$path' does not exist or is not a directory" >&2
+		return 1
+	fi
+
+	local file
+	file=$(fzf)
+	if [[ -n "$file" ]]; then
+		"$EDITOR" "$file"
+	fi
+}
+
+tmux_running=$(pgrep tmux)
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+	fzf-editor-open "$1"
+else
+	tmux_sessionizer -p "$1"
+fi

@@ -101,6 +101,7 @@ end
 
 # Bindings
 # -----------------------------------------------------------------------------
+# Fzf search current dir in EDITOR with CTRL+E
 bind \ce fzf-editor-open
 
 # Fzf trigger file with CTRL+P
@@ -108,6 +109,12 @@ bind \cp fzf-file-widget
 
 # Fzf trigger history with CTRL+H
 bind \ch fzf-history-widget
+
+# Fzf search doc in EDITOR with CTRL+D
+# bind \co 'fzf-editor-open /data/doc'
+
+# Open TODO.md with CTRL+t
+bind \ct 'tmux_sessionizer -p "/data/doc/01_todo.md"'
 
 
 # Environment specific configuration

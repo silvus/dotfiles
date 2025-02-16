@@ -36,12 +36,6 @@ if [[ -d "$XDG_CONFIG_HOME/composer/vendor/bin" ]]; then
 	export PATH="$XDG_CONFIG_HOME/composer/vendor/bin:$PATH"
 fi
 
-# Choose a file to open with EDITOR
-# ------------------------------------------------------------
-fzf-editor-open() {
-	f=$(fzf) && $EDITOR "$f"; 
-}
-
 # Go to projects folder and git pull
 # Must be here due to "cd" subshell usage
 # ------------------------------------------------------------
