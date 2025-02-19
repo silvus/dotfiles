@@ -37,6 +37,7 @@ vim.opt.clipboard = 'unnamedplus' -- CLIPBOARD selections (^C)
 -- Style
 vim.opt.termguicolors = true
 -- vim.opt.colorcolumn = "80"
+-- Conceal is not great on markdown checkbox level 2 and more (Because of Treesitter)
 vim.wo.conceallevel = 2
 -- Show whitespaces and trailing 
 vim.opt.list = true

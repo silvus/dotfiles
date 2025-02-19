@@ -21,7 +21,7 @@ return {
 				},
 				wrap = true,
 				to_do = {
-					symbols = {' ', 'X', '-'},
+					symbols = {' ', 'x', '-'},
 				},
 				mappings = {
 					MkdnEnter = {{'i', 'n', 'v'}, '<CR>'} -- This monolithic command has the aforementioned
@@ -32,13 +32,5 @@ return {
 				}
 			})
 		end
-	},
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		ft = { "markdown" },
-		build = function()
-			vim.fn["mkdp#util#install"]()
-		end,
 	}
 }
