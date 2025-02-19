@@ -54,6 +54,7 @@ function mkcd --description 'Create a folder and go into it'
     cd "$argv"
 end
 
+alias e='$EDITOR'
 alias diskusage='ncdu'
 alias calculator='bc -l'
 alias copy='xclip -selection clipboard'

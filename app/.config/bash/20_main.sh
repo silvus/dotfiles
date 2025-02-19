@@ -42,6 +42,7 @@ alias findandmovehereallfiles="find . -mindepth 2 -type f -print -exec mv {} . \
 
 # Programs
 # -----------------------------------------------------------------------------
+alias e='$EDITOR'
 alias diskusage='ncdu'
 alias copy='xclip -selection clipboard'
 alias copytoclipboard='copy' # Same as copy alias
