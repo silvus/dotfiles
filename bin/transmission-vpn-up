@@ -12,10 +12,10 @@ tmux split-window -v -t 3
 tmux send-keys -t 1 "transmission-daemon --no-auth --port 9091 -f" C-m
 
 # Pane 2: joal (http://192.168.1.20:9092/joal/ui/)
-tmux send-keys -t 1 "java -jar /data/torrents/joal/jack-of-all-trades-2.1.36.jar --joal-conf=\"/data/torrents/joal/\" --spring.main.web-environment=true --server.port=9092 --joal.ui.path.prefix=\"joal\" --joal.ui.secret-token=\"SECRET_TOKEN\""
+tmux send-keys -t 2 "java -jar /data/torrents/joal/jack-of-all-trades-2.1.36.jar --joal-conf=\"/data/torrents/joal/\" --spring.main.web-environment=true --server.port=9092 --joal.ui.path.prefix=\"joal\" --joal.ui.secret-token=\"SECRET_TOKEN\""
 
 # Pane 3: Get port forwarding
-tmux send-keys -t 2 "protonvpn-forward-port" C-m
+tmux send-keys -t 3 "protonvpn-forward-port" C-m
 
-# Pane 4: Enable WireGuard
-tmux send-keys -t 3 "sudo wg-quick up torrent-NL" C-m
+# Pane 4: Enable WireGuard and keep focus
+tmux send-keys -t 4 "sudo wg-quick up torrent-NL" C-m
