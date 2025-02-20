@@ -14,7 +14,7 @@ end
 config.check_for_updates = false
 
 -- Disable missing glyph notification
-warn_about_missing_glyphs = false
+config.warn_about_missing_glyphs = false
 
 -- See https://gogh-co.github.io/Gogh/
 config.color_scheme = 'Tango (terminal.sexy)'
