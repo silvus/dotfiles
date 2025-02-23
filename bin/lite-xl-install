@@ -20,11 +20,18 @@ rm lpm
 /usr/local/bin/lpm install plugin_manager --assume-yes
 
 /usr/local/bin/lpm install gitdiff_highlight --assume-yes
-/usr/local/bin/lpm install lsp_lua --assume-yes
-/usr/local/bin/lpm install lsp_python --assume-yes
 /usr/local/bin/lpm install autoinsert --assume-yes
 /usr/local/bin/lpm install bracketmatch --assume-yes
 /usr/local/bin/lpm install datetimestamps --assume-yes
 /usr/local/bin/lpm install copyfilelocation --assume-yes
 /usr/local/bin/lpm install eofnewline --assume-yes
 /usr/local/bin/lpm install gitstatus --assume-yes
+/usr/local/bin/lpm install sticky_scroll --assume-yes
+/usr/local/bin/lpm install selectionhighlight --assume-yes
+
+
+/usr/local/bin/lpm add https://github.com/lite-xl/lite-xl-lsp-servers.git
+/usr/local/bin/lpm install lsp_lua --assume-yes
+/usr/local/bin/lpm install lsp_python --assume-yes
+/usr/local/bin/lpm install lsp_rust --assume-yes
+
