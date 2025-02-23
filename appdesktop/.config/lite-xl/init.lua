@@ -28,7 +28,8 @@ core.reload_module("colors.bearded-theme-vivid-black")
 
 keymap.add({ ["ctrl+e"] = "core:find-file" })
 keymap.add({ ["ctrl+d"] = "doc:delete-lines" })
-keymap.add({ ["ctrl+l"] = "doc:select-word" })
+keymap.add({ ["ctrl+a"] = "doc:select-word" })
+-- Add cursor to selection
 keymap.add({ ["ctrl+l"] = "find-replace:select-add-next" })
 
 keymap.add({ ["ctrl+b"] = "treeview:toggle" })
@@ -129,10 +130,25 @@ config.plugins.scale = {
 	use_mousewheel = false
 }
 
+-- Bracket matching style
+config.plugins.bracketmatch = {
+	style = "frame"
+}
+
+-- Alert when file is changed
+config.plugins.autoreload = {
+	always_show_nagview = true
+}
+
 -- Hide treeview on startup
 -- TODO: Work only in user_settings.lua?
 config.plugins.treeview = {
 	visible = true
+}
+
+-- LSP
+config.plugins.lsp = {
+	mouse_hover = false
 }
 
 ---------------------------- Miscellaneous -------------------------------------
