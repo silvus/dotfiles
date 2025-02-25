@@ -1,0 +1,10 @@
+# Config relating to the Lazygit UI
+gui:
+  # If true, show a random tip in the command log when Lazygit starts
+  showRandomTip: false
+
+# Periodic update checks
+update:
+  # One of: 'prompt' (default) | 'background' | 'never'
+  method: never
+
