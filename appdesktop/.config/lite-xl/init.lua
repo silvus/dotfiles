@@ -10,7 +10,6 @@ local core = require "core"
 local keymap = require "core.keymap"
 local config = require "core.config"
 local style = require "core.style"
-
 ------------------------------ Themes ----------------------------------------
 
 -- Theme:
@@ -164,6 +163,9 @@ config.plugins.lsp = {
 --   "%.suo$",         "%.pdb$",       "%.idb$",        "%.class$", "%.psd$", "%.db$",
 --   "^desktop%.ini$", "^%.DS_Store$", "^%.directory$",
 -- }
+
+---Default line endings for new files.
+config.line_endings = "lf"
 
 -- Indents
 config.tab_type = "hard"
