@@ -215,6 +215,8 @@ local rules = {
             "Slack",
             "JoalDesktop",
             "Pavucontrol",
+            "Lutris",
+            "discord",
         },
         properties = {
             tag = desktops.tags_names[6],
@@ -226,7 +228,6 @@ local rules = {
             class = {
                 "steam",
                 "Steam",
-                "discord",
             }
         },
         properties = {
