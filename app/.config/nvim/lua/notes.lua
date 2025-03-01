@@ -70,10 +70,3 @@ vim.api.nvim_create_autocmd('filetype', {
 		-- bind('r', 'R')
 	end
 })
-
--- Ensure that changes to buffers are saved when you navigate away from that buffer
-vim.api.nvim_create_autocmd('filetype', {
-	pattern = 'markdown',
-	desc = 'Ensure that changes to buffers are saved when you navigate away from that buffer',
-	command = 'set awa',
-})
