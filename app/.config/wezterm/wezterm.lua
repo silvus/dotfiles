@@ -50,6 +50,8 @@ config.window_padding = {
 
 -- Reset all bindings (https://wezfurlong.org/wezterm/config/default-keys.html)
 config.disable_default_key_bindings = true
+-- Honor kitty keyboard protocol escape sequences (for Fish 4)
+config.enable_kitty_keyboard = true
 config.keys = {
 
 	-- Fullscreen toggle
