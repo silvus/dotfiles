@@ -15,7 +15,7 @@ vim.keymap.set('n', '<C-s>', ':update<cr>', { silent = true, desc = 'Save' })
 vim.keymap.set({'i', 'v'}, '<C-s>', '<C-o>:update<cr>', { silent = true, desc = 'Save' })
 
 -- Close
--- vim.keymap.set('n', '<C-q>', ':q<cr>', { silent = true, desc = 'Close' })
+vim.keymap.set('n', '<C-q>', ':q<cr>', { silent = true, desc = 'Close' })
 
 -- Indent
 vim.keymap.set({'i', 'v'}, '<S-Tab>', '<C-o><<', { silent = true, desc = 'Unindent' })
