@@ -1,4 +1,4 @@
-require('set')
+require('base')
 require('keymap')
 require('mswin')
 require('notes')
