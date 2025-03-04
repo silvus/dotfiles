@@ -31,15 +31,15 @@ return {
 			}
 
 			local builtin = require('telescope.builtin')
-			vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-			vim.keymap.set('n', '<leader>fs', builtin.live_grep, {})
-			vim.keymap.set('n', '<leader>fg', builtin.git_files, {})
-			vim.keymap.set({'n', 'i', 'v'}, '<C-p>', builtin.find_files, {})
-			vim.keymap.set({'n', 'i', 'v'}, '<C-e>', builtin.oldfiles, {})
-			vim.keymap.set('n', '<leader><space>', builtin.buffers, {})
-			vim.keymap.set('n', '<leader>:', builtin.commands, {})
-			vim.keymap.set('n', '<leader>vk', builtin.keymaps, {})
-			vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
+			vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'find_files' })
+			vim.keymap.set('n', '<leader>fs', builtin.live_grep, { desc = 'live_grep' })
+			vim.keymap.set('n', '<leader>fg', builtin.git_files, { desc = 'git_files' })
+			vim.keymap.set({'n', 'i', 'v'}, '<C-p>', builtin.find_files, { desc = 'find_files' })
+			vim.keymap.set({'n', 'i', 'v'}, '<C-e>', builtin.oldfiles, { desc = 'oldfiles' })
+			vim.keymap.set('n', '<leader><space>', builtin.buffers, { desc = 'buffers' })
+			vim.keymap.set('n', '<leader>f:', builtin.commands, { desc = 'commands' })
+			vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'keymaps' })
+			vim.keymap.set('n', '<leader>vh', builtin.help_tags, { desc = 'help_tags' })
 		end,
 	},
 }
