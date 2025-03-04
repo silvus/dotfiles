@@ -124,6 +124,13 @@ return {
 		end,
 	},
 	{
+		'echasnovski/mini.nvim',
+		lazy = true,
+		config = function()
+			require('mini.animate').setup()
+		end,
+	},
+	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		init = function()
