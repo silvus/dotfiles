@@ -2,6 +2,11 @@
 
 -- Fat cursor
 -- vim.opt.guicursor = ""
+vim.opt.guicursor = {
+	'n-v-c:block-Cursor/lCursor-blinkwait100-blinkon500-blinkoff500',
+	'i-ci:ver25-Cursor/lCursor-blinkwait100-blinkon500-blinkoff500',
+	"r-cr-o:hor20-Cursor/lCursor",
+}
 
 -- Line numbers
 vim.opt.nu = true
