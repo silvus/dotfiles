@@ -16,7 +16,6 @@ return {
                 "lua",
                 "rust",
                 "python",
-                "org",
                 "markdown",
                 "markdown_inline",
             },
