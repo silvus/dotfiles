@@ -19,7 +19,9 @@ return {
                 "markdown",
                 "markdown_inline",
             },
-            -- ignore_install = {},
+            ignore_install = {
+                "org",
+            },
 
             -- Install parsers synchronously (only applied to `ensure_installed`)
             sync_install = false,
