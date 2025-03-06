@@ -176,6 +176,21 @@ return {
 		vim.api.nvim_set_hl(0, '@org.agenda.today', { fg = '#1D96D1' })
 		vim.api.nvim_set_hl(0, '@org.agenda.scheduled', { link = '@markup.italic' })
 		vim.api.nvim_set_hl(0, '@org.agenda.scheduled_past', { fg = '#e2b86b' })
+
+		-- Auto refresh agenda on org file change
+		vim.api.nvim_create_autocmd("BufWritePost", {
+			group = vim.api.nvim_create_augroup("orgmodeAgendaAutoReload", { clear = true }),
+			pattern = "*.org",
+			callback = function()
+				-- With a multi-split, it's probably an agenda opened, refresh
+				-- TODO: how to check if a buffer is an orgmode agenda?
+				local win_amount = #vim.api.nvim_tabpage_list_wins(0)
+				if win_amount > 1 then
+					org.agenda:redo()
+				end
+			end,
+		})
+
 	end,
 
 	-- init = function()
