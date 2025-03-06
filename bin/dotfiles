@@ -463,7 +463,7 @@ def launch(dotfilespath, restarted, root):
                 for approot_file in approot_files:
                     print_warning('Diff in file {}'.format(approot_file))
 
-        # Tempory: Migrate dotfiles_custom to new version
+        # Temporary: Migrate dotfiles_custom to new version
         if os.path.exists(os.path.expanduser('~/.dotfiles_custom')):
             print_header("Migrate ~/.dotfiles_custom to ~/.dotfiles/custom")
             shutil.move(os.path.expanduser('~/.dotfiles_custom'), os.path.join(dotfilespath, "custom"))
