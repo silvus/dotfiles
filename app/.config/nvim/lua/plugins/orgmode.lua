@@ -103,14 +103,14 @@ return {
 							-- org_agenda_overriding_header = 'This week',
 							org_agenda_span = 'week',
 							org_agenda_start_on_weekday = false, -- start at today
-							-- org_agenda_start_day = '+1d',
+							org_agenda_start_day = '+1d',
 							org_agenda_sorting_strategy = { 'time-up', 'priority-down', 'category-up', 'todo-state-up' },
 							-- TODO: How to filter done items on a agenda list?
 							-- match = 'TODO="TODO"', -- See: https://orgmode.org/manual/Matching-tags-and-properties.html
 						},
 						{
 							type = 'tags_todo', -- Type can be agenda | tags | tags_todo
-							org_agenda_overriding_header = 'TODO not scheduled',
+							org_agenda_overriding_header = 'To schedule',
 							-- match = '+PRIORITY="A"', --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
 							-- org_agenda_todo_ignore_deadlines = 'far', -- Ignore all deadlines that are too far in future (over org_deadline_warning_days). Possible values: all | near | far | past | future
 							org_agenda_todo_ignore_scheduled = 'all',
@@ -170,6 +170,12 @@ return {
 		vim.api.nvim_set_hl(0, '@org.drawer', { fg = '#8f8774' })
 		vim.api.nvim_set_hl(0, '@org.table.delimiter', { fg = '#8f8774' })
 		vim.api.nvim_set_hl(0, '@org.table.heading', { fg = '#a0a8b7' })
+		vim.api.nvim_set_hl(0, '@org.agenda.header', { fg = '#e334fa' })
+		vim.api.nvim_set_hl(0, '@org.agenda.day', { fg = '#8e979c' })
+		vim.api.nvim_set_hl(0, '@org.agenda.weekend', { fg = '#77a3b8' })
+		vim.api.nvim_set_hl(0, '@org.agenda.today', { fg = '#1D96D1' })
+		vim.api.nvim_set_hl(0, '@org.agenda.scheduled', { link = '@markup.italic' })
+		vim.api.nvim_set_hl(0, '@org.agenda.scheduled_past', { fg = '#e2b86b' })
 	end,
 
 	-- init = function()
