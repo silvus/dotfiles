@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -e
+
+export ORG_PATH="/data/doc/org"
+
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+	(cd $ORG_PATH && nvim .)
+else
+	tmux_sessionizer -p "$ORG_PATH"
+fi
