@@ -36,7 +36,7 @@ def get_project_paths():
     paths = []
 
     # Simple paths
-    for path in ["/data/doc/01_todo.md", "~/.dotfiles", "/data/doc", "/data/work"]:
+    for path in ["/data/doc/01_todo.md", "~/.dotfiles", "/data/doc", "/data/doc/org", "/data/work"]:
         expanded_path = os.path.expanduser(path)
         if os.path.isfile(expanded_path) or os.path.isdir(expanded_path):
             paths.append(expanded_path)
