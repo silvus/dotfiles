@@ -191,6 +191,36 @@ return {
 			end,
 		})
 
+		-- Register the transition from headline to TODO headline or viceversa
+		-- https://github.com/nvim-orgmode/orgmode/issues/466#issuecomment-2706270695
+		local EventManager = require("orgmode.events")
+		local Date = require("orgmode.objects.date")
+		EventManager.listen(EventManager.event.TodoChanged, function(event)
+			---@cast event OrgTodoChangedEvent
+			if event.headline then
+				local current_todo, _, type = event.headline:get_todo()
+				local old_todo_state = event.old_todo_state
+				local now = Date.now()
+	
+				-- Manage the transition from headline to TODO headline or viceversa
+				if current_todo == nil then
+					current_todo = "None"
+				end
+				if old_todo_state == nil then
+					old_todo_state = "None"
+				end
+				-- Record TODO keyword state changes in the logbook
+				event.headline:add_note({
+					'- State "' .. current_todo .. '" from "' .. old_todo_state .. '" [' .. now:to_string() .. "]",
+				})
+	
+				-- Remove the t, w, m, q, y tags when completing an action
+				if type == "DONE" then
+					remove_specific_tags(event.headline)
+				end
+			end
+		end)
+
 	end,
 
 	-- init = function()
