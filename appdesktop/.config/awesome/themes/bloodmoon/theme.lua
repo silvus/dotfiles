@@ -43,10 +43,11 @@ theme.taglist_fg_focus                          = "#FFFFFF"
 theme.taglist_bg_normal                         = theme.bg_normal
 theme.taglist_bg_focus                          = theme.success
 
-theme.tasklist_fg_focus                         = theme.fg_normal
-theme.tasklist_bg_focus                         = theme.bg_normal
+theme.tasklist_fg_normal                        = "#333333"
+theme.tasklist_fg_focus                         = theme.fg_focus
+theme.tasklist_bg_normal                        = theme.bg_normal
+theme.tasklist_bg_focus                         = "#400202"
 theme.tasklist_spacing                          = 15
-theme.tasklist_fg_normal                        = "#FFFFFF"
 
 -- Height/width rotated
 theme.graph_height                              = 15

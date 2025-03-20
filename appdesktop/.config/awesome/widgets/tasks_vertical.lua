@@ -48,26 +48,30 @@ function widget(s)
 			{
 				{
 					{
-						id     = 'icon_role',
+						id     = "icon_role",
 						widget = wibox.widget.imagebox,
+						resize = true,
 					},
-					widget = wibox.container.margin,
+					{
+						{
+							id     = "text_role", -- Used fo status indicators (e.g., urgent, minimized)
+							widget = wibox.widget.textbox,
+						},
+						halign = "center",
+						valign = "center",
+						widget = wibox.container.place, -- Text align
+					},
+					layout = wibox.layout.fixed.vertical, -- Stack icon above status
 				},
-				left   = 3,
-				right  = 3,
-				top    = 3,
-				bottom = 3,
-				widget = wibox.container.margin
+				margins = 5,
+				widget  = wibox.container.margin,
 			},
-			id            = 'background_role',
-			widget        = wibox.container.background,
-			forced_height = 20,
-			forced_width  = 20,
-		},
+			id      = "background_role",
+			widget  = wibox.container.background,
+		}
 	})
 end
 
 customwidget.widget = widget
 
 return customwidget
-
