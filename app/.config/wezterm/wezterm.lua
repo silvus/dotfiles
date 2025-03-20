@@ -48,6 +48,13 @@ config.window_padding = {
 	bottom = 0,
 }
 
+config.colors = {
+	-- the foreground color of selected text
+	selection_fg = 'black',
+	-- the background color of selected text
+	selection_bg = 'silver',
+}
+
 -- Reset all bindings (https://wezfurlong.org/wezterm/config/default-keys.html)
 config.disable_default_key_bindings = true
 -- Honor kitty keyboard protocol escape sequences (for Fish 4)
