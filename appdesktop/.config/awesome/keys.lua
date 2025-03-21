@@ -167,6 +167,23 @@ function move_client(direction)
 	end
 end
 
+
+-- Start or focus client
+function focus_or_start_client(class, command)
+	local matcher = function(c)
+		return awful.rules.match(c, { class = class })
+	end
+	local clients = client.get()
+	for _, c in ipairs(clients) do
+		if matcher(c) then
+			c:jump_to()
+			return
+		end
+	end
+	awful.spawn(command)
+end
+
+
 -- Globals keys
 -- ----------------------------------------------------------------------------
 keys.global = awful.util.table.join(
@@ -284,6 +301,25 @@ keys.global = awful.util.table.join(
 		move_client('right')
 	end, { description = "swap with right client", group = "client" }),
 
+	-- Client specific spawn or focus
+	awful.key({ modkey, "Shift" }, "f", function ()
+		-- focus_or_start_client('firefox', 'firefox')
+		focus_or_start_client('Thunar', 'thunar')
+		local screen = awful.screen.focused()
+		local tag_next = screen.tags[4]
+		if tag_next then
+			tag_next:view_only()
+		end
+	end, {description = "focus or launch Thunar", group = "launcher"}),
+	awful.key({ modkey, "Shift" }, "e", function ()
+		focus_or_start_client('VSCodium', 'codium')
+		local screen = awful.screen.focused()
+		local tag_next = screen.tags[3]
+		if tag_next then
+			tag_next:view_only()
+		end
+	end, {description = "focus or launch VsCodium", group = "launcher"}),
+
 
 	awful.key({ modkey }, "u", function()
 		awful.client.urgent.jumpto()
@@ -346,13 +382,13 @@ keys.global = awful.util.table.join(
 	-- end, { description = "open file manager", group = "launcher" }),
 
 	-- Editor
-	awful.key({ modkey, "Shift" }, "e", function()
-		awful.spawn("codium")
-	end, { description = "open editor", group = "launcher" }),
+	-- awful.key({ modkey, "Shift" }, "e", function()
+	-- 	awful.spawn("codium")
+	-- end, { description = "open editor", group = "launcher" }),
 	-- File Manager
-	awful.key({ modkey, "Shift" }, "f", function()
-		awful.spawn("thunar")
-	end, { description = "open file manager", group = "launcher" }),
+	-- awful.key({ modkey, "Shift" }, "f", function()
+	-- 	awful.spawn("thunar")
+	-- end, { description = "open file manager", group = "launcher" }),
 
 	-- Quake-like terminal (²)
 	awful.key({}, "#49", function()
