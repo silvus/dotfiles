@@ -4,9 +4,7 @@ set -e
 
 export NOTE_PATH="/data/doc"
 
-tmux_running=$(pgrep tmux)
-
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+if [[ -z $TMUX ]]; then
 	(cd $NOTE_PATH && nvim .)
 else
 	tmux_sessionizer -p "$NOTE_PATH"

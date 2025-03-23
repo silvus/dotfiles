@@ -4,9 +4,7 @@ set -e
 
 export DOT_PATH="$HOME/.dotfiles"
 
-tmux_running=$(pgrep tmux)
-
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+if [[ -z $TMUX ]]; then
 	(cd $DOT_PATH && nvim .)
 else
 	tmux_sessionizer -p "$DOT_PATH"
