@@ -1,7 +1,7 @@
 -- Create a command and a binding to open today's note.
 function NoteOpenToday()
 	local note_dir = (os.getenv('NOTE_PATH') or os.getenv('SILVUSDOC'))
-	local today_note_path = note_dir .. '/journalogs/' .. os.date('%Y') .. '/' .. os.date('%m') .. '/' .. os.date('%Y-%m-%d') .. '.org'
+	local today_note_path = note_dir .. '/journalogs/' .. os.date('%Y') .. '/' .. os.date('%m') .. '/' .. os.date('%Y-%m-%d') .. '.md'
 
 	-- Create parents folders if needed
 	if not vim.loop.fs_stat(today_note_path) then
