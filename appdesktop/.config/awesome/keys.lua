@@ -303,14 +303,8 @@ keys.global = awful.util.table.join(
 
 	-- Client specific spawn or focus
 	awful.key({ modkey, "Shift" }, "f", function ()
-		-- focus_or_start_client('firefox', 'firefox')
-		focus_or_start_client('Thunar', 'thunar')
-		local screen = awful.screen.focused()
-		local tag_next = screen.tags[4]
-		if tag_next then
-			tag_next:view_only()
-		end
-	end, {description = "focus or launch Thunar", group = "launcher"}),
+		awful.spawn("thunar")
+	end, {description = "launch Thunar", group = "launcher"}),
 	awful.key({ modkey, "Shift" }, "e", function ()
 		focus_or_start_client('VSCodium', 'codium')
 		local screen = awful.screen.focused()
