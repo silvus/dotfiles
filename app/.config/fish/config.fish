@@ -64,7 +64,6 @@ alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl
 alias bat='batcat'
 alias fd='fdfind'
 alias lz='lazygit'
-alias y='yazi /data'
 
 alias tree1="tree --dirsfirst -ChFLQ 1"
 alias tree2="tree --dirsfirst -ChFLQ 2"
