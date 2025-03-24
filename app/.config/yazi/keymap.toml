@@ -1,0 +1,19 @@
+[manager]
+
+prepend_keymap = [
+	# Disable "q" exit
+	{ on = "q",     run = "noop",               desc = "Do nothing" },
+	
+	# Quit with "Q"
+	{ on = "Q",     run = "quit",               desc = "Quit the process" },
+	{ on = "C-q",   run = "quit --no-cwd-file", desc = "Quit the process without outputting cwd-file" },
+	
+	# Inverse fzf and zoxide
+	{ on = "Z",     run = "plugin zoxide",      desc = "Jump to a directory via zoxide" },
+	{ on = "z",     run = "plugin fzf",         desc = "Jump to a file/directory via fzf" },
+
+	# Fast cd
+	{ on = [ "g", "a" ],       run = "cd /data",       desc = "Goto /data" },
+	{ on = [ "g", "d" ],       run = "cd /data/doc",   desc = "Goto /data/doc" },
+	{ on = [ "g", "w" ],       run = "cd ~/Downloads",   desc = "Goto ~/Downloads" },
+]
