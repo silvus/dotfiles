@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [[ -z $TMUX ]]; then
+    exec yazi
+else
+    # Check if a window named "nav" exists
+    if tmux list-windows -F "#W" | grep -q "nav"; then
+        tmux select-window -t "nav"
+    else
+        tmux new-window -n "nav" "yazi"
+    fi
+fi
