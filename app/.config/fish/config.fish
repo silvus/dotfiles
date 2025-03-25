@@ -100,6 +100,17 @@ if type -q xset
 end
 
 
+# FZF from Nix https://nixos.wiki/wiki/Fzf
+# -----------------------------------------------------------------------------
+function fish_user_key_bindings
+  if command -s fzf-share >/dev/null
+    source (fzf-share)/key-bindings.fish
+  end
+
+  fzf_key_bindings
+end
+
+
 # Bindings
 # -----------------------------------------------------------------------------
 # Fzf search current dir in EDITOR with CTRL+E

@@ -27,6 +27,8 @@
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
 
+    # Fuzzy finder
+    fzf
     # Cat alternative
     bat
     # Find alternative
