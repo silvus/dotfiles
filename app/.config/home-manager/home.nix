@@ -33,14 +33,27 @@
     bat
     # Find alternative
     fd
+    # Grep alternative
+    ripgrep
     # Code statistics
     tokei
+    # Editor
+    neovim
     # File manager
     yazi
     # Git TUI
     lazygit
 
-    # # It is sometimes useful to fine-tune packages, for example, by applying
+    # Fonts
+    nerd-fonts.dejavu-sans-mono
+    nerd-fonts.fira-mono
+    nerd-fonts.hack
+    nerd-fonts.inconsolata
+    nerd-fonts.iosevka
+    nerd-fonts.iosevka-term
+    nerd-fonts.liberation
+
+   # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
