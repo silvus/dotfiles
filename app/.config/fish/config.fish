@@ -126,7 +126,7 @@ bind \ch fzf-history-widget
 # bind \co 'fzf-editor-open /data/doc'
 
 # Open TODO.md with CTRL+t
-bind \ct 'tmux_sessionizer -p "/data/doc/org/todo.org"'
+bind \ct 'tmux_sessionizer -p "/data/doc/todo.org"'
 
 
 # Environment specific configuration
