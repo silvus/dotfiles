@@ -64,6 +64,7 @@ alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl
 alias bat='batcat'
 alias fd='fdfind'
 alias lz='lazygit'
+alias y='yazi'
 
 alias tree1="tree --dirsfirst -ChFLQ 1"
 alias tree2="tree --dirsfirst -ChFLQ 2"
@@ -126,7 +127,7 @@ bind \ch fzf-history-widget
 # bind \co 'fzf-editor-open /data/doc'
 
 # Open TODO.md with CTRL+t
-bind \ct 'tmux_sessionizer -p "/data/doc/todo.org"'
+# bind \ct 'tmux_sessionizer -p "/data/doc/todo.org"'
 
 
 # Environment specific configuration
