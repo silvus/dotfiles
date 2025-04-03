@@ -2,7 +2,7 @@
 
 set -e
 
-export TODO_PATH="/data/doc/01_todo.md"
+export TODO_PATH="/data/doc/todo.org"
 
 tmux_running=$(pgrep tmux)
 
