@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Check if the input file is provided
+if [ -z "$1" ]; then
+	echo "Error: No input file provided." >&2
+	echo "Usage: $(basename "$0") input_file.md" >&2
+	exit 1
+fi
+
+input_file="$1"
+output_file="${input_file%.md}.org"
+
+# Check if the input file exists and is readable
+if [ ! -r "$input_file" ]; then
+	echo "Error: Cannot read input file '$input_file'." >&2
+	exit 1
+fi
+
+# Perform the conversion using pandoc
+if ! command -v pandoc >/dev/null 2>&1; then
+	echo "Error: pandoc is not installed. Please install it first." >&2
+	exit 1
+fi
+
+# Convert the file
+if ! pandoc "$input_file" -t org -o "$output_file"; then
+	echo "Error: Conversion failed." >&2
+	exit 1
+fi
+
+echo "Conversion successful: $output_file"
