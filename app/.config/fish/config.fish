@@ -55,6 +55,7 @@ function mkcd --description 'Create a folder and go into it'
 end
 
 alias e='$EDITOR'
+alias b='$BROWSER'
 alias diskusage='ncdu'
 alias calculator='bc -l'
 alias copy='xclip -selection clipboard'
@@ -75,14 +76,8 @@ alias tree6="tree --dirsfirst -ChFLQ 6"
 
 # Nvim profiles
 # -----------------------------------------------------------------------------
-alias v='nvim'
-
-alias nvim-custom='NVIM_APPNAME=nvim-custom nvim'
-alias nvim-kickstart='NVIM_APPNAME=nvim-kickstart nvim'
-alias nvim-lazyvim='NVIM_APPNAME=nvim-lazyvim nvim'
-alias nvim-nvchad='NVIM_APPNAME=nvim-nvchad nvim'
-alias nvim-astrovim='NVIM_APPNAME=nvim-astrovim nvim'
-alias nvim-lunarvim='NVIM_APPNAME=nvim-lunarvim nvim'
+alias nvim-lazyvim='NVIM_APPNAME=lazyvim nvim'
+alias lnvim='NVIM_APPNAME=lazyvim nvim'
 
 
 # Xset
