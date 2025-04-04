@@ -52,7 +52,7 @@ alias lynx="lynx -cfg=$HOME/.config/lynx/lynxrc -lss=$HOME/.config/lynx/lynx.lss
 alias bat='batcat'
 alias fd='fdfind'
 alias lz='lazygit'
-alias y='yazi /data'
+alias y='yazi'
 
 # Enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
