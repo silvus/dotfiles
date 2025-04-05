@@ -268,6 +268,13 @@ local rules = {
             titlebars_enabled = false,
         }
     },
+    -- Containers / VM
+    {
+        rule_any = { class = { "Remote-viewer" } },
+        properties = {
+            screen = screens.count(),
+        }
+    },
     -- Ksnip (screenshots)
     {
         rule_any = { class = { "ksnip" } },
@@ -336,4 +343,3 @@ local rules = {
 
 
 return rules
-
