@@ -13,8 +13,9 @@ end
 
 local config = {}
 
-config.home = os.getenv("HOME")
-config.dotfiles = os.getenv("SILVUSDOTFILES")
+config.home = os.getenv("HOME") or '/home/silvus'
+config.dotfiles = os.getenv("SILVUSDOTFILES") or '/home/silvus/.dotfiles'
+config.dotfiles_custom = os.getenv("SILVUSDOTFILES_CUSTOM") or '/home/silvus/.dotfiles/custom'
 
 -- config.theme = "lagoon"
 config.theme = "matrix"
@@ -81,7 +82,7 @@ config.layouts = {
 -- local config = {}
 -- config.theme = "customblue"
 -- return config
-local config_custom_path = os.getenv("SILVUSDOTFILES_CUSTOM") .. '/awesome.lua'
+local config_custom_path = config.dotfiles_custom .. '/awesome.lua'
 if file_exists(config_custom_path) then
 	local config_custom = dofile(config_custom_path)
 	if config_custom then
