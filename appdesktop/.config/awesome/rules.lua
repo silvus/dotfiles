@@ -244,6 +244,7 @@ local rules = {
                 "libreoffice-startcenter",
                 "libreoffice-writer",
                 "libreoffice-calc",
+                "libreoffice-draw",
                 "libreoffice-impress",
                 "Simple-scan",
                 "Gnumeric",
