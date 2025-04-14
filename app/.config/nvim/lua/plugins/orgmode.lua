@@ -213,11 +213,6 @@ return {
 				event.headline:add_note({
 					'- State "' .. current_todo .. '" from "' .. old_todo_state .. '" [' .. now:to_string() .. "]",
 				})
-	
-				-- Remove the t, w, m, q, y tags when completing an action
-				if type == "DONE" then
-					remove_specific_tags(event.headline)
-				end
 			end
 		end)
 
