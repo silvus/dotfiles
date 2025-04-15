@@ -256,7 +256,7 @@ local rules = {
     },
     -- Graphics
     {
-        rule_any = { class = { "Gimp", "Krita", } },
+        rule_any = { class = { "Gimp", "Krita", "FreeCAD"} },
         properties = {
             tag = desktops.tags_names[8],
         }
