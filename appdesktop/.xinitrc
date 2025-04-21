@@ -37,4 +37,4 @@ fi
 
 # Launch default WM, if not already do in global xinitrc
 # ------------------------------------------------------
-dbus-run-session awesome
+exec dbus-run-session awesome
