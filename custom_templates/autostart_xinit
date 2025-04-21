@@ -4,4 +4,4 @@
 # xrandr --output eDP-1 --primary --mode 1920x1080
 
 # Launch WM
-# dbus-run awesome
+# exec dbus-run-session awesome
