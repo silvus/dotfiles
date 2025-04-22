@@ -15,16 +15,18 @@ in
     ];
   
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.warn-dirty = false;
 
   # Bootloader.
   boot.loader.timeout = 1;
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 9;
   # See /boot/EFI/debian
   boot.loader.systemd-boot.extraEntries."debian.conf" = ''
     title Debian
     efi   /efi/debian/grubx64.efi
+    sort-key 0
   '';
 
   # boot.loader.systemd-boot.enable = false;
