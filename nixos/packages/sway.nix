@@ -10,7 +10,7 @@ in {
     slurp
     wl-clipboard
     mako # notifications
-    wev
+    wev # xev for wayland
     kitty
   ];
 
@@ -30,8 +30,34 @@ in {
         # "${mod}+Return" = "exec ${cfg.config.terminal}";
         # "${mod}+Shift+q" = "kill";
         "${mod}+e" = "exec --no-startup-id wofi --show drun,run";
-        "${mod}+Shift+grave" = "move container to workspace number 0";
+        "${mod}+Shift+grave" = "move container to workspace number 0, workspace 0";
         "grave" = "workspace number 0";
+
+        # Switch to workspace
+        "${mod}+1" = "workspace number 1";
+        "${mod}+2" = "workspace number 2";
+        "${mod}+3" = "workspace number 3";
+        "${mod}+4" = "workspace number 4";
+        "${mod}+5" = "workspace number 5";
+        "${mod}+6" = "workspace number 6";
+        "${mod}+7" = "workspace number 7";
+        "${mod}+8" = "workspace number 8";
+        "${mod}+9" = "workspace number 9";
+        "${mod}+0" = "workspace number 10";
+        # Move focused container to workspace
+        "${mod}+Shift+1" = "move container to workspace number 1, workspace 1";
+        "${mod}+Shift+2" = "move container to workspace number 2, workspace 2";
+        "${mod}+Shift+3" = "move container to workspace number 3, workspace 3";
+        "${mod}+Shift+4" = "move container to workspace number 4, workspace 4";
+        "${mod}+Shift+5" = "move container to workspace number 5, workspace 5";
+        "${mod}+Shift+6" = "move container to workspace number 6, workspace 6";
+        "${mod}+Shift+7" = "move container to workspace number 7, workspace 7";
+        "${mod}+Shift+8" = "move container to workspace number 8, workspace 8";
+        "${mod}+Shift+9" = "move container to workspace number 9, workspace 9";
+        "${mod}+Shift+0" = "move container to workspace number 10, workspace 10";
+        # Note: workspaces can have any name you want, not just numbers.
+        # We just use 1-10 as the default.
+
       };
         # lib.attrsets.mergeAttrsList [
         # (lib.attrsets.mergeAttrsList (map (num: let
@@ -40,31 +66,6 @@ in {
         #   "${mod}+${ws}" = "workspace ${ws}";
         #   "${mod}+Ctrl+${ws}" = "move container to workspace ${ws}";
         # }) [1 2 3 4 5 6 7 8 9 0]))
-
-        # Switch to workspace
-        # "${mod}+1" = "workspace number 1";
-        # "${mod}+2" = "workspace number 2";
-        # "${mod}+3" = "workspace number 3";
-        # "${mod}+4" = "workspace number 4";
-        # "${mod}+5" = "workspace number 5";
-        # "${mod}+6" = "workspace number 6";
-        # "${mod}+7" = "workspace number 7";
-        # "${mod}+8" = "workspace number 8";
-        # "${mod}+9" = "workspace number 9";
-        # "${mod}+0" = "workspace number 10";
-        # # Move focused container to workspace
-        # "${mod}+Shift+1" = "move container to workspace number 1";
-        # "${mod}+Shift+2" = "move container to workspace number 2";
-        # "${mod}+Shift+3" = "move container to workspace number 3";
-        # "${mod}+Shift+4" = "move container to workspace number 4";
-        # "${mod}+Shift+5" = "move container to workspace number 5";
-        # "${mod}+Shift+6" = "move container to workspace number 6";
-        # "${mod}+Shift+7" = "move container to workspace number 7";
-        # "${mod}+Shift+8" = "move container to workspace number 8";
-        # "${mod}+Shift+9" = "move container to workspace number 9";
-        # "${mod}+Shift+0" = "move container to workspace number 10";
-        # # Note: workspaces can have any name you want, not just numbers.
-        # # We just use 1-10 as the default.
 
         # #
         # # Scratchpad:
@@ -134,11 +135,18 @@ in {
       focus.followMouse = false;
       startup = [
         { command = "kitty --class dropterm"; }
+        { command = "firefox"; }
+        { command = "codium"; }
       ];
+      defaultWorkspace = "workspace number 1";
       workspaceAutoBackAndForth = true;
     };
+
+    # swaymsg -t get_tree
     extraConfig = ''
-      for_window [class="dropterm"] move to workspace 0
+      for_window [app_id="dropterm"] move to workspace 0
+      for_window [app_id="firefox"] move to workspace 1
+      for_window [app_id="codium"] move to workspace 3
     '';
       # for_window [class="dropterm"] floating enable;
       # for_window [class="dropterm"] move scratchpad; [instance="dropterm"] scratchpad show; fullscreen enable; move scratchpad

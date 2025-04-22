@@ -38,18 +38,6 @@
     in
     {
     
-      # nix = {
-      #   settings = {
-      #     warn-dirty = false;
-      #   };
-      # };
-      # Config based on hostname
-      # nixosConfigurations.virtus = nixpkgs.lib.nixosSystem {
-      #   inherit system;
-
-      #   # builtins.trace message "la";
-      
-      # };
       # Config based on hostname
       nixosConfigurations.noctus = nixpkgs.lib.nixosSystem {
         inherit system;
