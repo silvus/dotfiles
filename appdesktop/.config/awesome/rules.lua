@@ -276,6 +276,13 @@ local rules = {
             screen = screens.count(),
         }
     },
+    -- Keyboard
+    {
+        rule_any = { class = { "Keymapp" } },
+        properties = {
+            screen = screens.count(),
+        }
+    },
     -- Ksnip (screenshots)
     {
         rule_any = { class = { "ksnip" } },
