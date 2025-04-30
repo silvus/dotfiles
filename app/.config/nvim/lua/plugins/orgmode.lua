@@ -47,7 +47,28 @@ return {
 			-- 	DELEGATED = ':background #FFFFFF :slant italic :underline on',
 			-- 	INACTIVE = ':background #000000 :foreground red', -- overrides builtin color for `TODO` keyword
 			-- },
-			win_split_mode = '80vsplit', -- auto, horizontal, vertical, { 'float', 0.3 }, tabnew
+			
+			-- win_split_mode = '80vsplit', -- auto, horizontal, vertical, { 'float', 0.3 }, tabnew
+			-- Replace current buffer
+			win_split_mode = function(buffer)
+				local win = vim.api.nvim_get_current_win()
+				local cur_buf = vim.api.nvim_win_get_buf(win)
+			
+				-- Only wipe the current buffer if it's not the same as the target one
+				if cur_buf ~= buffer then
+					-- Only wipe unlisted or unnamed buffers to avoid data loss
+					local name = vim.api.nvim_buf_get_name(cur_buf)
+					if name == '' and vim.bo[cur_buf].buftype == '' then
+						vim.api.nvim_buf_delete(cur_buf, { force = true })
+					else
+						-- Optional: switch to an empty buffer before deleting the old one
+						vim.cmd('enew')
+						vim.api.nvim_buf_delete(cur_buf, { force = true })
+					end
+				end
+				return win
+			end,
+
 			org_startup_folded = 'content', -- Only show the first two levels
 			org_log_into_drawer = 'LOGBOOK',
 			org_log_done = 'time',
@@ -80,8 +101,8 @@ return {
 					org_agenda_later = '<',
 					org_agenda_earlier = '>',
 					org_agenda_goto_today = { '.', 'T' },
-					org_agenda_switch_to = '<TAB>',
-					org_agenda_goto = '<CR>',
+					-- org_agenda_switch_to = '<TAB>',
+					-- org_agenda_goto = '<CR>',
 				},
 			},
 			org_agenda_custom_commands = {
