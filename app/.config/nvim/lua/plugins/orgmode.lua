@@ -169,8 +169,12 @@ return {
 		-- Global key bindings
 		vim.keymap.set('n', '<leader>a', function()
 			-- org.agenda:agenda({ org_agenda_start_day = '-3d', show_clock_report = true })
-			-- TODO: How to open a specific custom agenda?
-			org.agenda:agenda({ show_clock_report = true })
+			-- org.agenda:agenda({
+			-- 	show_clock_report = true,
+			-- 	custom_cmd = 'o',
+			-- })
+			-- Open custom agenda
+			vim.cmd('Org agenda o')
 		end)
 		vim.keymap.set('n', '<leader>fo', require('telescope').extensions.orgmode.search_headings, { desc = 'orgmode search headings' })
 
