@@ -64,6 +64,9 @@
 [user]
 	# Insists the user set their user.email and user.name are set before committing
 	useConfigOnly = true
+[gpg]
+	# Sign with a SSH key
+	format = ssh
 [help]
 	# Git will guess what you meant and try to run it
 	# autocorrect = prompt

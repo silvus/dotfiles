@@ -1,3 +1,4 @@
 # [user]
 # 	name = silvus
 # 	email = silvus@mail.com
+#	signingkey = /path/to/id_ed25519_main_sk.pub
