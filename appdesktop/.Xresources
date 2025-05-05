@@ -10,6 +10,14 @@ Xft.autohint: false
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
+SshAskpass*Dialog.font: -*-dejavu sans mono-medium-r-*-*-12-*-*-*-*-*-*-*
+SshAskpass*Dialog.label: Please enter your authentication passphrase:
+# SshAskpass*Dialog.title: 
+SshAskpass*background: #1e1e1e
+SshAskpass*foreground: #00ff00
+SshAskpass.Button*background: #1e1e1e
+SshAskpass.Button*foreground: #00ff00
+
 URxvt.iconFile: /usr/share/icons/Numix/48/apps/window-manager.svg
 
 URxvt.termName: rxvt-256color
