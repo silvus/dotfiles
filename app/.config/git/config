@@ -32,6 +32,8 @@
 [tag]
 	# Tag sorting (treating dotted version numbers as a series of integer values for sorting purposes)
 	sort = version:refname
+	# Sign tag by default
+	gpgsign = true
 [init]
 	defaultBranch = main
 [web]
@@ -73,6 +75,8 @@
 [commit]
 	# Get diff when writing commit message
 	verbose = true
+	# Sign commit by default
+	gpgsign = true
 [push]
 	# "simple" is default since 2.0 (Push only the current branch if its named upstream is identical)
 	default = simple
