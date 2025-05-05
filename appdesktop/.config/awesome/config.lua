@@ -51,6 +51,8 @@ config.wallpapers_by_tag = false
 config.blink_path = nil
 if file_exists(config.home .. '/bin/blink1-flash') then
 	config.blink_path = config.home .. '/bin/blink1-flash'
+elseif file_exists('/usr/local/blink-tool') then
+	config.blink_path = '/usr/local/blink-tool'
 end
 
 -- Table of layouts to cover with awful.layout.inc, order matters.

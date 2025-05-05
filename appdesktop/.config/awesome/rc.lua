@@ -121,10 +121,17 @@ naughty.config.notify_callback = function(args)
 
 	if config.blink_path then
 		local blink_color = args.bg or beautiful.primary
-		awful.util.spawn(config.blink_path .. " --on '" .. blink_color .. "'", false)
+		awful.util.spawn(config.blink_path .. " --on --rgb '" .. blink_color .. "' --blink 10", false)
 	end
 	return args
 end
+
+-- Connect a signal to be executed when the notification is destroyed
+-- naughty.connect_signal("destroyed", function()
+-- 	if config.blink_path then
+-- 		awful.util.spawn(config.blink_path .. " --off", false)
+-- 	end
+-- end)
 
 -- Default
 naughty.config.defaults.timeout = 60
