@@ -114,11 +114,11 @@
             home-manager.users.silvus = {
               imports = [
                 ./packages/fish.nix
-                # ./packages/theme.nix
-                # ./packages/git.nix
-                # ./packages/lazygit.nix
-                # ./packages/vscodium.nix
-                # ./packages/sway.nix
+                ./packages/theme.nix
+                ./packages/git.nix
+                ./packages/lazygit.nix
+                ./packages/vscodium.nix
+                ./packages/sway.nix
                 #./packages/hyprland.nix
                 #./packages/waybar.nix
               ];

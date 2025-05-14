@@ -42,25 +42,6 @@ in
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-# home-manager.users.silvus = { pkgs, ... }: {
-#   home.packages = [ pkgs.atool pkgs.httpie ];
-#  programs.bash.enable = true;
-
-  # This value determines the Home Manager release that your configuration is 
-  # compatible with. This helps avoid breakage when a new Home Manager release 
-  # introduces backwards incompatible changes. 
-  #
-  # You should not change this value, even if you update Home Manager. If you do 
-  # want to update the value, then make sure to first check the Home Manager 
-  # release notes. 
-#  home.stateVersion = "24.11"; # Please read the comment before changing. 
-
-#};
-
-  # home-manager.useUserPackages = true;
-  # home-manager.useGlobalPkgs = true;
-
  
 #  services.greetd = {
 #    enable = true;
@@ -104,7 +85,4 @@ in
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  # List services that you want to enable:
-
 }
