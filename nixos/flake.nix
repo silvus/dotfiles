@@ -44,9 +44,12 @@
       
         # List of NixOS modules to include
         modules = [
+          
+          # Shared base config
+          ./base.nix
 
           # Main system config
-          ./configuration.nix
+          ./hosts/noctus/configuration.nix
 
           # Include the Home Manager NixOS module
           home-manager.nixosModules.home-manager
@@ -62,6 +65,7 @@
             home-manager.users.silvus = {
               imports = [
                 ./packages/fish.nix
+                ./packages/theme.nix
                 ./packages/git.nix
                 ./packages/lazygit.nix
                 ./packages/vscodium.nix
@@ -77,33 +81,47 @@
               # enableFishIntegration = true;
             # };
 
-              home.sessionVariables = {
-                XCURSOR_THEME = "Adwaita";
-                XCURSOR_SIZE = "24";
-              };
-              home.pointerCursor = {
-                gtk.enable = true;
-                # x11.enable = true;
-                package = pkgs.bibata-cursors;
-                name = "Bibata-Modern-Classic";
-                size = 16;
-              };
+              home.stateVersion = "24.11"; # Please read the comment before changing. 
+            };
 
-              gtk =  {
-                enable = true;
-                theme = {
-                  name = "Everforest-Dark-B-LB";
-                  package = pkgs.everforest-gtk-theme;
-                };
-                iconTheme = {
-                  name = "Everforest-Dark";
-                  package = pkgs.everforest-gtk-theme;
-                };
-                cursorTheme = {
-                  name = "Adwaita";
-                  size = 24;
-                };
-              };
+          }
+        ];
+      };
+
+      nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
+        inherit system;
+      
+        # List of NixOS modules to include
+        modules = [
+
+          # Shared base config
+          ./base.nix
+
+          # Main system config
+          ./hosts/nixos-vm/configuration.nix
+
+          # Include the Home Manager NixOS module
+          home-manager.nixosModules.home-manager
+
+          # Home Manager specific configuration
+          {
+            # Use the same pkgs instance for Home Manager as the system
+            home-manager.useGlobalPkgs = true;
+            # Install user packages via Home Manager
+            home-manager.useUserPackages = true;
+            # Home manager config for a user
+            # home-manager.users.silvus = import ./home.nix;
+            home-manager.users.silvus = {
+              imports = [
+                ./packages/fish.nix
+                # ./packages/theme.nix
+                # ./packages/git.nix
+                # ./packages/lazygit.nix
+                # ./packages/vscodium.nix
+                # ./packages/sway.nix
+                #./packages/hyprland.nix
+                #./packages/waybar.nix
+              ];
               home.stateVersion = "24.11"; # Please read the comment before changing. 
             };
 
