@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ modulesPath, ... }:
+{ config, pkgs, modulesPath, ... }:
 
 {
   imports = [
@@ -31,4 +31,21 @@
   };
 
   system.stateVersion = "24.11"; # Did you read the comment?
+
+  programs.dconf.enable = true;
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        user = "greeter";
+      };
+    };
+  };
+
+  security.polkit.enable = true;
+  security.pam.services.swaylock = {};
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }
