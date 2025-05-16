@@ -1,7 +1,12 @@
 { config, pkgs, ... }:
 
 {
-	
+
+	home.packages = with pkgs; [
+		everforest-gtk-theme
+		adwaita-icon-theme
+	];
+
 	home.sessionVariables = {
 		XCURSOR_THEME = "Adwaita";
 		XCURSOR_SIZE = "24";
@@ -9,12 +14,12 @@
 	home.pointerCursor = {
 		gtk.enable = true;
 		# x11.enable = true;
-		package = pkgs.bibata-cursors;
-		name = "Bibata-Modern-Classic";
-		size = 16;
+		package = pkgs.adwaita-icon-theme;
+		name = "Adwaita";
+		size = 24;
 	};
 
-	gtk =  {
+	gtk = {
 		enable = true;
 		theme = {
 			name = "Everforest-Dark-B-LB";
