@@ -63,21 +63,22 @@
 		mosh
 		unzip
 		unrar
+
 		firefox
 		mpv
+		moc
+		playerctl
 		rxvt-unicode
 		wezterm
 
 		dconf
-		grim
-		mako
-		slurp
-		sway
-		wl-clipboard
+		# grim
+		# mako
+		# slurp
+		# sway
 
 		# wallust
-		everforest-gtk-theme
-		adwaita-icon-theme
+
 	];
 
 	programs.vim.enable = true;
