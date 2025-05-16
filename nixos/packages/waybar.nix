@@ -2,9 +2,9 @@
 
 {
 
-	home.packages = with pkgs; [
+  home.packages = with pkgs; [
     waybar
-	];
+  ];
 
   programs.waybar = {
     enable = true;

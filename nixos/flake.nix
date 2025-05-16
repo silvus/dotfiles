@@ -118,7 +118,8 @@
                 ./packages/git.nix
                 ./packages/lazygit.nix
                 ./packages/vscodium.nix
-                ./packages/sway.nix
+                ./packages/river.nix
+                # ./packages/sway.nix
                 #./packages/hyprland.nix
                 #./packages/waybar.nix
               ];
