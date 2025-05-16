@@ -6,6 +6,14 @@
     fish
 	];
 
+  # Add to PATH
+  home.sessionPath = [
+    "${config.home.homeDirectory}/bin"
+    "${config.home.homeDirectory}/.local/bin"
+    "${config.home.homeDirectory}/.dotfiles/bin"
+    "/data/doc/.bin"
+  ];
+  
   programs.fish = {
     enable = true;
 
