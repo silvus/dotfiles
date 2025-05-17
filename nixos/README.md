@@ -25,3 +25,8 @@ su - silvus
 nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#git -- clone https://github.com/silvus/dotfiles.git ~/.dotfiles
 sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles/nixos#the-hostname --use-remote-sudo
 ```
+
+On Debian, install Nix and Homemanager (standalone), then:
+``` bash
+home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles/nixos#silvus
+```

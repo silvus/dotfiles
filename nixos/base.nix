@@ -78,7 +78,6 @@
 		# sway
 
 		# wallust
-
 	];
 
 	programs.vim.enable = true;
