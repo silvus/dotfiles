@@ -1,18 +1,3 @@
-# {
-#   description = "A very basic flake";
-
-#   inputs = {
-#     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-#   };
-
-#   outputs = { self, nixpkgs }: {
-
-#     packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-
-#     packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
-
-#   };
-# }
 {
   description = "Custom NixOS flake configuration";
 
@@ -125,7 +110,46 @@
               ];
               home.stateVersion = "24.11"; # Please read the comment before changing. 
             };
+          }
+        ];
+      };
 
+      # Home Manager standalone (non-NixOS)
+      homeConfigurations.silvus = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          # ./packages/waybar.nix
+          {
+            home.username = "silvus";
+            home.homeDirectory = "/home/silvus";
+            home.stateVersion = "24.11"; # Please read the comment before changing. 
+            # Let Home Manager install and manage itself.
+            programs.home-manager.enable = true;
+
+            home.packages = with pkgs; [
+              # Fuzzy finder
+              fzf
+              # Cat alternative
+              bat
+              # Find alternative
+              fd
+              # Grep alternative
+              ripgrep
+              # Code statistics
+              tokei
+              # Editor
+              neovim
+              # File manager
+              yazi
+              # Git TUI
+              lazygit
+
+              # Fonts
+              terminus_font
+              nerd-fonts.dejavu-sans-mono
+              nerd-fonts.fira-mono
+              nerd-fonts.hack
+            ];
           }
         ];
       };
