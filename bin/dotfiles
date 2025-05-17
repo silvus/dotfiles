@@ -3,15 +3,13 @@
 Setup dotfiles
 """
 
+import argparse
+import filecmp
 import os
-import sys
 import shutil
 import socket
-import filecmp
-import fileinput
-import argparse
+import sys
 from subprocess import Popen, PIPE
-
 
 # --------------------------------------------------------------------
 # Prints (with colors)
@@ -33,11 +31,11 @@ def print_success(message):
 
 
 def print_progress(count, total):
-    barLength = 40
+    bar_length: int = 40
     percent = int(round((count / total) * 100))
-    nb_bar_fill = int(round((barLength * percent) / 100))
+    nb_bar_fill = int(round((bar_length * percent) / 100))
     bar_fill = "=" * nb_bar_fill
-    bar_empty = " " * (barLength - nb_bar_fill)
+    bar_empty = " " * (bar_length - nb_bar_fill)
     symbol = COLOR_BLUE + "➤" + COLOR_RESET
     if count == total:
         symbol = COLOR_GREEN + "✔" + COLOR_RESET
@@ -106,25 +104,25 @@ def check_network():
         # Host is actually reachable
         socket.create_connection((host, 80), 2)
         return True
-    except:
-        print_error("Github can't be reach, no update")
+    except (socket.gaierror, socket.timeout, OSError) as e:
+        print_error(f"Github can't be reached, no update: {e}")
 
     return False
 
 
-def X_is_installed():
+def x_is_installed():
     """
     Try to guess if x is installed
     """
-    return shutil.which("startx") or shutil.which("lightdm")
+    return shutil.which("startx") or shutil.which("lightdm") or shutil.which("tuigreet")
 
 
-def count_files(rootFolder):
+def count_files(root_folder):
     """
     Recursive count files in rootFolder
     """
     total = 0
-    for root, dirs, files in os.walk(rootFolder):
+    for root, dirs, files in os.walk(root_folder):
         total += len(files)
     return total
 
@@ -138,6 +136,7 @@ def copy_if_not_exist(source, destination):
         return shutil.copy(source, destination)
     return True
 
+
 def copy_has_root(source, destination):
     """
     Copy file has root. Use cp to not launch this script has root
@@ -149,25 +148,25 @@ def copy_has_root(source, destination):
 # Symlinks
 # --------------------------------------------------------------------
 
-def symlink_arbo(rootSource, rootDestination):
+def symlink_arbo(root_source, root_destination):
     """
     Scan "app" directory and create an equivalent symlink
     in home for each file.
     If X server is installed, scan also "appdesktop"
     """
     count = 0
-    total = count_files(rootSource)
+    total = count_files(root_source)
 
-    for dirName, subdirList, fileList in os.walk(rootSource):
-        for fileName in fileList:
+    for dir_name, _, file_list in os.walk(root_source):
+        for filename in file_list:
             # Get relative dir from dotfiles root
-            relativeDir = os.path.relpath(dirName, rootSource)
+            relative_dir = os.path.relpath(dir_name, root_source)
             # Add file name and handle "." (with normpath)
-            relativeFile = os.path.normpath(os.path.join(relativeDir, fileName))
+            relative_file = os.path.normpath(os.path.join(relative_dir, filename))
 
             # Create absolutes paths
-            source = os.path.join(rootSource, relativeFile)
-            destination = os.path.join(rootDestination, relativeFile)
+            source = os.path.join(root_source, relative_file)
+            destination = os.path.join(root_destination, relative_file)
 
             count += 1
             if not symlink(source, destination):
@@ -204,23 +203,23 @@ def symlink(src, dest):
 # Copy
 # --------------------------------------------------------------------
 
-def copy_arbo(rootSource, rootDestination):
+def copy_arbo(root_source, root_destination):
     """
     Scan dotfiles directory and create an equivalent file copy in home for each file.
     """
     count = 0
-    total = count_files(rootSource)
+    total = count_files(root_source)
 
-    for dirName, subdirList, fileList in os.walk(rootSource):
-        for fileName in fileList:
+    for dir_name, _, file_list in os.walk(root_source):
+        for filename in file_list:
             # Get relative dir from dotfiles root
-            relativeDir = os.path.relpath(dirName, rootSource)
+            relative_dir = os.path.relpath(dir_name, root_source)
             # Add file name and handle "." (with normpath)
-            relativeFile = os.path.normpath(os.path.join(relativeDir, fileName))
+            relative_file = os.path.normpath(os.path.join(relative_dir, filename))
 
             # Create absolutes paths
-            source = os.path.join(rootSource, relativeFile)
-            destination = os.path.join(rootDestination, relativeFile)
+            source = os.path.join(root_source, relative_file)
+            destination = os.path.join(root_destination, relative_file)
 
             if copy_if_not_exist(source, destination):
                 count += 1
@@ -235,22 +234,25 @@ def copy_arbo(rootSource, rootDestination):
     return True
 
 
-def copy_files_has_root(sourcePathRoot, filesTarget = []):
+def copy_files_has_root(source_path_root, files_target=None):
     """
     Copy each dotfiles path in filesSource to a root counterpart, event if exist.
     filesSource is a list of absolutes file paths.
     sourcePathRoot is the absolute dotfiles path.
     """
-    for fileTarget in filesTarget:
-            # Get relative dir from dotfiles root
-            fileSource = os.path.normpath(os.path.join(sourcePathRoot, fileTarget.strip("/")))
+    if files_target is None:
+        files_target = []
 
-            # Copy has root, even if the file exist
-            if copy_has_root(fileSource, fileTarget):
-                print_success("Copy {}".format(fileTarget))
-            else:
-                print_error("Error force copying to {}".format(fileTarget))
-                return False
+    for file_target in files_target:
+        # Get relative dir from dotfiles root
+        file_source = os.path.normpath(os.path.join(source_path_root, file_target.strip("/")))
+
+        # Copy has root, even if the file exist
+        if copy_has_root(file_source, file_target):
+            print_success("Copy {}".format(file_target))
+        else:
+            print_error("Error force copying to {}".format(file_target))
+            return False
 
     print()
     return True
@@ -260,32 +262,31 @@ def copy_files_has_root(sourcePathRoot, filesTarget = []):
 # Scan diff
 # --------------------------------------------------------------------
 
-def get_files_different_arbo(rootSource, rootDestination):
+def get_files_different_arbo(root_source, root_destination):
     """
     Scan directory and for each file check if the root counterpart is the same.
     """
     diff_files = []
 
-    for dirName, subdirList, fileList in os.walk(rootSource):
-        for fileName in fileList:
+    for dir_name, _, file_list in os.walk(root_source):
+        for filename in file_list:
             # Get relative dir from dotfiles root
-            relativeDir = os.path.relpath(dirName, rootSource)
+            relative_dir = os.path.relpath(dir_name, root_source)
             # Add file name and handle "." (with normpath)
-            relativeFile = os.path.normpath(os.path.join(relativeDir, fileName))
+            relative_file = os.path.normpath(os.path.join(relative_dir, filename))
 
             # Create absolutes paths
-            source = os.path.join(rootSource, relativeFile)
-            destination = os.path.join(rootDestination, relativeFile)
+            source = os.path.join(root_source, relative_file)
+            destination = os.path.join(root_destination, relative_file)
 
             # Compare diff
             try:
                 if not filecmp.cmp(source, destination):
-                    diff_files.append(os.path.join('/', relativeFile))
+                    diff_files.append(os.path.join('/', relative_file))
             except FileNotFoundError:
-                diff_files.append(os.path.join('/', relativeFile))
+                diff_files.append(os.path.join('/', relative_file))
 
     return diff_files
-
 
 
 # --------------------------------------------------------------------
@@ -427,7 +428,7 @@ def launch(dotfilespath, restarted, root):
                 os.path.expanduser("~"),
             )
 
-        if X_is_installed():
+        if x_is_installed():
             print_header("Symlinks desktop apps")
             symlink_arbo(
                 os.path.join(dotfilespath, "appdesktop"), os.path.expanduser("~")
@@ -457,7 +458,6 @@ def launch(dotfilespath, restarted, root):
             if root:
                 print_header("Copy root files")
                 copy_files_has_root(os.path.join(dotfilespath, "approot"), approot_files)
-            
             else:
                 print_header("Difference in root files (no --root argument)")
                 for approot_file in approot_files:
@@ -497,7 +497,6 @@ def init_cli_arg():
 
 
 def main():
-
     # Parse args
     args = init_cli_arg()
 
