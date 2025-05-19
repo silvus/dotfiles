@@ -1,0 +1,67 @@
+;; https://github.com/jtroo/kanata/blob/main/cfg_samples/kanata.kbd
+;; https://github.com/jtroo/kanata/blob/42d6065b2fe7ac5d9e8ca2cac57e7643d419566b/parser/src/keys/mod.rs
+
+;; If you are looking for other keys, the file src/keys/mod.rs should hopefully
+;; provide some insight.
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet rctl
+)
+
+;; The first layer defined is the layer that will be active by default when
+;; kanata starts up. This layer is the standard QWERTY layout except for the
+;; backtick/grave key (@grl) which is an alias for a tap-hold key.
+;; (deflayer qwerty
+;;   @lmd 1    2    3    4    5    6    7    8    9    0    -    =    bspc
+;;   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+;;   @ecl a    s    d    f    g    h    j    k    l    ;    '    ret
+;;   lsft z    x    c    v    b    n    m    ,    .    /    rsft
+;;   lctl lmet lalt           @lnv           ralt rmet rctl
+;; )
+
+;; Defined base qwerty layer with auto shift behavior.
+;; Cannot make deftemplate to work...
+(deflayer qwerty
+  @lmd (tap-hold 200 200 1 S-1)  (tap-hold 200 200 2 S-2)  (tap-hold 200 200 3 S-3)  (tap-hold 200 200 4 S-4)  (tap-hold 200 200 5 S-5)  (tap-hold 200 200 6 S-6)  (tap-hold 200 200 7 S-7)  (tap-hold 200 200 8 S-8)  (tap-hold 200 200 9 S-9)  (tap-hold 200 200 0 S-0)  (tap-hold 200 200 - S--)  (tap-hold 200 200 = S-=)    bspc
+  (tap-hold 200 200 tab S-tab)  (tap-hold 200 200 q S-q)  (tap-hold 200 200 w S-w)  (tap-hold 200 200 e S-e)  (tap-hold 200 200 r S-r)  (tap-hold 200 200 t S-t)  (tap-hold 200 200 y S-y)  (tap-hold 200 200 u S-u)  (tap-hold 200 200 i S-i)  (tap-hold 200 200 o S-o)  (tap-hold 200 200 p S-p)  (tap-hold 200 200 [ S-[)  (tap-hold 200 200 ] S-])  (tap-hold 200 200 \ S-\)
+  @ecl (tap-hold 200 200 a S-a)  (tap-hold 200 200 s S-s)  (tap-hold 200 200 d S-d)  (tap-hold 200 200 f S-f)  (tap-hold 200 200 g S-g)  (tap-hold 200 200 h S-h)  (tap-hold 200 200 j S-j)  (tap-hold 200 200 k S-k)  (tap-hold 200 200 l S-l)  (tap-hold 200 200 ; S-;)  (tap-hold 200 200 ' S-')    ret
+  lsft (tap-hold 200 200 z S-z)  (tap-hold 200 200 x S-x)  (tap-hold 200 200 c S-c)  (tap-hold 200 200 v S-v)  (tap-hold 200 200 b S-b)  (tap-hold 200 200 n S-n)  (tap-hold 200 200 m S-m)  (tap-hold 200 200 , S-,)  (tap-hold 200 200 . S-.)  (tap-hold 200 200 / S-/)  rsft
+  lctl lmet lalt           @lnv           ralt rmet rctl
+)
+
+(deflayer nav
+  _    _    ê    _    _    _    _    _    _    _    _   _   _  _
+  _    è    é    _    _    _    pgup home up  end  bspc    _    _    _
+  _    _    _    _    _    _    pgdn left down rght ret ret    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _              _              _    _    _
+)
+
+(deflayer media
+  _    _    _    _    _    _    _    _    _    _    _    _    _  _
+  _    pp  prev next  _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    voldwn mute volu    _    _    _    _    _    _    _    _
+  _    _    _              _              _    _    _
+)
+
+(defvar
+  tap-timeout 200
+  hold-timeout 500
+)
+
+(defalias
+  ;; tap: space hold: nav layer
+  nav (layer-while-held nav)
+  lnv (tap-hold 200 200 spc @nav)
+
+  ;; tap: grave hold: media layer
+  med (layer-while-held media)
+  lmd (tap-hold 200 200 grv @med)
+
+  ;; tap: esc hold: ctrl
+  ecl (tap-hold 200 200 esc lctl)
+)
