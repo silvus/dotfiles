@@ -36,6 +36,7 @@ return {
 				'NEXT(n)',
 				'TODO(t)',
 				'WAIT(w@/!)',
+				'BACKLOG(b)',
 				'|',
 				'INACTIVE(i@)',
 				'DELEGATED(g@)',
@@ -203,18 +204,18 @@ return {
 		vim.api.nvim_set_hl(0, '@org.agenda.scheduled_past', { fg = '#e2b86b' })
 
 		-- Auto refresh agenda on org file change
-		vim.api.nvim_create_autocmd("BufWritePost", {
-			group = vim.api.nvim_create_augroup("orgmodeAgendaAutoReload", { clear = true }),
-			pattern = "*.org",
-			callback = function()
-				-- With a multi-split, it's probably an agenda opened, refresh
-				-- TODO: how to check if a buffer is an orgmode agenda?
-				local win_amount = #vim.api.nvim_tabpage_list_wins(0)
-				if win_amount > 1 then
-					org.agenda:redo()
-				end
-			end,
-		})
+		-- vim.api.nvim_create_autocmd("BufWritePost", {
+		-- 	group = vim.api.nvim_create_augroup("orgmodeAgendaAutoReload", { clear = true }),
+		-- 	pattern = "*.org",
+		-- 	callback = function()
+		-- 		-- With a multi-split, it's probably an agenda opened, refresh
+		-- 		-- TODO: how to check if a buffer is an orgmode agenda?
+		-- 		local win_amount = #vim.api.nvim_tabpage_list_wins(0)
+		-- 		if win_amount > 1 then
+		-- 			org.agenda:redo()
+		-- 		end
+		-- 	end,
+		-- })
 
 		-- Register the transition from headline to TODO headline or viceversa
 		-- https://github.com/nvim-orgmode/orgmode/issues/466#issuecomment-2706270695
