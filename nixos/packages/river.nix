@@ -10,7 +10,8 @@
     # swaybg
     wl-clipboard
 
-    # foot
+    waybar
+    pavucontrol
   ];
 
   wayland.windowManager.river = {
@@ -177,7 +178,7 @@
 
       rule-add."-app-id" = {
         # Use client-side decorations
-        "'*'" = "csd";
+        # "'*'" = "csd";
 
         # Make all views with app-id "bar" and any title use client-side decorations
         # "'bar'" = "csd";
@@ -191,8 +192,10 @@
       # xcursor-theme = "someGreatTheme 12";
 
       spawn = [
-        "firefox"
-        "codium"
+        "waybar"
+        "wezterm"
+        # "firefox"
+        # "codium"
         # "'foot -a terminal'"
       ];
 
@@ -205,5 +208,306 @@
 
     # systemd.enable = true;
     # wrapperFeatures = {gtk = true;};
+  };
+
+  programs.waybar = {
+    enable = true;
+    # package = pkgs.waybar.overrideAttrs (oa: {
+    #   mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
+    # });
+    # systemd.enable = true;
+    settings = {
+      primary = {
+        # exclusive = false;
+        # passthrough = false;
+        # height = 20;
+        width = 22;
+        # margin = "6";
+        # "spacing" = 4; # Gaps between modules
+        position = "right";
+        modules-left = [
+          "sway/workspaces"
+          # "river/mode"
+          # "river/layout"
+        ];
+
+        modules-center = [
+          # "river/window"
+        ];
+
+        modules-right = [
+          # "cpu"
+          # "memory "
+          "network"
+          "pulseaudio/slider"
+          "pulseaudio"
+          # # "battery"
+          # # "battery#bat2"
+          "tray"
+          "clock"
+        ];
+
+   
+
+        clock = {
+          # rotate = 90;
+          orientation = "vertical";
+          interval = 1;
+          format = "{:%H\n%M\n%S}";
+          # format-alt = "{:%Y-%m-%d %H:%M:%S %z}";
+          # on-click-left = "mode";
+          tooltip-format = ''
+            <big>{:%Y %B}</big>
+            <tt><small>{calendar}</small></tt>'';
+        };
+
+        tray = {
+          spacing = 10;
+        };
+
+        # cpu = {
+        #   rotate = 90;
+        #   # format = "  {usage}%";
+        # };
+        # memory = {
+        #   rotate = 90;
+        #   # format = "  {}%";
+        #   # interval = 5;
+        # };
+
+        "pulseaudio/slider" = {
+          min = 0;
+          max = 150;
+          orientation = "vertical";
+          on-click = "pavucontrol";
+        };
+
+        pulseaudio = {
+          format = "{icon}";
+          format-bluetooth = "{icon}";
+          format-bluetooth-muted = "󰝟 {icon}";
+          format-muted = "󰝟";
+          format-source = "";
+          format-source-muted = "";
+          on-click = "pavucontrol";
+          format-icons = {
+            headphone = "";
+            hands-free = "";
+            headset = "";
+            phone = "";
+            portable = "";
+            car = "";
+            default = ["" "" ""];
+          };
+        };
+
+        # # pulseaudio = {
+        # #   format-source = "󰍬 {volume}%";
+        # #   format-source-muted = "󰍭 0%";
+        # #   format = "{icon} {volume}% {format_source}";
+        # #   format-muted = "󰸈 0% {format_source}";
+        # #   format-icons = {
+        # #     default = [
+        # #       "󰕿"
+        # #       "󰖀"
+        # #       "󰕾"
+        # #     ];
+        # #   };
+        # #   on-click = lib.getExe pkgs.pavucontrol;
+        # # };
+        # idle_inhibitor = {
+        #   format = "{icon}";
+        #   format-icons = {
+        #     activated = "󰒳";
+        #     deactivated = "󰒲";
+        #   };
+        # };
+
+        battery = {
+            format = "{icon}";
+            # "rotate": 0,
+            # "format-charging" = "<span color='#a6d189'>󱐋</span>";
+            # "format-plugged" = "󰂄";
+            # "format-icons" = [
+            #   "󰝦"
+            #   "󰪞"
+            #   "󰪟"
+            #   "󰪠"
+            #   "󰪡"
+            #   "󰪢"
+            #   "󰪣"
+            #   "󰪤"
+            #   "󰪥"
+            # ];
+            format-icons = ["<span color='#f38ba8'>󰂎</span>" "<span color='#fab387'>󰁺</span>" "<span color='#f9e2af'>󰁻</span>""<span color='#f9e2af'>󰁼</span>" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+            format-charging = ["󰢟" "󰢜" "󰂆" "󰂇" "󰂈" "󰢝" "󰂉" "󰢞" "󰂊" "󰂋" "󰂅"];
+            tooltip = true;
+            tooltip-format =  "{capacity}%";
+        };
+
+        "battery#bat2" = {
+            format = "{icon}";
+            # "rotate": 0;
+            format-charging = "<span color='#a6d189'>󱐋</span>";
+            format-plugged = "󰂄";
+            format-icons = [
+              "󰝦"
+              "󰪞"
+              "󰪟"
+              "󰪠"
+              "󰪡"
+              "󰪢"
+              "󰪣"
+              "󰪤"
+              "󰪥"
+            ];
+        };
+
+        # battery = {
+        #   bat = "BAT0";
+        #   interval = 10;
+        #   format-icons = [
+        #     "󰁺"
+        #     "󰁻"
+        #     "󰁼"
+        #     "󰁽"
+        #     "󰁾"
+        #     "󰁿"
+        #     "󰂀"
+        #     "󰂁"
+        #     "󰂂"
+        #     "󰁹"
+        #   ];
+        #   format = "{icon} {capacity}%";
+        #   format-charging = "󰂄 {capacity}%";
+        #   onclick = "";
+        # };
+        network = {
+          # rotate = 90;
+          interval = 3;
+          format-wifi = "";
+          format-ethernet = "󰈁";
+          format-linked = "󰈁";
+          format-disconnected = "⚠";
+          # format-wifi = " {essid}";
+          # format-ethernet = "󰈁 Connected";
+          tooltip-format = ''
+            {ifname}
+            {ipaddr}/{cidr}
+            Up: {bandwidthUpBits}
+            Down: {bandwidthDownBits}'';
+        };
+      };
+    };
+
+    style = ''
+* { 
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+}
+
+#waybar {
+  color: #a3be8c;
+  border: 0 solid #a3be8c;
+  background-color: #3B4252;
+}
+
+#tray,
+#battery,
+#network,
+#clock,
+#pulseaudio,
+#pulseaudio-slider {
+  background-color: #4c566a;
+  font-size: 24px;
+  padding: 4px 0;
+  margin: 4px 2px;
+  font-weight: bold;
+}
+
+#clock {
+  font-size: 10px;
+}
+
+#pulseaudio {
+  font-size: 12px;
+  margin-top: 0;
+  padding-right: 6px;
+}
+#pulseaudio-slider {
+  margin-bottom: 0;
+}
+#pulseaudio-slider slider {
+  min-width: 12px;
+  min-height: 60px;
+  background: none transparent;
+  padding: 0;
+  margin: 2px 2px 0px 2px;
+}
+#pulseaudio-slider trough {
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  background: none transparent;
+  opacity: 0;
+}
+#pulseaudio-slider highlight {
+  min-width: 14px;
+  min-height: 0px;
+  padding: 0;
+  margin: 0;
+}
+
+#tags {
+  background-color: #4c566a;
+  padding: 0;
+  margin: 0;
+
+  min-height: 60px;
+}
+#tag button {
+  padding: 0;
+  margin: 0;
+  color: #d8dee9;
+
+  min-height: 60px;
+}
+
+#tags button.urgent{
+  color: #bf616a;
+}
+#tags button.occupied{
+  color: #89b4fa;
+}
+#tags button.focused {
+  color: #a3be8c;
+}
+#tags button,
+#tags button:hover {
+  background: transparent;    
+  border: none;       
+  box-shadow: none;   
+  background: transparent; 
+  text-shadow: none;  
+
+  min-height: 60px;
+}
+
+tooltip {
+  background-color: #3B4252;
+  color: #a3be8c;
+  border: 1px solid #a3be8c;
+  border-radius: 2px;
+}
+
+tooltip, tooltip * {
+  color: #a3be8c;
+  font-weight: bold;
+}
+
+'';
   };
 }
