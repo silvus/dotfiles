@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd /tmp
+
+KANATA_VERSION=$(curl -s "https://api.github.com/repos/jtroo/kanata/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+curl -sLo kanata "https://github.com/jtroo/kanata/releases/latest/download/kanata"
+
+sudo install kanata /usr/local/bin
+
+
+# https://github.com/jtroo/kanata/blob/main/docs/setup-linux.md
+# If the uinput group does not exist, create a new group
+sudo groupadd uinput
+# Add your user to the input and the uinput group
+sudo usermod -aG input $USER
+sudo usermod -aG uinput $USER
+
+
+# Make sure the uinput device file has the right permissions.
+echo 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"' | sudo tee -a /etc/udev/rules.d/99-input.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
+# Make sure the uinput drivers are loaded
+sudo modprobe uinput
+
+# To create and enable a systemd daemon service
+mkdir -p "$HOME/.config/systemd/user"
+cat > $HOME/.config/systemd/user/kanata.service << EOF
+[Unit]
+Description=Kanata keyboard remapper
+Documentation=https://github.com/jtroo/kanata
+
+[Service]
+Environment=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin
+#   Uncomment the 4 lines beneath this to increase process priority
+#   of Kanata in case you encounter lagginess when resource constrained.
+#   WARNING: doing so will require the service to run as an elevated user such as root.
+#   Implementing least privilege access is an exercise left to the reader.
+#
+# CPUSchedulingPolicy=rr
+# CPUSchedulingPriority=99
+# IOSchedulingClass=realtime
+# Nice=-20
+Type=simple
+ExecStart=/usr/bin/sh -c 'exec /usr/local/bin/kanata --cfg %h/.config/kanata/config.kbd'
+Restart=no
+
+[Install]
+WantedBy=default.target
+EOF
+
+systemctl --user daemon-reload
+systemctl --user enable kanata.service
+systemctl --user start kanata.service
+systemctl --user status kanata.service   # check whether the service is running

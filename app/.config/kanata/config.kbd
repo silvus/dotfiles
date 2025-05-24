@@ -33,8 +33,8 @@
 )
 
 (deflayer nav
-  _    _    ê    _    _    _    _    _    _    _    _   _   _  _
-  _    è    é    _    _    _    pgup home up  end  bspc    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _   _   _  _
+  _    _    _    _    _    _    pgup home up  end  bspc    _    _    _
   _    _    _    _    _    _    pgdn left down rght ret ret    _
   _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _              _              _    _    _
