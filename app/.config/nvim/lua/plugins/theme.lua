@@ -55,6 +55,9 @@ return {
 			vim.api.nvim_set_hl(0, 'task_list_marker_unchecked', { fg = '#299e1b' })
 			-- vim.api.nvim_set_hl(0, 'markdownUrlDelimiter', { fg = '#990f2d', bold = true })
 
+			-- vim.api.nvim_set_hl(0, "Normal",   { bg = "#121212" })  -- focused window
+			vim.api.nvim_set_hl(0, "NormalNC", { bg = "#1e1e1e" })  -- unfocused windows
+
 		end,
 	},
 	-- {
@@ -108,8 +111,21 @@ return {
 													-- 2: Absolute path
 													-- 3: Absolute path, with tilde as the home directory
 													-- 4: Filename and parent dir, with tilde as the home directory
-						}
-					}
+						},
+					},
+					lualine_x = {
+						function()
+							local s = require('auto-session.lib').current_session_name(true);
+							if s == nil or s == '' then
+								return '';
+							else
+								return 'S:'.. s;
+							end
+						end,
+						'encoding',
+						'fileformat',
+						'filetype',
+					},
 				},
 			})
 		end
@@ -130,6 +146,14 @@ return {
 			require('mini.animate').setup()
 		end,
 	},
+	-- {
+	-- 	'sunjon/shade.nvim',
+	-- 	config = function()
+	-- 		require('shade').setup({
+	-- 			-- overlay_opacity = 60,
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",

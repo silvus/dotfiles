@@ -9,8 +9,10 @@ return {
 				defaults = {
 					mappings = {
 						i = {
-							["<Esc>"] = require('telescope.actions').close
-						}
+							["<Esc>"] = require('telescope.actions').close,
+							-- ["<C-v>"] = "vsplit",
+							["<Tab>"] = require('telescope.actions').select_vertical,
+						},
 					},
 					-- The below pattern is lua regex and not wildcard
 					file_ignore_patterns = {"node_modules","%.out"},

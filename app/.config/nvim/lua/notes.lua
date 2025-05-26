@@ -52,7 +52,7 @@ vim.api.nvim_create_user_command('NoteToday', NoteOpenToday, {})
 vim.api.nvim_create_user_command('NoteExportToPDF', NoteExportToPDF, {})
 
 -- Global binding to open Today's Note
-vim.keymap.set('n', '<C-l>', NoteOpenToday , { silent = false, desc = 'Open today\'s note' })
+vim.keymap.set('n', '<C-S-l>', NoteOpenToday , { silent = false, desc = 'Open today\'s note' })
 vim.api.nvim_create_autocmd('filetype', {
 	pattern = 'netrw',
 	desc = 'Bind NoteOpenToday on netrw',
@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd('filetype', {
 			vim.keymap.set('n', lhs, rhs, {remap = true, buffer = true})
 		end
 		-- Ctrl-l is "refresh" on netrw
-		bind( '<C-l>', NoteOpenToday)
+		bind( '<C-S-l>', NoteOpenToday)
 	
 		-- edit new file
 		-- bind('n', '%')
