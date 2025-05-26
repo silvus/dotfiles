@@ -59,14 +59,17 @@
 		fzf
 		bat
 		fd
+		jq
 		gawk
 		mosh
 		unzip
 		unrar
+		libnotify
 
 		firefox
 		mpv
 		moc
+		pulseaudio
 		playerctl
 		rxvt-unicode
 		wezterm
