@@ -28,7 +28,7 @@ rm lpm
 /usr/local/bin/lpm install gitstatus --assume-yes
 /usr/local/bin/lpm install sticky_scroll --assume-yes
 /usr/local/bin/lpm install selectionhighlight --assume-yes
-
+/usr/local/bin/lpm install autosaveonfocuslost --assume-yes
 
 /usr/local/bin/lpm add https://github.com/lite-xl/lite-xl-lsp-servers.git
 /usr/local/bin/lpm install lsp_lua --assume-yes
