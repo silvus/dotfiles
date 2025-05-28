@@ -1,5 +1,7 @@
 -- Customs settings
 
+-- See ~/.config/lite-xl/user_settings.lua
+
 -- this module will be loaded after everything else when the application starts
 -- it will be automatically reloaded when saved
 -- See https://lite-xl.com/en/documentation/usage
@@ -58,6 +60,12 @@ keymap.add({ ["alt+shift+right"] = "root:split-right" })
 keymap.add({ ["return"] = "autocomplete:complete" })
 keymap.add({ ["ctrl+shift+w"] = "core:change-project-folder" })
 keymap.add({ ["ctrl+alt+s"] = "ui:settings" })
+keymap.add({ ["ctrl+shift+c"] = "copy-file-location:copy-file-location" })
+keymap.add({ ["alt+t"] = "datetimestamps:insert-datestamp" })
+
+-- Disable the default behaviour for enter in the search box
+-- TODO: how to context?
+-- keymap.add({ ["return"] = "find-replace:repeat-find" })
 
 
 ------------------------------- Fonts ----------------------------------------
@@ -129,9 +137,21 @@ config.plugins.scale = {
 	use_mousewheel = false
 }
 
+-- Hide treeview on startup
+-- TODO: Work only in user_settings.lua?
+config.plugins.treeview = {
+	visible = true
+}
+
+-- Format datetime inserted
+config.plugins.datetimestamps = {
+	format_datestamp = "%Y-%m-%d"
+}
+
 -- Bracket matching style
 config.plugins.bracketmatch = {
-	style = "frame"
+	style = "frame",
+	color_char = true
 }
 
 -- Alert when file is changed
@@ -145,10 +165,13 @@ config.plugins.treeview = {
 	visible = true
 }
 
+
 -- LSP
 config.plugins.lsp = {
-	mouse_hover = false
+	mouse_hover = false,
+	-- show_diagnostics = false
 }
+
 
 ---------------------------- Miscellaneous -------------------------------------
 
