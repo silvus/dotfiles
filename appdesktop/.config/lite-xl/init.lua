@@ -30,6 +30,8 @@ core.reload_module("colors.bearded-theme-vivid-black")
 keymap.add({ ["ctrl+e"] = "core:find-file" })
 keymap.add({ ["ctrl+d"] = "doc:delete-lines" })
 keymap.add({ ["ctrl+a"] = "doc:select-word" })
+keymap.add({ ["ctrl+shift+a"] = "doc:select-all" })
+
 -- Add cursor to selection
 keymap.add({ ["ctrl+l"] = "find-replace:select-add-next" })
 
@@ -44,8 +46,10 @@ keymap.add({ ["ctrl+shift+pageup"] = "root:move-tab-left" })
 
 keymap.add({ ["ctrl+up"] = "doc:move-to-previous-block-start" })
 keymap.add({ ["ctrl+down"] = "doc:move-to-next-block-end" })
-keymap.add({ ["ctrl+shift+up"] = "doc:move-lines-up" })
-keymap.add({ ["ctrl+shift+down"] = "doc:move-lines-down" })
+keymap.add({ ["ctrl+alt+up"] = "doc:move-lines-up" })
+keymap.add({ ["ctrl+alt+down"] = "doc:move-lines-down" })
+keymap.add({ ["ctrl+shift+up"] = "doc:create-cursor-previous-line" })
+keymap.add({ ["ctrl+shift+down"] = "doc:create-cursor-next-line" })
 
 keymap.add({ ["alt+up"] = "root:switch-to-up" })
 keymap.add({ ["alt+down"] = "root:switch-to-down" })
@@ -66,7 +70,6 @@ keymap.add({ ["alt+t"] = "datetimestamps:insert-datestamp" })
 -- Disable the default behaviour for enter in the search box
 -- TODO: how to context?
 -- keymap.add({ ["return"] = "find-replace:repeat-find" })
-
 
 ------------------------------- Fonts ----------------------------------------
 
@@ -164,7 +167,6 @@ config.plugins.autoreload = {
 config.plugins.treeview = {
 	visible = true
 }
-
 
 -- LSP
 config.plugins.lsp = {
