@@ -13,4 +13,5 @@ __pycache__/
 *.py[cod]
 .pdm.toml
 __pypackages__/
+.ruff_cache/
 

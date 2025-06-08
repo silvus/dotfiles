@@ -92,6 +92,8 @@ export GNUPGHOME="$XDG_CONFIG_HOME"/gnupg
 # Gpodder
 export GPODDER_HOME="$XDG_DATA_HOME"/gpodder
 
+# Ruff
+export RUFF_CACHE_DIR=$XDG_CACHE_HOME/ruff
 
 # History
 # -----------------------------------------------------------------------------
@@ -191,3 +193,4 @@ if [ -n "$BASH_VERSION" ]; then
 		source "$HOME/.bashrc"
 	fi
 fi
+
