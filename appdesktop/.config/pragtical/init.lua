@@ -263,5 +263,6 @@ config.max_project_files = 10000
 config.force_scrollbar_status = "contracted"
 
 -- Small number of tabs show
--- config.max_tabs = 4
+config.max_tabs = 1
+-- config.hide_tabs = true
 
