@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
 
-	home.packages = with pkgs; [
+  home.packages = with pkgs; [
     git
-	];
+  ];
 
   programs.git = {
     enable = true;
@@ -130,9 +130,10 @@
         enabled = true;
         autoupdate = true;
       };
-        
+
     };
 
   };
-  
+
 }
+

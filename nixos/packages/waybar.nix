@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
 
@@ -53,7 +53,7 @@
         };
 
         "hyprland/window" = {
-            rotate = 90;
+          rotate = 90;
         };
 
         cpu = {
@@ -93,38 +93,38 @@
         # };
 
         battery = {
-            "format" = "{icon}";
-            # "rotate": 0,
-            "format-charging" = "<span color='#a6d189'>󱐋</span>";
-            "format-plugged" = "󰂄";
-            "format-icons" = [
-              "󰝦"
-              "󰪞"
-              "󰪟"
-              "󰪠"
-              "󰪡"
-              "󰪢"
-              "󰪣"
-              "󰪤"
-              "󰪥"
-            ];
+          "format" = "{icon}";
+          # "rotate": 0,
+          "format-charging" = "<span color='#a6d189'>󱐋</span>";
+          "format-plugged" = "󰂄";
+          "format-icons" = [
+            "󰝦"
+            "󰪞"
+            "󰪟"
+            "󰪠"
+            "󰪡"
+            "󰪢"
+            "󰪣"
+            "󰪤"
+            "󰪥"
+          ];
         };
         "battery#bat2" = {
-            "format" = "{icon}";
-            # "rotate": 0,
-            "format-charging" = "<span color='#a6d189'>󱐋</span>";
-            "format-plugged" = "󰂄";
-            "format-icons" = [
-              "󰝦"
-              "󰪞"
-              "󰪟"
-              "󰪠"
-              "󰪡"
-              "󰪢"
-              "󰪣"
-              "󰪤"
-              "󰪥"
-            ];
+          "format" = "{icon}";
+          # "rotate": 0,
+          "format-charging" = "<span color='#a6d189'>󱐋</span>";
+          "format-plugged" = "󰂄";
+          "format-icons" = [
+            "󰝦"
+            "󰪞"
+            "󰪟"
+            "󰪠"
+            "󰪡"
+            "󰪢"
+            "󰪣"
+            "󰪤"
+            "󰪥"
+          ];
         };
 
         # battery = {
@@ -160,7 +160,7 @@
         };
       };
     };
-    
+
     style = ''
       * {
           /* `otf-font-awesome` is required to be installed for icons */
@@ -491,5 +491,6 @@
       }
     '';
   };
-  
+
 }
+

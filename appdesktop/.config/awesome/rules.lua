@@ -3,7 +3,7 @@ local beautiful = require("beautiful")
 local desktops = require("desktops")
 local config = require("config")
 local screens = require("screens")
-local globalclient = client
+-- local globalclient = client
 local keys = require("keys")
 
 
@@ -140,28 +140,20 @@ local rules = {
             titlebars_enabled = false,
         }
     },
-    -- Notes
+    -- Dev
     {
-        rule_any = { class = { "obsidian", "Zim", "VNote" } },
+        rule_any = { class = { "VSCodium", "dev.zed.Zed", "jetbrains-phpstorm", "lite-xl", "pragtical" } },
         properties = {
             tag = desktops.tags_names[2],
             titlebars_enabled = false,
         }
     },
-    -- Dev
+    -- Notes
     {
-        rule_any = { class = { "VSCodium", "dev.zed.Zed", "lite-xl" } },
+        rule_any = { class = { "obsidian", "Zim", "VNote" } },
         properties = {
             tag = desktops.tags_names[3],
             titlebars_enabled = false,
-        }
-    },
-    {
-        rule = { class = "jetbrains-phpstorm" },
-        properties = {
-            tag = desktops.tags_names[3],
-            titlebars_enabled = false,
-            -- screen = screens.count(),
         }
     },
     -- Guake like terminal
@@ -256,7 +248,7 @@ local rules = {
     },
     -- Graphics
     {
-        rule_any = { class = { "Gimp", "Krita", "FreeCAD"} },
+        rule_any = { class = { "Gimp", "Krita", "FreeCAD" } },
         properties = {
             tag = desktops.tags_names[8],
         }
@@ -351,3 +343,4 @@ local rules = {
 
 
 return rules
+

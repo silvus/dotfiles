@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
 
@@ -24,9 +29,9 @@
       # background-color = "0x002b36";
       # border-color-focused = "0x93a1a1";
       # border-color-unfocused = "0x586e75";
-      background-color = "0x1E2326";        # Everforest background dark
-      border-color-focused = "0x83C092";    # Everforest light yellow (contrast)
-      border-color-unfocused = "0x4F5B58";  # Everforest gray tone (muted)
+      background-color = "0x1E2326"; # Everforest background dark
+      border-color-focused = "0x83C092"; # Everforest light yellow (contrast)
+      border-color-unfocused = "0x4F5B58"; # Everforest gray tone (muted)
 
       declare-mode = [
         "locked"
@@ -247,8 +252,6 @@
           "clock"
         ];
 
-   
-
         clock = {
           # rotate = 90;
           orientation = "vertical";
@@ -297,7 +300,11 @@
             phone = "";
             portable = "";
             car = "";
-            default = ["" "" ""];
+            default = [
+              ""
+              ""
+              ""
+            ];
           };
         };
 
@@ -324,43 +331,67 @@
         # };
 
         battery = {
-            format = "{icon}";
-            # "rotate": 0,
-            # "format-charging" = "<span color='#a6d189'>󱐋</span>";
-            # "format-plugged" = "󰂄";
-            # "format-icons" = [
-            #   "󰝦"
-            #   "󰪞"
-            #   "󰪟"
-            #   "󰪠"
-            #   "󰪡"
-            #   "󰪢"
-            #   "󰪣"
-            #   "󰪤"
-            #   "󰪥"
-            # ];
-            format-icons = ["<span color='#f38ba8'>󰂎</span>" "<span color='#fab387'>󰁺</span>" "<span color='#f9e2af'>󰁻</span>""<span color='#f9e2af'>󰁼</span>" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
-            format-charging = ["󰢟" "󰢜" "󰂆" "󰂇" "󰂈" "󰢝" "󰂉" "󰢞" "󰂊" "󰂋" "󰂅"];
-            tooltip = true;
-            tooltip-format =  "{capacity}%";
+          format = "{icon}";
+          # "rotate": 0,
+          # "format-charging" = "<span color='#a6d189'>󱐋</span>";
+          # "format-plugged" = "󰂄";
+          # "format-icons" = [
+          #   "󰝦"
+          #   "󰪞"
+          #   "󰪟"
+          #   "󰪠"
+          #   "󰪡"
+          #   "󰪢"
+          #   "󰪣"
+          #   "󰪤"
+          #   "󰪥"
+          # ];
+          format-icons = [
+            "<span color='#f38ba8'>󰂎</span>"
+            "<span color='#fab387'>󰁺</span>"
+            "<span color='#f9e2af'>󰁻</span>"
+            "<span color='#f9e2af'>󰁼</span>"
+            "󰁽"
+            "󰁾"
+            "󰁿"
+            "󰂀"
+            "󰂁"
+            "󰂂"
+            "󰁹"
+          ];
+          format-charging = [
+            "󰢟"
+            "󰢜"
+            "󰂆"
+            "󰂇"
+            "󰂈"
+            "󰢝"
+            "󰂉"
+            "󰢞"
+            "󰂊"
+            "󰂋"
+            "󰂅"
+          ];
+          tooltip = true;
+          tooltip-format = "{capacity}%";
         };
 
         "battery#bat2" = {
-            format = "{icon}";
-            # "rotate": 0;
-            format-charging = "<span color='#a6d189'>󱐋</span>";
-            format-plugged = "󰂄";
-            format-icons = [
-              "󰝦"
-              "󰪞"
-              "󰪟"
-              "󰪠"
-              "󰪡"
-              "󰪢"
-              "󰪣"
-              "󰪤"
-              "󰪥"
-            ];
+          format = "{icon}";
+          # "rotate": 0;
+          format-charging = "<span color='#a6d189'>󱐋</span>";
+          format-plugged = "󰂄";
+          format-icons = [
+            "󰝦"
+            "󰪞"
+            "󰪟"
+            "󰪠"
+            "󰪡"
+            "󰪢"
+            "󰪣"
+            "󰪤"
+            "󰪥"
+          ];
         };
 
         # battery = {
@@ -401,113 +432,114 @@
     };
 
     style = ''
-* { 
-  padding: 0;
-  margin: 0;
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
-}
+      * {
+        padding: 0;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+      }
 
-#waybar {
-  color: #a3be8c;
-  border: 0 solid #a3be8c;
-  background-color: #3B4252;
-}
+      #waybar {
+        color: #a3be8c;
+        border: 0 solid #a3be8c;
+        background-color: #3B4252;
+      }
 
-#tray,
-#battery,
-#network,
-#clock,
-#pulseaudio,
-#pulseaudio-slider {
-  background-color: #4c566a;
-  font-size: 24px;
-  padding: 4px 0;
-  margin: 4px 2px;
-  font-weight: bold;
-}
+      #tray,
+      #battery,
+      #network,
+      #clock,
+      #pulseaudio,
+      #pulseaudio-slider {
+        background-color: #4c566a;
+        font-size: 24px;
+        padding: 4px 0;
+        margin: 4px 2px;
+        font-weight: bold;
+      }
 
-#clock {
-  font-size: 10px;
-}
+      #clock {
+        font-size: 10px;
+      }
 
-#pulseaudio {
-  font-size: 12px;
-  margin-top: 0;
-  padding-right: 6px;
-}
-#pulseaudio-slider {
-  margin-bottom: 0;
-}
-#pulseaudio-slider slider {
-  min-width: 12px;
-  min-height: 60px;
-  background: none transparent;
-  padding: 0;
-  margin: 2px 2px 0px 2px;
-}
-#pulseaudio-slider trough {
-  min-height: 0;
-  padding: 0;
-  margin: 0;
-  background: none transparent;
-  opacity: 0;
-}
-#pulseaudio-slider highlight {
-  min-width: 14px;
-  min-height: 0px;
-  padding: 0;
-  margin: 0;
-}
+      #pulseaudio {
+        font-size: 12px;
+        margin-top: 0;
+        padding-right: 6px;
+      }
+      #pulseaudio-slider {
+        margin-bottom: 0;
+      }
+      #pulseaudio-slider slider {
+        min-width: 12px;
+        min-height: 60px;
+        background: none transparent;
+        padding: 0;
+        margin: 2px 2px 0px 2px;
+      }
+      #pulseaudio-slider trough {
+        min-height: 0;
+        padding: 0;
+        margin: 0;
+        background: none transparent;
+        opacity: 0;
+      }
+      #pulseaudio-slider highlight {
+        min-width: 14px;
+        min-height: 0px;
+        padding: 0;
+        margin: 0;
+      }
 
-#tags {
-  background-color: #4c566a;
-  padding: 0;
-  margin: 0;
+      #tags {
+        background-color: #4c566a;
+        padding: 0;
+        margin: 0;
 
-  min-height: 60px;
-}
-#tag button {
-  padding: 0;
-  margin: 0;
-  color: #d8dee9;
+        min-height: 60px;
+      }
+      #tag button {
+        padding: 0;
+        margin: 0;
+        color: #d8dee9;
 
-  min-height: 60px;
-}
+        min-height: 60px;
+      }
 
-#tags button.urgent{
-  color: #bf616a;
-}
-#tags button.occupied{
-  color: #89b4fa;
-}
-#tags button.focused {
-  color: #a3be8c;
-}
-#tags button,
-#tags button:hover {
-  background: transparent;    
-  border: none;       
-  box-shadow: none;   
-  background: transparent; 
-  text-shadow: none;  
+      #tags button.urgent{
+        color: #bf616a;
+      }
+      #tags button.occupied{
+        color: #89b4fa;
+      }
+      #tags button.focused {
+        color: #a3be8c;
+      }
+      #tags button,
+      #tags button:hover {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        text-shadow: none;
 
-  min-height: 60px;
-}
+        min-height: 60px;
+      }
 
-tooltip {
-  background-color: #3B4252;
-  color: #a3be8c;
-  border: 1px solid #a3be8c;
-  border-radius: 2px;
-}
+      tooltip {
+        background-color: #3B4252;
+        color: #a3be8c;
+        border: 1px solid #a3be8c;
+        border-radius: 2px;
+      }
 
-tooltip, tooltip * {
-  color: #a3be8c;
-  font-weight: bold;
-}
+      tooltip, tooltip * {
+        color: #a3be8c;
+        font-weight: bold;
+      }
 
-'';
+    '';
   };
 }
+

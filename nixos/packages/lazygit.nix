@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
 
-	home.packages = with pkgs; [
+  home.packages = with pkgs; [
     lazygit
-	];
+  ];
 
   programs.lazygit = {
     enable = true;
@@ -13,5 +13,6 @@
       update.method = "never";
     };
   };
-  
+
 }
+

@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
 
-	home.packages = with pkgs; [
+  home.packages = with pkgs; [
     vscodium
-	];
+  ];
 
   programs.vscode = {
     package = pkgs.vscodium;
@@ -22,7 +22,8 @@
         when = "editorFocus";
       }
     ];
-  
+
   };
-  
+
 }
+

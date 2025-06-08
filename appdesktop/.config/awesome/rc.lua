@@ -3,7 +3,7 @@
 -- ---------------------------------------------------------------------
 
 -- init random
-math.randomseed(os.time());
+math.randomseed(os.time())
 
 -- Standard lua
 -- local string = require("string")
@@ -26,13 +26,13 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 
 -- Base custom config
-local config = require('config')
+local config = require("config")
 
 -- Tags declarations
-local desktops = require('desktops')
+local desktops = require("desktops")
 
 -- Screen custom definitions
-local screens = require('screens')
+local screens = require("screens")
 
 -- Wallpapers utilities
 local wallpaper = require("utils.wallpaper")
@@ -58,7 +58,7 @@ if awesome.startup_errors then
 	naughty.notify({
 		preset = naughty.config.presets.critical,
 		title = "Oops, there were errors during startup!",
-		text = awesome.startup_errors
+		text = awesome.startup_errors,
 	})
 	-- naughty.notify({text = 'notif text' })
 end
@@ -68,19 +68,20 @@ do
 	local in_error = false
 	awesome.connect_signal("debug::error", function(err)
 		-- Make sure we don't go into an endless error loop
-		if in_error then return end
+		if in_error then
+			return
+		end
 		in_error = true
 
 		naughty.notify({
 			preset = naughty.config.presets.critical,
 			title = "Oops, an error happened!",
-			text = tostring(err)
+			text = tostring(err),
 		})
 		in_error = false
 	end)
 end
 -- }}}
-
 
 -- ---------------------------------------------------------------------
 -- Screens
@@ -101,7 +102,6 @@ screen.connect_signal("primary_changed", function(s)
 	end
 end)
 
-
 -- ---------------------------------------------------------------------
 -- Config
 -- ---------------------------------------------------------------------
@@ -111,7 +111,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. config.t
 
 -- Notifications
 naughty.config.padding = 25 -- Space between popups and edge of the workarea
-naughty.config.spacing = 2  -- Spacing between popups
+naughty.config.spacing = 2 -- Spacing between popups
 
 -- Set defaut icon
 naughty.config.notify_callback = function(args)
@@ -174,7 +174,6 @@ awful.screen.connect_for_each_screen(function(s)
 	s.bar = beautiful.bar(s)
 end)
 
-
 -- ---------------------------------------------------------------------
 -- Keybindings
 -- ---------------------------------------------------------------------
@@ -184,14 +183,12 @@ local keys = require("keys")
 -- Set keys
 root.keys(keys.global)
 
-
 -- ---------------------------------------------------------------------
 -- Rules
 -- ---------------------------------------------------------------------
 
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = require("rules")
-
 
 -- ---------------------------------------------------------------------
 -- Signals
@@ -232,27 +229,36 @@ end
 globalclient.connect_signal("manage", function(c)
 	-- Set the windows at the slave,
 	-- i.e. put it at the end of others instead of setting it master.
-	if not awesome.startup then awful.client.setslave(c) end
+	if not awesome.startup then
+		awful.client.setslave(c)
+	end
 
-	if awesome.startup and
-		not c.size_hints.user_position
-		and not c.size_hints.program_position then
+	if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
 		-- Prevent clients from being unreachable after screen count changes.
 		awful.placement.no_offscreen(c)
 	end
 end)
 
 -- Border on focused clients
-globalclient.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-globalclient.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+globalclient.connect_signal("focus", function(c)
+	c.border_color = beautiful.border_focus
+end)
+globalclient.connect_signal("unfocus", function(c)
+	c.border_color = beautiful.border_normal
+end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 globalclient.connect_signal("request::titlebars", titlebars.setup_titlebar)
 
 -- Force ontop on client fullscreen exit (fullscreen unsets ontop)
-globalclient.connect_signal("property::fullscreen", function(c) if not c.fullscreen then c.ontop = true end end)
+globalclient.connect_signal("property::fullscreen", function(c)
+	if not c.fullscreen then
+		c.ontop = true
+	end
+end)
 
 -- ---------------------------------------------------------------------
 -- Auto start
 -- ---------------------------------------------------------------------
 awful.spawn.with_shell(config.home .. "/.dotfiles/bin/autostart_launcher")
+

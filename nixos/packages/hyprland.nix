@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-	home.packages = with pkgs; [
+  home.packages = with pkgs; [
     hyprland
     kitty
     wofi
@@ -11,12 +11,11 @@
     xfce.thunar-media-tags-plugin
     wev
     nwg-look
-	];
+  ];
 
   # programs. = {
   #   enable = true;
   # };
-
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -40,7 +39,7 @@
       # env = HYPRCURSOR_SIZE,24
       # env = HYPRCURSOR_THEME, Adwaita
 
-      general =  {
+      general = {
         "gaps_in" = 5;
         "gaps_out" = 0;
 
@@ -61,27 +60,27 @@
 
       # https://wiki.hyprland.org/Configuring/Variables/#decoration
       decoration = {
-          "rounding" = 5;
+        "rounding" = 5;
 
-          # Change transparency of focused and unfocused windows
-          "active_opacity" = "1.0";
-          "inactive_opacity" = "0.8";
+        # Change transparency of focused and unfocused windows
+        "active_opacity" = "1.0";
+        "inactive_opacity" = "0.8";
 
-          shadow = {
-              "enabled" = true;
-              "range" = 4;
-              "render_power" = 3;
-              "color" = "rgba(1a1a1aee)";
-          };
+        shadow = {
+          "enabled" = true;
+          "range" = 4;
+          "render_power" = 3;
+          "color" = "rgba(1a1a1aee)";
+        };
 
-          # https://wiki.hyprland.org/Configuring/Variables/#blur
-          blur = {
-              "enabled" = true;
-              "size" = 3;
-              "passes" = 1;
+        # https://wiki.hyprland.org/Configuring/Variables/#blur
+        blur = {
+          "enabled" = true;
+          "size" = 3;
+          "passes" = 1;
 
-              "vibrancy" = "0.1696";
-          };
+          "vibrancy" = "0.1696";
+        };
       };
 
       # https://wiki.hyprland.org/Configuring/Variables/#animations
@@ -119,8 +118,8 @@
 
       # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
       "dwindle" = {
-          "pseudotile" = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-          "preserve_split" = true; # You probably want this
+        "pseudotile" = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+        "preserve_split" = true; # You probably want this
       };
 
       # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
@@ -130,8 +129,8 @@
 
       # https://wiki.hyprland.org/Configuring/Variables/#misc
       misc = {
-          "force_default_wallpaper" = -1; # Set to 0 or 1 to disable the anime mascot wallpapers
-          "disable_hyprland_logo" = false; # If true disables the random hyprland logo / anime girl background. :(
+        "force_default_wallpaper" = -1; # Set to 0 or 1 to disable the anime mascot wallpapers
+        "disable_hyprland_logo" = false; # If true disables the random hyprland logo / anime girl background. :(
       };
 
       input = {
@@ -146,7 +145,7 @@
         "sensitivity" = 0; # -1.0 - 1.0, 0 means no modification.
 
         touchpad = {
-            "natural_scroll" = false;
+          "natural_scroll" = false;
         };
       };
 
@@ -216,7 +215,7 @@
       ];
 
       # Move/resize windows with mainMod + LMB/RMB and dragging
-      bindm = [ 
+      bindm = [
         "$mod, mouse:272, movewindow"
         "$mod, mouse:273, resizewindow"
       ];
@@ -230,7 +229,7 @@
         ",XF86MonBrightnessUp, exec, brightnessctl s 10%+"
         ",XF86MonBrightnessDown, exec, brightnessctl s 10%-"
       ];
-      
+
       # Requires playerctl
       bindl = [
         ", XF86AudioNext, exec, playerctl next"
@@ -250,5 +249,6 @@
 
     };
   };
-  
+
 }
+

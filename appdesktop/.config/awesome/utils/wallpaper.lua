@@ -83,7 +83,7 @@ local function _get_wallpaper_path(s, tag_based)
 			local wallpaper_filter = function(s)
 				-- image only and exclude hiddens files
 				return (string.match(s, "%.png$") or string.match(s, "%.jpg$") or string.match(s, "%.jpeg$")) and
-				string.sub(s, 1, 1) ~= '.'
+					string.sub(s, 1, 1) ~= '.'
 			end
 			wallpapers_files = scandir(wallpapers_dir, wallpaper_filter)
 			wallpapers_random_index = math.random(1, #wallpapers_files)

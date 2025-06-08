@@ -1,9 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   mod = "Mod4";
   # mod = config.wayland.windowManager.sway.config.modifier;
-in {
+in
+{
 
   home.packages = with pkgs; [
     grim # screenshot
@@ -68,71 +73,71 @@ in {
         # Toggle control center
         "${mod}+n" = "exec swaync-client -t -sw";
       };
-        # lib.attrsets.mergeAttrsList [
-        # (lib.attrsets.mergeAttrsList (map (num: let
-        #   ws = toString num;
-        # in {
-        #   "${mod}+${ws}" = "workspace ${ws}";
-        #   "${mod}+Ctrl+${ws}" = "move container to workspace ${ws}";
-        # }) [1 2 3 4 5 6 7 8 9 0]))
+      # lib.attrsets.mergeAttrsList [
+      # (lib.attrsets.mergeAttrsList (map (num: let
+      #   ws = toString num;
+      # in {
+      #   "${mod}+${ws}" = "workspace ${ws}";
+      #   "${mod}+Ctrl+${ws}" = "move container to workspace ${ws}";
+      # }) [1 2 3 4 5 6 7 8 9 0]))
 
-        # #
-        # # Scratchpad:
-        # #
-        # # Sway has a "scratchpad", which is a bag of holding for windows.
-        # # You can send windows there and get them back later.
-        # # Move the currently focused window to the scratchpad
-        # "${mod}+Shift+minus" = "move scratchpad";
+      # #
+      # # Scratchpad:
+      # #
+      # # Sway has a "scratchpad", which is a bag of holding for windows.
+      # # You can send windows there and get them back later.
+      # # Move the currently focused window to the scratchpad
+      # "${mod}+Shift+minus" = "move scratchpad";
 
-        # # Show the next scratchpad window or hide the focused scratchpad window.
-        # # If there are multiple scratchpad windows, this command cycles through them.
-        # "minus" = "scratchpad show";
+      # # Show the next scratchpad window or hide the focused scratchpad window.
+      # # If there are multiple scratchpad windows, this command cycles through them.
+      # "minus" = "scratchpad show";
 
-        # # Move your focus around
-        # "${mod}+h" = "focus left";
-        # "${mod}+j" = "focus down";
-        # "${mod}+k" = "focus up";
-        # "${mod}+l" = "focus right";
-        # "${mod}+Left" = "focus left";
-        # "${mod}+Down" = "focus down";
-        # "${mod}+Up" = "focus up";
-        # "${mod}+Right" = "focus right";
-        # # Move the focused window with the same, but add Shift
-        # "${mod}+Shift+h" = "move left";
-        # "${mod}+Shift+j" = "move down";
-        # "${mod}+Shift+k" = "move up";
-        # "${mod}+Shift+l" = "move right";
-        # "${mod}+Shift+Left move" = "left";
-        # "${mod}+Shift+Down move" = "down";
-        # "${mod}+Shift+Up move" = "up";
-        # "${mod}+Shift+Right move" = "right";
-        # # (lib.attrsets.concatMapAttrs (key: direction: {
-        # #     "${mod}+${key}" = "focus ${direction}";
-        # #     "${mod}+Ctrl+${key}" = "move ${direction}";
-        # #   }) {
-        # #     h = "left";
-        # #     j = "down";
-        # #     k = "up";
-        # #     l = "right";`
-        # #   })
+      # # Move your focus around
+      # "${mod}+h" = "focus left";
+      # "${mod}+j" = "focus down";
+      # "${mod}+k" = "focus up";
+      # "${mod}+l" = "focus right";
+      # "${mod}+Left" = "focus left";
+      # "${mod}+Down" = "focus down";
+      # "${mod}+Up" = "focus up";
+      # "${mod}+Right" = "focus right";
+      # # Move the focused window with the same, but add Shift
+      # "${mod}+Shift+h" = "move left";
+      # "${mod}+Shift+j" = "move down";
+      # "${mod}+Shift+k" = "move up";
+      # "${mod}+Shift+l" = "move right";
+      # "${mod}+Shift+Left move" = "left";
+      # "${mod}+Shift+Down move" = "down";
+      # "${mod}+Shift+Up move" = "up";
+      # "${mod}+Shift+Right move" = "right";
+      # # (lib.attrsets.concatMapAttrs (key: direction: {
+      # #     "${mod}+${key}" = "focus ${direction}";
+      # #     "${mod}+Ctrl+${key}" = "move ${direction}";
+      # #   }) {
+      # #     h = "left";
+      # #     j = "down";
+      # #     k = "up";
+      # #     l = "right";`
+      # #   })
 
-        # "${mod}+Return" = "exec --no-startup-id ${pkgs.kitty}/bin/kitty";
-        # "${mod}+e" = "exec --no-startup-id wofi --show drun,run";
+      # "${mod}+Return" = "exec --no-startup-id ${pkgs.kitty}/bin/kitty";
+      # "${mod}+e" = "exec --no-startup-id wofi --show drun,run";
 
-        # "${mod}+x" = "kill";
+      # "${mod}+x" = "kill";
 
-        # "${mod}+a" = "focus parent";
-        # "${mod}+c" = "layout toggle split";
-        # "${mod}+f" = "fullscreen toggle";
-        # "${mod}+g" = "split h";
-        # "${mod}+s" = "layout stacking";
-        # "${mod}+v" = "split v";
-        # "${mod}+w" = "layout tabbed";
+      # "${mod}+a" = "focus parent";
+      # "${mod}+c" = "layout toggle split";
+      # "${mod}+f" = "fullscreen toggle";
+      # "${mod}+g" = "split h";
+      # "${mod}+s" = "layout stacking";
+      # "${mod}+v" = "split v";
+      # "${mod}+w" = "layout tabbed";
 
-        # "${mod}+Shift+r" = "exec swaymsg reload";
-        # "--release Print" = "exec --no-startup-id ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area";
-        # "${mod}+Ctrl+l" = "exec ${pkgs.swaylock-fancy}/bin/swaylock-fancy";
-        # "${mod}+Ctrl+q" = "exit";
+      # "${mod}+Shift+r" = "exec swaymsg reload";
+      # "--release Print" = "exec --no-startup-id ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area";
+      # "${mod}+Ctrl+l" = "exec ${pkgs.swaylock-fancy}/bin/swaylock-fancy";
+      # "${mod}+Ctrl+q" = "exit";
       # };
 
       # for_window = [
@@ -173,11 +178,13 @@ in {
       blur passes 2
       blur_radius 3
     '';
-      # for_window [class="dropterm"] floating enable;
-      # for_window [class="dropterm"] move scratchpad; [instance="dropterm"] scratchpad show; fullscreen enable; move scratchpad
+    # for_window [class="dropterm"] floating enable;
+    # for_window [class="dropterm"] move scratchpad; [instance="dropterm"] scratchpad show; fullscreen enable; move scratchpad
 
     systemd.enable = true;
-    wrapperFeatures = {gtk = true;};
+    wrapperFeatures = {
+      gtk = true;
+    };
   };
 
   # programs.waybar = {
@@ -190,7 +197,7 @@ in {
     "export NIXOS_OZONE_WL=1" # Electron
   ];
 
-    # autorandr like
+  # autorandr like
   # services.kanshi = {
   #   enable = true;
 
@@ -221,3 +228,4 @@ in {
   # };
 
 }
+

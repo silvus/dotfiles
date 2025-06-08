@@ -4,7 +4,7 @@
   # Declare flake inputs (dependencies)
   inputs = {
     # Use the nixpkgs repository from Github, nixos-unstable branch
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # Add Home Manager
     home-manager.url = "github:nix-community/home-manager";
     # Make sure Home Manager uses the same nixpkgs as the system
@@ -12,9 +12,14 @@
   };
 
   # Declare flake outputs
-  outputs = { self, nixpkgs, home-manager }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+    }:
 
-    let 
+    let
       # Define the target system type
       system = "x86_64-linux";
       # Import nixpkgs for the chosen system
@@ -22,14 +27,14 @@
 
     in
     {
-    
+
       # Config based on hostname
       nixosConfigurations.noctus = nixpkgs.lib.nixosSystem {
         inherit system;
-      
+
         # List of NixOS modules to include
         modules = [
-          
+
           # Shared base config
           ./base.nix
 
@@ -59,14 +64,14 @@
                 #./packages/waybar.nix
               ];
 
-                # Fix 'command not found' database broken
-                # programs.nix-index =
-            # {
-            #  enable = true;
+              # Fix 'command not found' database broken
+              # programs.nix-index =
+              # {
+              #  enable = true;
               # enableFishIntegration = true;
-            # };
+              # };
 
-              home.stateVersion = "24.11"; # Please read the comment before changing. 
+              home.stateVersion = "25.05"; # Please read the comment before changing.
             };
 
           }
@@ -75,7 +80,7 @@
 
       nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
         inherit system;
-      
+
         # List of NixOS modules to include
         modules = [
 
@@ -109,7 +114,7 @@
                 #./packages/hyprland.nix
                 #./packages/waybar.nix
               ];
-              home.stateVersion = "24.11"; # Please read the comment before changing. 
+              home.stateVersion = "25.05"; # Please read the comment before changing.
             };
           }
         ];
@@ -123,7 +128,7 @@
           {
             home.username = "silvus";
             home.homeDirectory = "/home/silvus";
-            home.stateVersion = "24.11"; # Please read the comment before changing. 
+            home.stateVersion = "25.05"; # Please read the comment before changing.
             # Let Home Manager install and manage itself.
             programs.home-manager.enable = true;
 
@@ -151,9 +156,14 @@
               nerd-fonts.fira-mono
               nerd-fonts.hack
             ];
+
+            imports = [
+              ./packages/dev.nix
+            ];
           }
         ];
       };
     };
 
 }
+
