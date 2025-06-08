@@ -20,6 +20,8 @@ rm lpm
 /usr/local/bin/lpm install plugin_manager --assume-yes
 
 /usr/local/bin/lpm install gitdiff_highlight --assume-yes
+/usr/local/bin/lpm install colorpreview --assume-yes
+/usr/local/bin/lpm install force_syntax --assume-yes
 /usr/local/bin/lpm install autoinsert --assume-yes
 /usr/local/bin/lpm install bracketmatch --assume-yes
 /usr/local/bin/lpm install datetimestamps --assume-yes
@@ -33,6 +35,8 @@ rm lpm
 /usr/local/bin/lpm install indentguide --assume-yes
 /usr/local/bin/lpm install motiontrail --assume-yes
 /usr/local/bin/lpm install sort --assume-yes
+/usr/local/bin/lpm install formatter --assume-yes
+
 
 /usr/local/bin/lpm add https://github.com/lite-xl/lite-xl-lsp-servers.git
 /usr/local/bin/lpm install lsp_lua --assume-yes
