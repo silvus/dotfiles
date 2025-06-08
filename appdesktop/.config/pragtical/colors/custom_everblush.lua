@@ -22,7 +22,7 @@ style.scrollbar2 = { common.color "#c4bdef" }
 
 style.syntax["normal"] = { common.color "#b3b9b8" }
 style.syntax["symbol"] = { common.color "#b3b9b8" }
-style.syntax["comment"] = { common.color "#404749" }
+style.syntax["comment"] = { common.color "#51595c" }
 style.syntax["keyword"] = { common.color "#67b0e8" }
 style.syntax["keyword2"] = { common.color "#6cbfbf" }
 style.syntax["number"] = { common.color "#dadada" }
