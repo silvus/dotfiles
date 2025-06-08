@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+set -e
+
+git_clone_or_update() {
+	local repo_url="$1"
+	local clone_dir="$2"
+
+	if [ -d "$clone_dir" ]; then
+		echo "Updating existing repository in $clone_dir"
+		git -C "$clone_dir" pull --ff-only
+	else
+		echo "Cloning new repository into $clone_dir"
+		git clone "$repo_url" "$clone_dir"
+	fi
+}
+
+
+LATEST_VERSION=$(curl -s "https://api.github.com/repos/pragtical/pragtical/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+curl -sLo /tmp/pragtical "https://github.com/pragtical/pragtical/releases/download/v${LATEST_VERSION}/Pragtical-v${LATEST_VERSION}-x86_64.AppImage"
+
+sudo chmod 755 /tmp/pragtical
+sudo install /tmp/pragtical /usr/local/bin
+
+rm /tmp/pragtical
+
+
+# Plugins
+PRAGTICAL_PLUGINS_PATH="$HOME/.config/pragtical/plugins"
+mkdir -p "$PRAGTICAL_PLUGINS_PATH"
+cd "$PRAGTICAL_PLUGINS_PATH"
+
+# Automatically inserts closing brackets and quotes. Also allows selected text to be wrapped with brackets or quotes.
+wget "https://github.com/pragtical/plugins/blob/master/plugins/autoinsert.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/autoinsert.lua"
+
+# Underlines matching pair for bracket under the caret
+wget "https://github.com/pragtical/plugins/blob/master/plugins/bracketmatch.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/bracketmatch.lua"
+
+# Automatically saves files that were changed when the main window loses focus by switching to another application
+wget "https://github.com/pragtical/plugins/blob/master/plugins/autosaveonfocuslost.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/autosaveonfocuslost.lua"
+
+# Underlays color values (eg. #ff00ff or rgb(255, 0, 255)) with their resultant color.
+wget "https://github.com/pragtical/plugins/blob/master/plugins/colorpreview.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/colorpreview.lua"
+
+# Color picker dialog that supports html and rgb notations.
+# wget "https://github.com/pragtical/plugins/blob/master/plugins/colorpicker.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/colorpicker.lua"
+
+# Copy file location to clipboard
+wget "https://github.com/pragtical/plugins/blob/master/plugins/copyfilelocation.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/copyfilelocation.lua"
+
+# Insert date-, time- and date-time-stamps
+wget "https://github.com/pragtical/plugins/blob/master/plugins/datetimestamps.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/datetimestamps.lua"
+
+# Make sure the file ends with one blank line.
+wget "https://github.com/bokunodev/lite_modules/blob/master/plugins/eofnewline-xl.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/eofnewline.lua"
+
+# Change the syntax used for a file.
+wget "https://github.com/pragtical/plugins/blob/master/plugins/force_syntax.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/force_syntax.lua"
+
+# Adds indent guides
+wget "https://github.com/pragtical/plugins/blob/master/plugins/indentguide.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/indentguide.lua"
+
+# Adds a motion-trail to the caret
+wget "https://github.com/pragtical/plugins/blob/master/plugins/motiontrail.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/motiontrail.lua"
+
+# Sorts selected lines alphabetically
+wget "https://github.com/pragtical/plugins/blob/master/plugins/sort.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/sort.lua"
+
+# Keep track of the current scope at the top of the view
+wget "https://github.com/pragtical/plugins/blob/master/plugins/sticky_scroll.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/sticky_scroll.lua"
+
+# EditorConfig implementation for Pragtical
+# wget "https://github.com/pragtical/plugins/blob/master/plugins/editorconfig" -O "$PRAGTICAL_PLUGINS_PATH/editorconfig.lua"
+
+# gitdiff-highlight requires itself with an underscore
+git_clone_or_update "https://github.com/vincens2005/lite-xl-gitdiff-highlight" "$PRAGTICAL_PLUGINS_PATH/gitdiff_highlight"
+
+# broken
+# gitstatus
+
+# Treesitter
+git_clone_or_update "https://github.com/pragtical/evergreen" "$PRAGTICAL_PLUGINS_PATH/evergreen"
+
+# Formatter
+git_clone_or_update "https://github.com/pragtical/formatter" "$PRAGTICAL_PLUGINS_PATH/formatter"
+
+# LSP
+git_clone_or_update "https://github.com/pragtical/lsp" "$PRAGTICAL_PLUGINS_PATH/lsp"
+git_clone_or_update "https://github.com/liquidev/lintplus" "$PRAGTICAL_PLUGINS_PATH/lintplus"
+wget "https://raw.githubusercontent.com/vqns/lite-xl-snippets/main/snippets.lua" -O "$PRAGTICAL_PLUGINS_PATH/snippets.lua"
+wget "https://raw.githubusercontent.com/vqns/lite-xl-snippets/main/lsp_snippets.lua" -O "$PRAGTICAL_PLUGINS_PATH/lsp_snippets.lua"
+wget "https://github.com/lite-xl/lite-xl-lsp-servers/blob/master/plugins/lsp_lua.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/lsp_lua.lua"
+wget "https://github.com/lite-xl/lite-xl-lsp-servers/blob/master/plugins/lsp_python.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/lsp_python.lua"
+wget "https://github.com/lite-xl/lite-xl-lsp-servers/blob/master/plugins/lsp_rust.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/lsp_rust.lua"
+
