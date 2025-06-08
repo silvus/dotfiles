@@ -8,25 +8,27 @@ function file_exists(name)
 	if f ~= nil then
 		io.close(f)
 		return true
-	else return false end
+	else
+		return false
+	end
 end
 
 local config = {}
 
-config.home = os.getenv("HOME") or '/home/silvus'
-config.dotfiles = os.getenv("SILVUSDOTFILES") or '/home/silvus/.dotfiles'
-config.dotfiles_custom = os.getenv("SILVUSDOTFILES_CUSTOM") or '/home/silvus/.dotfiles/custom'
+config.home = os.getenv("HOME") or "/home/silvus"
+config.dotfiles = os.getenv("SILVUSDOTFILES") or "/home/silvus/.dotfiles"
+config.dotfiles_custom = os.getenv("SILVUSDOTFILES_CUSTOM") or "/home/silvus/.dotfiles/custom"
 
 -- config.theme = "lagoon"
 config.theme = "matrix"
 -- config.theme = "bloodmoon"
 
 -- This is used later as the default terminal and guake-like terminal to run.
-if file_exists('/usr/bin/wezterm') then
-	config.terminal = '/usr/bin/wezterm'
+if file_exists("/usr/bin/wezterm") then
+	config.terminal = "/usr/bin/wezterm"
 	config.terminal_quake = '/usr/bin/wezterm start --class guaketerm -- "' .. config.dotfiles .. '/bin/tmuxdev"'
-elseif file_exists('/usr/bin/urxvt') then
-	config.terminal = '/usr/bin/urxvt'
+elseif file_exists("/usr/bin/urxvt") then
+	config.terminal = "/usr/bin/urxvt"
 	config.terminal_quake = '/usr/bin/urxvt -name guaketerm -title terminal -e "' .. config.dotfiles .. '/bin/tmuxdev"'
 else
 	config.terminal = "xterm"
@@ -49,10 +51,10 @@ config.wallpapers_by_tag = false
 
 -- Use blink1 led to flash on notification (if installed)
 config.blink_path = nil
-if file_exists(config.home .. '/bin/blink1-flash') then
-	config.blink_path = config.home .. '/bin/blink1-flash'
-elseif file_exists('/usr/local/blink-tool') then
-	config.blink_path = '/usr/local/blink-tool'
+if file_exists(config.home .. "/bin/blink1-flash") then
+	config.blink_path = config.home .. "/bin/blink1-flash"
+elseif file_exists("/usr/local/blink-tool") then
+	config.blink_path = "/usr/local/blink-tool"
 end
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -84,7 +86,7 @@ config.layouts = {
 -- local config = {}
 -- config.theme = "customblue"
 -- return config
-local config_custom_path = config.dotfiles_custom .. '/awesome.lua'
+local config_custom_path = config.dotfiles_custom .. "/awesome.lua"
 if file_exists(config_custom_path) then
 	local config_custom = dofile(config_custom_path)
 	if config_custom then
@@ -94,3 +96,4 @@ if file_exists(config_custom_path) then
 end
 
 return config
+

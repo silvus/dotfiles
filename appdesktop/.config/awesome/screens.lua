@@ -31,7 +31,6 @@ local function get_primary()
 	return screen.primary
 end
 
-
 screens.init = init
 screens.count = count
 screens.get_primary = get_primary

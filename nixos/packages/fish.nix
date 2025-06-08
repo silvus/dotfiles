@@ -1,10 +1,9 @@
 { config, pkgs, ... }:
 
 {
-
-	home.packages = with pkgs; [
+  home.packages = with pkgs; [
     fish
-	];
+  ];
 
   # Add to PATH
   home.sessionPath = [
@@ -13,7 +12,7 @@
     "${config.home.homeDirectory}/.dotfiles/bin"
     "/data/doc/.bin"
   ];
-  
+
   programs.fish = {
     enable = true;
 
@@ -21,7 +20,7 @@
     interactiveShellInit = ''
       set fish_greeting
     '';
-    
+
     shellAliases = {
       "cd.." = "cd ..";
       ".." = "cd ..";
@@ -64,7 +63,8 @@
             cd "$argv"
         end
       '';
-    };      
+    };
   };
-  
+
 }
+

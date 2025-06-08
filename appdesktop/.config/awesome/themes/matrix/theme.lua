@@ -174,7 +174,7 @@ function widget_rotate(w, inverse)
 	if inverse then
 		direction = 'west'
 	end
-		
+
 	return wibox.container {
 		w,
 		direction = direction,
@@ -205,7 +205,7 @@ function bar(s)
 	local widget_vpn = require("widgets.vpn")
 	local widget_moc = require("widgets.moc")
 	local widget_systray = require("widgets.systray")
-	local widget_prompt = require("widgets.prompt")
+	-- local widget_prompt = require("widgets.prompt")
 	local widget_keyboardlayout = require("widgets.keyboardlayout")
 	local widget_battery = require("widgets.battery")
 
@@ -213,7 +213,7 @@ function bar(s)
 	local layoutbox = widget_layout.widget(s)
 
 	local wibox_custom = nil
-	
+
 	-- Widget for main screen only
 	if s == screens.get_primary() then
 		-- Create a promptbox (on screen object to trigger in keys bindings)
@@ -275,7 +275,7 @@ function bar(s)
 				},
 			},
 		}
-			
+
 	else
 		-- secondary screen (always horizontal)
 		wibox_custom = awful.wibar({
@@ -310,3 +310,4 @@ theme.bar = bar
 
 
 return theme
+

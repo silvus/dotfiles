@@ -30,3 +30,9 @@ On Debian, install Nix and Homemanager (standalone), then:
 ``` bash
 home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles/nixos#silvus
 ```
+
+To upgrade:
+``` bash
+nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles/nixos
+```
+

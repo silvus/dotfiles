@@ -149,21 +149,23 @@ end
 
 function quake.new(conf)
     conf            = conf or {}
-    conf.name       = conf.name or "QuakeDD"                                                -- window name
-    conf.spawn      = conf.spawn or string.format("%s --class %s", conf.app, conf.name)     -- how to launch a new instance
-    conf.border     = conf.border or 1                                                      -- client border width
-    conf.visible    = conf.visible or false                                                 -- initially not visible
-    conf.followtag  = conf.followtag or false                                               -- spawn on currently focused screen
-    conf.overlap    = conf.overlap or false                                                 -- overlap wibox
+    conf.name       = conf.name or "QuakeDD"                                            -- window name
+    conf.spawn      = conf.spawn or
+    string.format("%s --class %s", conf.app, conf.name)                                 -- how to launch a new instance
+    conf.border     = conf.border or 1                                                  -- client border width
+    conf.visible    = conf.visible or false                                             -- initially not visible
+    conf.followtag  = conf.followtag or
+    false                                                                               -- spawn on currently focused screen
+    conf.overlap    = conf.overlap or false                                             -- overlap wibox
     conf.screen     = conf.screen or awful.screen.focused()
     conf.settings   = conf.settings
 
     -- If width or height <= 1 this is a proportion of the workspace
-    conf.height     = conf.height or 0.25      -- height
-    conf.width      = conf.width or 1          -- width
-    conf.vert       = conf.vert or "top"       -- top, bottom or center
-    conf.horiz      = conf.horiz or "left"     -- left, right or center
-    conf.geometry   = {}                       -- internal use
+    conf.height     = conf.height or 0.25  -- height
+    conf.width      = conf.width or 1      -- width
+    conf.vert       = conf.vert or "top"   -- top, bottom or center
+    conf.horiz      = conf.horiz or "left" -- left, right or center
+    conf.geometry   = {}                   -- internal use
 
     conf.maximized  = false
     conf.fullscreen = false
@@ -231,3 +233,4 @@ _M.term = quake.new({
 
 
 return _M
+

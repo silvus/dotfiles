@@ -62,6 +62,7 @@ def print_error(message):
 # Helpers
 # --------------------------------------------------------------------
 
+
 def assure_dir_exist(path):
     """Create parents folders for file path"""
     dir_path = os.path.dirname(os.path.expanduser(path))
@@ -75,7 +76,7 @@ def assure_dir_exist(path):
 def exec_command(command, show_errors=True):
     """Execute a system command"""
     p = Popen(command, stdout=PIPE, stderr=PIPE)
-    output, errors = p.communicate()
+    _, errors = p.communicate()
 
     if p.returncode != 0 and show_errors:
         print_error(errors.decode("UTF-8"))
@@ -122,7 +123,7 @@ def count_files(root_folder):
     Recursive count files in rootFolder
     """
     total = 0
-    for root, dirs, files in os.walk(root_folder):
+    for _, _, files in os.walk(root_folder):
         total += len(files)
     return total
 
@@ -141,12 +142,13 @@ def copy_has_root(source, destination):
     """
     Copy file has root. Use cp to not launch this script has root
     """
-    return exec_command(['sudo', 'cp', source, destination])
+    return exec_command(["sudo", "cp", source, destination])
 
 
 # --------------------------------------------------------------------
 # Symlinks
 # --------------------------------------------------------------------
+
 
 def symlink_arbo(root_source, root_destination):
     """
@@ -203,6 +205,7 @@ def symlink(src, dest):
 # Copy
 # --------------------------------------------------------------------
 
+
 def copy_arbo(root_source, root_destination):
     """
     Scan dotfiles directory and create an equivalent file copy in home for each file.
@@ -245,7 +248,9 @@ def copy_files_has_root(source_path_root, files_target=None):
 
     for file_target in files_target:
         # Get relative dir from dotfiles root
-        file_source = os.path.normpath(os.path.join(source_path_root, file_target.strip("/")))
+        file_source = os.path.normpath(
+            os.path.join(source_path_root, file_target.strip("/"))
+        )
 
         # Copy has root, even if the file exist
         if copy_has_root(file_source, file_target):
@@ -261,6 +266,7 @@ def copy_files_has_root(source_path_root, files_target=None):
 # --------------------------------------------------------------------
 # Scan diff
 # --------------------------------------------------------------------
+
 
 def get_files_different_arbo(root_source, root_destination):
     """
@@ -282,9 +288,9 @@ def get_files_different_arbo(root_source, root_destination):
             # Compare diff
             try:
                 if not filecmp.cmp(source, destination):
-                    diff_files.append(os.path.join('/', relative_file))
+                    diff_files.append(os.path.join("/", relative_file))
             except FileNotFoundError:
-                diff_files.append(os.path.join('/', relative_file))
+                diff_files.append(os.path.join("/", relative_file))
 
     return diff_files
 
@@ -292,6 +298,7 @@ def get_files_different_arbo(root_source, root_destination):
 # --------------------------------------------------------------------
 # Git
 # --------------------------------------------------------------------
+
 
 def git_clone(url, destination):
     return exec_command(["git", "clone", "--recursive", url, destination])
@@ -404,6 +411,7 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
 # Main
 # --------------------------------------------------------------------
 
+
 def launch(dotfilespath, restarted, root):
     hostname = socket.gethostname()
 
@@ -419,7 +427,6 @@ def launch(dotfilespath, restarted, root):
     # Make symlinks
     print_header("Symlinks apps")
     if symlink_arbo(os.path.join(dotfilespath, "app"), os.path.expanduser("~")):
-
         # Host specifics app files
         if os.path.isdir(os.path.join(dotfilespath, "app_{}".format(hostname))):
             print_header("Symlinks {} specifics apps".format(hostname))
@@ -453,26 +460,33 @@ def launch(dotfilespath, restarted, root):
                 print_error("xrdb not found.")
 
         # Check if approot files are different
-        approot_files = get_files_different_arbo(os.path.join(dotfilespath, "approot"), '/')
+        approot_files = get_files_different_arbo(
+            os.path.join(dotfilespath, "approot"), "/"
+        )
         if approot_files:
             if root:
                 print_header("Copy root files")
-                copy_files_has_root(os.path.join(dotfilespath, "approot"), approot_files)
+                copy_files_has_root(
+                    os.path.join(dotfilespath, "approot"), approot_files
+                )
             else:
                 print_header("Difference in root files (no --root argument)")
                 for approot_file in approot_files:
-                    print_warning('Diff in file {}'.format(approot_file))
+                    print_warning("Diff in file {}".format(approot_file))
 
         # Temporary: Migrate dotfiles_custom to new version
-        if os.path.exists(os.path.expanduser('~/.dotfiles_custom')):
+        if os.path.exists(os.path.expanduser("~/.dotfiles_custom")):
             print_header("Migrate ~/.dotfiles_custom to ~/.dotfiles/custom")
-            shutil.move(os.path.expanduser('~/.dotfiles_custom'), os.path.join(dotfilespath, "custom"))
+            shutil.move(
+                os.path.expanduser("~/.dotfiles_custom"),
+                os.path.join(dotfilespath, "custom"),
+            )
 
         # Generate ~/.dotfiles/custom files if not exists
         print_header("Generate {}/custom files".format(os.path.basename(dotfilespath)))
         copy_arbo(
             os.path.join(dotfilespath, "custom_templates"),
-            os.path.join(dotfilespath, "custom")
+            os.path.join(dotfilespath, "custom"),
         )
 
         print()
@@ -512,3 +526,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

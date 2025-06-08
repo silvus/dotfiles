@@ -1,6 +1,5 @@
 local awful = require("awful")
 local naughty = require("naughty")
-local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local screens = require("screens")
 local desktops = require("desktops")
@@ -14,8 +13,8 @@ local menubar = require("menubar")
 -- Set a global variable, a local one
 local globalclient = client
 
-local io = require("io")
-local string = require("string")
+-- local io = require("io")
+-- local string = require("string")
 
 local keys = {}
 
@@ -32,7 +31,7 @@ function panic_key()
 			tag_next:view_only()
 		end
 		-- Go to first tag
-		local tag_next = s.tags[1]
+		tag_next = s.tags[1]
 		if tag_next then
 			tag_next:view_only()
 		end
@@ -78,7 +77,7 @@ function panic_key()
 end
 
 -- Unpanic button
-function unpanic_key(restaure_tag)
+function unpanic_key(restore_tag)
 	-- Unmute notifications
 	naughty.resume()
 	widget_notifications.update()
@@ -88,7 +87,7 @@ function unpanic_key(restaure_tag)
 	widget_volume.volume.update()
 
 	-- Restaure previous tag
-	if restaure_tag then
+	if restore_tag then
 		local screen = screens.get_primary()
 		awful.tag.history.restore(screen, 2)
 	end
@@ -167,7 +166,6 @@ function move_client(direction)
 	end
 end
 
-
 -- Start or focus client
 function focus_or_start_client(class, command)
 	local matcher = function(c)
@@ -182,7 +180,6 @@ function focus_or_start_client(class, command)
 	end
 	awful.spawn(command)
 end
-
 
 -- Globals keys
 -- ----------------------------------------------------------------------------
@@ -199,7 +196,7 @@ keys.global = awful.util.table.join(
 	end, { description = "go back to previous tag", group = "tag" }),
 
 	awful.key({ modkey }, "b", function()
-		local screen_focused_status = screens.get_primary().bar.visible
+		-- local screen_focused_status = screens.get_primary().bar.visible
 		for s in screen do
 			if s.bar then
 				s.bar.visible = not screen_primary_status
@@ -302,17 +299,17 @@ keys.global = awful.util.table.join(
 	end, { description = "swap with right client", group = "client" }),
 
 	-- Client specific spawn or focus
-	awful.key({ modkey, "Shift" }, "f", function ()
+	awful.key({ modkey, "Shift" }, "f", function()
 		awful.spawn("thunar")
-	end, {description = "launch Thunar", group = "launcher"}),
-	awful.key({ modkey, "Shift" }, "e", function ()
+	end, { description = "launch Thunar", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "e", function()
 		focus_or_start_client('VSCodium', 'codium')
 		local screen = awful.screen.focused()
 		local tag_next = screen.tags[3]
 		if tag_next then
 			tag_next:view_only()
 		end
-	end, {description = "focus or launch VsCodium", group = "launcher"}),
+	end, { description = "focus or launch VsCodium", group = "launcher" }),
 
 
 	awful.key({ modkey }, "u", function()
@@ -454,7 +451,7 @@ keys.global = awful.util.table.join(
 	awful.key({}, "XF86AudioForward", function()
 		awful.spawn(config.home .. "/.dotfiles/bin/musicforward", false)
 	end, { description = "music previous", group = "audio" }),
-	
+
 	-- Simulate Media Keys
 	awful.key({}, "Pause", function()
 		awful.spawn(config.home .. "/.dotfiles/bin/musicplay", false)
@@ -673,3 +670,4 @@ keys.clients.buttons = awful.util.table.join(
 
 
 return keys
+

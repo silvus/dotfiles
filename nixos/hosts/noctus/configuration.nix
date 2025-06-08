@@ -2,18 +2,18 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
-let
-  # home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz;
-in
+# let
+  # home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz;
+# in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       # (import "${home-manager}/nixos")
     ];
-  
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.warn-dirty = false;
 
@@ -42,7 +42,7 @@ in
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
- 
+
 #  services.greetd = {
 #    enable = true;
 #    settings = {
@@ -86,3 +86,4 @@ in
   #   enableSSHSupport = true;
   # };
 }
+
