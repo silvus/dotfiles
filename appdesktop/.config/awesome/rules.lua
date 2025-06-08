@@ -140,6 +140,13 @@ local rules = {
             titlebars_enabled = false,
         }
     },
+    {
+        rule_any = { class = { "chromium", "Chromium" } },
+        properties = {
+            tag = desktops.tags_names[3],
+            titlebars_enabled = false,
+        }
+    },
     -- Dev
     {
         rule_any = { class = { "VSCodium", "dev.zed.Zed", "jetbrains-phpstorm", "lite-xl", "pragtical" } },
