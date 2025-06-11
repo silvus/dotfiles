@@ -215,7 +215,11 @@ lsp.add_server {
 --   verbose = true,
 -- }
 lspconfig.pyright.setup(common.merge({
-	file_patterns = { "%.py$", '%/dotfiles' },
+	file_patterns = {
+		"%.py$",
+		'%/dotfiles',
+		'%/tmux_sessionizer',
+	},
 	command = {
 		os.getenv("HOME") .. "/.nix-profile/bin/pyright-langserver"
 	},
