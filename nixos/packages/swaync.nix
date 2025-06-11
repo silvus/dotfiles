@@ -291,13 +291,11 @@
       }
 
       .widget-mpris-title {
-        text-wrap: wrap;
       }
 
       .widget-mpris-subtitle {
         /* font-weight: 500; */
         /* font-size: 0.8rem; */
-          text-wrap: wrap;
 
       }
 
