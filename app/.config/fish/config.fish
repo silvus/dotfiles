@@ -50,8 +50,8 @@ alias ......='cd ../../../../../'
 alias l='env LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 
 function mkcd --description 'Create a folder and go into it'
-    mkdir -p "$argv"
-    cd "$argv"
+  mkdir -p "$argv"
+  cd "$argv"
 end
 
 alias e='$EDITOR'
@@ -65,7 +65,6 @@ alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl
 alias bat='batcat'
 alias fd='fdfind'
 alias lz='lazygit'
-alias y='yazi'
 
 alias tree1="tree --dirsfirst -ChFLQ 1"
 alias tree2="tree --dirsfirst -ChFLQ 2"
@@ -106,6 +105,16 @@ function fish_user_key_bindings
   fzf_key_bindings
 end
 
+# yazi Shell wrapper to cd
+# -----------------------------------------------------------------------------
+function y
+  set tmp (mktemp -t "yazi-cwd.XXXXXX")
+  yazi $argv --cwd-file="$tmp"
+  if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+    builtin cd -- "$cwd"
+  end
+  rm -f -- "$tmp"
+end
 
 # Bindings
 # -----------------------------------------------------------------------------
@@ -128,5 +137,6 @@ bind \ch fzf-history-widget
 # Environment specific configuration
 # -----------------------------------------------------------------------------
 if test -f "$SILVUSDOTFILES_CUSTOM/shellfish"
-    source "$SILVUSDOTFILES_CUSTOM/shellfish"
+  source "$SILVUSDOTFILES_CUSTOM/shellfish"
 end
+
