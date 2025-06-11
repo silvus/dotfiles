@@ -13,9 +13,9 @@ vim.opt.nu = true
 vim.opt.relativenumber = true
 
 -- Indent
-vim.opt.tabstop = 4     -- width used to display an actual tabulation character
-vim.opt.softtabstop = 4 -- how wide an indentation is supposed to span
-vim.opt.shiftwidth = 4  -- width used for shifting commands
+vim.opt.tabstop = 4       -- width used to display an actual tabulation character
+vim.opt.softtabstop = 4   -- how wide an indentation is supposed to span
+vim.opt.shiftwidth = 4    -- width used for shifting commands
 vim.opt.expandtab = false -- Tabs are spaces?
 vim.opt.smartindent = false
 
@@ -44,7 +44,7 @@ vim.opt.termguicolors = true
 -- vim.opt.colorcolumn = "80"
 -- Conceal is not great on markdown checkbox level 2 and more (Because of Treesitter)
 vim.wo.conceallevel = 2
--- Show whitespaces and trailing 
+-- Show whitespaces and trailing
 vim.opt.list = true
 vim.opt.listchars = {
 	tab = '→ ',
@@ -84,3 +84,4 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 		end
 	end,
 })
+

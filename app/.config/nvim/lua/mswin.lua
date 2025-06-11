@@ -2,13 +2,13 @@
 
 vim.opt.selection = 'exclusive'
 -- vim.opt.selection = 'inclusive'
-vim.opt.selectmode = 'key' -- when using shifted special keys
+vim.opt.selectmode = 'key'    -- when using shifted special keys
 -- vim.opt.mousemodel = 'popup' -- Right mouse button pops up a menu
 vim.opt.keymodel = 'startsel' -- select using shifted special keys
 -- vim.opt.keymodel = 'startsel,stopsel' -- select using shifted special keys and stop on all keys
 
 -- backspace and cursor keys wrap to previous/next line
-vim.opt.backspace = {'indent','eol','start'}
+vim.opt.backspace = { 'indent', 'eol', 'start' }
 vim.opt.whichwrap = 'b,s,<,>,[,]'
 
 -- backspace in Visual mode deletes selection
@@ -28,7 +28,7 @@ vim.keymap.set('v', '<C-Insert>', '"+y')
 -- vim.keymap.set('i', '<C-v>', '<ESC>P<CR>i')
 -- vim.keymap.set('v', '<C-v>', '<C-o>P<CR>v')
 vim.keymap.set('n', '<C-v>', 'p')
-vim.keymap.set({'i', 'v'}, '<C-v>', '<C-o>p')
+vim.keymap.set({ 'i', 'v' }, '<C-v>', '<C-o>p')
 
 -- CTRL-A is Select all
 -- vim.keymap.set('n' , '<C-A>', 'gggH<C-O>G')
@@ -50,3 +50,4 @@ vim.keymap.set('i', '<C-Z>', '<C-O>u')
 -- CTRL-Y is Redo (although not repeat); not in cmdline though
 vim.keymap.set('n', '<C-Y>', '<C-R>')
 vim.keymap.set('i', '<C-Y>', '<C-O><C-R>')
+
