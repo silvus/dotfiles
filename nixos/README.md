@@ -36,3 +36,8 @@ To upgrade:
 nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles/nixos
 ```
 
+If offline:
+``` bash
+--option substitute false
+```
+

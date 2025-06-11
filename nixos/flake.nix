@@ -4,9 +4,11 @@
   # Declare flake inputs (dependencies)
   inputs = {
     # Use the nixpkgs repository from Github, nixos-unstable branch
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Use the nixpkgs repository, stable branch
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     # Add Home Manager
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     # Make sure Home Manager uses the same nixpkgs as the system
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -23,7 +25,10 @@
       # Define the target system type
       system = "x86_64-linux";
       # Import nixpkgs for the chosen system
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
 
     in
     {
@@ -50,6 +55,8 @@
             home-manager.useGlobalPkgs = true;
             # Install user packages via Home Manager
             home-manager.useUserPackages = true;
+            # On activation move existing files by appending the given file extension rather than exiting with an error.
+            home-manager.backupFileExtension = "hm_bk";
             # Home manager config for a user
             # home-manager.users.silvus = import ./home.nix;
             home-manager.users.silvus = {
@@ -99,6 +106,8 @@
             home-manager.useGlobalPkgs = true;
             # Install user packages via Home Manager
             home-manager.useUserPackages = true;
+            # On activation move existing files by appending the given file extension rather than exiting with an error.
+            home-manager.backupFileExtension = "hm_bk";
             # Home manager config for a user
             # home-manager.users.silvus = import ./home.nix;
             home-manager.users.silvus = {
@@ -110,6 +119,8 @@
                 ./packages/vscodium.nix
                 ./packages/sway.nix
                 ./packages/swaync.nix
+                ./packages/waybar.nix
+
                 # ./packages/river.nix
                 #./packages/hyprland.nix
                 #./packages/waybar.nix
@@ -149,6 +160,14 @@
               yazi
               # Git TUI
               lazygit
+
+              # Render graphs in Neovim
+              # mermaid-cli  # mmdc
+              # imagemagick
+              # luajitPackages.magick
+
+              # draw plans
+              drawio
 
               # Fonts
               terminus_font

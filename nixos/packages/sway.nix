@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   lib,
   ...
 }:
@@ -147,11 +148,18 @@ in
       #   }
       # ];
 
+      # Disable bar
+      bars = [];
+
       focus.followMouse = false;
       startup = [
         { command = "ghostty --class=dropterm"; }
         # { command = "firefox"; }
         # { command = "codium"; }
+        # https://github.com/Alexays/Waybar/issues/185#issuecomment-570340138
+        { command = "GTK_THEME=Adapta waybar"; }
+        # notification on workspace change
+        # { command = "${config.home.homeDirectory}/.dotfiles/bin/sway-notify-workspace"; }
       ];
       defaultWorkspace = "workspace number 1";
       workspaceAutoBackAndForth = true;
@@ -170,13 +178,6 @@ in
       default_border pixel 2
       # Set default border style for new floating windows. This only applies to windows that are spawned in floating mode, not windows that become floating afterwards.
       default_floating_border normal
-
-       shadows enable
-      shadows_on_csd enable
-      shadow_blur_radius 20
-      blur enable
-      blur passes 2
-      blur_radius 3
     '';
     # for_window [class="dropterm"] floating enable;
     # for_window [class="dropterm"] move scratchpad; [instance="dropterm"] scratchpad show; fullscreen enable; move scratchpad

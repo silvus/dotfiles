@@ -4,6 +4,10 @@
 
   home.packages = with pkgs; [
     waybar
+
+    # gtk css interfer and force a with of 28px (which is huge)
+    # to force a small size, fake a smaller gtk theme
+    adapta-gtk-theme
   ];
 
   programs.waybar = {
@@ -16,15 +20,15 @@
       primary = {
         # exclusive = false;
         # passthrough = false;
-        # height = 20;
-        width = 20;
+        # height = 19;
+        width = 19;
         # margin = "6";
         # "spacing" = 4; # Gaps between modules
+
         position = "left";
         modules-left = [
-          "hyprland/workspaces"
-          "hyprland/window"
-          "hyprland/submap"
+          "sway/workspaces"
+          # "sway/window"
         ];
 
         modules-center = [
@@ -44,7 +48,7 @@
         clock = {
           rotate = 90;
           interval = 1;
-          format = "{%H:%M:%S}";
+          format = "{:%H:%M:%S}";
           # format-alt = "{:%Y-%m-%d %H:%M:%S %z}";
           # on-click-left = "mode";
           tooltip-format = ''
@@ -52,7 +56,10 @@
             <tt><small>{calendar}</small></tt>'';
         };
 
-        "hyprland/window" = {
+        "sway/workspaces" = {
+          rotate = 90;
+        };
+         "sway/window" = {
           rotate = 90;
         };
 
@@ -162,10 +169,13 @@
     };
 
     style = ''
+
       * {
           /* `otf-font-awesome` is required to be installed for icons */
           font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
           font-size: 13px;
+          min-height: 0;
+          min-width: 0;
       }
 
       window#waybar {
@@ -258,13 +268,15 @@
       #scratchpad,
       #power-profiles-daemon,
       #mpd {
-          padding: 0 3px;
-          color: #ffffff;
+        padding: 0;
+        margin: 0;
+        color: #ffffff;
       }
 
       #window,
       #workspaces {
-          margin: 0 2px;
+        padding: 0;
+        margin: 0;
       }
 
       /* If workspaces is the leftmost module, omit left margin */
