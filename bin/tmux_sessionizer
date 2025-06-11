@@ -26,6 +26,9 @@ logging.basicConfig(
 log = logging.getLogger(PATH_SCRIPT)
 
 
+SPECIAL_PATHS = ["/data/doc/todo.org", "~/.dotfiles", "/data/doc", "/data/work"]
+EDIT_PATHS = ["/data/doc", "/data/work"]
+
 def is_tmux_running():
     result = subprocess.run(["pgrep", "tmux"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return result.returncode == 0
@@ -35,7 +38,7 @@ def get_project_paths():
     paths = []
 
     # Simple paths
-    for path in ["/data/doc/todo.org", "~/.dotfiles", "/data/doc", "/data/work"]:
+    for path in SPECIAL_PATHS:
         expanded_path = os.path.expanduser(path)
         if os.path.isfile(expanded_path) or os.path.isdir(expanded_path):
             paths.append(expanded_path)
@@ -104,7 +107,7 @@ def run_fzf(paths):
 
     # Display a tilde for clarity.
     paths = [s.replace(Path.home().absolute().as_posix(), '~') for s in paths]
-    
+
     process = subprocess.Popen([fzf_path, '--tmux'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     stdout, _ = process.communicate(input="\n".join(paths).encode())
     return os.path.expanduser(stdout.decode().strip())
@@ -160,10 +163,14 @@ def main():
         if not selected:
             log.debug('No selection to open')
             return
-        
+
+        selected = os.path.expanduser(selected)
+
         tmux_open_command = ''
         if os.path.isfile(selected):
             tmux_open_command = "{} \"{}\"".format(os.getenv('EDITOR', shutil.which('vim')), selected)
+        elif selected in (os.path.expanduser(p) for p in EDIT_PATHS):
+            tmux_open_command = "cd {1} && {0} \"{1}\"".format(os.getenv('EDITOR', shutil.which('vim')), selected)
         elif not os.path.isdir(selected):
             log.error(f'Selected projet does not exit {selected}')
             return
@@ -217,3 +224,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
