@@ -8,11 +8,11 @@ return {
 				style = 'darker',
 				transparent = true,
 				highlights = {
-					["Normal"] = {fg = '#cdd0d4'},
-					["@markup.list"] = {fg = '#299e1b'},
-					["@markup.list.checked"] = {fg = '#286920', fmt = 'italic'},
-					["@markup.list.unchecked"] = {fg = '#299e1b'},
-				  },
+					["Normal"] = { fg = '#cdd0d4' },
+					["@markup.list"] = { fg = '#299e1b' },
+					["@markup.list.checked"] = { fg = '#286920', fmt = 'italic' },
+					["@markup.list.unchecked"] = { fg = '#299e1b' },
+				},
 			})
 			require('onedark').load()
 
@@ -37,7 +37,7 @@ return {
 			vim.api.nvim_set_hl(0, 'atx_h4_marker', { link = 'markdownH4Delimiter' })
 			vim.api.nvim_set_hl(0, 'atx_h5_marker', { link = 'markdownH5Delimiter' })
 			vim.api.nvim_set_hl(0, 'atx_h6_marker', { link = 'markdownH6Delimiter' })
-			
+
 			vim.api.nvim_set_hl(0, '@markup.heading.1.markdown', { link = 'markdownH1' })
 			vim.api.nvim_set_hl(0, '@markup.heading.2.markdown', { link = 'markdownH2' })
 			vim.api.nvim_set_hl(0, '@markup.heading.3.markdown', { link = 'markdownH3' })
@@ -56,8 +56,7 @@ return {
 			-- vim.api.nvim_set_hl(0, 'markdownUrlDelimiter', { fg = '#990f2d', bold = true })
 
 			-- vim.api.nvim_set_hl(0, "Normal",   { bg = "#121212" })  -- focused window
-			vim.api.nvim_set_hl(0, "NormalNC", { bg = "#1e1e1e" })  -- unfocused windows
-
+			vim.api.nvim_set_hl(0, "NormalNC", { bg = "#1e1e1e" }) -- unfocused windows
 		end,
 	},
 	-- {
@@ -105,12 +104,12 @@ return {
 					lualine_c = {
 						{
 							'filename',
-							newfile_status = true,	-- Display new file status (new file means no write after created)
-							path = 1,				-- 0: Just the filename
-													-- 1: Relative path
-													-- 2: Absolute path
-													-- 3: Absolute path, with tilde as the home directory
-													-- 4: Filename and parent dir, with tilde as the home directory
+							newfile_status = true, -- Display new file status (new file means no write after created)
+							path = 1, -- 0: Just the filename
+							-- 1: Relative path
+							-- 2: Absolute path
+							-- 3: Absolute path, with tilde as the home directory
+							-- 4: Filename and parent dir, with tilde as the home directory
 						},
 					},
 					lualine_x = {
@@ -119,7 +118,7 @@ return {
 							if s == nil or s == '' then
 								return '';
 							else
-								return 'S:'.. s;
+								return 'S:' .. s;
 							end
 						end,
 						'encoding',
@@ -164,3 +163,4 @@ return {
 		opts = {},
 	},
 }
+

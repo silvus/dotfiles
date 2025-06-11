@@ -37,18 +37,18 @@ return {
 			-- And you can configure cmp even more, if you want to.
 			local cmp = require('cmp')
 			local cmp_action = lsp_zero.cmp_action()
-			local cmp_select = {behavior = cmp.SelectBehavior.Select}
+			local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 			cmp.setup({
 				sources = {
-					{name = 'path'},
-					{name = 'nvim_lsp'},
-					{name = 'nvim_lua'},
-					{name = 'luasnip', keyword_length = 2},
-					{name = 'buffer', keyword_length = 3},
-					{name = 'calc'},
-					{name = 'mkdnflow'},
-					{name = 'orgmode'},
+					{ name = 'path' },
+					{ name = 'nvim_lsp' },
+					{ name = 'nvim_lua' },
+					{ name = 'luasnip', keyword_length = 2 },
+					{ name = 'buffer',  keyword_length = 3 },
+					{ name = 'calc' },
+					{ name = 'mkdnflow' },
+					{ name = 'orgmode' },
 				},
 				formatting = lsp_zero.cmp_format(),
 				mapping = cmp.mapping.preset.insert({
@@ -81,11 +81,11 @@ return {
 	-- LSP
 	{
 		'neovim/nvim-lspconfig',
-		cmd = {'LspInfo', 'LspInstall', 'LspStart'},
-		event = {'BufReadPre', 'BufNewFile'},
+		cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
+		event = { 'BufReadPre', 'BufNewFile' },
 		dependencies = {
-			{'hrsh7th/cmp-nvim-lsp'},
-			{'williamboman/mason-lspconfig.nvim'},
+			{ 'hrsh7th/cmp-nvim-lsp' },
+			{ 'williamboman/mason-lspconfig.nvim' },
 		},
 		config = function()
 			-- This is where all the LSP shenanigans will live
@@ -97,9 +97,9 @@ return {
 			lsp_zero.on_attach(function(client, bufnr)
 				-- see :help lsp-zero-keybindings
 				-- to learn the available actions
-				lsp_zero.default_keymaps({buffer = bufnr})
+				lsp_zero.default_keymaps({ buffer = bufnr })
 
-				local opts = {buffer = bufnr, remap = false}
+				local opts = { buffer = bufnr, remap = false }
 				vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
 				vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
 				vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
@@ -113,7 +113,7 @@ return {
 			end)
 
 			require('mason-lspconfig').setup({
-				ensure_installed = {'pylsp', 'lua_ls', 'rust_analyzer'},
+				ensure_installed = { 'pylsp', 'lua_ls', 'rust_analyzer' },
 				handlers = {
 					lsp_zero.default_setup,
 					lua_ls = function()
@@ -126,3 +126,4 @@ return {
 		end
 	}
 }
+

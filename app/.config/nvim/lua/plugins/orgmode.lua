@@ -27,10 +27,10 @@ return {
 			}
 		end
 
-		local org = require('orgmode').setup({
+		require('orgmode').setup({
 			org_default_notes_file = org_default_notes_file,
 			org_agenda_files = org_agenda_files,
-			
+
 			org_startup_indented = true, -- Use virtual indent
 			org_todo_keywords = {
 				'NEXT(n)',
@@ -48,7 +48,7 @@ return {
 			-- 	DELEGATED = ':background #FFFFFF :slant italic :underline on',
 			-- 	INACTIVE = ':background #000000 :foreground red', -- overrides builtin color for `TODO` keyword
 			-- },
-			
+
 			-- win_split_mode = '80vsplit', -- auto, horizontal, vertical, { 'float', 0.3 }, tabnew
 			-- Replace current buffer
 			-- win_split_mode = 'edit',
@@ -57,7 +57,7 @@ return {
 			-- win_split_mode = function(buffer)
 			-- 	local win = vim.api.nvim_get_current_win()
 			-- 	local cur_buf = vim.api.nvim_win_get_buf(win)
-			
+
 			-- 	-- Only wipe the current buffer if it's not the same as the target one
 			-- 	if cur_buf ~= buffer then
 			-- 		-- Only wipe unlisted or unnamed buffers to avoid data loss
@@ -87,8 +87,8 @@ return {
 					org_capture = { 'gC', '<prefix>c' },
 				},
 				org = {
-					org_todo = { 'cit', '<prefix>t'},
-					org_agenda_set_tags = { '<prefix>g'},
+					org_todo = { 'cit', '<prefix>t' },
+					org_agenda_set_tags = { '<prefix>g' },
 					-- org_agenda_set_tags = false,
 					org_time_stamp = { '<prefix>i.', '<prefix>d' },
 					org_change_date = { 'cid', '<prefix>D' },
@@ -121,7 +121,7 @@ return {
 							-- show_clock_report = true, -- Doesn't work, use 'R' key instead
 							-- org_agenda_skip_scheduled_if_done = false, -- Doesn't work, use match instead (if not on agenda type)
 							-- org_agenda_skip_deadline_if_done = false, -- Doesn't work, use match instead (if not on agenda type)
-							org_agenda_sorting_strategy = { 'todo-state-up' , 'priority-down', 'time-up', 'category-up' },
+							org_agenda_sorting_strategy = { 'todo-state-up', 'priority-down', 'time-up', 'category-up' },
 						},
 						{
 							type = 'agenda',
@@ -163,13 +163,13 @@ return {
 		-- Completion
 		require('cmp').setup({
 			sources = {
-			  { name = 'orgmode' }
+				{ name = 'orgmode' }
 			}
 		})
 		-- Telescope
 		require('telescope').setup()
 		require('telescope').load_extension('orgmode')
-		
+
 		-- Global key bindings
 		vim.keymap.set('n', '<leader>a', function()
 			-- org.agenda:agenda({ org_agenda_start_day = '-3d', show_clock_report = true })
@@ -180,7 +180,8 @@ return {
 			-- Open custom agenda
 			vim.cmd('Org agenda o')
 		end)
-		vim.keymap.set('n', '<leader>fo', require('telescope').extensions.orgmode.search_headings, { desc = 'orgmode search headings' })
+		vim.keymap.set('n', '<leader>fo', require('telescope').extensions.orgmode.search_headings,
+			{ desc = 'orgmode search headings' })
 
 		-- Custom org colors
 		vim.api.nvim_set_hl(0, '@org.headline.level1', { link = 'markdownH1' })
@@ -227,10 +228,10 @@ return {
 		EventManager.listen(EventManager.event.TodoChanged, function(event)
 			---@cast event OrgTodoChangedEvent
 			if event.headline then
-				local current_todo, _, type = event.headline:get_todo()
+				local current_todo, _, _ = event.headline:get_todo()
 				local old_todo_state = event.old_todo_state
 				local now = Date.now()
-	
+
 				-- Manage the transition from headline to TODO headline or viceversa
 				if current_todo == nil then
 					current_todo = "None"
@@ -244,11 +245,11 @@ return {
 				})
 			end
 		end)
-
 	end,
 
 	-- init = function()
-		-- local org = require('orgmode')
-		-- org.agenda:agenda({ show_clock_report = true })
+	-- local org = require('orgmode')
+	-- org.agenda:agenda({ show_clock_report = true })
 	-- end,
 }
+
