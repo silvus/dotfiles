@@ -1,6 +1,5 @@
 {
   pkgs,
-  config,
   lib,
   ...
 }:
@@ -218,7 +217,7 @@ in
           name = "vm";
           outputs = [
             {
-              criteria = "VM";
+              criteria = "$VM";
             }
           ];
         };
@@ -250,3 +249,4 @@ in
   };
 
 }
+
