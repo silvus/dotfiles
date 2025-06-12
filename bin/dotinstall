@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+"""
+Setup dotfiles dependencies
+"""
+
+import argparse
+import sys
+import socket
+import shutil
+import logging
+import subprocess
+from pathlib import Path
+
+DEBUG = False
+
+# Logs
+logging.basicConfig(
+    stream=sys.stdout, level=logging.INFO, format="[%(levelname)s] %(message)s"
+)
+logging.addLevelName(
+    logging.DEBUG, "\033[0;34m%s\033[1;0m" % logging.getLevelName(logging.DEBUG)
+)  # Blue
+logging.addLevelName(
+    logging.INFO, "\033[0;32m%s\033[1;0m" % logging.getLevelName(logging.INFO)
+)  # Green
+logging.addLevelName(
+    logging.WARNING, "\033[0;33m%s\033[1;0m" % logging.getLevelName(logging.WARNING)
+)  # Yellow
+logging.addLevelName(
+    logging.ERROR, "\033[0;31m%s\033[1;0m" % logging.getLevelName(logging.ERROR)
+)  # Red
+
+log = logging.getLogger("dotinstall")
+
+
+def check_network():
+    """
+    Return False if Github isn't reachable
+    """
+    # Github access
+    try:
+        # DNS listening
+        host = socket.gethostbyname("github.com")
+        # Host is actually reachable
+        socket.create_connection((host, 80), 2)
+        return True
+    except (socket.gaierror, socket.timeout, OSError) as e:
+        log.error(f"Github can't be reached, no update: {e}")
+
+    return False
+
+
+def is_debian():
+    try:
+        with open("/etc/os-release") as f:
+            for line in f:
+                if line.startswith("ID="):
+                    os_id = line.strip().split("=")[1].strip('"').lower()
+                    return os_id == "debian"
+    except FileNotFoundError:
+        pass
+
+    try:
+        with open("/etc/debian_version") as f:
+            return True
+    except FileNotFoundError:
+        pass
+    return False
+
+
+def is_nixos():
+    try:
+        with open("/etc/os-release") as f:
+            for line in f:
+                if line.startswith("ID="):
+                    os_id = line.strip().split("=")[1].strip('"').lower()
+                    return os_id == "nixos"
+    except FileNotFoundError:
+        pass
+    return False
+
+
+def has_nix():
+    return shutil.which("nix") is not None
+
+
+def launch():
+    # Requirements
+    if not check_network():
+        sys.exit(2)
+
+    log.info("Dotinstall")
+
+    # Debian
+    if is_debian():
+        log.info("Upgrade apt")
+        subprocess.run("sudo apt update", shell=True, check=True)
+        subprocess.run("sudo apt full-upgrade", shell=True, check=True)
+
+        # Nix
+        if has_nix():
+            log.info("Upgrade Nix channel")
+            subprocess.run("nix-channel --update", shell=True, check=True)
+            log.info("Upgrade Nix flake")
+            subprocess.run(
+                "nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:{}/.dotfiles/nixos".format(
+                    Path.home()
+                ),
+                shell=True,
+                check=True,
+            )
+            log.info("Upgrade Nix home-manager")
+            subprocess.run(
+                "home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:{}/.dotfiles/nixos#silvus".format(
+                    Path.home()
+                ),
+                shell=True,
+                check=True,
+            )
+            log.info("Upgrade Nix collect garbage")
+            subprocess.run(
+                "nix-collect-garbage --delete-older-than 14d --quiet",
+                shell=True,
+                check=True,
+            )
+
+    # Nixos
+    elif is_nixos():
+        log.info("Upgrade NixOS channel")
+        subprocess.run("nix-channel --update", shell=True, check=True)
+        log.info("Upgrade NixOS rebuild")
+        subprocess.run(
+            "sudo nixos-rebuild switch --flake path:{}/.dotfiles/nixos --upgrade".format(
+                Path.home()
+            ),
+            shell=True,
+            check=True,
+        )
+        log.info("Upgrade NixOS collect garbage")
+        subprocess.run(
+            "sudo nix-collect-garbage --delete-older-than 14d --quiet",
+            shell=True,
+            check=True,
+        )
+
+    else:
+        log.error("OS not detected")
+
+
+def init_cli_arg():
+    parser = argparse.ArgumentParser(prog="dotinstall")
+
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="Debug flag", default=DEBUG
+    )
+
+    return parser.parse_args()
+
+
+def main():
+    global DEBUG
+
+    # Parse args
+    args = init_cli_arg()
+    DEBUG = args.debug
+
+    log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+
+    try:
+        log.debug(args)
+
+        launch()
+
+    except KeyboardInterrupt:
+        log.warning("Aborting...")
+        sys.exit(1)
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
