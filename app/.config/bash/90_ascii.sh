@@ -6,9 +6,9 @@ __asciiart() {
 	local ARCH=$(uname -m)
 	local KERNEL=$(uname -r)
 	local HOST=$(hostname -s)
-	local IP_LOCAL=$(hostname  -I | cut -f1 -d' ')
+	local IP_LOCAL=$(ip -4 -o addr show scope global | awk '{print $4}' | cut -d/ -f1 | head -n1)
 	local SHELL=$(ps -p $$ | awk '$1 != "PID" {print $(NF)}' | tr -d '()')
-	local UPTIME=$(uptime -p | sed 's/[^ _-]*/\u&/g')
+	local UPTIME=$(awk '{printf "%d hours, %d minutes\n", $1/3600, ($1%3600)/60}' /proc/uptime)
 	local DISKSPACE=$(df --output=pcent / | sed -nr '/[[:digit:]]/{s/[[:space:]]+([[:digit:]]+)%/\1/;p}')
 
 	# Colors
@@ -32,3 +32,4 @@ __asciiart() {
 }
 
 __asciiart
+
