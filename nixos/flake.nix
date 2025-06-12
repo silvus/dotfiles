@@ -61,14 +61,12 @@
             # home-manager.users.silvus = import ./home.nix;
             home-manager.users.silvus = {
               imports = [
-                ./packages/fish.nix
                 ./packages/theme.nix
-                ./packages/git.nix
-                ./packages/lazygit.nix
-                ./packages/vscodium.nix
+                ./packages/dev.nix
+
                 ./packages/sway.nix
-                #./packages/hyprland.nix
-                #./packages/waybar.nix
+                ./packages/swaync.nix
+                ./packages/waybar.nix
               ];
 
               # Fix 'command not found' database broken
@@ -112,18 +110,12 @@
             # home-manager.users.silvus = import ./home.nix;
             home-manager.users.silvus = {
               imports = [
-                ./packages/fish.nix
                 ./packages/theme.nix
-                ./packages/git.nix
-                ./packages/lazygit.nix
-                ./packages/vscodium.nix
+                ./packages/dev.nix
+
                 ./packages/sway.nix
                 ./packages/swaync.nix
                 ./packages/waybar.nix
-
-                # ./packages/river.nix
-                #./packages/hyprland.nix
-                #./packages/waybar.nix
               ];
               home.stateVersion = "25.05"; # Please read the comment before changing.
             };

@@ -21,6 +21,7 @@
     nil
     # nix formatter
     nixfmt-rfc-style
+
   ];
 
 }

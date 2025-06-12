@@ -76,6 +76,8 @@
     playerctl
     rxvt-unicode
     wezterm
+    drawio
+    lazygit
 
     dconf
     # grim

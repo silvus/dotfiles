@@ -149,7 +149,7 @@ in
       # ];
 
       # Disable bar
-      bars = [];
+      bars = [ ];
 
       focus.followMouse = false;
       startup = [
@@ -199,34 +199,54 @@ in
   ];
 
   # autorandr like
-  # services.kanshi = {
-  #   enable = true;
+  services.kanshi = {
+    enable = true;
 
-  #   profiles = {
-  #     # home_office = {
-  #     #   outputs = [
-  #     #     {
-  #     #       criteria = "DP-2";
-  #     #       scale = 2.0;
-  #     #       status = "enable";
-  #     #       position = "0,0";
-  #     #     }
-  #     #     {
-  #     #       criteria = "DP-1";
-  #     #       scale = 2.0;
-  #     #       status = "enable";
-  #     #       position = "1920,0";
-  #     #     }
-  #     #     {
-  #     #       criteria = "DP-3";
-  #     #       scale = 2.0;
-  #     #       status = "enable";
-  #     #       position = "3840,0";
-  #     #     }
-  #     #   ];
-  #     # };
-  #   };
-  # };
+    # swaymsg -t get_outputs
+    settings = [
+      {
+        output = {
+          criteria = "Red Hat, Inc. QEMU Monitor Unknown";
+          status = "enable";
+          mode = "1920x1080@60";
+          scale = 1.0;
+          alias = "VM";
+        };
+      }
+      {
+        profile = {
+          name = "vm";
+          outputs = [
+            {
+              criteria = "VM";
+            }
+          ];
+        };
+      }
+    ];
+
+    # home_office = {
+    #   outputs = [
+    #     {
+    #       criteria = "DP-2";
+    #       scale = 2.0;
+    #       status = "enable";
+    #       position = "0,0";
+    #     }
+    #     {
+    #       criteria = "DP-1";
+    #       scale = 2.0;
+    #       status = "enable";
+    #       position = "1920,0";
+    #     }
+    #     {
+    #       criteria = "DP-3";
+    #       scale = 2.0;
+    #       status = "enable";
+    #       position = "3840,0";
+    #     }
+    #   ];
+    # };
+  };
 
 }
-
