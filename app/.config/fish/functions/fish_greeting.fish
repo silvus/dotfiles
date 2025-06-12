@@ -17,7 +17,7 @@ function fish_logo \
 
     echo '                 '$o'___
   ___======____='$m'-'$i'-'$m'-='$o')                     '$o$USER'@'(hostname -s)$o'
-/T            \_'$i'--='$m'=='$o')            '$m'IP      '$i(hostname  -I | cut -f1 -d' ')$o'
+/T            \_'$i'--='$m'=='$o')            '$m'IP      '$i(ip -4 -o addr show scope global | awk '{print $4}' | cut -d/ -f1 | head -n1)$o'
 '$mouth' \ '$m'('$i$eye$m')   '$o'\~    \_'$i'-='$m'='$o')            '$m'Uptime  '$i(uptime -p | sed 's/[^ _-]*/\u&/g')$o'
  \      / )J'$m'~~    '$o'\\'$i'-='$o')            '$m'Kernel  '$i(uname -s) (uname -m) (uname -r)$o'
   \\\\___/  )JJ'$m'~'$i'~~   '$o'\)             '$m'Disk /  '$i(df --output=pcent  / | sed -nr '/[[:digit:]]/{s/[[:space:]]+([[:digit:]]+)%/\1/;p}')'%'$o'
@@ -35,3 +35,4 @@ end
 function fish_greeting
 	fish_logo
 end
+

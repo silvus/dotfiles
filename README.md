@@ -11,6 +11,6 @@ curl -sS https://raw.githubusercontent.com/silvus/dotfiles/master/bin/dotfiles |
 
 Use this command to define `fish` has a default shell:
 ```sh
-chsh -s $(which fish)
+chsh -s $(command -v fish)
 ```
 

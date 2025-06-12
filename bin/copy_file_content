@@ -3,7 +3,7 @@
 # Add to clipboard
 # -----------------------------------------------------------------------------
 
-if [[ -x "$(which xclip)" ]]; then
+if [[ -x "$(command -v xclip)" ]]; then
 	xclip -selection clipboard -in "$@"
 else
 	echo "Please install xclip"
@@ -11,3 +11,4 @@ else
 fi
 
 exit 0
+

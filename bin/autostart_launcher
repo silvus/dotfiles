@@ -14,7 +14,7 @@ function run {
 # Auto start progs
 # ------------------------------------------------------
 # Network applet
-if [[ -x $(which nm-applet) ]]; then
+if [[ -x $(command -v nm-applet) ]]; then
 	run nm-applet
 fi
 
@@ -27,7 +27,7 @@ fi
 # fi
 
 # Batterie management
-if [[ -x $(which lxqt-powermanagement) ]]; then
+if [[ -x $(command -v lxqt-powermanagement) ]]; then
 	run lxqt-powermanagement
 fi
 
@@ -41,3 +41,4 @@ fi
 if [[ -f "$HOME/.dotfiles/custom/autostart_launcher" ]]; then
 	source "$HOME/.dotfiles/custom/autostart_launcher"
 fi
+

@@ -6,11 +6,11 @@
 TDROP="$SILVUSDOTFILES/bin/tdrop"
 TMUXDEV="$SILVUSDOTFILES/bin/tmuxdev"
 
-if [[ -x $(which wezterm) ]]; then
+if [[ -x $(command -v wezterm) ]]; then
 	# Inspired from https://github.com/wez/wezterm/issues/1751#issuecomment-1250314820
 	# Tdrop timeout with other classname, not sure why but force "wezterm" for now.
 	WAYLAND_DISPLAY=no "$TDROP" -ma -h '100%' --class "wezterm" -f "start --class wezterm -- $TMUXDEV" wezterm
-elif [[ -x $(which urxvt) ]]; then
+elif [[ -x $(command -v urxvt) ]]; then
 	"$TDROP" -ma -h '100%' --class "tdropterm" -f "-name tdropterm -title terminal -e $TMUXDEV" urxvt
 else
 	echo "No compatible terminal emulator found" 1>&2;
@@ -18,3 +18,4 @@ else
 fi
 
 exit 0
+
