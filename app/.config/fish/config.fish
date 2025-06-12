@@ -50,8 +50,8 @@ alias ......='cd ../../../../../'
 alias l='env LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 
 function mkcd --description 'Create a folder and go into it'
-  mkdir -p "$argv"
-  cd "$argv"
+    mkdir -p "$argv"
+    cd "$argv"
 end
 
 alias e='$EDITOR'
@@ -62,9 +62,13 @@ alias copy='xclip -selection clipboard'
 alias copytoclipboard='xclip -selection clipboard'
 alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
 alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option \"grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e\""
-alias bat='batcat'
 alias fd='fdfind'
 alias lz='lazygit'
+
+if type -q batcat
+    alias bat='batcat'
+end
+
 
 alias tree1="tree --dirsfirst -ChFLQ 1"
 alias tree2="tree --dirsfirst -ChFLQ 2"
