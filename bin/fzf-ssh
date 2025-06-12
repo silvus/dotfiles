@@ -6,7 +6,7 @@
 
 set -e -o pipefail
 
-function print_usage() { 
+function print_usage() {
 	echo "Usage: $0 [-m]" 1>&2;
 	echo
 	echo "Read SSH hosts from ~/.ssh/config"
@@ -35,7 +35,7 @@ function fzf-ssh () {
 HOME="/home/$(whoami)"
 
 # Default options
-SSH_PATH="$(which ssh)"
+SSH_PATH="$(command -v ssh)"
 SSH_LABEL="SSH"
 SSH_COMMAND=""
 
@@ -58,3 +58,4 @@ done
 fzf-ssh
 
 exit 0
+

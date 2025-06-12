@@ -14,13 +14,14 @@ if echo "$1" | cut -d'/' -f3 | grep -q -e youtube.com$ -e dailymotion.com -e vim
 else
 	if [[ -n "$DISPLAY" ]]; then
 		# Browser Desktop
-		if [[ -x $(which firefox) ]]; then
-			"$(which firefox)" "$1"
+		if [[ -x $(command -v firefox) ]]; then
+			"$(command -v firefox)" "$1"
 		else
 			"$BROWSER" "$1"
 		fi
 	else
 		# Browser Server
-		"$(which elinks)" "$1"
+		"$(command -v elinks)" "$1"
 	fi
 fi
+

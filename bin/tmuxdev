@@ -19,7 +19,7 @@ _launch_tmux() {
 		tmux new-session -s "${_TMUX_SESSION_NAME}" -d
 
 		# Remind stuff
-		# if [[ -x "$(which remind 2>/dev/null)" ]]; then
+		# if [[ -x "$(command -v remind 2>/dev/null)" ]]; then
 		# 	if [[ -x "/data/doc/.bin/remindnotif" ]]; then
 		# 		tmux split-window -h -t "${_TMUX_SESSION_NAME}" "/data/doc/.bin/remindnotif"
 		# 		tmux resize-pane -t "${_TMUX_SESSION_NAME}" -x 85
@@ -54,9 +54,10 @@ _launch_tmux() {
 }
 
 # Check if tmux is installed
-if [[ -x "$(which tmux 2>/dev/null)" ]]; then
+if [[ -x "$(command -v tmux 2>/dev/null)" ]]; then
 	_launch_tmux
 else
 	echo "Tmux is not installed"
 	exit 1
 fi
+

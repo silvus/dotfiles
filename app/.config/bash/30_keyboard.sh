@@ -5,7 +5,7 @@ stty -ixon
 stty werase undef
 
 # Set keyboard repeat delay and rate
-if [[ -x "$(which xset)" ]]; then
+if [[ -x "$(command -v xset)" ]]; then
 	# If X is running
 	if xset q &>/dev/null; then
 		# Default: xset r rate 660 25
@@ -15,3 +15,4 @@ if [[ -x "$(which xset)" ]]; then
 		xset b off
 	fi
 fi
+

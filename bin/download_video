@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # Check if yt-dlp is installed
-if [[ -x "$(which yt-dlp)" ]]; then
+if [[ -x "$(command -v yt-dlp)" ]]; then
 	yt-dlp -f 'bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]' --ignore-errors --output "%(artist,uploader)s - %(track,title)s.%(ext)s" "$@"
 	exit 0
 else
 	echo "yt-dlp is not installed"
 	exit 1
 fi
+

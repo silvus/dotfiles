@@ -3,7 +3,8 @@
 # Set DISPLAY to :0 if not already set
 export DISPLAY="${DISPLAY:-:0}"
 
-MPV_EXEC="$(which mpv) --vo=gpu,drm"
+MPV_EXEC="$(command -v mpv) --vo=gpu,drm"
 MPV_FORMAT='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]'
 
 $MPV_EXEC --ytdl-format="$MPV_FORMAT" "$@"
+

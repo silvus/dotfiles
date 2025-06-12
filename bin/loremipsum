@@ -4,14 +4,15 @@
 # ----------------------------
 
 # Check requirements
-if [[ ! -x "$(which lorem 2>/dev/null)" ]]; then
+if [[ ! -x "$(command -v lorem 2>/dev/null)" ]]; then
 	echo "lorem script is not installed."
 	exit 1
 fi
 
-if [[ ! -x "$(which xclip 2>/dev/null)" ]]; then
+if [[ ! -x "$(command -v xclip 2>/dev/null)" ]]; then
 	echo "xclip is not installed."
 	exit 1
 fi
 
 lorem --randomize --words 50 --cols 2000 | xclip -selection clipboard
+

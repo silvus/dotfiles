@@ -155,7 +155,12 @@ config.plugins.formatter = {
 	format_on_save = false,
 }
 formatter.config("ruff", {
-	file_patterns = { "%.py$", '%/dotfiles' },
+	file_patterns = {
+		"%.py$",
+		'%/dotfiles',
+		'%/dotinstall',
+		'%/tmux_sessionizer',
+	},
 })
 formatter.config("stylua", {
 	path = os.getenv("HOME") .. "/.nix-profile/bin/stylua",
@@ -218,6 +223,7 @@ lspconfig.pyright.setup(common.merge({
 	file_patterns = {
 		"%.py$",
 		'%/dotfiles',
+		'%/dotinstall',
 		'%/tmux_sessionizer',
 	},
 	command = {

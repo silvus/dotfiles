@@ -68,7 +68,7 @@ fi
 
 # Man
 # -----------------------------------------------------------------------------
-if [[ -x "$(which most)" ]]; then
+if [[ -x "$(command -v most)" ]]; then
 	# Color pager
 	export MANPAGER="most";
 else
@@ -128,27 +128,27 @@ fi
 # Defaults Programs
 # -----------------------------------------------------------------------------
 # Editor
-if [[ -x "$(which nvim)" ]]; then
-	export EDITOR="$(which nvim)"
-elif [[ -x "$(which vim)" ]]; then
-	export EDITOR="$(which vim)"
+if [[ -x "$(command -v nvim)" ]]; then
+	export EDITOR="$(command -v nvim)"
+elif [[ -x "$(command -v vim)" ]]; then
+	export EDITOR="$(command -v vim)"
 else
-	export EDITOR="$(which vi)"
+	export EDITOR="$(command -v vi)"
 fi
 
 # Browser
 if [[ -n "$DISPLAY" ]]; then
-	if [[ -x "$(which firefox)" ]]; then
-		export BROWSER="$(which firefox)"
-	elif [[ -x "$(which chromium)" ]]; then
-		export BROWSER="$(which chromium)"
+	if [[ -x "$(command -v firefox)" ]]; then
+		export BROWSER="$(command -v firefox)"
+	elif [[ -x "$(command -v chromium)" ]]; then
+		export BROWSER="$(command -v chromium)"
 	fi
-elif [[ -x "$(which elinks)" ]]; then
-	export BROWSER="$(which elinks)"
-elif [[ -x "$(which links)" ]]; then
-	export BROWSER="$(which links)"
-elif [[ -x "$(which w3m)" ]]; then
-	export BROWSER="$(which w3m)"
+elif [[ -x "$(command -v elinks)" ]]; then
+	export BROWSER="$(command -v elinks)"
+elif [[ -x "$(command -v links)" ]]; then
+	export BROWSER="$(command -v links)"
+elif [[ -x "$(command -v w3m)" ]]; then
+	export BROWSER="$(command -v w3m)"
 fi
 
 
@@ -178,7 +178,7 @@ fi
 # Auto start X on tty1
 # Only if startx is installed, on first tty and if CUSTOM_AUTO_START_X is set to 1 (default but can be altered in $SILVUSDOTFILES_CUSTOM/env.sh)
 # ------------------------------------------------------
-if [[ -x "$(which startx)" ]] && [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]] && [[ "$CUSTOM_AUTO_START_X" -eq 1 ]]; then
+if [[ -x "$(command -v startx)" ]] && [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]] && [[ "$CUSTOM_AUTO_START_X" -eq 1 ]]; then
 	# Auto start x
 	exec startx
 fi

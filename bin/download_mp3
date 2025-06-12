@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # Check if yt-dlp is installed
-if [[ -x "$(which yt-dlp)" ]]; then
+if [[ -x "$(command -v yt-dlp)" ]]; then
 	yt-dlp --ignore-errors --extract-audio --audio-format mp3 --output "%(artist,uploader)s - %(track,title)s.%(ext)s" "$@"
 	exit 0
 else
 	echo "yt-dlp is not installed"
 	exit 1
 fi
+
