@@ -303,9 +303,10 @@ keys.global = awful.util.table.join(
 		awful.spawn("thunar")
 	end, { description = "launch Thunar", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "e", function()
-		focus_or_start_client('VSCodium', 'codium')
+		-- focus_or_start_client('VSCodium', 'codium')
+		focus_or_start_client('pragtical', 'pragtical')
 		local screen = awful.screen.focused()
-		local tag_next = screen.tags[3]
+		local tag_next = screen.tags[2]
 		if tag_next then
 			tag_next:view_only()
 		end
