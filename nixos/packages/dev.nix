@@ -22,6 +22,10 @@
     # nix formatter
     nixfmt-rfc-style
 
+    # bash lsp
+    bash-language-server
+    # bash formatter
+    shfmt
   ];
 
 }

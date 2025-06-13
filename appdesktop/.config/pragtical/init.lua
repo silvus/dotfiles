@@ -154,6 +154,18 @@ config.plugins.formatter = {
 	-- TODO: create a 'save without format' command and enable format_on_save
 	format_on_save = false,
 }
+
+-- LSP
+config.plugins.lsp = {
+	mouse_hover = false,
+	-- show_diagnostics = false
+}
+formatter.config("clangformat", {
+	-- Disable this formater (used on invalid files)
+	enabled = false,
+})
+
+-- Python
 formatter.config("ruff", {
 	file_patterns = {
 		"%.py$",
@@ -162,49 +174,18 @@ formatter.config("ruff", {
 		'%/tmux_sessionizer',
 	},
 })
-formatter.config("stylua", {
-	path = os.getenv("HOME") .. "/.nix-profile/bin/stylua",
-})
-formatter.config("clangformat", {
-	-- Disable this formater (used on invalid files)
-	enabled = false,
-})
-formatter.add_formatter({
-	name = "nixfmt",
-	label = "nixfmt",
-	file_patterns = { "%.nix$" },
-	command = { "nixfmt", "$ARGS", "$FILENAME" },
-	path = os.getenv("HOME") .. "/.nix-profile/bin/nixfmt",
-})
-
--- LSP
-config.plugins.lsp = {
-	mouse_hover = false,
-	-- show_diagnostics = false
-}
-
-lsp.add_server {
-	-- Name of server
-	name = "nil",
-	-- Main language
-	language = "nix",
-	-- If no pattern matches, the file extension is used instead.
-	-- File types that are supported by this server
-	file_patterns = { "%.nix$" },
-	-- LSP command and optional arguments
-	command = { os.getenv("HOME") .. "/.nix-profile/bin/nil", },
-	-- Set by default to 16 should only be modified if having issues with a server
-	-- requests_per_second = 16,
-	-- True to debug the lsp client when developing it
-	-- verbose = false
-	-- settings = {
-	-- 	['nil'] = {
-	-- 		formatting = {
-	-- 			command = { os.getenv("HOME") .. "/.nix-profile/bin/nixfmt" },
-	-- 		}
-	-- 	}
-	-- },
-}
+lspconfig.pyright.setup(common.merge({
+	file_patterns = {
+		"%.py$",
+		'%/dotfiles',
+		'%/dotinstall',
+		'%/tmux_sessionizer',
+	},
+	command = {
+		os.getenv("HOME") .. "/.nix-profile/bin/pyright-langserver"
+	},
+	-- verbose = true,
+}, config.plugins.lsp_python or {}))
 -- lsp.add_server {
 -- 	-- Name of server
 -- 	name = "ty",
@@ -219,23 +200,72 @@ lsp.add_server {
 -- 	 -- True to debug the lsp client when developing it
 --   verbose = true,
 -- }
-lspconfig.pyright.setup(common.merge({
+
+-- Shell
+formatter.config("shformat", {
+	path = os.getenv("HOME") .. "/.nix-profile/bin/shfmt",
 	file_patterns = {
-		"%.py$",
-		'%/dotfiles',
-		'%/dotinstall',
-		'%/tmux_sessionizer',
+		"%.sh$",
+		"%.bash$",
+		"%/.bashrc",
+		"%/install-pragtical",
 	},
+})
+lspconfig.bashls.setup(common.merge({
 	command = {
-		os.getenv("HOME") .. "/.nix-profile/bin/pyright-langserver"
+		os.getenv("HOME") .. "/.nix-profile/bin/bash-language-server", "start"
 	},
-	verbose = true,
-}, config.plugins.lsp_python or {}))
+	file_patterns = {
+		"%.sh$",
+		"%.bash$",
+		"%/.bashrc",
+		"%/install-pragtical",
+	},
+	verbose = true
+}, config.plugins.bashls or {}))
+
+-- Lua
+formatter.config("stylua", {
+	path = os.getenv("HOME") .. "/.nix-profile/bin/stylua",
+})
 lspconfig.sumneko_lua.setup(common.merge({
 	command = {
 		os.getenv("HOME") .. "/.nix-profile/bin/lua-language-server"
 	}
 }, config.plugins.lsp_lua or {}))
+
+-- Nix
+formatter.add_formatter({
+	name = "nixfmt",
+	label = "nixfmt",
+	file_patterns = { "%.nix$" },
+	command = { "nixfmt", "$ARGS", "$FILENAME" },
+	path = os.getenv("HOME") .. "/.nix-profile/bin/nixfmt",
+})
+lsp.add_server {
+	-- Name of server
+	name = "nil",
+	-- Main language
+	language = "Nix",
+	-- If no pattern matches, the file extension is used instead.
+	-- File types that are supported by this server
+	file_patterns = { "%.nix$" },
+	-- LSP command and optional arguments
+	command = { os.getenv("HOME") .. "/.nix-profile/bin/nil", },
+	-- Set by default to 16 should only be modified if having issues with a server
+	-- requests_per_second = 16,
+	-- True to debug the lsp client when developing it
+	-- verbose = true,
+	settings = {
+		['nil'] = {
+			formatting = {
+				command = { os.getenv("HOME") .. "/.nix-profile/bin/nixfmt" },
+			}
+		}
+	},
+}
+
+-- Rust
 lspconfig.rust_analyzer.setup(common.merge({
 	command = {
 		os.getenv("HOME") .. "/.nix-profile/bin/rust-analyzer",
