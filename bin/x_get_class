@@ -14,31 +14,63 @@
 
 PROGNAME=`basename "$0"`
 
-# Check for xwininfo and xprop
-for cmd in xwininfo xprop; do
-    if ! command -v $cmd > /dev/null 2>&1; then
-        echo "$PROGNAME: $cmd: command not found" >&2
-        exit 1
-    fi
-done
+# Wayland version (https://gist.github.com/crispyricepc/f313386043395ff06570e02af2d9a8e0)
+# Dependencies:
+# - swaymsg
+# - jq
+# - slurp
+# - awk
+if command -v swaymsg > /dev/null 2>&1; then
 
-match_int='[0-9][0-9]*'
-match_string='".*"'
-match_qstring='"[^"\\]*(\\.[^"\\]*)*"' # NOTE: Adds 1 backreference
+    # Get the sway tree and store the output
+    SWAY_TREE=$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?)')
 
-{
-    # Run xwininfo, get window id
-    window_id=`xwininfo -int | sed -nre "s/^xwininfo: Window id: ($match_int) .*$/\1/p"`
-    echo "id=$window_id"
+    # Invoke slurp to let the user select a window
+    SELECTION=$(echo $SWAY_TREE | jq -r '.rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp -r)
 
-    # Run xprop, transform its output into i3 criteria. Handle fallback to
-    # WM_NAME when _NET_WM_NAME isn't set
-    xprop -id $window_id |
-        sed -nr \
-            -e "s/^WM_CLASS\(STRING\) = ($match_qstring), ($match_qstring)$/instance=\1\nclass=\3/p" \
-            -e "s/^WM_WINDOW_ROLE\(STRING\) = ($match_qstring)$/window_role=\1/p" \
-            -e "/^WM_NAME\(STRING\) = ($match_string)$/{s//title=\1/; h}" \
-            -e "/^_NET_WM_NAME\(UTF8_STRING\) = ($match_qstring)$/{s//title=\1/; h}" \
-            -e '${g; p}'
-} | sort | tr "\n" " " | sed -r 's/^(.*) $/[\1]\n/'
+    # Extract the X, Y, Width, and Height from the selection
+    X=$(echo $SELECTION | awk -F'[, x]' '{print $1}')
+    Y=$(echo $SELECTION | awk -F'[, x]' '{print $2}')
+    W=$(echo $SELECTION | awk -F'[, x]' '{print $3}')
+    H=$(echo $SELECTION | awk -F'[, x]' '{print $4}')
+
+    # Find the window matching the selection
+    echo $SWAY_TREE | jq -r --argjson x $X --argjson y $Y --argjson w $W --argjson h $H \
+    '. | select(.rect.x == $x and .rect.y == $y and .rect.width == $w and .rect.height == $h)'
+
+    exit 0
+
+else
+
+    # X version
+
+    # Check for xwininfo and xprop
+    for cmd in xwininfo xprop; do
+        if ! command -v $cmd > /dev/null 2>&1; then
+            echo "$PROGNAME: $cmd: command not found" >&2
+            exit 1
+        fi
+    done
+
+    match_int='[0-9][0-9]*'
+    match_string='".*"'
+    match_qstring='"[^"\\]*(\\.[^"\\]*)*"' # NOTE: Adds 1 backreference
+
+    {
+        # Run xwininfo, get window id
+        window_id=`xwininfo -int | sed -nre "s/^xwininfo: Window id: ($match_int) .*$/\1/p"`
+        echo "id=$window_id"
+
+        # Run xprop, transform its output into i3 criteria. Handle fallback to
+        # WM_NAME when _NET_WM_NAME isn't set
+        xprop -id $window_id |
+            sed -nr \
+                -e "s/^WM_CLASS\(STRING\) = ($match_qstring), ($match_qstring)$/instance=\1\nclass=\3/p" \
+                -e "s/^WM_WINDOW_ROLE\(STRING\) = ($match_qstring)$/window_role=\1/p" \
+                -e "/^WM_NAME\(STRING\) = ($match_string)$/{s//title=\1/; h}" \
+                -e "/^_NET_WM_NAME\(UTF8_STRING\) = ($match_qstring)$/{s//title=\1/; h}" \
+                -e '${g; p}'
+    } | sort | tr "\n" " " | sed -r 's/^(.*) $/[\1]\n/'
+  exit 0
+fi
 
