@@ -208,7 +208,7 @@ podcast-auto-enqueue yes
 
 ## Specifies the directory where podbeuter shall download the files to. Optionally, the placeholders "%n" (for the podcast feed’s name) and "%h" (for the podcast feed’s hostname) can be used to place downloads in a directory structure.
 # download-path ~/
-download-path "/data/media/music/podcasts/%n"
+download-path "/data/podcasts/%n"
 
 ## Specifies how podboat would name the files it downloads (see also download-path). See "Format Strings" section of Newsboat manual for details on available formats.
 # download-filename-format "%?u?%u&%Y-%b-%d-%H%M%S.unknown?"
@@ -270,3 +270,4 @@ bind-key RIGHT open tagselection # Open the currently selected tag
 # Podcast
 # bind-key ENTER pb-download podbeuter
 # bind-key p pb-play podbeuter
+

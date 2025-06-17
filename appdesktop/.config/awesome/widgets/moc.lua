@@ -45,7 +45,7 @@ customwidget.widgetbar = wibox.widget {
 
 -- second widget, current song and update bar and icon
 local moc = lain.widget.contrib.moc({
-	music_dir   = "/data/media/music",
+	music_dir   = "/data/music",
 	cover_size  = 50,
 	default_art = beautiful.music,
 	settings    = function()
@@ -68,10 +68,10 @@ local moc = lain.widget.contrib.moc({
 			else
 				-- Local file
 				widget:set_markup("<span color='#ffffff'>" ..
-				string.sub(moc_now.file:match("([^/]+)$"), 0, 30) .. "</span>")
+					string.sub(moc_now.file:match("([^/]+)$"), 0, 30) .. "</span>")
 				-- widget:set_markup("<span color='#ffffff'>" .. string.sub(moc_now.file:match( "([^/]+)$" ), 0 , 30) .. ' | ' .. moc_now.elapsed .. ' / ' .. moc_now.total .. "</span>")
 				customwidget.customtooltip:set_markup("<span color='#ffffff'>" ..
-				string.sub(moc_now.file:match("([^/]+)$"), 0, 30) .. "</span>")
+					string.sub(moc_now.file:match("([^/]+)$"), 0, 30) .. "</span>")
 
 				local time_pattern = "(%d+):(%d+)"
 				local totalminute, totalseconds = moc_now.total:match(time_pattern)
