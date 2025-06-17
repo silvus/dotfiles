@@ -161,6 +161,9 @@
               # draw plans
               drawio
 
+              # music
+              tauon
+
               # Fonts
               terminus_font
               nerd-fonts.dejavu-sans-mono
