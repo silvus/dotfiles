@@ -21,7 +21,7 @@
     "custom_sync_name": "{episode.sortdate}_{episode.title}",
     "custom_sync_name_enabled": true,
     "delete_played_episodes": false,
-    "device_folder": "/data/media/podcasts",
+    "device_folder": "/data/podcasts",
     "device_type": "filesystem",
     "max_filename_length": 120,
     "one_folder_per_podcast": true,
@@ -188,3 +188,4 @@
     "preferred_hls_fmt_ids": []
   }
 }
+

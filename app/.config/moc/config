@@ -69,7 +69,7 @@ ReadTags = yes
 #
 # Example:    MusicDir = "/home/joe/music"
 #
-MusicDir = "/data/media/music"
+MusicDir = "/data/music"
 
 # Start in the music directory by default?  If set to 'no', start
 # in the current directory by default.  A single directory on
@@ -203,7 +203,7 @@ Theme = dot_theme
 # Should MOC try to autoload the default lyrics file for an audio?  (The
 # default lyrics file is a text file with the same file name as the audio
 # file name with any trailing "extension" removed.)
-AutoLoadLyrics = no
+AutoLoadLyrics = yes
 
 # MOC directory (where pid file, socket and state files are stored).
 # You can use ~ at the beginning.
@@ -447,6 +447,10 @@ Keymap = keymap
 #             and the directory menu at the bottom.  Playlist will
 #             occupy 10 lines and the directory menu the rest.
 #
+Layout1 = directory(0,0,100%,100%):playlist(0,0,100%,100%)
+Layout2 = directory(0,0,50%,100%):playlist(50%,0,FILL,100%)
+Layout3 = ""
+
 #Layout1 = directory(0,0,50%,100%):playlist(50%,0,FILL,100%)
 #Layout2 = directory(0,0,100%,100%):playlist(0,0,100%,100%)
 #Layout3 = ""
@@ -653,3 +657,4 @@ PlaylistFullPaths = no
 # players usually behave.  (Note that this option previously took the
 # values 1 and 0; these are now deprecated in favour of 'yes' and 'no'.)
 #QueueNextSongReturn = yes
+

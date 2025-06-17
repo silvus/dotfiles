@@ -19,7 +19,7 @@ ncmpcpp_directory = ~/.config/ncmpcpp
 ## defaults to ~/.lyrics since other MPD clients
 ## (eg. ncmpc) also use that location.
 ##
-lyrics_directory = /data/media/music/.lyrics
+lyrics_directory = /data/music/.lyrics
 
 ##### connection settings #####
 mpd_host = localhost
@@ -28,7 +28,7 @@ mpd_connection_timeout = 5
 
 ## Needed for tag editor and file operations to work.
 ##
-mpd_music_dir = /data/media/music
+mpd_music_dir = /data/music
 
 mpd_crossfade_time = 5
 
@@ -570,3 +570,4 @@ visualizer_color = "cyan"
 # $7 - cyan
 # $8 - white
 # $9 - end of current color
+
