@@ -115,7 +115,7 @@ def x_is_installed():
     """
     Try to guess if x is installed
     """
-    return shutil.which("startx") or shutil.which("lightdm") or shutil.which("tuigreet")
+    return shutil.which("startx") or shutil.which("lightdm") or shutil.which("tuigreet") or shutil.which("Xwayland") or os.environ.get("XDG_SESSION_TYPE") == "wayland"
 
 
 def count_files(root_folder):
@@ -456,8 +456,6 @@ def launch(dotfilespath, restarted, root):
                 # Assure DISPLAY is set if launched from SSH
                 os.environ["DISPLAY"] = ":0"
                 exec_command(["xrdb", os.path.expanduser("~/.Xresources")])
-            else:
-                print_error("xrdb not found.")
 
         # Check if approot files are different
         approot_files = get_files_different_arbo(
