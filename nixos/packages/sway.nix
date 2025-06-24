@@ -152,7 +152,8 @@ in
 
       focus.followMouse = false;
       startup = [
-        { command = "ghostty --class=dropterm"; }
+        # class need to be a reverse domain address
+        { command = "ghostty --class=com.scratchpad.dropterm"; }
         # { command = "firefox"; }
         # { command = "codium"; }
         # https://github.com/Alexays/Waybar/issues/185#issuecomment-570340138
@@ -166,12 +167,17 @@ in
 
     # swaymsg -t get_tree
     extraConfig = ''
-      for_window [app_id="dropterm"] move to workspace 0
+      for_window [app_id="com.scratchpad.dropterm"] move to workspace 0
       for_window [app_id="firefox"] move to workspace 1
-      for_window [app_id="codium"] move to workspace 3
+      for_window [app_id="pragtical"] move to workspace 2
 
-      gaps inner 5
-      gaps outer 0
+      gaps inner 10
+      # Outer gaps are in addition to inner gaps
+      gaps outer -8
+      # gaps will only be enabled if a workspace has more than one child
+      smart_gaps on
+      # borders will only be enabled if the workspace has more than one visible child
+      smart_borders on
 
       # Set default border style for new tiled windows.
       default_border pixel 2
