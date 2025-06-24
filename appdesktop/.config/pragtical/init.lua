@@ -5,14 +5,14 @@
 -- this module will be loaded after everything else when the application starts
 -- it will be automatically reloaded when saved
 
-local core = require "core"
-local keymap = require "core.keymap"
-local config = require "core.config"
-local style = require "core.style"
-local common = require "core.common"
-local formatter = require "plugins.formatter"
-local lsp = require "plugins.lsp"
-local lspconfig = require "plugins.lsp.config"
+local core = require("core")
+local keymap = require("core.keymap")
+local config = require("core.config")
+local style = require("core.style")
+local common = require("core.common")
+local formatter = require("plugins.formatter")
+local lsp = require("plugins.lsp")
+local lspconfig = require("plugins.lsp.config")
 
 ------------------------------ Themes ----------------------------------------
 
@@ -20,7 +20,6 @@ local lspconfig = require "plugins.lsp.config"
 -- core.reload_module("colors.everforest")
 -- core.reload_module("colors.everblush")
 core.reload_module("colors.custom_everblush")
-
 
 --------------------------- Key bindings -------------------------------------
 
@@ -67,7 +66,6 @@ keymap.add({ ["alt+shift+up"] = "root:split-up" })
 keymap.add({ ["alt+shift+left"] = "root:split-left" })
 keymap.add({ ["alt+shift+right"] = "root:split-right" })
 
-
 ------------------------------- Fonts ----------------------------------------
 
 -- customize fonts:
@@ -98,8 +96,25 @@ keymap.add({ ["alt+shift+right"] = "root:split-right" })
 -- smoothing: true, false
 -- strikethrough: true, false
 
-style.code_font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 12 * SCALE)
-style.font = renderer.font.load("/usr/share/fonts/truetype/firacode/FiraCode-Regular.ttf", 11 * SCALE)
+local home = os.getenv("HOME")
+
+local function file_exists(path)
+	local f = io.open(path, "r")
+	if f then
+		f:close()
+		return true
+	end
+	return false
+end
+
+if file_exists("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf") then
+	style.code_font = renderer.font.load("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 12 * SCALE)
+	style.font = renderer.font.load("/usr/share/fonts/truetype/firacode/FiraCode-Regular.ttf", 11 * SCALE)
+else
+	-- No /usr/share/fonts in Nixos
+	style.code_font = renderer.font.load(home .. "/.local/share/fonts/dejavu/DejaVuSansMono.ttf", 12 * SCALE)
+	style.font = renderer.font.load(home .. "/.local/share/fonts/hack/Hack-Regular.ttf", 11 * SCALE)
+end
 
 ------------------------------ Plugins ----------------------------------------
 
@@ -112,33 +127,33 @@ style.font = renderer.font.load("/usr/share/fonts/truetype/firacode/FiraCode-Reg
 config.plugins.drawwhitespace = {
 	enabled = true,
 	show_middle = false,
-	show_trailing_error = false
+	show_trailing_error = false,
 }
 -- Trim whitespaces
 config.plugins.trimwhitespace = {
 	enabled = true,
-	trim_empty_end_lines = false
+	trim_empty_end_lines = false,
 }
 
 -- Disable ctrl+ mousewheel to zoom
 config.plugins.scale = {
-	use_mousewheel = false
+	use_mousewheel = false,
 }
 
 -- Format datetime inserted
 config.plugins.datetimestamps = {
-	format_datestamp = "%Y-%m-%d"
+	format_datestamp = "%Y-%m-%d",
 }
 
 -- Bracket matching style
 config.plugins.bracketmatch = {
 	style = "frame",
-	color_char = true
+	color_char = true,
 }
 
 -- Alert when file is changed
 config.plugins.autoreload = {
-	always_show_nagview = true
+	always_show_nagview = true,
 }
 
 -- Hide treeview on startup
@@ -169,20 +184,20 @@ formatter.config("clangformat", {
 formatter.config("ruff", {
 	file_patterns = {
 		"%.py$",
-		'%/dotfiles',
-		'%/dotinstall',
-		'%/tmux_sessionizer',
+		"%/dotfiles",
+		"%/dotinstall",
+		"%/tmux_sessionizer",
 	},
 })
 lspconfig.pyright.setup(common.merge({
 	file_patterns = {
 		"%.py$",
-		'%/dotfiles',
-		'%/dotinstall',
-		'%/tmux_sessionizer',
+		"%/dotfiles",
+		"%/dotinstall",
+		"%/tmux_sessionizer",
 	},
 	command = {
-		os.getenv("HOME") .. "/.nix-profile/bin/pyright-langserver"
+		os.getenv("HOME") .. "/.nix-profile/bin/pyright-langserver",
 	},
 	-- verbose = true,
 }, config.plugins.lsp_python or {}))
@@ -213,7 +228,8 @@ formatter.config("shformat", {
 })
 lspconfig.bashls.setup(common.merge({
 	command = {
-		os.getenv("HOME") .. "/.nix-profile/bin/bash-language-server", "start"
+		os.getenv("HOME") .. "/.nix-profile/bin/bash-language-server",
+		"start",
 	},
 	file_patterns = {
 		"%.sh$",
@@ -221,7 +237,7 @@ lspconfig.bashls.setup(common.merge({
 		"%/.bashrc",
 		"%/install-pragtical",
 	},
-	verbose = true
+	verbose = true,
 }, config.plugins.bashls or {}))
 
 -- Lua
@@ -230,8 +246,8 @@ formatter.config("stylua", {
 })
 lspconfig.sumneko_lua.setup(common.merge({
 	command = {
-		os.getenv("HOME") .. "/.nix-profile/bin/lua-language-server"
-	}
+		os.getenv("HOME") .. "/.nix-profile/bin/lua-language-server",
+	},
 }, config.plugins.lsp_lua or {}))
 
 -- Nix
@@ -242,7 +258,7 @@ formatter.add_formatter({
 	command = { "nixfmt", "$ARGS", "$FILENAME" },
 	path = os.getenv("HOME") .. "/.nix-profile/bin/nixfmt",
 })
-lsp.add_server {
+lsp.add_server({
 	-- Name of server
 	name = "nil",
 	-- Main language
@@ -251,19 +267,19 @@ lsp.add_server {
 	-- File types that are supported by this server
 	file_patterns = { "%.nix$" },
 	-- LSP command and optional arguments
-	command = { os.getenv("HOME") .. "/.nix-profile/bin/nil", },
+	command = { os.getenv("HOME") .. "/.nix-profile/bin/nil" },
 	-- Set by default to 16 should only be modified if having issues with a server
 	-- requests_per_second = 16,
 	-- True to debug the lsp client when developing it
 	-- verbose = true,
 	settings = {
-		['nil'] = {
+		["nil"] = {
 			formatting = {
 				command = { os.getenv("HOME") .. "/.nix-profile/bin/nixfmt" },
-			}
-		}
+			},
+		},
 	},
-}
+})
 
 -- Rust
 lspconfig.rust_analyzer.setup(common.merge({
