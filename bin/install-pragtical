@@ -20,7 +20,13 @@ LATEST_VERSION=$(curl -s "https://api.github.com/repos/pragtical/pragtical/relea
 curl -sLo /tmp/pragtical "https://github.com/pragtical/pragtical/releases/download/v${LATEST_VERSION}/Pragtical-v${LATEST_VERSION}-x86_64.AppImage"
 
 sudo chmod 755 /tmp/pragtical
-sudo install /tmp/pragtical /usr/local/bin
+if [ -d /usr/local/bin ]; then
+	sudo install /tmp/pragtical /usr/local/bin
+else
+	# Nixos case
+	echo 'No place to install pragtical'
+	exit 2
+fi
 
 rm /tmp/pragtical
 
@@ -51,8 +57,9 @@ wget "https://github.com/pragtical/plugins/blob/master/plugins/copyfilelocation.
 # Insert date-, time- and date-time-stamps
 wget "https://github.com/pragtical/plugins/blob/master/plugins/datetimestamps.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/datetimestamps.lua"
 
-# Make sure the file ends with one blank line.
-wget "https://github.com/bokunodev/lite_modules/blob/master/plugins/eofnewline-xl.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/eofnewline.lua"
+# Make sure the file ends with one blank line
+# Forked because the author pass the respository in private
+# wget "https://github.com/bokunodev/lite_modules/blob/master/plugins/eofnewline-xl.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/eofnewline.lua"
 
 # Change the syntax used for a file.
 wget "https://github.com/pragtical/plugins/blob/master/plugins/force_syntax.lua?raw=1" -O "$PRAGTICAL_PLUGINS_PATH/force_syntax.lua"
