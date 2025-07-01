@@ -31,11 +31,10 @@
           # "sway/window"
         ];
 
-        modules-center = [
-          "cpu"
-          "memory"
-          "clock"
-        ];
+        # modules-center = [
+        #   "cpu"
+        #   "memory"
+        # ];
 
         modules-right = [
           "tray"
@@ -43,6 +42,7 @@
           "pulseaudio"
           "battery"
           "battery#bat2"
+          "clock"
         ];
 
         clock = {
@@ -59,19 +59,19 @@
         "sway/workspaces" = {
           rotate = 90;
         };
-         "sway/window" = {
-          rotate = 90;
-        };
+        #  "sway/window" = {
+        #   rotate = 90;
+        # };
 
-        cpu = {
-          rotate = 90;
-          # format = "  {usage}%";
-        };
-        memory = {
-          rotate = 90;
-          # format = "  {}%";
-          # interval = 5;
-        };
+        # cpu = {
+        #   rotate = 90;
+        #   # format = "  {usage}%";
+        # };
+        # memory = {
+        #   rotate = 90;
+        #   # format = "  {}%";
+        #   # interval = 5;
+        # };
 
         pulseaudio = {
           rotate = 90;

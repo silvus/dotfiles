@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -17,18 +18,42 @@ in
     wev # xev for wayland
 
     wezterm
-    ghostty
 
     pavucontrol
-    fuzzel
   ];
 
-  # TODO rplace by fuzzel
-  programs.wofi = {
+  programs.fuzzel = {
     enable = true;
     settings = {
-      allow_markup = true;
-      width = 250;
+      # main = {
+      #   horizontal-pad = 24;
+      #   vertical-pad = 20;
+      #   inner-pad = 12;
+      #   lines = 10;
+      #   width = 50;
+      #   line-height = 30;
+      #   prompt = "❯";
+      # };
+      colors = {
+        background        = "2D353B";   # bg0
+        text              = "D3C6AA";   # fg
+        match             = "A7C080";   # green
+        selection         = "83C092";   # green
+        selection-text    = "D3C6AA";   # fg
+        selection-match   = "E69875";   # orange
+        border            = "7FBBB3";   # blue
+      };
+      # key-bindings = {
+      #   toggle-mode = "Alt+Tab";
+      #   exit = "Escape";
+      # };
+    };
+  };
+
+  programs.ghostty = {
+    enable = true;
+    settings = {
+      theme = "Everforest Dark - Hard";
     };
   };
 
@@ -41,9 +66,10 @@ in
         # "${mod}+Return" = "exec ${cfg.config.terminal}";
         "${mod}+Return" = "exec wezterm";
         "${mod}+Shift+q" = "kill";
-        "${mod}+e" = "exec --no-startup-id wofi --show drun,run";
+        "${mod}+e" = "exec --no-startup-id fuzzel";
         "${mod}+Shift+grave" = "move container to workspace number 0, workspace 0";
         "grave" = "workspace number 0";
+        # "${mod}+b" = "exec swaync-client -t -sw";
 
         # Switch to workspace
         "${mod}+1" = "workspace number 1";
@@ -71,7 +97,7 @@ in
         # We just use 1-10 as the default.
 
         # Toggle control center
-        "${mod}+n" = "exec swaync-client -t -sw";
+        # "${mod}+n" = "exec swaync-client -t -sw";
       };
       # lib.attrsets.mergeAttrsList [
       # (lib.attrsets.mergeAttrsList (map (num: let
@@ -153,9 +179,10 @@ in
       focus.followMouse = false;
       startup = [
         # class need to be a reverse domain address
-        { command = "ghostty --class=com.scratchpad.dropterm"; }
+        { command = "ghostty --class=com.scratchpad.dropterm -e ${config.home.homeDirectory}/.dotfiles/bin/tmuxdev"; }
         # { command = "firefox"; }
-        # { command = "codium"; }
+        # { command = "swaync"; }
+        { command = "kanshi"; }
         # https://github.com/Alexays/Waybar/issues/185#issuecomment-570340138
         { command = "GTK_THEME=Adapta waybar"; }
         # notification on workspace change
@@ -170,6 +197,10 @@ in
       for_window [app_id="com.scratchpad.dropterm"] move to workspace 0
       for_window [app_id="firefox"] move to workspace 1
       for_window [app_id="pragtical"] move to workspace 2
+
+      # ppt = percent of screen size
+      for_window [title="Picture-in-Picture"]  floating enable, sticky enable, resize set 640 480, move position 90 ppt 90 ppt, border pixel 3
+      for_window [app_id="mpv"] floating enable, sticky enable, resize set 640 480, move position 90 ppt 90 ppt, border pixel 3
 
       gaps inner 10
       # Outer gaps are in addition to inner gaps
