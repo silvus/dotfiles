@@ -144,14 +144,18 @@ function table_crush(target, source, raw)
 end
 
 -- Include dotfile_custom config if exist
-local dotfile_custom_path = os.getenv("SILVUSDOTFILES_CUSTOM") .. '/wezterm.lua'
-if file_exists(dotfile_custom_path) then
-	local config_custom = dofile(dotfile_custom_path)
-	if config_custom then
-		-- Override elements in the first table by the one in the second.
-		table_crush(config, config_custom)
+local dotfile_custom_path = os.getenv("SILVUSDOTFILES_CUSTOM")
+if dotfile_custom_path then
+	dotfile_custom_path = os.getenv("SILVUSDOTFILES_CUSTOM") .. '/wezterm.lua'
+	if file_exists(dotfile_custom_path) then
+		local config_custom = dofile(dotfile_custom_path)
+		if config_custom then
+			-- Override elements in the first table by the one in the second.
+			table_crush(config, config_custom)
+		end
 	end
 end
 
 -- and finally, return the configuration to wezterm
 return config
+
