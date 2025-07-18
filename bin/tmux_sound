@@ -13,9 +13,10 @@ if [[ $1 == '-h' || $1 == '--help' || $1 == '-?' ]]; then
 	exit 0
 fi
 
+
 # Determine volume state and level
 volume_status() {
-	
+
 	# Get volume state
 	VOL_ON=0
 	if $(amixer -D pulse sget Master | grep 'Left:' | grep -q "\[on\]"); then
@@ -46,56 +47,48 @@ apply_colors() {
 
 # Print the sound status
 print_status() {
-	GRAPH_ASCII=""
-	if ((VOL_ON)); then
-		# Sound from nerdfonts (https://www.nerdfonts.com/cheat-sheet)
-		GRAPH_ASCII="$(printf "\Uf057e")"
+	# Fallback: plain ASCII if a tty or not a utf 8 term
+	client_tty=$(tmux display-message -p '#{client_tty}')
+	if [[ "$client_tty" == /dev/tty* || $TERM == linux || $TERM == dumb || ! "$LANG" =~ "UTF-8" ]]; then
+		USE_ASCII=1
 	else
-		# No sound from nerdfonts
-		GRAPH_ASCII="$(printf "\Uf0e08")"
+		USE_ASCII=0
 	fi
 
-	# Inspired from https://github.com/tmux-plugins/tmux-battery/blob/master/scripts/battery_graph.sh
+	if ((VOL_ON)); then
+		if ((USE_ASCII)); then
+			GRAPH_ASCII="V"
+		else
+			GRAPH_ASCII="$(printf "\Uf057e")"
+		fi
+	else
+		if ((USE_ASCII)); then
+			GRAPH_ASCII="V OFF"
+		else
+			GRAPH_ASCII="$(printf "\Uf0e08")"
+		fi
+	fi
+
+	# Bar graph
 	GRAPH=""
-	if [ $VOL_PCT -gt 5 ]; then
-		GRAPH=$GRAPH"▁"
+	if ((USE_ASCII)); then
+		GRAPH=$([[ $VOL_PCT -gt 5 ]] && echo "=" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -gt 18 ]] && echo "=" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -gt 30 ]] && echo "=" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -gt 43 ]] && echo "=" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -ge 56 ]] && echo "=" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -ge 69 ]] && echo "=" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -ge 82 ]] && echo "=" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -ge 95 ]] && echo "=" || echo " ")
 	else
-		GRAPH=$GRAPH" "
-	fi
-	if [ $VOL_PCT -gt 18 ]; then
-		GRAPH=$GRAPH"▂"
-	else
-		GRAPH=$GRAPH" "
-	fi
-	if [ $VOL_PCT -gt 30 ]; then
-		GRAPH=$GRAPH"▃"
-	else
-		GRAPH=$GRAPH" "
-	fi
-	if [ $VOL_PCT -gt 43 ]; then
-		GRAPH=$GRAPH"▄"
-	else
-		GRAPH=$GRAPH" "
-	fi
-	if [ $VOL_PCT -ge 56 ]; then
-		GRAPH=$GRAPH"▅"
-	else
-		GRAPH=$GRAPH" "
-	fi
-	if [ $VOL_PCT -ge 69 ]; then
-		GRAPH=$GRAPH"▆"
-	else
-		GRAPH=$GRAPH" "
-	fi
-	if [ $VOL_PCT -ge 82 ]; then
-		GRAPH=$GRAPH"▇"
-	else
-		GRAPH=$GRAPH" "
-	fi
-	if [ $VOL_PCT -ge 95 ]; then
-		GRAPH=$GRAPH"█"
-	else
-		GRAPH=$GRAPH" "
+		GRAPH=$([[ $VOL_PCT -gt 5 ]] && echo "▁" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -gt 18 ]] && echo "▂" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -gt 30 ]] && echo "▃" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -gt 43 ]] && echo "▄" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -ge 56 ]] && echo "▅" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -ge 69 ]] && echo "▆" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -ge 82 ]] && echo "▇" || echo " ")
+		GRAPH+=$([[ $VOL_PCT -ge 95 ]] && echo "█" || echo " ")
 	fi
 
 	printf "#[bg=black]#[fg=%s] %s #[fg=black]#[bg=green] %s #[default] " "$COLOR" "$GRAPH_ASCII" "$GRAPH"
@@ -104,3 +97,4 @@ print_status() {
 volume_status
 apply_colors
 print_status
+
