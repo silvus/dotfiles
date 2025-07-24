@@ -35,13 +35,13 @@ in
       #   prompt = "❯";
       # };
       colors = {
-        background        = "2D353B";   # bg0
-        text              = "D3C6AA";   # fg
-        match             = "A7C080";   # green
-        selection         = "83C092";   # green
-        selection-text    = "D3C6AA";   # fg
-        selection-match   = "E69875";   # orange
-        border            = "7FBBB3";   # blue
+        background        = "2d353bff";  # #2D353B
+        text              = "d3c6aaff";  # #D3C6AA
+        match             = "a7c080ff";  # #A7C080
+        selection         = "83c092ff";  # #83C092
+        selection-text    = "000000ff";  # #000000
+        selection-match   = "4F5B58ff";  # #4F5B58
+        border            = "272e33ff";  # #272e33
       };
       # key-bindings = {
       #   toggle-mode = "Alt+Tab";
@@ -172,6 +172,36 @@ in
       #     command = "move to scratchpad, fullscreen enable";
       #   }
       # ];
+
+      colors.focused = {
+        border = "#a7c080";
+        childBorder = "#a7c080";
+        background = "#1e2326";
+        text = "#d3c6aa";
+        indicator = "#a7c080";
+      };
+      colors.unfocused = {
+        border = "#3a3a3a";
+        childBorder = "#3a3a3a";
+        background = "#3a3a3a";
+        text = "#7a8478";
+        indicator = "#7a8478";
+      };
+      colors.focusedInactive = {
+        border = "#3a3a3a";
+        childBorder = "#3a3a3a";
+        background = "#3a3a3a";
+        text = "#7a8478";
+        indicator = "#7a8478";
+      };
+      colors.urgent = {
+        border = "#e67e80";
+        childBorder = "#e67e80";
+        background = "#e67e80";
+        text = "#1e2326";
+        indicator = "#e69875";
+      };
+
 
       # Disable bar
       bars = [ ];
