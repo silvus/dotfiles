@@ -28,6 +28,18 @@
     variant = "";
   };
 
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.warn-dirty = false;
+
+  # Deduplicate store files
+  nix.settings.auto-optimise-store = true;
+
+  # Keep store blobs for old generations up to 30 days
+  # nix.gc.options = "--delete-older-than 30d";
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.silvus = {
     isNormalUser = true;
@@ -39,9 +51,6 @@
     # packages = with pkgs; [ ];
     shell = pkgs.fish;
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
