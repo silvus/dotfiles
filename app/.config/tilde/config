@@ -1,0 +1,38 @@
+config_version = 1
+%terminals {
+	name = "xterm-256color"
+	key_timeout = -1000
+}
+make_backup = false
+hide_menubar = false
+parse_file_positions = true
+disable_primary_selection_over_ssh = false
+color = true
+attributes {
+	brace_highlight = ( "bold" )
+	button_selected = ( "fg 253", "bg blue", "bold" )
+	dialog = ( "fg black", "bg white" )
+	dialog_selected = ( "fg white", "bg black", "bold" )
+	hotkey_highlight = ( "fg blue", "underline", "bold" )
+	menubar = ( "fg white", "bg black" )
+	menubar_selected = ( "fg blue", "bg black", "reverse" )
+	meta_text = ( "fg default", "dim" )
+	non_print = ( "dim" )
+	scrollbar = ( "fg black", "bg 8" )
+	shadow = ( "fg default", "bg black", "dim" )
+	text = ( "bg default" )
+	text_cursor = ( "fg blue", "bg 253", "reverse", "blink" )
+	text_selected = ( "fg 253", "bg 12" )
+	text_selection_cursor2 = ( "fg 253", "bg 39" )
+	text_selection_cursor = ( "fg 253" )
+}
+highlight_attributes {
+	comment = ( "fg 135" )
+	comment-keyword = ( "fg 208" )
+	number = ( "fg 27" )
+	string = ( "fg 198" )
+	misc = ( "fg 33" )
+	keyword = ( "fg 39" )
+	variable = ( "fg 19" )
+}
+
