@@ -29,7 +29,10 @@
       fsType = "ext4";
     };
 
-  swapDevices = [ ];
+  swapDevices = [ {
+    device = "/var/lib/swapfile";
+    size = 4*1024; # 4GB
+  }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -42,3 +45,4 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
+
