@@ -48,7 +48,6 @@
 
           # Include the Home Manager NixOS module
           home-manager.nixosModules.home-manager
-
           # Home Manager specific configuration
           {
             # Use the same pkgs instance for Home Manager as the system
@@ -58,15 +57,10 @@
             # On activation move existing files by appending the given file extension rather than exiting with an error.
             home-manager.backupFileExtension = "hm_bk";
             # Home manager config for a user
-            # home-manager.users.silvus = import ./home.nix;
             home-manager.users.silvus = {
               imports = [
                 ./packages/theme.nix
                 ./packages/dev.nix
-
-                ./packages/sway.nix
-                ./packages/swaync.nix
-                ./packages/waybar.nix
               ];
 
               # Fix 'command not found' database broken
@@ -97,7 +91,6 @@
 
           # Include the Home Manager NixOS module
           home-manager.nixosModules.home-manager
-
           # Home Manager specific configuration
           {
             # Use the same pkgs instance for Home Manager as the system
@@ -107,15 +100,10 @@
             # On activation move existing files by appending the given file extension rather than exiting with an error.
             home-manager.backupFileExtension = "hm_bk";
             # Home manager config for a user
-            # home-manager.users.silvus = import ./home.nix;
             home-manager.users.silvus = {
               imports = [
                 ./packages/theme.nix
                 ./packages/dev.nix
-
-                ./packages/sway.nix
-                ./packages/swaync.nix
-                ./packages/waybar.nix
               ];
               home.stateVersion = "25.05"; # Please read the comment before changing.
             };

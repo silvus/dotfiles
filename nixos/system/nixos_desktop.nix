@@ -20,12 +20,23 @@
     pragtical
 
     dconf
-    # grim
-    # mako
-    # slurp
-    # sway
 
-    # wallust
+    grim # screenshot
+    slurp # screenshot region
+    wl-clipboard
+    wev # xev for wayland
+
+    wezterm
+
+    pavucontrol
+    kanshi
+    fuzzel
+    ghostty
+    sway
+    waybar
+    # gtk css interfer and force a with of 28px (which is huge)
+    # to force a small size, fake a smaller gtk theme
+    adapta-gtk-theme
   ];
 
   environment.variables.GTK_THEME = "Everforest-Dark-B-LB";

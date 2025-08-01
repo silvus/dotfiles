@@ -1,0 +1,73 @@
+[
+  {
+    "battery": {
+      "format": "{icon}",
+      "format-charging": "<span color='#a6d189'>󱐋</span>",
+      "format-icons": [
+        "󰝦",
+        "󰪞",
+        "󰪟",
+        "󰪠",
+        "󰪡",
+        "󰪢",
+        "󰪣",
+        "󰪤",
+        "󰪥"
+      ],
+      "format-plugged": "󰂄"
+    },
+    "battery#bat2": {
+      "format": "{icon}",
+      "format-charging": "<span color='#a6d189'>󱐋</span>",
+      "format-icons": [
+        "󰝦",
+        "󰪞",
+        "󰪟",
+        "󰪠",
+        "󰪡",
+        "󰪢",
+        "󰪣",
+        "󰪤",
+        "󰪥"
+      ],
+      "format-plugged": "󰂄"
+    },
+    "clock": {
+      "format": "{:%H:%M:%S}",
+      "interval": 1,
+      "rotate": 90,
+      "tooltip-format": "{:%Y-%m-%d}"
+    },
+    "modules-left": [
+      "sway/workspaces"
+    ],
+    "modules-right": [
+      "tray",
+      "network",
+      "battery",
+      "battery#bat2",
+      "pulseaudio/slider",
+      "clock"
+    ],
+    "network": {
+      "format-disconnected": "",
+      "format-ethernet": "󰈁 Connected",
+      "format-wifi": "   {essid}",
+      "interval": 3,
+      "rotate": 90,
+      "tooltip-format": "{ifname}\n{ipaddr}/{cidr}\nUp: {bandwidthUpBits}\nDown: {bandwidthDownBits}"
+    },
+    "position": "left",
+    "pulseaudio/slider": {
+      "max": 100,
+      "min": 0,
+      "orientation": "vertical",
+      "rotate": 90
+    },
+    "sway/workspaces": {
+      "rotate": 90
+    },
+    "width": 19
+  }
+]
+
