@@ -1,22 +1,10 @@
 #!/bin/bash
 
-# From https://github.com/Goles/Battery
-# Fork to use only in Debian/Ubuntu distributions
-
 usage() {
 cat <<EOF
-battery usage:
+tmux_battery usage:
   general:
-	-h, --help    print this message
-	-t            output tmux status bar format
-	-z            output zsh prompt format
-	-e            don't output the emoji
-	-a            output ascii instead of spark
-	-b            battery path            default: /sys/class/power_supply/BAT0
-  colors:                                                 tmux     zsh
-	-g <color>    good battery level      default: 1;32 | green  | 64
-	-m <color>    middle battery level    default: 1;33 | yellow | 136
-	-w <color>    warn battery level      default: 0;31 | red    | 160
+    -h, --help    print this message
 EOF
 }
 
@@ -25,220 +13,113 @@ if [[ $1 == '-h' || $1 == '--help' || $1 == '-?' ]]; then
 	exit 0
 fi
 
-# For default behavior
-setDefaults() {
-	output_tmux=0
-	output_zsh=0
-	ascii=0
-	ascii_bar='=========='
-	emoji=1
-	good_color="1;32"
-	middle_color="1;33"
-	warn_color="0;31"
-	connected=0
-	battery_path="/sys/class/power_supply/BAT0"
-}
+battery_paths=(/sys/class/power_supply/BAT*)
 
-setDefaults
-
-# Determine battery charge state
-battery_charge() {
-	
-	if [ -f "$battery_path/charge_now" ]; then
-		# Ubuntu 20.04
-		battery_state=$(cat $battery_path/status)
-		battery_full="$battery_path/charge_full"
-		battery_current="$battery_path/charge_now"
-	else 
-		# Debian 10
-		battery_state=$(cat $battery_path/status)
-		battery_full="$battery_path/energy_full"
-		battery_current="$battery_path/energy_now"
-	fi
-
-	if [[ $battery_state == 'Discharging' ]] || [[ "$battery_state" == "Not charging" ]]; then
-		BATT_CONNECTED=0
-	else
-		BATT_CONNECTED=1
-	fi
-	now=$(cat $battery_current)
-	full=$(cat $battery_full)
-	BATT_PCT=$((100 * $now / $full))
-}
-
-# Apply the correct color to the battery status prompt
-apply_colors() {
-	# Green
-	if [[ $BATT_PCT -ge 50 ]]; then
-		if ((output_tmux)); then
-			COLOR="$good_color"
-		elif ((output_zsh)); then
-			COLOR="%F{$good_color}"
-		else
-			COLOR=$good_color
-		fi
-
-	# Yellow
-	elif [[ $BATT_PCT -ge 25 ]] && [[ $BATT_PCT -lt 50 ]]; then
-		if ((output_tmux)); then
-			COLOR="$middle_color"
-		elif ((output_zsh)); then
-			COLOR="%F{$middle_color}"
-		else
-			COLOR=$middle_color
-		fi
-
-	# Red
-	elif [[ $BATT_PCT -lt 25 ]]; then
-		if ((output_tmux)); then
-			COLOR="$warn_color"
-		elif ((output_zsh)); then
-			COLOR="%F{$warn_color}"
-		else
-			COLOR=$warn_color
-		fi
-	fi
-}
-
-# Print the battery status
-print_status() {
-	GRAPH_ASCII=""
-	if ((emoji)); then
-		if ((BATT_CONNECTED)); then
-			# Connected icon, from nerdfonts (https://www.nerdfonts.com/cheat-sheet)
-			GRAPH_ASCII="$(printf "\Uf1616")"
-		else
-			# Battery from nerdfonts
-			GRAPH_ASCII="$(printf "\Uf0079")"
-		fi
-	else
-		if command -v spark &>/dev/null; then
-			sparks=$(spark 0 ${BATT_PCT} 100)
-			GRAPH=${sparks:1:1}
-		else
-			ascii=1
-		fi
-	fi
-
-	if ((ascii)); then
-		barlength=${#ascii_bar}
-
-		# Battery percentage rounded to the lenght of ascii_bar
-		rounded_n=$(( $barlength * $BATT_PCT / 100))
-
-		# Creates the bar
-		GRAPH=$(printf "%-${barlength}s" "${ascii_bar:0:rounded_n}")
-	fi
-
-	if ((output_tmux)); then
-		# Inspired from https://github.com/tmux-plugins/tmux-battery/blob/master/scripts/battery_graph.sh
-		GRAPH=""
-		if [ $BATT_PCT -gt 5 ]; then
-			GRAPH=$GRAPH"▁"
-		else
-			GRAPH=$GRAPH" "
-		fi
-		if [ $BATT_PCT -gt 18 ]; then
-			GRAPH=$GRAPH"▂"
-		else
-			GRAPH=$GRAPH" "
-		fi
-		if [ $BATT_PCT -gt 30 ]; then
-			GRAPH=$GRAPH"▃"
-		else
-			GRAPH=$GRAPH" "
-		fi
-		if [ $BATT_PCT -gt 43 ]; then
-			GRAPH=$GRAPH"▄"
-		else
-			GRAPH=$GRAPH" "
-		fi
-		if [ $BATT_PCT -ge 56 ]; then
-			GRAPH=$GRAPH"▅"
-		else
-			GRAPH=$GRAPH" "
-		fi
-		if [ $BATT_PCT -ge 69 ]; then
-			GRAPH=$GRAPH"▆"
-		else
-			GRAPH=$GRAPH" "
-		fi
-		if [ $BATT_PCT -ge 82 ]; then
-			GRAPH=$GRAPH"▇"
-		else
-			GRAPH=$GRAPH" "
-		fi
-		if [ $BATT_PCT -ge 95 ]; then
-			GRAPH=$GRAPH"█"
-		else
-			GRAPH=$GRAPH" "
-		fi
-		printf "#[bg=black]#[fg=white] %s #[fg=black]#[bg=%s] %s #[default] " "$GRAPH_ASCII" "$COLOR" "$GRAPH"
-
-	elif ((output_zsh)); then
-		printf "%%B%s%s %s" "$COLOR" "[$BATT_PCT%%]" "$GRAPH"
-	else
-		printf "\e[0;%sm%s %s \e[m\n" "$COLOR" "[$BATT_PCT%]" "$GRAPH"
-	fi
-}
-
-# Read args
-while getopts ":g:m:w:tzeab" opt; do
-	case $opt in
-		g)
-			good_color=$OPTARG
-			;;
-		m)
-			middle_color=$OPTARG
-			;;
-		w)
-			warn_color=$OPTARG
-			;;
-		t)
-			output_tmux=1
-			good_color="green"
-			middle_color="yellow"
-			warn_color="red"
-			;;
-		z)
-			output_zsh=1
-			good_color="64"
-			middle_color="136"
-			warn_color="160"
-			;;
-		e)
-			emoji=0
-			;;
-		a)
-			ascii=1
-			;;
-		b)
-			if [ -d $OPTARG ]; then
-				battery_path=$OPTARG
-			else
-				>&2 echo "Battery not found, trying to use default path..."
-				if [ ! -d $battery_path ]; then
-					>&2 echo "Default battery path is also unreachable"
-					exit 1
-				fi
-			fi
-			;;
-		\?)
-			echo "Invalid option: -$OPTARG"
-			exit 1
-			;;
-		:)
-			echo "Option -$OPTARG requires an argument"
-			exit 1
-			;;
-	esac
-done
-
-if [ ! -d $battery_path ]; then
-	# Without battery, silent exit
+# Exit if no batteries are present
+if [[ ${#battery_paths[@]} -eq 0 || ! -e "${battery_paths[0]}" ]]; then
 	exit 0
 fi
 
-battery_charge
-apply_colors
-print_status
+battery_status() {
+	local path=$1
+	local state full current
+
+	if [[ -f "$path/charge_now" ]]; then
+		state=$(< "$path/status")
+		full=$(< "$path/charge_full")
+		current=$(< "$path/charge_now")
+	else
+		state=$(< "$path/status")
+		full=$(< "$path/energy_full")
+		current=$(< "$path/energy_now")
+	fi
+
+	local pct=$(( 100 * current / full ))
+	local connected=1
+	[[ "$state" == "Discharging" || "$state" == "Not charging" ]] && connected=0
+
+	printf "%s;%s\n" "$pct" "$connected"
+}
+
+get_color() {
+	local pct=$1
+	if (( pct >= 50 )); then
+		echo "green"
+	elif (( pct >= 25 )); then
+		echo "yellow"
+	else
+		echo "red"
+	fi
+}
+
+build_graph() {
+	local pct=$1
+	local ascii=$2
+	local graph=""
+
+	if (( ascii )); then
+		graph+=$([[ $pct -gt 5 ]] && echo "=" || echo " ")
+		graph+=$([[ $pct -gt 18 ]] && echo "=" || echo " ")
+		graph+=$([[ $pct -gt 30 ]] && echo "=" || echo " ")
+		graph+=$([[ $pct -gt 43 ]] && echo "=" || echo " ")
+		graph+=$([[ $pct -ge 56 ]] && echo "=" || echo " ")
+		graph+=$([[ $pct -ge 69 ]] && echo "=" || echo " ")
+		graph+=$([[ $pct -ge 82 ]] && echo "=" || echo " ")
+		graph+=$([[ $pct -ge 95 ]] && echo "=" || echo " ")
+	else
+		graph+=$([[ $pct -gt 5 ]] && echo "▁" || echo " ")
+		graph+=$([[ $pct -gt 18 ]] && echo "▂" || echo " ")
+		graph+=$([[ $pct -gt 30 ]] && echo "▃" || echo " ")
+		graph+=$([[ $pct -gt 43 ]] && echo "▄" || echo " ")
+		graph+=$([[ $pct -ge 56 ]] && echo "▅" || echo " ")
+		graph+=$([[ $pct -ge 69 ]] && echo "▆" || echo " ")
+		graph+=$([[ $pct -ge 82 ]] && echo "▇" || echo " ")
+		graph+=$([[ $pct -ge 95 ]] && echo "█" || echo " ")
+	fi
+	echo "$graph"
+}
+
+print_status() {
+	local id=$1
+	local pct=$2
+	local connected=$3
+	local color=$4
+	local ascii=$5
+
+	local icon
+	if (( ascii )); then
+		icon=$([[ $connected -eq 1 ]] && echo "+" || echo "B")
+	else
+		icon=$([[ $connected -eq 1 ]] && printf "\Uf1616 " || printf "\Uf0079 ")
+	fi
+
+	local graph
+	graph=$(build_graph "$pct" "$ascii")
+
+	printf "#[bg=black]#[fg=white] %s%s #[fg=black]#[bg=%s] %s #[default] " "$icon" "$id" "$color" "$graph"
+}
+
+# Determine if fallback ASCII is needed
+client_tty=$(tmux display-message -p '#{client_tty}')
+if [[ "$client_tty" == /dev/tty* || $TERM == linux || $TERM == dumb || ! "$LANG" =~ "UTF-8" ]]; then
+	USE_ASCII=1
+else
+	USE_ASCII=0
+fi
+
+battery_count=${#battery_paths[@]}
+
+# Iterate through all battery devices
+for i in "${!battery_paths[@]}"; do
+	battery_path="${battery_paths[$i]}"
+	status=$(battery_status "$battery_path")
+	pct=${status%;*}
+	connected=${status#*;}
+	color=$(get_color "$pct")
+	label=""
+	if (( battery_count > 1 )); then
+		label="$i"
+	fi
+	print_status "$label" "$pct" "$connected" "$color" "$USE_ASCII"
+done
+
