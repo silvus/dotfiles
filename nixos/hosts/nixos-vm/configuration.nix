@@ -10,6 +10,10 @@
     "${modulesPath}/virtualisation/incus-virtual-machine.nix"
   ];
 
+  # Bootloader
+  boot.loader.timeout = 1;
+  boot.loader.systemd-boot.configurationLimit = 9;
+
   networking.hostName = "nixos-vm";
 
   networking = {

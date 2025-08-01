@@ -76,6 +76,8 @@
     mosh
     unzip
     unrar
+    gnupg
+    syncthing
   ];
 
   programs.vim.enable = true;

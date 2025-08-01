@@ -37,5 +37,5 @@
     nerd-fonts.fira-mono
     nerd-fonts.hack
   ];
-
 }
+

@@ -1,0 +1,7 @@
+# swaymsg -t get_outputs
+
+output "Red Hat, Inc. QEMU Monitor Unknown" enable mode 1920x1080@60 scale 1.000000 alias $VM
+profile vm {
+  output "$VM"
+}
+

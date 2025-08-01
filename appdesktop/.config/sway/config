@@ -1,0 +1,121 @@
+font pango:monospace 8.000000
+floating_modifier Mod4
+default_border normal 2
+default_floating_border normal 2
+hide_edge_borders none
+focus_wrapping no
+focus_follows_mouse no
+focus_on_window_activation smart
+mouse_warping output
+workspace_layout default
+workspace_auto_back_and_forth yes
+client.focused #a7c080 #1e2326 #d3c6aa #a7c080 #a7c080
+client.focused_inactive #3a3a3a #3a3a3a #7a8478 #7a8478 #3a3a3a
+client.unfocused #3a3a3a #3a3a3a #7a8478 #7a8478 #3a3a3a
+client.urgent #e67e80 #e67e80 #1e2326 #e69875 #e67e80
+client.placeholder #000000 #0c0c0c #ffffff #000000 #0c0c0c
+client.background #ffffff
+
+bindsym Mod4+Down focus down
+bindsym Mod4+Left focus left
+bindsym Mod4+Return exec wezterm
+bindsym Mod4+Right focus right
+
+bindsym Mod4+1 workspace number 1
+bindsym Mod4+0 workspace number 10
+bindsym Mod4+2 workspace number 2
+bindsym Mod4+3 workspace number 3
+bindsym Mod4+4 workspace number 4
+bindsym Mod4+5 workspace number 5
+bindsym Mod4+6 workspace number 6
+bindsym Mod4+7 workspace number 7
+bindsym Mod4+8 workspace number 8
+bindsym Mod4+9 workspace number 9
+
+bindsym Mod4+Shift+0 move container to workspace number 10, workspace 10
+bindsym Mod4+Shift+1 move container to workspace number 1, workspace 1
+bindsym Mod4+Shift+2 move container to workspace number 2, workspace 2
+bindsym Mod4+Shift+3 move container to workspace number 3, workspace 3
+bindsym Mod4+Shift+4 move container to workspace number 4, workspace 4
+bindsym Mod4+Shift+5 move container to workspace number 5, workspace 5
+bindsym Mod4+Shift+6 move container to workspace number 6, workspace 6
+bindsym Mod4+Shift+7 move container to workspace number 7, workspace 7
+bindsym Mod4+Shift+8 move container to workspace number 8, workspace 8
+bindsym Mod4+Shift+9 move container to workspace number 9, workspace 9
+bindsym Mod4+Shift+Down move down
+bindsym Mod4+Shift+Left move left
+bindsym Mod4+Shift+Right move right
+bindsym Mod4+Shift+Up move up
+bindsym Mod4+Shift+c reload
+bindsym Mod4+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+bindsym Mod4+Shift+grave move container to workspace number 0, workspace 0
+bindsym Mod4+Shift+h move left
+bindsym Mod4+Shift+j move down
+bindsym Mod4+Shift+k move up
+bindsym Mod4+Shift+l move right
+bindsym Mod4+Shift+minus move scratchpad
+bindsym Mod4+Shift+q kill
+bindsym Mod4+Shift+space floating toggle
+bindsym Mod4+Up focus up
+bindsym Mod4+a focus parent
+bindsym Mod4+b splith
+bindsym Mod4+d exec /nix/store/gwk546kxw024v371l34sw11zvzqrxhdv-dmenu-5.3/bin/dmenu_path | /nix/store/gwk546kxw024v371l34sw11zvzqrxhdv-dmenu-5.3/bin/dmenu | /nix/store/7fjnb79r7p38piiyn5xwgcj5w7fpfi02-findutils-4.10.0/bin/xargs swaymsg exec --
+bindsym Mod4+e exec --no-startup-id fuzzel
+bindsym Mod4+f fullscreen toggle
+bindsym Mod4+h focus left
+bindsym Mod4+j focus down
+bindsym Mod4+k focus up
+bindsym Mod4+l focus right
+bindsym Mod4+minus scratchpad show
+bindsym Mod4+r mode resize
+bindsym Mod4+s layout stacking
+bindsym Mod4+space focus mode_toggle
+bindsym Mod4+v splitv
+bindsym Mod4+w layout tabbed
+bindsym grave workspace number 0
+
+mode "resize" {
+  bindsym Down resize grow height 10 px
+  bindsym Escape mode default
+  bindsym Left resize shrink width 10 px
+  bindsym Return mode default
+  bindsym Right resize grow width 10 px
+  bindsym Up resize shrink height 10 px
+  bindsym h resize shrink width 10 px
+  bindsym j resize grow height 10 px
+  bindsym k resize shrink height 10 px
+  bindsym l resize grow width 10 px
+}
+
+ # class need to be a reverse domain address
+exec ghostty --class=com.scratchpad.dropterm -e /home/silvus/.dotfiles/bin/tmuxdev
+
+exec kanshi
+
+# https://github.com/Alexays/Waybar/issues/185#issuecomment-570340138
+exec GTK_THEME=Adapta waybar
+
+# notification on workspace change
+# { command = "${config.home.homeDirectory}/.dotfiles/bin/sway-notify-workspace"; }
+
+for_window [app_id="com.scratchpad.dropterm"] move to workspace 0
+for_window [app_id="firefox"] move to workspace 1
+for_window [app_id="pragtical"] move to workspace 2
+
+# ppt = percent of screen size
+for_window [title="Picture-in-Picture"]  floating enable, sticky enable, resize set 640 480, move position 90 ppt 90 ppt, border pixel 3
+for_window [app_id="mpv"] floating enable, sticky enable, resize set 640 480, move position 90 ppt 90 ppt, border pixel 3
+
+gaps inner 10
+# Outer gaps are in addition to inner gaps
+gaps outer -8
+# gaps will only be enabled if a workspace has more than one child
+smart_gaps on
+# borders will only be enabled if the workspace has more than one visible child
+smart_borders on
+
+# Set default border style for new tiled windows.
+default_border pixel 2
+# Set default border style for new floating windows. This only applies to windows that are spawned in floating mode, not windows that become floating afterwards.
+default_floating_border normal
+
