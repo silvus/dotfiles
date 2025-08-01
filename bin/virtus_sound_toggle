@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Toggle between:
+# - MX3 (output only)
+# - Built-in audio (duplex)
+
+MX3_CARD="alsa_card.usb-TOPPING_MX3-01"
+MX3_SINK="alsa_output.usb-TOPPING_MX3-01.analog-stereo"
+MX3_PROFILE="output:analog-stereo"
+
+BUILTIN_CARD="alsa_card.pci-0000_00_1f.3"
+BUILTIN_SINK="alsa_output.pci-0000_00_1f.3.analog-stereo"
+BUILTIN_PROFILE="output:analog-stereo+input:analog-stereo"
+
+# Get current default sink
+current_sink=$(pactl get-default-sink)
+
+if [[ "$current_sink" == "$MX3_SINK" ]]; then
+    # Switch to Built-in audio
+    pactl set-card-profile "$BUILTIN_CARD" "$BUILTIN_PROFILE"
+    sleep 0.3
+    new_source=$(pactl list short sources | awk '$2 ~ /^alsa_input.pci-0000_00_1f.3.analog-stereo$/ {print $2; exit}')
+    pactl set-default-sink "$BUILTIN_SINK"
+    pactl set-default-source "$new_source"
+    notify-send "Audio Switched" "Built-in Audio: Analog Stereo Duplex"
+else
+    # Switch to MX3 output only
+    pactl set-card-profile "$BUILTIN_CARD" "off"
+    pactl set-card-profile "$MX3_CARD" "$MX3_PROFILE"
+    sleep 0.3
+    pactl set-default-sink "$MX3_SINK"
+    notify-send "Audio Switched" "MX3: Analog Stereo Output"
+fi
+
