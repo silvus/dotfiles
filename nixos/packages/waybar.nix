@@ -39,9 +39,9 @@
         modules-right = [
           "tray"
           "network"
-          "pulseaudio"
           "battery"
           "battery#bat2"
+          "pulseaudio/slider"
           "clock"
         ];
 
@@ -49,11 +49,23 @@
           rotate = 90;
           interval = 1;
           format = "{:%H:%M:%S}";
-          # format-alt = "{:%Y-%m-%d %H:%M:%S %z}";
-          # on-click-left = "mode";
-          tooltip-format = ''
-            <big>{:%Y %B}</big>
-            <tt><small>{calendar}</small></tt>'';
+          # format-alt = "{:%A, %B %d, %Y (%R)}";
+          tooltip-format = "{:%Y-%m-%d}";
+
+          # tooltip-format = ''
+          #   <big>{:%Y %B}</big>
+          #   <tt><small>{calendar}</small></tt>'';
+          # calendar = {
+          #   "mode"    = "year";
+          #   "mode-mon-col"  = 3;
+          #   "weeks-pos"     = "left";
+          #   "on-scroll"     = 1;
+          # };
+          # "actions" =  {
+          #     "on-click-right"= "mode";
+          #     "on-scroll-up"= "shift_up";
+          #     "on-scroll-down"= "shift_down";
+          # };
         };
 
         "sway/workspaces" = {
@@ -73,8 +85,11 @@
         #   # interval = 5;
         # };
 
-        pulseaudio = {
+        "pulseaudio/slider" = {
           rotate = 90;
+          min = 0;
+          max = 100;
+          orientation = "vertical";
         };
 
         # # pulseaudio = {
@@ -175,39 +190,72 @@
     padding: 0;
     margin: 0;
     min-height: 0;
+    min-width: 0;
     font-family: "JetBrainsMono Nerd Font", monospace;
     font-size: 13px;
     background: transparent;
     color: #d3c6aa;
   }
+
+  tooltip {
+    background: #2e383c;
+    border: 1px solid rgba(100, 114, 125, 0.5);
+  }
+  tooltip label {
+    color: #d3c6aa;
+  }
+
   window#waybar {
     background: #272e33;
     color: #d3c6aa;
   }
+
   #workspaces button {
     padding: 4px 1px;
-    margin: 5px 0;
+    margin: 2px 0;
     background: #2e383c;
     color: #859289;
     border: none;
   }
   #workspaces button.focused {
     background: #a7c080;
-    color: #000000;
-    font-weight: bold;
   }
+  #workspaces button.focused label {
+    color: #000000;
+  }
+
   #tray,
   #network,
-  #pulseaudio,
+  #pulseaudio-slider,
   #battery,
   #battery#bat2,
   #clock {
-    padding: 4px 1px;
-    margin: 5px 0;
+    padding: 4px 1px 4px 0;
+    margin: 2px 0;
     background: #2e383c;
     color: #d3c6aa;
   }
-    '';
+
+  #pulseaudio-slider slider {
+    min-height: 0px;
+    min-width: 0px;
+    opacity: 0;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+  }
+  #pulseaudio-slider trough {
+      min-height: 50px;
+      min-width: 8px;
+      border-radius: 0;
+      background-color: #2e383c;
+  }
+  #pulseaudio-slider highlight {
+      min-width: 10px;
+      background-color: #a7c080;
+  }
+
+  '';
   };
 
 }
