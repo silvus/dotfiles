@@ -14,10 +14,7 @@
       # (import "${home-manager}/nixos")
     ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.warn-dirty = false;
-
-  # Bootloader.
+  # Bootloader (Only for dualboots)
   boot.loader.timeout = 1;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
@@ -36,38 +33,22 @@
   # boot.loader.grub.useOSProber = true;
   # boot.loader.grub.efiSupport = true;
 
-  networking.hostName = "noctus"; # Define your hostname.
+  networking.hostName = "noctus";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-#  services.greetd = {
-#    enable = true;
-#    settings = {
-#      initial_session = {
-#	command = "${pkgs.hyprland}/bin/Hyprland";
-#	user = "silvus";
-#	};
-#      default_session = {
-#        # command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --remember --time --cmd \"dbus-run-session Hyprland\"";
-#        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --remember --remenber-user-session --time --cmd \"${pkgs.hyprland}/bin/Hyprland\"";
-# 	user = "greeter";
-#        # user = "silvus";
-#      };
-#    };
-#  };
+  # Laptop power management (https://nixos.wiki/wiki/Laptop)
+  services.tlp.enable = true;
 
-# programs.hyprland.xwayland.enable = true;
-
-  programs.dconf.enable = true;
-
+  # Login init
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd sway";
         user = "greeter";
       };
     };
@@ -77,13 +58,5 @@
   security.pam.services.swaylock = {};
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 }
 
