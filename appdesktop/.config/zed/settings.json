@@ -1,0 +1,35 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "ui_font_size": 13,
+  "buffer_font_size": 12,
+  "agent_font_size": 13,
+  "theme": {
+    "mode": "system",
+    "light": "One Dark",
+    "dark": "One Dark"
+  },
+  // Set the buffer's line height.
+  // May take 3 values:
+  //  1. Use a line height that's comfortable for reading (1.618)
+  //         "buffer_line_height": "comfortable"
+  //  2. Use a standard line height, (1.3)
+  //         "buffer_line_height": "standard",
+  //  3. Use a custom line height
+  //         "buffer_line_height": {
+  //           "custom": 2
+  //         },
+  "buffer_line_height": "standard",
+  "telemetry": {
+    // Send debug info like crash reports.
+    "diagnostics": false,
+    // Send anonymized usage data like what languages you're using Zed with.
+    "metrics": false
+  }
+}
