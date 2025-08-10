@@ -115,7 +115,7 @@ def x_is_installed():
     """
     Try to guess if x is installed
     """
-    return shutil.which("startx") or shutil.which("lightdm") or shutil.which("tuigreet") or shutil.which("Xwayland") or os.environ.get("XDG_SESSION_TYPE") == "wayland"
+    return shutil.which("startx") or shutil.which("lightdm") or shutil.which("tuigreet") or shutil.which("awesome") or shutil.which("sway") or shutil.which("Xwayland") or os.environ.get("XDG_SESSION_TYPE") == "wayland"
 
 
 def count_files(root_folder):
