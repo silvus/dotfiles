@@ -77,6 +77,41 @@
         ];
       };
 
+      nixosConfigurations.somnus = nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        # List of NixOS modules to include
+        modules = [
+          # Main system config
+          ./hosts/somnus/configuration.nix
+
+          # Shared base config
+          ./system/nixos.nix
+          ./system/nixos_desktop.nix
+
+          # Include the Home Manager NixOS module
+          home-manager.nixosModules.home-manager
+          # Home Manager specific configuration
+          {
+            # Use the same pkgs instance for Home Manager as the system
+            home-manager.useGlobalPkgs = true;
+            # Install user packages via Home Manager
+            home-manager.useUserPackages = true;
+            # On activation move existing files by appending the given file extension rather than exiting with an error.
+            home-manager.backupFileExtension = "hm_bk";
+            # Home manager config for a user
+            home-manager.users.silvus = {
+              imports = [
+                ./packages/theme.nix
+                ./packages/dev.nix
+              ];
+              home.stateVersion = "25.05"; # Please read the comment before changing.
+            };
+
+          }
+        ];
+      };
+
       nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
         inherit system;
 
