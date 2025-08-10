@@ -5,3 +5,8 @@ profile vm {
   output "$VM"
 }
 
+output "Ancor Communications Inc ASUS PB287Q" enable mode 1920x1080@60 scale 1.000000 alias $BIGONE
+profile somnus {
+  output "$BIGONE"
+}
+
