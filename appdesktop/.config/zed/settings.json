@@ -31,5 +31,187 @@
     "diagnostics": false,
     // Send anonymized usage data like what languages you're using Zed with.
     "metrics": false
+  },
+  // Whether to restore last closed project when fresh Zed instance is opened
+  // May take 3 values:
+  //  1. All workspaces open during last session
+  //         "restore_on_startup": "last_session"
+  //  2. The workspace opened
+  //         "restore_on_startup": "last_workspace",
+  //  3. Do not restore previous workspaces
+  //         "restore_on_startup": "none",
+  "restore_on_startup": "last_workspace",
+  // Hide the values of in variables from visual display in private files
+  "redact_private_values": true,
+  // Globs to match against file paths to determine if a file is private.
+  // "private_files": ["**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/secrets.yml"],
+  // Titlebar related settings
+  "title_bar": {
+    // Whether to show the branch icon beside branch switcher in the titlebar.
+    "show_branch_icon": true,
+    // Whether to show the branch name button in the titlebar.
+    // "show_branch_name": true,
+    // Whether to show the project host and name in the titlebar.
+    // "show_project_items": true,
+    // Whether to show onboarding banners in the titlebar.
+    "show_onboarding_banner": false
+    // Whether to show user picture in the titlebar.
+    // "show_user_picture": true,
+    // Whether to show the sign in button in the titlebar.
+    // "show_sign_in": true,
+    // Whether to show the menus in the titlebar.
+    // "show_menus": false
+  },
+  // Enable middle-click paste on Linux.
+  "middle_click_paste": false,
+  // When to populate a new search's query based on the text under the cursor.
+  // This setting can take the following three values:
+  //
+  // 1. Always populate the search query with the word under the cursor (default).
+  //    "always"
+  // 2. Only populate the search query when there is text selected
+  //    "selection"
+  // 3. Never populate the search query
+  //    "never"
+  "seed_search_query_from_cursor": "selection",
+  // When enabled, automatically adjusts search case sensitivity based on your query.
+  // If your search query contains any uppercase letters, the search becomes case-sensitive;
+  // if it contains only lowercase letters, the search becomes case-insensitive.
+  "use_smartcase_search": true,
+  "project_panel": {
+    // Spacing between worktree entries in the project panel. Can be 'comfortable' or 'standard'.
+    "entry_spacing": "standard"
+  },
+  "collaboration_panel": {
+    // Whether to show the collaboration panel button in the status bar.
+    "button": false
+  },
+  "agent": {
+    // When enabled, show voting thumbs for feedback on agent edits.
+    "enable_feedback": false,
+    // Where to show notifications when the agent has either completed
+    // its response, or else needs confirmation before it can run a
+    // tool action.
+    // "primary_screen" - Show the notification only on your primary screen (default)
+    // "all_screens" - Show these notifications on all screens
+    // "never" - Never show these notifications
+    "notify_when_agent_waiting": "never",
+    // Default: false
+    "play_sound_when_agent_done": true
+  },
+  // Whether the screen sharing icon is shown in the os status bar.
+  "show_call_status_icon": false,
+  // Settings related to the editor's tabs
+  "tabs": {
+    // Show git status colors in the editor tabs.
+    "git_status": true,
+    // Whether to show the file icon for a tab.
+    "file_icons": true,
+    // Which files containing diagnostic errors/warnings to mark in the tabs.
+    // Diagnostics are only shown when file icons are also active.
+    // This setting only works when can take the following three values:
+    //
+    // 1. Do not mark any files:
+    //    "off"
+    // 2. Only mark files with errors:
+    //    "errors"
+    // 3. Mark files with errors and warnings:
+    //    "all"
+    "show_diagnostics": "errors"
+  },
+  // Settings related to preview tabs.
+  "preview_tabs": {
+    // Whether preview tabs should be enabled.
+    // Preview tabs allow you to open files in preview mode, where they close automatically
+    // when you switch to another file unless you explicitly pin them.
+    // This is useful for quickly viewing files without cluttering your workspace.
+    "enabled": false
+  },
+  // Whether to disable all AI features in Zed.
+  //
+  // Default: false
+  // "disable_ai": false,
+  // Automatically update Zed. This setting may be ignored on Linux if
+  // installed through a package manager.
+  // "auto_update": true,
+  // // Files or globs of files that will be excluded by Zed entirely. They will be skipped during file
+  // scans, file searches, and not be displayed in the project file tree. Takes precedence over `file_scan_inclusions`.
+  // "file_scan_exclusions": [
+  //   "**/.git",
+  //   "**/.svn",
+  //   "**/.hg",
+  //   "**/.jj",
+  //   "**/.repo",
+  //   "**/CVS",
+  //   "**/.DS_Store",
+  //   "**/Thumbs.db",
+  //   "**/.classpath",
+  //   "**/.settings"
+  // ],
+  // Files or globs of files that will be included by Zed, even when ignored by git. This is useful
+  // for files that are not tracked by git, but are still important to your project. Note that globs
+  // that are overly broad can slow down Zed's file scanning. `file_scan_exclusions` takes
+  // precedence over these inclusions.
+  "file_scan_inclusions": [".env*"],
+  // Git gutter behavior configuration.
+  "git": {
+    // Control whether the git blame information is shown inline,
+    // in the currently focused line.
+    "inline_blame": {
+      "enabled": false
+    }
+  },
+  // "edit_predictions": {
+  //   // A list of globs representing files that edit predictions should be disabled for.
+  //   // There's a sensible default list of globs already included.
+  //   // Any addition to this list will be merged with the default list.
+  //   // Globs are matched relative to the worktree root,
+  //   // except when starting with a slash (/) or equivalent in Windows.
+  //   "disabled_globs": [
+  //     "**/.env*",
+  //     "**/*.pem",
+  //     "**/*.key",
+  //     "**/*.cert",
+  //     "**/*.crt",
+  //     "**/.dev.vars",
+  //     "**/secrets.yml",
+  //     "**/.zed/settings.json", // zed project settings
+  //     "/**/zed/settings.json", // zed user settings
+  //     "/**/zed/keymap.json"
+  //   ]
+  // }
+  // Settings specific to journaling
+  "journal": {
+    // The path of the directory where journal entries are stored
+    "path": "/data/doc/journalogs/zed",
+    // What format to display the hours in
+    // May take 2 values:
+    // 1. hour12
+    // 2. hour24
+    "hour_format": "hour24"
   }
+  // "file_types": {
+  //   "JSONC": ["**/.zed/**/*.json", "**/zed/**/*.json", "**/Zed/**/*.json", "**/.vscode/**/*.json"],
+  //   "Shell Script": [".env.*"]
+  // },
+  // Configures any number of settings profiles that are temporarily applied on
+  // top of your existing user settings when selected from
+  // `settings profile selector: toggle`.
+  // Examples:
+  // "profiles": {
+  //   "Presenting": {
+  //     "agent_font_size": 20.0,
+  //     "buffer_font_size": 20.0,
+  //     "theme": "One Light",
+  //     "ui_font_size": 20.0
+  //   },
+  //   "Python (ty)": {
+  //     "languages": {
+  //       "Python": {
+  //         "language_servers": ["ty"]
+  //       }
+  //     }
+  //   }
+  // }
+  // "profiles": []
 }
