@@ -10,6 +10,10 @@
     "context": "Workspace",
     "bindings": {
       // "shift shift": "file_finder::Toggle"
+      "alt-left": "workspace::ActivatePaneLeft",
+      "alt-right": "workspace::ActivatePaneRight",
+      "alt-up": "workspace::ActivatePaneUp",
+      "alt-down": "workspace::ActivatePaneDown"
     }
   },
   {
@@ -21,12 +25,10 @@
   {
     "context": "Editor",
     "bindings": {
-      "ctrl-d": "editor::DeleteLine"
-    }
-  },
-  {
-    "context": "Editor",
-    "bindings": {
+      "ctrl-d": "editor::DeleteLine",
+      "ctrl-shift-up": "editor::AddSelectionAbove", // Insert Cursor Above
+      "ctrl-shift-down": "editor::AddSelectionBelow", // Insert Cursor Below
+
       "ctrl-l": [
         "editor::SelectNext",
         {
