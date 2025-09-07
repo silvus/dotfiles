@@ -1,0 +1,57 @@
+# theme = "ayu_evolve"
+theme = "everblush"
+
+[editor]
+default-line-ending = "lf"
+trim-final-newlines = true
+trim-trailing-whitespace = true
+color-modes = true
+line-number = "relative"
+mouse = false
+cursorline = true
+end-of-line-diagnostics = "hint"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.statusline]
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[editor.file-picker]
+# Enables ignoring hidden files
+hidden = false
+
+# [editor.auto-save]
+# focus-lost = true
+# after-delay.enable = true
+# after-delay.timeout = 2000
+
+# [editor.whitespace]
+# render = "all"
+
+[editor.indent-guides]
+render = true
+
+[editor.inline-diagnostics]
+cursor-line = "warning"
+other-lines = "warning"
+
+# At most one section each of 'keys.normal', 'keys.insert' and 'keys.select'
+[keys.normal]
+C-s = ":w" # Maps Ctrl-s to the typable command :w which is an alias for :write (save file)
+# C-o = ":open ~/.config/helix/config.toml" # Maps Ctrl-o to opening of the helix config file
+# a = "move_char_left" # Maps the 'a' key to the move_char_left command
+# w = "move_line_up" # Maps the 'w' key move_line_up
+# "C-S-esc" = "extend_line" # Maps Ctrl-Shift-Escape to extend_line
+# g = { a = "code_action" } # Maps `ga` to show possible code actions
+# "ret" = ["open_below", "normal_mode"] # Maps the enter key to open_below then re-enter normal mode
+# "A-x" = "@x<A-d>" # Maps Alt-x to a macro selecting the whole line and deleting it without yanking it
+
+[keys.insert]
+C-s = ":w" # Maps Ctrl-s to the typable command :w which is an alias for :write (save file)
+# "A-x" = "normal_mode"     # Maps Alt-X to enter normal mode
+# j = { k = "normal_mode" } # Maps `jk` to exit insert mode
