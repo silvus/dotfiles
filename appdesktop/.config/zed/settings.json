@@ -88,6 +88,31 @@
   },
   "agent": {
     // When enabled, show voting thumbs for feedback on agent edits.
+    // "default_profile": "write",
+    // "profiles": {
+    //   "write": {
+    //     "name": "Write",
+    //     "enable_all_context_servers": true,
+    //     "tools": {
+    //       "copy_path": true,
+    //       "create_directory": false,
+    //       "delete_path": false,
+    //       "diagnostics": true,
+    //       "edit_file": true,
+    //       "fetch": false,
+    //       "list_directory": true,
+    //       "project_notifications": false,
+    //       "move_path": false,
+    //       "now": true,
+    //       "find_path": true,
+    //       "read_file": true,
+    //       "grep": true,
+    //       "terminal": false,
+    //       "thinking": true,
+    //       "web_search": true
+    //     }
+    //   }
+    // },
     "enable_feedback": false,
     // Where to show notifications when the agent has either completed
     // its response, or else needs confirmation before it can run a
@@ -97,7 +122,9 @@
     // "never" - Never show these notifications
     "notify_when_agent_waiting": "never",
     // Default: false
-    "play_sound_when_agent_done": true
+    "play_sound_when_agent_done": true,
+    // When enabled, the agent can run potentially destructive actions without asking for your confirmation.
+    "always_allow_tool_actions": false
   },
   // Whether the screen sharing icon is shown in the os status bar.
   "show_call_status_icon": false,
