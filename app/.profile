@@ -128,7 +128,9 @@ fi
 # Defaults Programs
 # -----------------------------------------------------------------------------
 # Editor
-if [[ -x "$(command -v nvim)" ]]; then
+if [[ -x "$(command -v hx)" ]]; then
+	export EDITOR="$(command -v hx)"
+elif [[ -x "$(command -v nvim)" ]]; then
 	export EDITOR="$(command -v nvim)"
 elif [[ -x "$(command -v vim)" ]]; then
 	export EDITOR="$(command -v vim)"
@@ -193,4 +195,3 @@ if [ -n "$BASH_VERSION" ]; then
 		source "$HOME/.bashrc"
 	fi
 fi
-
