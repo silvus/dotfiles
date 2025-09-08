@@ -284,7 +284,8 @@ lsp.add_server({
 -- Rust
 lspconfig.rust_analyzer.setup(common.merge({
 	command = {
-		os.getenv("HOME") .. "/.nix-profile/bin/rust-analyzer",
+		-- os.getenv("HOME") .. "/.nix-profile/bin/rust-analyzer",
+		os.getenv("HOME") .. "/.local/share/cargo/bin/rust-analyzer",
 	},
 }, config.plugins.lsp_rust or {}))
 

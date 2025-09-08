@@ -15,7 +15,8 @@
     ruff
 
     # rust lsp
-    rust-analyzer
+    # rust-analyzer
+    # rustup component add rust-analyzer
 
     # nix lsp
     nil
