@@ -1,5 +1,6 @@
 # theme = "ayu_evolve"
-theme = "everblush"
+# theme = "everforest_dark"
+theme = "kanagawa"
 
 [editor]
 default-line-ending = "lf"
@@ -7,7 +8,7 @@ trim-final-newlines = true
 trim-trailing-whitespace = true
 color-modes = true
 line-number = "relative"
-mouse = false
+# mouse = false
 cursorline = true
 end-of-line-diagnostics = "hint"
 
