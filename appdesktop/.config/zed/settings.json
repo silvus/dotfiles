@@ -44,7 +44,15 @@
   // Hide the values of in variables from visual display in private files
   "redact_private_values": true,
   // Globs to match against file paths to determine if a file is private.
-  // "private_files": ["**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/secrets.yml"],
+  "private_files": [
+    "**/.env*",
+    "**/*.pem",
+    "**/*.key",
+    "**/*.cert",
+    "**/*.crt",
+    "**/secrets.yml",
+    "**/.archives/**"
+  ],
   // Titlebar related settings
   "title_bar": {
     // Whether to show the branch icon beside branch switcher in the titlebar.
