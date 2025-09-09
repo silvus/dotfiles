@@ -9,6 +9,7 @@ trim-trailing-whitespace = true
 color-modes = true
 line-number = "relative"
 # mouse = false
+default-yank-register = "+"
 cursorline = true
 end-of-line-diagnostics = "hint"
 # Show tabs bar to list buffers
