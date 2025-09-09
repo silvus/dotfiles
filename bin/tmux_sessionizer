@@ -170,7 +170,9 @@ def main():
         if os.path.isfile(selected):
             tmux_open_command = "{} \"{}\"".format(os.getenv('EDITOR', shutil.which('vim')), selected)
         elif selected in (os.path.expanduser(p) for p in EDIT_PATHS):
-            tmux_open_command = "cd {1} && {0} \"{1}\"".format(os.getenv('EDITOR', shutil.which('vim')), selected)
+            # 2025-09-09: change EDITOR to helix, but for doc we want org mode support
+            # tmux_open_command = "cd {1} && {0} \"{1}\"".format(os.getenv('EDITOR', shutil.which('vim')), selected)
+            tmux_open_command = "cd {1} && {0} \"{1}\"".format(shutil.which('nvim'), selected)
         elif not os.path.isdir(selected):
             log.error(f'Selected projet does not exit {selected}')
             return
@@ -224,4 +226,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
