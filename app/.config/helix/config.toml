@@ -11,6 +11,8 @@ line-number = "relative"
 # mouse = false
 cursorline = true
 end-of-line-diagnostics = "hint"
+# Show tabs bar to list buffers
+bufferline = "multiple"
 
 [editor.cursor-shape]
 insert = "bar"
