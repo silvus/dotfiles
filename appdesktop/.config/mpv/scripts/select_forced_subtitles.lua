@@ -11,7 +11,7 @@ function select_forced_subtitle()
 		-- print(sub.title)
 		-- print(sub.forced)
 		-- end
-		
+
 		-- if sub.type == "sub" and not sub.forced and (sub.title == nil or not sub.title:find("SDH") and not string.lower(sub.title):find("force")) then
 		if sub.type == "sub" and sub.lang:find("fr") and (sub.forced or (sub.title ~= nil and sub.title:find("SDH"))) then
 			last_sub = sub
@@ -21,4 +21,6 @@ function select_forced_subtitle()
 		mp.set_property("sid", last_sub.id)
 	end
 end
-mp.register_event("file-loaded", select_forced_subtitle)
+
+-- 2025-09-14: Disable for now, to force english.
+-- mp.register_event("file-loaded", select_forced_subtitle)
