@@ -421,7 +421,7 @@ def launch(dotfilespath, restarted, root):
     # Self update
     if check_network():
         git_clone_or_update_dotfiles(
-            "git@github.com:silvus/dotfiles.git", dotfilespath, restarted
+            "https://github.com/silvus/dotfiles.git", dotfilespath, restarted
         )
 
     # Make symlinks
@@ -524,4 +524,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
