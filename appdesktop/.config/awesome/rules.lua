@@ -216,6 +216,8 @@ local rules = {
             "Pavucontrol",
             "Lutris",
             "discord",
+            "movie",
+            "movies",
         },
         properties = {
             tag = desktops.tags_names[6],
@@ -350,4 +352,3 @@ local rules = {
 
 
 return rules
-
