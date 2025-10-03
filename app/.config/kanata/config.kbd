@@ -63,5 +63,7 @@
   lmd (tap-hold 200 200 grv @med)
 
   ;; tap: esc hold: ctrl
-  ecl (tap-hold 200 200 esc lctl)
+  ;; ecl (tap-hold 200 200 esc lctl)
+  ;; tap: esc hold: nav layer
+  ecl (tap-hold 200 200 esc @lnv)
 )
