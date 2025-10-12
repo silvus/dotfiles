@@ -333,7 +333,7 @@
 (setq org-todo-keywords
        '(
        	;; Sequence for TASKS
-       	(sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)" "DELEGATED(g@)" "INACTIVE(i@)")
+       	(sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "BACKLOG(b@/!)" "|" "DONE(d!)" "CANCELED(c@)" "DELEGATED(g@)" "INACTIVE(i@)")
        	;; Sequence for EVENTS
        	;;(sequence "VISIT(v@/!)" "|" "DIDNOTGO(z@/!)" "MEETING(m@/!)" "VISITED(y@/!)")
        	))

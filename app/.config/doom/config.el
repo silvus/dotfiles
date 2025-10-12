@@ -50,6 +50,8 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+;; Places lines between the current line and the screen edge
+(setq scroll-margin 25)
 
 (load-file "~/.config/doom/package_org.el")
 
