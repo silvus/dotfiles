@@ -48,12 +48,14 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 ;; Places lines between the current line and the screen edge
 (setq scroll-margin 25)
 
-(load-file "~/.config/doom/package_org.el")
+;; Load org mode config
+;; (load-file "~/.config/doom/package_org.el")
+(load (expand-file-name "package_org.el" (file-name-directory load-file-name)))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -87,3 +89,54 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; Use standard keybindings C-x / C-c / C-v / C-z behave as cut/copy/paste/undo
+(cua-mode 1)
+
+;; Bind Ctrl-s to save buffer
+(map! "C-s" #'save-buffer)
+
+;; Page Up to scroll normally, but when the buffer cannot scroll further (e.g. already near the top),
+;; it should move the cursor to the beginning of the buffer
+(setq scroll-error-top-bottom t)
+
+(defun delete-line-no-kill ()
+  "Delete the current line without affecting the kill-ring."
+  (interactive)
+  (delete-region (line-beginning-position)
+                 (min (1+ (line-end-position)) (point-max))))
+
+(map! :nvi "C-d" #'delete-line-no-kill)
+(map! :nvi "C-/" #'evilnc-comment-or-uncomment-lines)
+(map! :nvi "C-S-l" #'evil-mc-make-cursor-move-next-line)
+
+
+(map! :nvi ;; normal, visual, insert
+      "M-<left>"  #'windmove-left
+      "M-<right>" #'windmove-right
+      "M-<up>"    #'windmove-up
+      "M-<down>"  #'windmove-down)
+
+(map! :nvi "M-w" #'delete-window)
+
+;; Vertical split with Alt+T
+(map! :nvi "M-t" #'split-window-right)
+
+;; Resize splits with Alt+Shift+Arrow
+(map! :nvi "M-S-<left>"  (lambda () (interactive) (shrink-window-horizontally 5)))
+(map! :nvi "M-S-<right>" (lambda () (interactive) (enlarge-window-horizontally 5)))
+(map! :nvi "M-S-<up>"    (lambda () (interactive) (enlarge-window 5)))
+(map! :nvi "M-S-<down>"  (lambda () (interactive) (shrink-window 5)))
+
+(defun swap-windows (dir)
+  "Swap current window with window in direction DIR."
+  (let ((other (windmove-find-other-window dir)))
+    (when other
+      (let ((this-buffer (window-buffer))
+            (other-buffer (window-buffer other)))
+        (set-window-buffer other this-buffer)
+        (set-window-buffer (selected-window) other-buffer)))))
+(map! :nvi "M-C-<left>"  (lambda () (interactive) (swap-windows 'left)))
+(map! :nvi "M-C-<right>" (lambda () (interactive) (swap-windows 'right)))
+(map! :nvi "M-C-<up>"    (lambda () (interactive) (swap-windows 'up)))
+(map! :nvi "M-C-<down>"  (lambda () (interactive) (swap-windows 'down)))
