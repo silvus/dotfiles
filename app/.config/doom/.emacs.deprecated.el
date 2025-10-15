@@ -731,30 +731,30 @@
   (interactive)
     (delete-region (progn (forward-line 0) (point))
       (progn (forward-line 1) (point))))
-(global-set-key (kbd "C-d") 'my-kill-whole-line)
-
+(global-set-key (kbd "C-d") 'my-kill-whole-line)                                  
+                                                                                  
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
 (define-key org-mode-map (kbd "C-a") 'mark-whole-buffer)
 (global-set-key (kbd "C-s") 'save-buffer)
-;(global-set-key (kbd "C-e") 'buffer-menu)
+;(global-set-key (kbd "C-e") 'buffer-menu)                                                     
 
 (global-set-key (kbd "C-o") 'find-file)
-(global-set-key (kbd "M-o") 'recentf-open-files)
+(global-set-key (kbd "M-o") 'recentf-open-files)                                   
 
-(global-set-key (kbd "C-f") 'isearch-forward)
+(global-set-key (kbd "C-f") 'isearch-forward)                               
 (global-set-key (kbd "C-S-f") 'isearch-backward)
 (define-key isearch-mode-map [(control f)] 'isearch-repeat-forward)
-
-(global-set-key (kbd "C-z") 'undo)
+                                                                                                                   
+(global-set-key (kbd "C-z") 'undo)                                             
 (global-set-key (kbd "C-y") 'redo)
-(global-set-key (kbd "C-S-y") 'redo)
-(define-key org-mode-map (kbd "C-y") 'redo)
+(global-set-key (kbd "C-S-y") 'redo)                                   
+(define-key org-mode-map (kbd "C-y") 'redo)                                                               
 
-;; Splits navigation
+;; Splits navigation                                                              
 (global-set-key (kbd "C-w") 'kill-buffer)
-(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <up>") 'windmove-up)             
 (global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <left>") 'windmove-left)                             
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 
 ;; One escape to quit
