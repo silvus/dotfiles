@@ -149,7 +149,7 @@ local rules = {
     },
     -- Dev
     {
-        rule_any = { class = { "VSCodium", "dev.zed.Zed", "jetbrains-phpstorm", "lite-xl", "pragtical" } },
+        rule_any = { class = { "VSCodium", "dev.zed.Zed", "jetbrains-phpstorm", "lite-xl", "pragtical", "Emacs" } },
         properties = {
             tag = desktops.tags_names[2],
             titlebars_enabled = false,
