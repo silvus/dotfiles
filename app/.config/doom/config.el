@@ -53,10 +53,8 @@
 ;; Places lines between the current line and the screen edge
 (setq scroll-margin 25)
 
-;; Load org mode config
-;; (load-file "~/.config/doom/package_org.el")
+;; Load org mode config (wrapped in after! within the file)
 (load (expand-file-name "package_org.el" (file-name-directory load-file-name)))
-
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -90,10 +88,11 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; Use standard keybindings C-x / C-c / C-v / C-z behave as cut/copy/paste/undo
-(cua-mode 1)
+;; CUA mode for standard cut/copy/paste keybindings
+(after! cua-base
+  (cua-mode 1))
 
-;; Bind Ctrl-s to save buffer
+;; Custom keybindings
 (map! "C-s" #'save-buffer)
 
 ;; Page Up to scroll normally, but when the buffer cannot scroll further (e.g. already near the top),
@@ -106,11 +105,19 @@
   (delete-region (line-beginning-position)
                  (min (1+ (line-end-position)) (point-max))))
 
-(map! :nvi "C-d" #'delete-line-no-kill)
-(map! :nvi "C-/" #'evilnc-comment-or-uncomment-lines)
-(map! :nvi "C-S-l" #'evil-mc-make-cursor-move-next-line)
+;; Evil-specific keybindings
+(after! evil
+  (map! :nvi "C-d" #'delete-line-no-kill))
 
+;; Evil comment keybinding
+(after! evil-nerd-commenter
+  (map! :nvi "C-/" #'evilnc-comment-or-uncomment-lines))
 
+;; Evil multiple cursors
+(after! evil-mc
+  (map! :nvi "C-S-l" #'evil-mc-make-cursor-move-next-line))
+
+;; Window management keybindings
 (map! :nvi ;; normal, visual, insert
       "M-<left>"  #'windmove-left
       "M-<right>" #'windmove-right
@@ -136,6 +143,7 @@
             (other-buffer (window-buffer other)))
         (set-window-buffer other this-buffer)
         (set-window-buffer (selected-window) other-buffer)))))
+
 (map! :nvi "M-C-<left>"  (lambda () (interactive) (swap-windows 'left)))
 (map! :nvi "M-C-<right>" (lambda () (interactive) (swap-windows 'right)))
 (map! :nvi "M-C-<up>"    (lambda () (interactive) (swap-windows 'up)))
