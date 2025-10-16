@@ -46,6 +46,27 @@
 ;; (setq doom-theme 'doom-henna)
 (setq doom-theme 'doom-molokai)
 
+(custom-set-faces
+ '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
+ '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.6))))
+ '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.5))))
+ '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.4))))
+ '(markdown-header-face-4 ((t (:inherit markdown-header-face :height 1.3))))
+ '(markdown-header-face-5 ((t (:inherit markdown-header-face :height 1.2))))
+ '(markdown-header-face-6 ((t (:inherit markdown-header-face :height 1.1)))))
+
+(custom-theme-set-faces!
+'doom-molokai
+'(org-level-8 :inherit outline-3 :height 1.0)
+'(org-level-7 :inherit outline-3 :height 1.0)
+'(org-level-6 :inherit outline-3 :height 1.1)
+'(org-level-5 :inherit outline-3 :height 1.2)
+'(org-level-4 :inherit outline-3 :height 1.3)
+'(org-level-3 :inherit outline-3 :height 1.4)
+'(org-level-2 :inherit outline-2 :height 1.5)
+'(org-level-1 :inherit outline-1 :height 1.6)
+'(org-document-title  :height 1.8 :bold t :underline nil))
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
