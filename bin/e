@@ -4,6 +4,6 @@ set -e
 set -u
 set -o pipefail
 
-# Alias of which
+# Alias to open EDITOR
 
-exec which -a "$@"
+exec "$EDITOR" "$@"
