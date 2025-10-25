@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Alias to xclip. To extend to support Wayland
+exec xclip -selection clipboard "$@"

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Alias to get the current resolution from Xrandr. Should be expand to support Wayland
+
+xrandr -q | grep "*" | cut -d " " -f 4

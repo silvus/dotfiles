@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+if [ $# -eq 0 ]; then
+  # without args, copy pwd
+  pwd | tr -d '\n' | copy
+else
+  realpath "$1" | copy
+fi

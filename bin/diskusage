@@ -4,6 +4,5 @@ set -e
 set -u
 set -o pipefail
 
-# Alias of which
-
-exec which -a "$@"
+# Alias to ncdu
+exec ncdu "$@"

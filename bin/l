@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Case sensitive alias of ls
+
+export LC_COLLATE=C
+exec ls -lhaFN --color=auto --group-directories-first "$@"

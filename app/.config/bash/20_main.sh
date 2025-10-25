@@ -17,9 +17,7 @@ alias tree6="tree --dirsfirst -ChFLQ 6"
 
 # Misc
 # -----------------------------------------------------------------------------
-alias l='LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
 # alias rm='rm -I' # prompt if deleting more than 3 files at a time
-alias distro='cat /etc/issue'
 alias shortcuts='bind -P'
 alias sudosu="sudo -Es"
 
@@ -42,16 +40,8 @@ alias findandmovehereallfiles="find . -mindepth 2 -type f -print -exec mv {} . \
 
 # Programs
 # -----------------------------------------------------------------------------
-alias e='$EDITOR'
-alias diskusage='ncdu'
-alias copy='xclip -selection clipboard'
-alias copytoclipboard='copy' # Same as copy alias
-alias calculator='bc -l'
-alias photo='eom' # Eye of Mate
-alias lynx="lynx -cfg=$HOME/.config/lynx/lynxrc -lss=$HOME/.config/lynx/lynx.lss"
 alias bat='batcat'
 alias fd='fdfind'
-alias lz='lazygit'
 alias y='yazi'
 
 # Enable color support of ls and also add handy aliases
@@ -65,12 +55,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-
-# Screen
-# -----------------------------------------------------------------------------
-alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
-alias screendual="xrandr --output HDMI-0 --auto --primary --output VGA-0 --auto --above HDMI-0"
-alias screensimple="xrandr --output VGA-0 --off --output HDMI-0 --auto --primary"
 
 # System
 # -----------------------------------------------------------------------------

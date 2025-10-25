@@ -5,7 +5,7 @@ fenv source ~/.profile
 
 # Stop changing clipboard content on kill
 # https://github.com/fish-shell/fish-shell/issues/772
-set --global -x FISH_CLIPBOARD_CMD "cat"
+set --global -x FISH_CLIPBOARD_CMD cat
 
 
 # Fish style # https://fishshell.com/docs/current/index.html#variables-color
@@ -47,23 +47,14 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-alias l='env LC_COLLATE=C ls -lhaFN --color=auto --group-directories-first'
-
 function mkcd --description 'Create a folder and go into it'
     mkdir -p "$argv"
     cd "$argv"
 end
 
-alias e='$EDITOR'
 alias b='$BROWSER'
-alias diskusage='ncdu'
-alias calculator='bc -l'
-alias copy='xclip -selection clipboard'
-alias copytoclipboard='xclip -selection clipboard'
-alias resolution='xrandr -q | grep "*" | cut -d " " -f 4'
 alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option \"grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e\""
 alias fd='fdfind'
-alias lz='lazygit'
 
 if type -q batcat
     alias bat='batcat'
@@ -114,7 +105,7 @@ end
 function y
     set tmp (mktemp -t "yazi-cwd.XXXXXX")
     yazi $argv --cwd-file="$tmp"
-    if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+    if read -z cwd <"$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
         builtin cd -- "$cwd"
     end
     rm -f -- "$tmp"
@@ -160,23 +151,23 @@ bind \ch fzf-history-widget
 # "#34e2e2",  /* 14: bright cyan    */
 # "#eeeeec",  /* 15: bright white   */
 
-if test "$TERM" = "linux"
-    printf '\033]P01a1a1a'  # black
-    printf '\033]P1cc0000'  # red
-    printf '\033]P24e9a06'  # green
-    printf '\033]P3c4a000'  # yellow
-    printf '\033]P43465a4'  # blue
-    printf '\033]P575507b'  # magenta
-    printf '\033]P606989a'  # cyan
-    printf '\033]P7d3d7cf'  # white
-    printf '\033]P8555753'  # bright black
-    printf '\033]P9ef2929'  # bright red
-    printf '\033]PA8ae234'  # bright green
-    printf '\033]PBfce94f'  # bright yellow
-    printf '\033]PC729fcf'  # bright blue
-    printf '\033]PDad7fa8'  # bright magenta
-    printf '\033]PE34e2e2'  # bright cyan
-    printf '\033]PFeeeeec'  # bright white
+if test "$TERM" = linux
+    printf '\033]P01a1a1a' # black
+    printf '\033]P1cc0000' # red
+    printf '\033]P24e9a06' # green
+    printf '\033]P3c4a000' # yellow
+    printf '\033]P43465a4' # blue
+    printf '\033]P575507b' # magenta
+    printf '\033]P606989a' # cyan
+    printf '\033]P7d3d7cf' # white
+    printf '\033]P8555753' # bright black
+    printf '\033]P9ef2929' # bright red
+    printf '\033]PA8ae234' # bright green
+    printf '\033]PBfce94f' # bright yellow
+    printf '\033]PC729fcf' # bright blue
+    printf '\033]PDad7fa8' # bright magenta
+    printf '\033]PE34e2e2' # bright cyan
+    printf '\033]PFeeeeec' # bright white
     clear
 end
 
@@ -186,4 +177,3 @@ end
 if test -f "$SILVUSDOTFILES_CUSTOM/shellfish"
     source "$SILVUSDOTFILES_CUSTOM/shellfish"
 end
-
