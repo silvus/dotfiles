@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Alias of which because I keep forgetting the command
+
+which -a "$@"
