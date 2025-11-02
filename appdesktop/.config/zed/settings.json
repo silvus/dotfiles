@@ -9,7 +9,7 @@
 {
   "ui_font_size": 13,
   "buffer_font_size": 12,
-  "agent_font_size": 13,
+  "agent_ui_font_size": 13,
   "theme": {
     "mode": "system",
     "light": "One Dark",
