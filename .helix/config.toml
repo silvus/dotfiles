@@ -1,0 +1,4 @@
+
+[editor.file-picker]
+# Enables ignoring hidden files
+hidden = false
