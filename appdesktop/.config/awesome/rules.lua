@@ -202,27 +202,6 @@ local rules = {
         }
     },
 
-    -- Mixed
-    {
-        rule_any = {
-            class =
-            "Godot",
-            "Keybase",
-            "balena-etcher-electron",
-            "GParted",
-            "Transmission",
-            "Slack",
-            "JoalDesktop",
-            "Pavucontrol",
-            "Lutris",
-            "discord",
-            "movie",
-            "movies",
-        },
-        properties = {
-            tag = desktops.tags_names[6],
-        }
-    },
     -- Games
     {
         rule_any = {
@@ -258,6 +237,28 @@ local rules = {
     -- Graphics
     {
         rule_any = { class = { "Gimp", "Krita", "FreeCAD" } },
+        properties = {
+            tag = desktops.tags_names[7],
+        }
+    },
+    -- Mixed
+    {
+        rule_any = {
+            class = {
+                "Godot",
+                "Keybase",
+                "balena-etcher-electron",
+                "GParted",
+                "Transmission",
+                "Slack",
+                "JoalDesktop",
+                "Pavucontrol",
+                "Lutris",
+                "discord",
+                "movie",
+                "movies",
+            }
+        },
         properties = {
             tag = desktops.tags_names[8],
         }
