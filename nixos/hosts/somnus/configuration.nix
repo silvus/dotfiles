@@ -1,52 +1,62 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ pkgs, ... }:
+# Somnus - Gaming Desktop Configuration
+{ config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
 
-  # Bootloader (Only for dualboots)
-  boot.loader.timeout = 1;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 9;
-  # See /boot/EFI/debian
-  boot.loader.systemd-boot.extraEntries."debian.conf" = ''
-    title Debian
-    efi   /efi/debian/grubx64.efi
-    sort-key 1
-  '';
+    # Enable desktop modules
+    ../../modules/desktop.nix
+    ../../modules/gaming.nix
+    ../../modules/security.nix
+    ../../modules/syncthing.nix
+    ../../modules/development.nix
+  ];
 
-
-  networking.hostName = "somnus"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Login init
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd sway";
-        user = "greeter";
-      };
+  # Bootloader (dual boot with Debian)
+  boot.loader = {
+    timeout = 1;
+    efi.canTouchEfiVariables = true;
+    systemd-boot = {
+      enable = true;
+      configurationLimit = 9;
+      # Dual boot with Debian
+      extraEntries."debian.conf" = ''
+        title Debian
+        efi   /efi/debian/grubx64.efi
+        sort-key 1
+      '';
     };
   };
 
-  security.polkit.enable = true;
-  security.pam.services.swaylock = {};
+  # All modules enabled by import
 
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  # Gaming desktop packages
+  environment.systemPackages = with pkgs; [
+    # Gaming extras
+    discord
+
+    # Multimedia
+    obs-studio
+    audacity
+    gimp
+
+    # Communication
+    slack
+    zoom-us
+  ];
+
+  # Audio optimization for multimedia work
+  services.pipewire = {
+    jack.enable = true;
+  };
+
+  # Additional firewall ports for gaming/development
+  networking.firewall.allowedTCPPorts = [
+    3000  # Development servers
+    8080  # Alternative web servers
+  ];
+
+  # This value determines the NixOS release
+  system.stateVersion = "25.05";
 }
-

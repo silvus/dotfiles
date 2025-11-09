@@ -1,171 +1,86 @@
 {
-  description = "Custom NixOS flake configuration";
+  description = "Silvus's NixOS Configuration";
 
-  # Declare flake inputs (dependencies)
   inputs = {
-    # Use the nixpkgs repository from Github, nixos-unstable branch
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Use the nixpkgs repository, stable branch
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    # Add Home Manager
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
-    # Make sure Home Manager uses the same nixpkgs as the system
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  # Declare flake outputs
-  outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-    }:
+  outputs = { self, nixpkgs, home-manager }:
+  let
+    system = "x86_64-linux";
+    lib = nixpkgs.lib;
 
-    let
-      # Define the target system type
-      system = "x86_64-linux";
-      # Import nixpkgs for the chosen system
+    mkHost = hostname: lib.nixosSystem {
+      inherit system;
+      specialArgs = { inherit hostname; };
+      modules = [
+        ./modules/base.nix
+        ./hosts/${hostname}/configuration.nix
+        {
+          networking.hostName = lib.mkDefault hostname;
+        }
+      ];
+    };
+
+  in
+  {
+    nixosConfigurations = {
+      nixos-vm = mkHost "nixos-vm";
+      noctus = mkHost "noctus";
+      somnus = mkHost "somnus";
+      virtus = mkHost "virtus";
+      servius = mkHost "servius";
+    };
+
+    homeConfigurations.silvus = home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
-
-    in
-    {
-
-      # Config based on hostname
-      nixosConfigurations.noctus = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        # List of NixOS modules to include
-        modules = [
-          # Main system config
-          ./hosts/noctus/configuration.nix
-
-          # Shared base config
-          ./system/nixos.nix
-          ./system/nixos_desktop.nix
-
-          # Include the Home Manager NixOS module
-          home-manager.nixosModules.home-manager
-          # Home Manager specific configuration
-          {
-            # Use the same pkgs instance for Home Manager as the system
-            home-manager.useGlobalPkgs = true;
-            # Install user packages via Home Manager
-            home-manager.useUserPackages = true;
-            # On activation move existing files by appending the given file extension rather than exiting with an error.
-            home-manager.backupFileExtension = "hm_bk";
-            # Home manager config for a user
-            home-manager.users.silvus = {
-              imports = [
-                ./packages/theme.nix
-                ./packages/dev.nix
-              ];
-
-              # Fix 'command not found' database broken
-              # programs.nix-index =
-              # {
-              #  enable = true;
-              # enableFishIntegration = true;
-              # };
-
-              home.stateVersion = "25.05"; # Please read the comment before changing.
-            };
-
-          }
-        ];
-      };
-
-      nixosConfigurations.somnus = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        # List of NixOS modules to include
-        modules = [
-          # Main system config
-          ./hosts/somnus/configuration.nix
-
-          # Shared base config
-          ./system/nixos.nix
-          ./system/nixos_desktop.nix
-
-          # Include the Home Manager NixOS module
-          home-manager.nixosModules.home-manager
-          # Home Manager specific configuration
-          {
-            # Use the same pkgs instance for Home Manager as the system
-            home-manager.useGlobalPkgs = true;
-            # Install user packages via Home Manager
-            home-manager.useUserPackages = true;
-            # On activation move existing files by appending the given file extension rather than exiting with an error.
-            home-manager.backupFileExtension = "hm_bk";
-            # Home manager config for a user
-            home-manager.users.silvus = {
-              imports = [
-                ./packages/theme.nix
-                ./packages/dev.nix
-              ];
-              home.stateVersion = "25.05"; # Please read the comment before changing.
-            };
-
-          }
-        ];
-      };
-
-      nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        # List of NixOS modules to include
-        modules = [
-          # Main system config
-          ./hosts/nixos-vm/configuration.nix
-
-          # Shared base config
-          ./system/nixos.nix
-          ./system/nixos_desktop.nix
-
-          # Include the Home Manager NixOS module
-          home-manager.nixosModules.home-manager
-          # Home Manager specific configuration
-          {
-            # Use the same pkgs instance for Home Manager as the system
-            home-manager.useGlobalPkgs = true;
-            # Install user packages via Home Manager
-            home-manager.useUserPackages = true;
-            # On activation move existing files by appending the given file extension rather than exiting with an error.
-            home-manager.backupFileExtension = "hm_bk";
-            # Home manager config for a user
-            home-manager.users.silvus = {
-              imports = [
-                ./packages/theme.nix
-                ./packages/dev.nix
-              ];
-              home.stateVersion = "25.05"; # Please read the comment before changing.
-            };
-          }
-        ];
-      };
-
-      # Home Manager standalone (non-NixOS)
-      homeConfigurations.silvus = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          # ./packages/waybar.nix
-          {
-            home.username = "silvus";
-            home.homeDirectory = "/home/silvus";
-            home.stateVersion = "25.05"; # Please read the comment before changing.
-            # Let Home Manager install and manage itself.
-            programs.home-manager.enable = true;
-
-            imports = [
-              ./system/debian.nix
-              ./packages/dev.nix
-            ];
-          }
-        ];
-      };
+      modules = [
+        {
+          home = {
+            username = "silvus";
+            homeDirectory = "/home/silvus";
+            stateVersion = "25.05";
+          };
+          programs.home-manager.enable = true;
+          imports = [ ./modules/development.nix ];
+        }
+      ];
     };
 
-}
+    devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
+      buildInputs = with nixpkgs.legacyPackages.${system}; [
+        nixos-rebuild
+        git
+        vim
+        nixfmt-rfc-style
+        nil
+      ];
 
+      shellHook = ''
+        echo "NixOS Configuration Development Environment"
+        echo ""
+        echo "Available commands:"
+        echo "  nixos-rebuild switch --flake .#\$(hostname) --use-remote-sudo"
+        echo "  nixos-rebuild test --flake .#\$(hostname) --use-remote-sudo"
+        echo "  nixfmt *.nix **/*.nix"
+        echo ""
+        echo "Current hostname: \$(hostname)"
+        echo "Available hosts: nixos-vm, noctus, somnus, virtus, servius"
+        echo ""
+        echo "Installation commands:"
+        echo "  useradd -m -G wheel -s /run/current-system/sw/bin/bash silvus"
+        echo "  passwd silvus"
+        echo "  su - silvus"
+        echo "  nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#git -- clone https://github.com/silvus/dotfiles.git ~/.dotfiles"
+        echo "  sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles/nixos#\$(hostname) --use-remote-sudo"
+      '';
+    };
+  };
+}
