@@ -4,7 +4,7 @@ set -e
 
 cd /tmp
 
-KANATA_VERSION=$(curl -s "https://api.github.com/repos/jtroo/kanata/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+# KANATA_VERSION=$(curl -s "https://api.github.com/repos/jtroo/kanata/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 curl -sLo kanata "https://github.com/jtroo/kanata/releases/latest/download/kanata"
 
 sudo install kanata /usr/local/bin
@@ -14,9 +14,8 @@ sudo install kanata /usr/local/bin
 # If the uinput group does not exist, create a new group
 sudo groupadd uinput
 # Add your user to the input and the uinput group
-sudo usermod -aG input $USER
-sudo usermod -aG uinput $USER
-
+sudo usermod -aG input "$USER"
+sudo usermod -aG uinput "$USER"
 
 # Make sure the uinput device file has the right permissions.
 echo 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"' | sudo tee -a /etc/udev/rules.d/99-input.rules
@@ -27,7 +26,7 @@ sudo modprobe uinput
 
 # To create and enable a systemd daemon service
 mkdir -p "$HOME/.config/systemd/user"
-cat > $HOME/.config/systemd/user/kanata.service << EOF
+cat > "$HOME/.config/systemd/user/kanata.service" << EOF
 [Unit]
 Description=Kanata keyboard remapper
 Documentation=https://github.com/jtroo/kanata
