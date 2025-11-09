@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 with lib;
 
@@ -12,17 +12,33 @@ with lib;
       cmake
       pkg-config
 
-      # Language servers and formatters
-      nil
-      nixfmt-rfc-style
-      pyright
-      ruff
-      rust-analyzer
+      # Containers
+      incus
+
+      # lua lsp
       lua-language-server
+      # lua formatter
       stylua
-      shellcheck
-      shfmt
+
+      # python lsp
+      pyright
+      # ty
+      # python formatter
+      ruff
+
+      # rust lsp
+      # rust-analyzer
+      # rustup component add rust-analyzer
+
+      # nix lsp
+      nil
+      # nix formatter
+      nixfmt-rfc-style
+
+      # bash lsp
       bash-language-server
+      # bash formatter
+      shfmt
 
       # Languages
       python3
