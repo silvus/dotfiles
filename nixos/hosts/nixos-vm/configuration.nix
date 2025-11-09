@@ -1,27 +1,38 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ pkgs, modulesPath, ... }:
+# NixOS VM - Testing Configuration
+{ config, pkgs, modulesPath, ... }:
 
 {
   imports = [
-    # Include the default incus configuration.
-    "${modulesPath}/virtualisation/incus-virtual-machine.nix"
+    # Include the default incus configuration
+    ./incus-virtual-machine.nix
+
+    # Enable modules for testing
+    ../../modules/desktop.nix
+    ../../modules/gaming.nix
+    ../../modules/laptop.nix
+    ../../modules/security.nix
+    ../../modules/syncthing.nix
+    ../../modules/development.nix
   ];
 
   # Bootloader
-  boot.loader.timeout = 1;
-  boot.loader.systemd-boot.configurationLimit = 9;
+  boot.loader = {
+    timeout = 1;
+    systemd-boot = {
+      enable = true;
+      configurationLimit = 9;
+    };
+  };
 
-  networking.hostName = "nixos-vm";
-
+  # Host-specific networking
   networking = {
+    hostName = "nixos-vm";
     dhcpcd.enable = false;
     useDHCP = false;
     useHostResolvConf = false;
   };
 
+  # VM-specific network configuration
   systemd.network = {
     enable = true;
     networks."50-enp5s0" = {
@@ -34,20 +45,18 @@
     };
   };
 
-  # Login init
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd sway";
-        user = "greeter";
-      };
-    };
-  };
+  # All modules enabled by import
 
-  security.polkit.enable = true;
-  security.pam.services.swaylock = {};
+  # VM-specific packages
+  environment.systemPackages = with pkgs; [
+    neofetch
+    spice-vdagent
+  ];
 
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  # VM optimizations
+  services.spice-vdagentd.enable = true;
+  services.qemuGuest.enable = true;
+
+  # This value determines the NixOS release
+  system.stateVersion = "25.05";
 }
-
