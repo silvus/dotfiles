@@ -22,12 +22,16 @@
       LC_PAPER = "fr_FR.UTF-8";
       LC_TELEPHONE = "fr_FR.UTF-8";
       LC_TIME = "fr_FR.UTF-8";
+      LC_CTYPE = "fr_FR.UTF8";
+      LC_MESSAGES = "fr_FR.UTF-8";
+      LC_COLLATE = "fr_FR.UTF-8";
     };
   };
 
   # Console keymap
   console = {
-    keyMap = lib.mkDefault "us";
+    # keyMap = lib.mkDefault "us";
+    keyMap = "us";
     useXkbConfig = true;
   };
 
@@ -46,7 +50,7 @@
       experimental-features = [ "nix-command" "flakes" ];
       warn-dirty = false;
       auto-optimise-store = true;
-      trusted-users = [ "root" "@wheel" ];
+      # trusted-users = [ "root" "@wheel" ];
     };
 
     # Garbage collection
@@ -70,36 +74,51 @@
       "optical"
       "scanner"
       "lp"
-      "incus-admin"
     ];
     shell = pkgs.fish;
   };
 
   # Base system packages (minimal, essential only)
   environment.systemPackages = with pkgs; [
-    # Essential system tools
+    # Editor
     vim
     nano
+    helix
+
+    # Network
     wget
     curl
+    mosh
 
     # Shell and terminal tools
     fish
+    tmux
 
     # Basic utilities
     which
+    most
     file
+    git
+    fzf
+    bat
+    fd
+    jq
+    gawk
+    unzip
+    unrar
+
+    # Scripts
+    python3
 
     # Security
     gnupg
 
     # System information
-    lshw
-    usbutils
-    pciutils
+    ncdu
+    dfc
+    htop
+    btop
 
-    # Containers
-    incus
   ];
 
   # Enable essential programs
@@ -111,41 +130,37 @@
     fish.enable = true;
     git.enable = true;
   };
+  environment.variables.EDITOR = "vim";
 
   # Set default shell
   environment.shells = with pkgs; [ fish bash ];
 
-  # Enable Incus containers
-  virtualisation.incus = {
-    enable = true;
-    ui.enable = true;
-  };
-
-  # Enable nftables for Incus
-  networking.nftables.enable = true;
-
-
-
   # Enable OpenSSH daemon
   services.openssh = {
     enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      PermitRootLogin = "no";
-      X11Forwarding = false;
-    };
-    openFirewall = true;
+    # settings = {
+    #   PasswordAuthentication = false;
+    #   PermitRootLogin = "no";
+    #   X11Forwarding = false;
+    # };
+    # openFirewall = true;
   };
 
   # Basic security settings
-  security = {
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = true;
-    };
-    polkit.enable = true;
-  };
+  # security = {
+  #   sudo = {
+  #     enable = true;
+  #     wheelNeedsPassword = true;
+  #   };
+  #   polkit.enable = true;
+  # };
 
   # System state version
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05";
 }
