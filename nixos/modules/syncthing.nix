@@ -43,10 +43,7 @@
           type = "sendreceive";
           rescanIntervalS = 9000;
           fsWatcherEnabled = false;
-          devices = [
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-          ];
+          devices = [ "styx" "vulcain" ];
           minDiskFree = "5GiB";
         };
 
@@ -56,10 +53,7 @@
           type = "sendreceive";
           rescanIntervalS = 9500;
           fsWatcherEnabled = true;
-          devices = [
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-          ];
+          devices = [ "styx" "vulcain" ];
           minDiskFree = "5GiB";
         };
 
@@ -68,14 +62,7 @@
           type = "sendreceive";
           rescanIntervalS = 7200;
           fsWatcherEnabled = false;
-          devices = [
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "WXS5CXC-V5M3NOY-IHK6Z6R-33VJNVH-REDACTED"
-            "W2EELGS-LCFCSNK-GZIBZUK-ZOOF6KI-GRH2Q3T-REDACTED"
-            "ZH5ZAM6-W5RSIXN-4M27KNK-OCKETN3-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-          ];
+          devices = [ "styx" "wxs5cxc" "w2eelgs" "zh5zam6" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
         };
 
@@ -85,16 +72,7 @@
           type = "sendreceive";
           rescanIntervalS = 3600;
           fsWatcherEnabled = true;
-          devices = [
-            "HIG52YZ-X2B46F3-ZDEQT2H-HY6SN3D-JUWGRVA-REDACTED"
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "WXS5CXC-V5M3NOY-IHK6Z6R-33VJNVH-REDACTED"
-            "W2EELGS-LCFCSNK-GZIBZUK-ZOOF6KI-GRH2Q3T-REDACTED"
-            "ZH5ZAM6-W5RSIXN-4M27KNK-OCKETN3-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-            "3JT3QIL-KJ7F3WQ-HHS2A2B-OXPTAP3-REDACTED"
-          ];
+          devices = [ "corus" "styx" "wxs5cxc" "w2eelgs" "zh5zam6" "vulcain" "jt3" ];
           minDiskFree = "5GiB";
         };
 
@@ -104,11 +82,7 @@
           type = "sendreceive";
           rescanIntervalS = 6000;
           fsWatcherEnabled = false;
-          devices = [
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-          ];
+          devices = [ "styx" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
         };
 
@@ -118,15 +92,7 @@
           type = "sendreceive";
           rescanIntervalS = 8000;
           fsWatcherEnabled = false;
-          devices = [
-            "GVRLL7S-3XQUVNR-57JFCXW-XHF25FQ-L6RPLR3-REDACTED"
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "WXS5CXC-V5M3NOY-IHK6Z6R-33VJNVH-REDACTED"
-            "W2EELGS-LCFCSNK-GZIBZUK-ZOOF6KI-GRH2Q3T-REDACTED"
-            "ZH5ZAM6-W5RSIXN-4M27KNK-OCKETN3-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-          ];
+          devices = [ "vulcain" "styx" "wxs5cxc" "w2eelgs" "zh5zam6" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
         };
 
@@ -136,14 +102,7 @@
           type = "sendreceive";
           rescanIntervalS = 9000;
           fsWatcherEnabled = false;
-          devices = [
-            "HIG52YZ-X2B46F3-ZDEQT2H-HY6SN3D-JUWGRVA-REDACTED"
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "WXS5CXC-V5M3NOY-IHK6Z6R-33VJNVH-REDACTED"
-            "ZH5ZAM6-W5RSIXN-4M27KNK-OCKETN3-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-          ];
+          devices = [ "corus" "styx" "wxs5cxc" "zh5zam6" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
         };
 
@@ -153,11 +112,7 @@
           type = "sendreceive";
           rescanIntervalS = 7500;
           fsWatcherEnabled = false;
-          devices = [
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-          ];
+          devices = [ "styx" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
         };
 
@@ -167,11 +122,7 @@
           type = "sendreceive";
           rescanIntervalS = 4000;
           fsWatcherEnabled = false;
-          devices = [
-            "HIG52YZ-X2B46F3-ZDEQT2H-HY6SN3D-JUWGRVA-REDACTED"
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-          ];
+          devices = [ "corus" "styx" "vulcain" ];
           minDiskFree = "5GiB";
         };
 
@@ -181,44 +132,27 @@
           type = "sendreceive";
           rescanIntervalS = 72000;
           fsWatcherEnabled = false;
-          devices = [
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "WXS5CXC-V5M3NOY-IHK6Z6R-33VJNVH-REDACTED"
-            "ZH5ZAM6-W5RSIXN-4M27KNK-OCKETN3-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-            "3JT3QIL-KJ7F3WQ-HHS2A2B-OXPTAP3-REDACTED"
-          ];
+          devices = [ "styx" "wxs5cxc" "zh5zam6" "vulcain" "2jl4o7y" "jt3" ];
           minDiskFree = "5GiB";
         };
 
-        trogo = {
-          path = "/data/trogo";
-          label = "trogo";
+        tiago = {
+          path = "/data/tiago";
+          label = "tiago";
           type = "sendreceive";
           rescanIntervalS = 8000;
           fsWatcherEnabled = false;
-          devices = [
-            "GVRLL7S-3XQUVNR-57JFCXW-XHF25FQ-L6RPLR3-REDACTED"
-            "ICSTELQ-FSFVTT4-NFHZ2RD-SWO22XS-REDACTED"
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "R2S5ALZ-A4RFZK5-ADC2PGR-24Y6PUF-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-          ];
+          devices = [ "vulcain" "chuwi" "styx" "r2s5alz" "vulcain" ];
           minDiskFree = "5GiB";
         };
 
-        trogo_devoirs = {
-          path = "/data/trogo_devoirs";
-          label = "trogo_devoirs";
+        tiago_devoirs = {
+          path = "/data/tiago_devoirs";
+          label = "tiago_devoirs";
           type = "sendreceive";
           rescanIntervalS = 8000;
           fsWatcherEnabled = true;
-          devices = [
-            "ICSTELQ-FSFVTT4-NFHZ2RD-SWO22XS-REDACTED"
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-          ];
+          devices = [ "chuwi" "styx" "vulcain" ];
           minDiskFree = "5GiB";
         };
 
@@ -228,11 +162,7 @@
           type = "sendreceive";
           rescanIntervalS = 6500;
           fsWatcherEnabled = false;
-          devices = [
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-          ];
+          devices = [ "styx" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
         };
 
@@ -242,16 +172,7 @@
           type = "sendreceive";
           rescanIntervalS = 6300;
           fsWatcherEnabled = true;
-          devices = [
-            "FGBN3T7-L6Q6QOR-SBYPVHS-3MWONAJ-REDACTED"
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "WXS5CXC-V5M3NOY-IHK6Z6R-33VJNVH-REDACTED"
-            "ZH5ZAM6-W5RSIXN-4M27KNK-OCKETN3-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-            "3JT3QIL-KJ7F3WQ-HHS2A2B-OXPTAP3-REDACTED"
-            "7GVTWHS-UZILMDL-ER4YDMR-SYUVX33-REDACTED"
-          ];
+          devices = [ "seven" "styx" "wxs5cxc" "zh5zam6" "vulcain" "2jl4o7y" "jt3" "seven" ];
           minDiskFree = "5GiB";
         };
 
@@ -261,18 +182,14 @@
           type = "sendreceive";
           rescanIntervalS = 7300;
           fsWatcherEnabled = false;
-          devices = [
-            "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED"
-            "ZI67LFV-DU2Z4U3-5XXXHXX-SDJHTQJ-REDACTED"
-            "2JL4O7Y-IGMULRC-MM4O627-JLIZ7WX-REDACTED"
-          ];
+          devices = [ "styx" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
         };
       };
 
       devices = {
         styx = {
-          deviceId = "FGBN3T7-L6Q6QOR-SBYPVHS-3MWONAJ-REDACTED";
+          id = "FGBN3T7-L6Q6QOR-SBYPVHS-3MWONAJ-REDACTED";
           name = "styx";
           introducer = false;
           compression = "metadata";
@@ -280,7 +197,7 @@
         };
 
         vulcain = {
-          deviceId = "GVRLL7S-3XQUVNR-57JFCXW-XHF25FQ-L6RPLR3-REDACTED";
+          id = "GVRLL7S-3XQUVNR-57JFCXW-XHF25FQ-L6RPLR3-REDACTED";
           name = "vulcain";
           introducer = false;
           compression = "metadata";
@@ -288,7 +205,7 @@
         };
 
         corus = {
-          deviceId = "HIG52YZ-X2B46F3-ZDEQT2H-HY6SN3D-JUWGRVA-REDACTED";
+          id = "HIG52YZ-X2B46F3-ZDEQT2H-HY6SN3D-JUWGRVA-REDACTED";
           name = "corus";
           introducer = false;
           compression = "metadata";
@@ -296,7 +213,7 @@
         };
 
         chuwi = {
-          deviceId = "ICSTELQ-FSFVTT4-NFHZ2RD-SWO22XS-REDACTED";
+          id = "ICSTELQ-FSFVTT4-NFHZ2RD-SWO22XS-REDACTED";
           name = "chuwi";
           introducer = false;
           compression = "metadata";
@@ -304,7 +221,7 @@
         };
 
         r2s5alz = {
-          deviceId = "R2S5ALZ-A4RFZK5-ADC2PGR-24Y6PUF-REDACTED";
+          id = "R2S5ALZ-A4RFZK5-ADC2PGR-24Y6PUF-REDACTED";
           name = "r2s5alz";
           introducer = false;
           compression = "metadata";
@@ -312,7 +229,7 @@
         };
 
         jt3 = {
-          deviceId = "3JT3QIL-KJ7F3WQ-HHS2A2B-OXPTAP3-REDACTED";
+          id = "3JT3QIL-KJ7F3WQ-HHS2A2B-OXPTAP3-REDACTED";
           name = "jt3";
           introducer = false;
           compression = "metadata";
@@ -320,7 +237,7 @@
         };
 
         seven = {
-          deviceId = "7GVTWHS-UZILMDL-ER4YDMR-SYUVX33-REDACTED";
+          id = "7GVTWHS-UZILMDL-ER4YDMR-SYUVX33-REDACTED";
           name = "seven";
           introducer = false;
           compression = "metadata";
@@ -328,7 +245,7 @@
         };
 
         zh5zam6 = {
-          deviceId = "ZH5ZAM6-W5RSIXN-4M27KNK-OCKETN3-REDACTED";
+          id = "ZH5ZAM6-W5RSIXN-4M27KNK-OCKETN3-REDACTED";
           name = "zh5zam6";
           introducer = false;
           compression = "metadata";
@@ -336,7 +253,7 @@
         };
 
         wxs5cxc = {
-          deviceId = "WXS5CXC-V5M3NOY-IHK6Z6R-33VJNVH-REDACTED";
+          id = "WXS5CXC-V5M3NOY-IHK6Z6R-33VJNVH-REDACTED";
           name = "wxs5cxc";
           introducer = false;
           compression = "metadata";
@@ -344,8 +261,16 @@
         };
 
         w2eelgs = {
-          deviceId = "W2EELGS-LCFCSNK-GZIBZUK-ZOOF6KI-GRH2Q3T-REDACTED";
+          id = "W2EELGS-LCFCSNK-GZIBZUK-ZOOF6KI-GRH2Q3T-REDACTED";
           name = "w2eelgs";
+          introducer = false;
+          compression = "metadata";
+          addresses = [ "dynamic" ];
+        };
+
+        "2jl4o7y" = {
+          id = "JEQKQZ3-B5YABIT-SDD7ZV4-EEX5S5M-REDACTED";
+          name = "2jl4o7y";
           introducer = false;
           compression = "metadata";
           addresses = [ "dynamic" ];
