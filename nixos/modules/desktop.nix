@@ -1,6 +1,48 @@
 { pkgs, ... }:
 
 {
+  # System packages — core userland tools and desktop utilities
+  environment.systemPackages = with pkgs; [
+    # Core user applications
+    firefox                # Web browser
+    wezterm                # Terminal emulator
+    # rxvt-unicode         # Terminal emulator
+    ghostty                # Terminal emulator
+    thunar                 # File manager
+
+    # Sway and Wayland ecosystem
+    waybar                 # Status bar
+    fuzzel                 # Application launcher
+    grim                   # Screenshot tool
+    slurp                  # Region selector
+    wl-clipboard           # Clipboard integration
+    kanshi                 # Auto layout switching (multi-monitor)
+    wev                    # xev for wayland
+
+    # Media and sound
+    mpv                    # Media player
+    pulseaudio             # Sound server
+    pavucontrol            # Volume mixer GUI
+    playerctl              # MPRIS control interface
+    moc                    # Music player
+    drawio                 # Diagrams
+
+    # System utilities
+    gparted                # Partition manager
+    gnome-disk-utility     # Disk management
+    dconf-editor           # GTK configuration editor
+    libnotify              # Notifications
+
+    # Appearance and theming
+    everforest-gtk-theme   # GTK theme
+    adwaita-icon-theme     # Icon theme
+    bibata-cursors         # Cursor theme
+
+    # For Waybar. Gtk css interfer and force a with of 28px (which is huge)
+    # to force a small size, fake a smaller gtk theme
+    adapta-gtk-theme
+  ];
+
   # Wayland and Sway
   programs.sway = {
     enable = true;
@@ -28,13 +70,13 @@
   programs.dconf.enable = true;
   # services.udisks2.enable = true;
   # services.tumbler.enable = true;
-  services.printing = {
-    enable = true;
-    drivers = with pkgs; [ hplip gutenprint ];
-  };
-  hardware.sane.enable = true;
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
+  # services.printing = {
+  #   enable = true;
+  #   drivers = with pkgs; [ hplip gutenprint ];
+  # };
+  # hardware.sane.enable = true;
+  # hardware.bluetooth.enable = true;
+  # services.blueman.enable = true;
 
   # Security
   security.polkit.enable = true;
@@ -62,13 +104,16 @@
     XCURSOR_SIZE = "24";
   };
 
+  environment.variables.GTK_THEME = "Everforest-Dark-B-LB";
+  environment.variables.GTK_ICON_THEME = "Everforest-Dark";
+
   # System-wide GTK configuration
   environment.etc = {
     "gtk-3.0/settings.ini".text = ''
       [Settings]
       gtk-theme-name=Everforest-Dark-B-LB
       gtk-icon-theme-name=Adwaita
-      gtk-cursor-theme-name=Adwaita
+      gtk-cursor-theme-name=Bibata-Original-Classic
       gtk-cursor-theme-size=24
       gtk-font-name=DejaVu Sans 11
       gtk-application-prefer-dark-theme=1
@@ -78,7 +123,7 @@
       [Settings]
       gtk-theme-name=Everforest-Dark-B-LB
       gtk-icon-theme-name=Adwaita
-      gtk-cursor-theme-name=Adwaita
+      gtk-cursor-theme-name=Bibata-Original-Classic
       gtk-cursor-theme-size=24
       gtk-font-name=DejaVu Sans 11
       gtk-application-prefer-dark-theme=1
@@ -86,9 +131,9 @@
   };
 
   # Fonts
+  # https://nixos.wiki/wiki/Fonts
   fonts = {
     packages = with pkgs; [
-      liberation_ttf
       dejavu_fonts
       noto-fonts
       noto-fonts-emoji
@@ -96,7 +141,9 @@
     ] ++ (with pkgs.nerd-fonts; [
       hack
       dejavu-sans-mono
+      inconsolata
       jetbrains-mono
+      liberation
     ]);
 
     fontconfig.defaultFonts = {
@@ -107,33 +154,4 @@
     };
   };
 
-  # System packages — core userland tools and desktop utilities
-  environment.systemPackages = with pkgs; [
-    # Core user applications
-    firefox                # Web browser
-    wezterm                # Terminal emulator
-    thunar                 # File manager
-
-    # Sway and Wayland ecosystem
-    waybar                 # Status bar
-    fuzzel                 # Application launcher
-    grim                   # Screenshot tool
-    slurp                  # Region selector
-    wl-clipboard           # Clipboard integration
-    kanshi                 # Auto layout switching (multi-monitor)
-
-    # Media and sound
-    mpv                    # Media player
-    pavucontrol            # Volume mixer GUI
-    playerctl              # MPRIS control interface
-
-    # System utilities
-    gparted                # Partition manager
-    gnome-disk-utility     # Disk management
-    dconf-editor           # GTK configuration editor
-
-    # Appearance and theming
-    everforest-gtk-theme   # GTK theme
-    adwaita-icon-theme     # Icon theme
-  ];
 }
