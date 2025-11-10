@@ -1,41 +1,41 @@
 * {
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  margin: 0;
-  min-height: 0;
-  min-width: 0;
-  font-family: "JetBrainsMono Nerd Font", monospace;
-  font-size: 13px;
-  background: transparent;
-  color: #d3c6aa;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+    min-width: 0;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 13px;
+    background: transparent;
+    color: #d3c6aa;
 }
 
 tooltip {
-  background: #2e383c;
-  border: 1px solid rgba(100, 114, 125, 0.5);
+    background: #2e383c;
+    border: 1px solid rgba(100, 114, 125, 0.5);
 }
 tooltip label {
-  color: #d3c6aa;
+    color: #d3c6aa;
 }
 
 window#waybar {
-  background: #272e33;
-  color: #d3c6aa;
+    background: #272e33;
+    color: #d3c6aa;
 }
 
 #workspaces button {
-  padding: 4px 1px;
-  margin: 2px 0;
-  background: #2e383c;
-  color: #859289;
-  border: none;
+    padding: 4px 1px;
+    margin: 2px 0;
+    background: #2e383c;
+    color: #859289;
+    border: none;
 }
 #workspaces button.focused {
-  background: #a7c080;
+    background: #a7c080;
 }
 #workspaces button.focused label {
-  color: #000000;
+    color: #000000;
 }
 
 #tray,
@@ -44,19 +44,19 @@ window#waybar {
 #battery,
 #battery#bat2,
 #clock {
-  padding: 4px 1px 4px 0;
-  margin: 2px 0;
-  background: #2e383c;
-  color: #d3c6aa;
+    padding: 4px 1px 4px 0;
+    margin: 2px 0;
+    background: #2e383c;
+    color: #d3c6aa;
 }
 
 #pulseaudio-slider slider {
-  min-height: 0px;
-  min-width: 0px;
-  opacity: 0;
-  background-image: none;
-  border: none;
-  box-shadow: none;
+    min-height: 0px;
+    min-width: 0px;
+    opacity: 0;
+    background-image: none;
+    border: none;
+    box-shadow: none;
 }
 #pulseaudio-slider trough {
     min-height: 50px;
@@ -68,4 +68,3 @@ window#waybar {
     min-width: 10px;
     background-color: #a7c080;
 }
-

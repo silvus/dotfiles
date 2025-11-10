@@ -1,5 +1,5 @@
 # NixOS VM - Testing Configuration
-{ modulesPath, ... }:
+{ lib, pkgs, modulesPath, ... }:
 
 {
   imports = [
@@ -42,6 +42,15 @@
   #   neofetch
   #   spice-vdagent
   # ];
+
+  # Override greetd from desktop.nix for auto-login
+  services.greetd = {
+    enable = true;
+    settings.default_session = {
+      command = lib.mkForce "${pkgs.sway}/bin/sway";
+      user = lib.mkForce "silvus";
+    };
+  };
 
   # VM optimizations
   # services.spice-vdagentd.enable = true;
