@@ -54,6 +54,7 @@
       ];
     };
 
+    # TODO: why? How to improve the first installation with this?
     devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
       buildInputs = with nixpkgs.legacyPackages.${system}; [
         nixos-rebuild
