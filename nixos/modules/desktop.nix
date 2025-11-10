@@ -8,7 +8,10 @@
     wezterm                # Terminal emulator
     # rxvt-unicode         # Terminal emulator
     ghostty                # Terminal emulator
-    thunar                 # File manager
+    xfce.thunar            # File manager
+    xfce.thunar-volman
+    xfce.thunar-archive-plugin
+    xfce.thunar-media-tags-plugin
 
     # Sway and Wayland ecosystem
     waybar                 # Status bar
@@ -28,6 +31,7 @@
     drawio                 # Diagrams
 
     # System utilities
+    xdg-utils              # Desktop integration
     gparted                # Partition manager
     gnome-disk-utility     # Disk management
     dconf-editor           # GTK configuration editor
@@ -52,17 +56,18 @@
   services.greetd = {
     enable = true;
     settings.default_session = {
-      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd '${pkgs.sway}/bin/sway'";
+      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd sway";
+      # command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd '${pkgs.sway}/bin/sway'";
       user = "greeter";
     };
   };
 
   # Audio
-  security.rtkit.enable = true;
+  # security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
+    # alsa.support32Bit = true;
     pulse.enable = true;
   };
 
@@ -86,22 +91,49 @@
   hardware.graphics.enable = true;
 
   # XDG portals
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
+  # xdg.portal = {
+  #   enable = true;
+  #   wlr.enable = true;
+  #   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  #   # config = {
+  #   #   common = {
+  #   #     default = [ "gtk" ];
+  #   #   };
+  #   #   sway = {
+  #   #     default = [ "wlr" "gtk" ];
+  #   #   };
+  #   # };
+  # };
+
+  # Enable D-Bus
+  services.dbus.enable = true;
+
+  # System services needed for portals
+  # systemd.user.services = {
+  #   xdg-desktop-portal = {
+  #     wantedBy = [ "graphical-session.target" ];
+  #     wants = [ "xdg-desktop-portal-wlr.service" ];
+  #     before = [ "xdg-desktop-portal-wlr.service" ];
+  #   };
+  #   xdg-desktop-portal-wlr = {
+  #     wantedBy = [ "graphical-session.target" ];
+  #   };
+  # };
 
   # Environment variables (system-wide, single-user system)
   environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    MOZ_ENABLE_WAYLAND = "1";
-    QT_QPA_PLATFORM = "wayland";
-    SDL_VIDEODRIVER = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
+    # NIXOS_OZONE_WL = "1";
+    # MOZ_ENABLE_WAYLAND = "1";
+    # QT_QPA_PLATFORM = "wayland";
+    # SDL_VIDEODRIVER = "wayland";
+    # _JAVA_AWT_WM_NONREPARENTING = "1";
     GTK_THEME = "Everforest-Dark-B-LB";
-    XCURSOR_THEME = "Adwaita";
+    XCURSOR_THEME = "Bibata-Original-Classic";
     XCURSOR_SIZE = "24";
+    # XDG Portal variables
+    # XDG_CURRENT_DESKTOP = "sway";
+    # XDG_SESSION_DESKTOP = "sway";
+    # XDG_SESSION_TYPE = "wayland";
   };
 
   environment.variables.GTK_THEME = "Everforest-Dark-B-LB";
