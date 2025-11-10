@@ -8,7 +8,7 @@
     # Enable laptop modules
     ../../modules/desktop.nix
     ../../modules/laptop.nix
-    ../../modules/security.nix
+    # ../../modules/security.nix
     ../../modules/syncthing.nix
     ../../modules/development.nix
   ];
