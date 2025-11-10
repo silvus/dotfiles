@@ -1,5 +1,5 @@
 # Noctus - Laptop Configuration
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -28,23 +28,4 @@
       '';
     };
   };
-
-  # All modules enabled by import
-
-  # Laptop-specific packages
-  environment.systemPackages = with pkgs; [
-    # Laptop utilities
-    acpi
-    powertop
-    brightnessctl
-
-    # Development tools
-    vscodium
-
-    # Communication
-    signal-desktop
-  ];
-
-  # This value determines the NixOS release
-  system.stateVersion = "25.05";
 }

@@ -1,10 +1,12 @@
 # NixOS VM - Testing Configuration
-{ config, pkgs, modulesPath, ... }:
+{ modulesPath, ... }:
 
 {
   imports = [
-    # Include the default incus configuration
-    ./incus-virtual-machine.nix
+    # Include the default incus configuration.
+    "${modulesPath}/virtualisation/incus-virtual-machine.nix"
+    # TODO: should I move this to the dotfiles?
+    # ./incus-virtual-machine.nix
 
     # Enable modules for testing
     ../../modules/desktop.nix
@@ -15,15 +17,6 @@
     ../../modules/development.nix
   ];
 
-  # Bootloader
-  boot.loader = {
-    timeout = 1;
-    systemd-boot = {
-      enable = true;
-      configurationLimit = 9;
-    };
-  };
-
   # Host-specific networking
   networking = {
     hostName = "nixos-vm";
@@ -32,7 +25,6 @@
     useHostResolvConf = false;
   };
 
-  # VM-specific network configuration
   systemd.network = {
     enable = true;
     networks."50-enp5s0" = {
@@ -45,18 +37,13 @@
     };
   };
 
-  # All modules enabled by import
-
   # VM-specific packages
-  environment.systemPackages = with pkgs; [
-    neofetch
-    spice-vdagent
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   neofetch
+  #   spice-vdagent
+  # ];
 
   # VM optimizations
-  services.spice-vdagentd.enable = true;
-  services.qemuGuest.enable = true;
-
-  # This value determines the NixOS release
-  system.stateVersion = "25.05";
+  # services.spice-vdagentd.enable = true;
+  # services.qemuGuest.enable = true;
 }
