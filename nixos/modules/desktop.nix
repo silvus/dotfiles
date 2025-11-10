@@ -21,6 +21,7 @@
     wl-clipboard           # Clipboard integration
     kanshi                 # Auto layout switching (multi-monitor)
     wev                    # xev for wayland
+    swaynotificationcenter # Notification daemon for sway
 
     # Media and sound
     mpv                    # Media player
@@ -84,7 +85,7 @@
   # services.blueman.enable = true;
 
   # Security
-  security.polkit.enable = true;
+  # security.polkit.enable = true;
   security.pam.services.swaylock = {};
 
   # Hardware acceleration
@@ -107,6 +108,38 @@
 
   # Enable D-Bus
   services.dbus.enable = true;
+
+  # Systemd user services for sway ecosystem
+  systemd.user.services = {
+    waybar = {
+      description = "Highly customizable Wayland bar for Sway and Wlroots based compositors";
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.waybar}/bin/waybar";
+        ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
+        KillMode = "mixed";
+      };
+    };
+
+    kanshi = {
+      description = "Dynamic display configuration for Wayland";
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.kanshi}/bin/kanshi";
+      };
+    };
+
+    swaync = {
+      description = "Simple notification daemon with a GUI built for Sway";
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.swaynotificationcenter}/bin/swaync";
+      };
+    };
+  };
 
   # System services needed for portals
   # systemd.user.services = {
