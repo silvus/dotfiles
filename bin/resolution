@@ -4,6 +4,41 @@ set -e
 set -u
 set -o pipefail
 
-# Alias to get the current resolution from Xrandr. Should be expand to support Wayland
+# Alias to get the current resolution from Xrandr or wayland.
 
-xrandr -q | grep "*" | cut -d " " -f 4
+# Detect display protocol
+session_type="${XDG_SESSION_TYPE:-}"
+
+get_x11_resolution() {
+    xrandr -q | grep -m1 '\*' | awk '{print $1}'
+}
+
+get_wayland_resolution_sway() {
+    swaymsg -t get_outputs | jq -r '.[] | select(.active) | "\(.current_mode.width)x\(.current_mode.height)"' | head -n1
+}
+
+get_wayland_resolution_wlr() {
+    wlr-randr | grep -m1 '^[A-Za-z0-9-]\+ connected' | grep -o '[0-9]\+x[0-9]\+'
+}
+
+get_wayland_resolution_wayland_info() {
+    wayland-info | grep -m1 -A5 'output' | grep -o '[0-9]\+x[0-9]\+'
+}
+
+if [[ "$session_type" == "x11" ]]; then
+    get_x11_resolution
+elif [[ "$session_type" == "wayland" ]]; then
+    if command -v swaymsg >/dev/null 2>&1; then
+        get_wayland_resolution_sway
+    elif command -v wlr-randr >/dev/null 2>&1; then
+        get_wayland_resolution_wlr
+    elif command -v wayland-info >/dev/null 2>&1; then
+        get_wayland_resolution_wayland_info
+    else
+        echo "Error: No supported Wayland tool found (install swaymsg, wlr-randr, or wayland-info)" >&2
+        exit 1
+    fi
+else
+    echo "Error: Unknown or unsupported session type: ${session_type}" >&2
+    exit 1
+fi
