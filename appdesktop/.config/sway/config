@@ -1,20 +1,27 @@
+# Include d-bus and systemd stuff
+include /etc/sway/config.d/*
+
 font pango:monospace 8.000000
-floating_modifier Mod4
-default_border normal 2
-default_floating_border normal 2
+
 hide_edge_borders none
 focus_wrapping no
 focus_follows_mouse no
 focus_on_window_activation smart
 mouse_warping output
+
 workspace_layout default
 workspace_auto_back_and_forth yes
+
+default_border normal 2
+default_floating_border normal 2
 client.focused #a7c080 #1e2326 #d3c6aa #a7c080 #a7c080
 client.focused_inactive #3a3a3a #3a3a3a #7a8478 #7a8478 #3a3a3a
 client.unfocused #3a3a3a #3a3a3a #7a8478 #7a8478 #3a3a3a
 client.urgent #e67e80 #e67e80 #1e2326 #e69875 #e67e80
 client.placeholder #000000 #0c0c0c #ffffff #000000 #0c0c0c
 client.background #ffffff
+
+floating_modifier Mod4
 
 bindsym Mod4+Down focus down
 bindsym Mod4+Left focus left
@@ -118,4 +125,3 @@ smart_borders on
 default_border pixel 2
 # Set default border style for new floating windows. This only applies to windows that are spawned in floating mode, not windows that become floating afterwards.
 default_floating_border normal
-

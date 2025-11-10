@@ -6,7 +6,7 @@
     ./hardware-configuration.nix
 
     # Enable server modules
-    ../../modules/security.nix
+    # ../../modules/security.nix
     ../../modules/syncthing.nix
     ../../modules/development.nix
   ];
