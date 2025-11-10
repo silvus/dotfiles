@@ -3,6 +3,16 @@
 {
   # Base system configuration shared by all hosts
 
+  # Bootloader
+  boot.loader = {
+    timeout = 1;
+    efi.canTouchEfiVariables = true;
+    systemd-boot = {
+      enable = true;
+      configurationLimit = 9;
+    };
+  };
+
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -30,8 +40,8 @@
 
   # Console keymap
   console = {
-    # keyMap = lib.mkDefault "us";
-    keyMap = "us";
+    # keyMap = "us";
+    # Derive from X11 value
     useXkbConfig = true;
   };
 
@@ -82,6 +92,7 @@
   environment.systemPackages = with pkgs; [
     # Editor
     vim
+    neovim
     nano
     helix
 
