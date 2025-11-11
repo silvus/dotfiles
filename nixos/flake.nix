@@ -28,6 +28,7 @@
 
   in
   {
+    # NixOs
     nixosConfigurations = {
       nixos-vm = mkHost "nixos-vm";
       noctus = mkHost "noctus";
@@ -36,25 +37,18 @@
       servius = mkHost "servius";
     };
 
+    # Home manager on Debian
     homeConfigurations.silvus = home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
       modules = [
-        {
-          home = {
-            username = "silvus";
-            homeDirectory = "/home/silvus";
-            stateVersion = "25.05";
-          };
-          programs.home-manager.enable = true;
-          imports = [ ./modules/development.nix ];
-        }
+        ./hosts/debian/home.nix
       ];
     };
 
-    # TODO: why? How to improve the first installation with this?
+    # Run this with `nix develop`
     devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
       buildInputs = with nixpkgs.legacyPackages.${system}; [
         nixos-rebuild
@@ -64,6 +58,7 @@
         nil
       ];
 
+      # Runs automatically when you enter the shell
       shellHook = ''
         echo "NixOS Configuration Development Environment"
         echo ""

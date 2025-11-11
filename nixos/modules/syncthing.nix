@@ -6,8 +6,12 @@
   ];
 
   # TODO: use a user service instead?
+  # TODO: Sometimes the api is not called (api key not extracted?), delete /home/silvus/.config/syncthing fix it? not really, the gui port is not updated.
+
+  # TODO: make an external tool to configure syncthing with `syncthing cli` instead of curl commands. See https://superuser.com/questions/1397683/how-can-i-configure-syncthing-from-command-line-to-share-a-folder-with-another-c
 
   # https://wiki.nixos.org/wiki/Syncthing
+  # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/networking/syncthing.nix
   services.syncthing = {
     enable = true;
     openDefaultPorts = true; # Open ports in the firewall for Syncthing. (NOTE: this will not open syncthing gui port)
@@ -15,8 +19,15 @@
     extraFlags = [ "--no-default-folder" ]; # Don't create default ~/Sync folder
 
     user = "silvus";
+    group = "users";
+
     dataDir = "/home/silvus/.local/share/syncthing";
     configDir = "/home/silvus/.config/syncthing";
+
+    overrideDevices = true;     # overrides any devices added or deleted through the WebUI
+    overrideFolders = true;     # overrides any folders added or deleted through the WebUI
+
+    # guiAddress
 
     settings = {
       gui = {
@@ -41,7 +52,7 @@
           path = "/data/audiobooks";
           label = "audiobooks";
           type = "sendreceive";
-          rescanIntervalS = 9000;
+          rescanIntervals = "9000";
           fsWatcherEnabled = false;
           devices = [ "styx" "vulcain" ];
           minDiskFree = "5GiB";
@@ -51,7 +62,7 @@
           path = "/data/books";
           label = "books";
           type = "sendreceive";
-          rescanIntervalS = 9500;
+          rescanIntervals = "9500";
           fsWatcherEnabled = true;
           devices = [ "styx" "vulcain" ];
           minDiskFree = "5GiB";
@@ -60,7 +71,7 @@
         dev = {
           path = "/data/dev";
           type = "sendreceive";
-          rescanIntervalS = 7200;
+          rescanIntervals = "7200";
           fsWatcherEnabled = false;
           devices = [ "styx" "wxs5cxc" "w2eelgs" "zh5zam6" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
@@ -70,7 +81,7 @@
           path = "/data/doc";
           label = "doc";
           type = "sendreceive";
-          rescanIntervalS = 3600;
+          rescanIntervals = "3600";
           fsWatcherEnabled = true;
           devices = [ "corus" "styx" "wxs5cxc" "w2eelgs" "zh5zam6" "vulcain" "jt3" ];
           minDiskFree = "5GiB";
@@ -80,7 +91,7 @@
           path = "/data/images";
           label = "images";
           type = "sendreceive";
-          rescanIntervalS = 6000;
+          rescanIntervals = "6000";
           fsWatcherEnabled = false;
           devices = [ "styx" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
@@ -90,7 +101,7 @@
           path = "/data/music";
           label = "music";
           type = "sendreceive";
-          rescanIntervalS = 8000;
+          rescanIntervals = "8000";
           fsWatcherEnabled = false;
           devices = [ "vulcain" "styx" "wxs5cxc" "w2eelgs" "zh5zam6" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
@@ -100,7 +111,7 @@
           path = "/data/phone";
           label = "phone";
           type = "sendreceive";
-          rescanIntervalS = 9000;
+          rescanIntervals = "9000";
           fsWatcherEnabled = false;
           devices = [ "corus" "styx" "wxs5cxc" "zh5zam6" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
@@ -110,7 +121,7 @@
           path = "/data/photos";
           label = "photos";
           type = "sendreceive";
-          rescanIntervalS = 7500;
+          rescanIntervals = "7500";
           fsWatcherEnabled = false;
           devices = [ "styx" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
@@ -120,7 +131,7 @@
           path = "/data/phone_photos";
           label = "phone_photos";
           type = "sendreceive";
-          rescanIntervalS = 4000;
+          rescanIntervals = "4000";
           fsWatcherEnabled = false;
           devices = [ "corus" "styx" "vulcain" ];
           minDiskFree = "5GiB";
@@ -130,7 +141,7 @@
           path = "/data/prod/share";
           label = "share";
           type = "sendreceive";
-          rescanIntervalS = 72000;
+          rescanIntervals = "72000";
           fsWatcherEnabled = false;
           devices = [ "styx" "wxs5cxc" "zh5zam6" "vulcain" "2jl4o7y" "jt3" ];
           minDiskFree = "5GiB";
@@ -140,7 +151,7 @@
           path = "/data/tiago";
           label = "tiago";
           type = "sendreceive";
-          rescanIntervalS = 8000;
+          rescanIntervals = "8000";
           fsWatcherEnabled = false;
           devices = [ "vulcain" "chuwi" "styx" "r2s5alz" "vulcain" ];
           minDiskFree = "5GiB";
@@ -150,7 +161,7 @@
           path = "/data/tiago_devoirs";
           label = "tiago_devoirs";
           type = "sendreceive";
-          rescanIntervalS = 8000;
+          rescanIntervals = "8000";
           fsWatcherEnabled = true;
           devices = [ "chuwi" "styx" "vulcain" ];
           minDiskFree = "5GiB";
@@ -160,7 +171,7 @@
           path = "/data/videos";
           label = "videos";
           type = "sendreceive";
-          rescanIntervalS = 6500;
+          rescanIntervals = "6500";
           fsWatcherEnabled = false;
           devices = [ "styx" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
@@ -170,7 +181,7 @@
           path = "/data/work";
           label = "work";
           type = "sendreceive";
-          rescanIntervalS = 6300;
+          rescanIntervals = "6300";
           fsWatcherEnabled = true;
           devices = [ "seven" "styx" "wxs5cxc" "zh5zam6" "vulcain" "2jl4o7y" "jt3" "seven" ];
           minDiskFree = "5GiB";
@@ -180,7 +191,7 @@
           path = "/data/z";
           label = "z";
           type = "sendreceive";
-          rescanIntervalS = 7300;
+          rescanIntervals = "7300";
           fsWatcherEnabled = false;
           devices = [ "styx" "vulcain" "2jl4o7y" ];
           minDiskFree = "5GiB";
