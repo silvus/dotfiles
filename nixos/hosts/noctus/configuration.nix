@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
 
     ../../modules/base.nix
+    ../../modules/keyboard.nix
     # Enable laptop modules
     ../../modules/desktop.nix
     ../../modules/laptop.nix
