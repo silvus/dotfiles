@@ -9,11 +9,11 @@
     # ./incus-virtual-machine.nix
 
     # Enable modules for testing
+    ../../modules/base.nix
     ../../modules/desktop.nix
     ../../modules/laptop.nix
     # ../../modules/gaming.nix
     # ../../modules/security.nix
-    ../../modules/syncthing.nix
     ../../modules/development.nix
   ];
 

@@ -9,7 +9,6 @@ nixos/
 │   ├── gaming.nix           # Gaming support and optimization
 │   ├── laptop.nix           # Power management and laptop hardware
 │   ├── security.nix         # Firewall, fail2ban, hardening
-│   ├── syncthing.nix        # File synchronization with auto-discovery
 │   └── development.nix      # Programming languages and tools
 ├── profiles/                # Host profile templates
 │   ├── server.nix           # Server profile (headless, security-focused)
@@ -23,27 +22,6 @@ nixos/
 │   └── servius/             # Production server
 └── packages/                # Legacy packages (for Debian home-manager)
 ```
-
-# Profiles
-## 📦 Modules
-
-The configuration uses a modular architecture where each module can be enabled independently:
-
-### Core Modules
-- **base.nix**: Essential system packages (vim, git, fish, syncthing, incus)
-- **desktop.nix**: GUI environment (Sway, theming, audio, fonts)
-- **security.nix**: Hardening (firewall, fail2ban, SSH security)
-- **syncthing.nix**: File sync with auto-discovery of all hosts
-
-### Specialized Modules
-- **gaming.nix**: Steam, optimization, GameMode
-- **laptop.nix**: Power management, TLP, touchpad
-- **development.nix**: Programming languages and tools
-
-### Profile Templates
-- **Server**: Uses security + syncthing modules
-- **Desktop**: Uses desktop + security + syncthing modules  
-- **Laptop**: Extends desktop + adds laptop module
 
 # Commands
 

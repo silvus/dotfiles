@@ -5,9 +5,9 @@
   imports = [
     ./hardware-configuration.nix
 
+    ../../modules/base.nix
     # Enable server modules
     # ../../modules/security.nix
-    ../../modules/syncthing.nix
     ../../modules/development.nix
   ];
 

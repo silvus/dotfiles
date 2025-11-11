@@ -100,6 +100,7 @@
     wget
     curl
     mosh
+    syncthing
 
     # Shell and terminal tools
     fish
@@ -155,6 +156,40 @@
     #   X11Forwarding = false;
     # };
     # openFirewall = true;
+  };
+
+  # Enable Syncthing service
+  # https://wiki.nixos.org/wiki/Syncthing
+  # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/networking/syncthing.nix
+  # Setttings are handled by a curl command who failed silently... maybe it doesn't get the api key from the config xml.
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = true;
+    user = "silvus";
+    group = "users";
+    dataDir = "/home/silvus/.local/share/syncthing";
+    configDir = "/home/silvus/.config/syncthing";
+    guiAddress = "0.0.0.0:5001";
+  };
+
+  # systemd.user.services.syncthing = {
+  #   enable = true;
+  #   description = "Syncthing - Open Source Continuous File Synchronization";
+  #   after = [ "network.target" ];
+  #   wantedBy = [ "default.target" ];
+  #   serviceConfig = {
+  #     ExecStart = "${pkgs.syncthing}/bin/syncthing -no-browser -no-restart -logflags=0";
+  #     Restart = "on-failure";
+  #     RestartSec = 5;
+  #     SuccessExitStatus = "3 4";
+  #     RestartForceExitStatus = "3 4";
+  #   };
+  # };
+
+  # Open Syncthing ports in firewall
+  networking.firewall = {
+    allowedTCPPorts = [ 22000 ];
+    allowedUDPPorts = [ 21027 22000 ];
   };
 
   # Basic security settings
