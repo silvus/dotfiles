@@ -10,9 +10,9 @@
 
     # Enable modules for testing
     ../../modules/desktop.nix
-    ../../modules/gaming.nix
     ../../modules/laptop.nix
-    ../../modules/security.nix
+    # ../../modules/gaming.nix
+    # ../../modules/security.nix
     ../../modules/syncthing.nix
     ../../modules/development.nix
   ];
