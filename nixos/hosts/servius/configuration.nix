@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
 
     ../../modules/base.nix
+    ../../modules/keyboard.nix
     # Enable server modules
     # ../../modules/security.nix
     ../../modules/development.nix
