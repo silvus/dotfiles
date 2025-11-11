@@ -10,6 +10,7 @@
 
     # Enable modules for testing
     ../../modules/base.nix
+    ../../modules/keyboard.nix
     ../../modules/desktop.nix
     ../../modules/laptop.nix
     # ../../modules/gaming.nix
