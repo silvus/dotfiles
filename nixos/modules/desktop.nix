@@ -5,6 +5,7 @@
   environment.systemPackages = with pkgs; [
     # Core user applications
     firefox                # Web browser
+    firefox-devedition
     wezterm                # Terminal emulator
     # rxvt-unicode         # Terminal emulator
     ghostty                # Terminal emulator
@@ -12,6 +13,8 @@
     xfce.thunar-volman
     xfce.thunar-archive-plugin
     xfce.thunar-media-tags-plugin
+    thunderbird
+    signal-desktop
 
     # Sway and Wayland ecosystem
     waybar                 # Status bar
@@ -25,6 +28,7 @@
 
     # Media and sound
     mpv                    # Media player
+    yt-dlp                 # Media downloader
     pulseaudio             # Sound server
     pavucontrol            # Volume mixer GUI
     playerctl              # MPRIS control interface
@@ -37,6 +41,10 @@
     gnome-disk-utility     # Disk management
     dconf-editor           # GTK configuration editor
     libnotify              # Notifications
+
+    # Systray
+    networkmanagerapplet   # get nm-applet
+    lxqt.lxqt-powermanagement
 
     # Appearance and theming
     everforest-gtk-theme   # GTK theme

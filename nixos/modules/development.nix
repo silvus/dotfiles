@@ -10,21 +10,27 @@ with lib;
     gnumake
     cmake
     pkg-config
+    gcc
+    clang
 
     # Containers
     incus
 
+    lua
     # lua lsp
     lua-language-server
     # lua formatter
     stylua
 
+    python3
     # python lsp
     pyright
     # ty
     # python formatter
     ruff
 
+    rustc
+    cargo
     # rust lsp
     # rust-analyzer
     # rustup component add rust-analyzer
@@ -39,13 +45,8 @@ with lib;
     # bash formatter
     shfmt
 
-    # Languages
-    python3
-    rustc
-    cargo
-    lua
-    gcc
-    clang
+    # JS
+    bun
 
     # Editors
     vscodium
@@ -55,7 +56,6 @@ with lib;
     curl
     wget
     lsof
-    strace
     sqlite
   ];
 
