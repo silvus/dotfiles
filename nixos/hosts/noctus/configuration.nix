@@ -11,6 +11,7 @@
     ../../modules/desktop.nix
     ../../modules/laptop.nix
     # ../../modules/security.nix
+    ../../modules/sandman.nix
     ../../modules/development.nix
   ];
 

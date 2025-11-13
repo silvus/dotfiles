@@ -15,6 +15,7 @@
     ../../modules/laptop.nix
     # ../../modules/gaming.nix
     # ../../modules/security.nix
+    ../../modules/sandman.nix
     ../../modules/development.nix
   ];
 
