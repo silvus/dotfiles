@@ -8,6 +8,7 @@ with lib;
     steam
     # lutris
     # gamemode
+    prismlauncher
   ];
 
   # Steam configuration

@@ -1,7 +1,8 @@
 { ... }:
 
 {
-  services.nfs.client.enable = true;  # Installs and enables NFS client utilities.
+  # optional, but ensures rpc-statsd is running for on demand mounting
+  boot.supportedFilesystems = [ "nfs" ];
 
   fileSystems."/data/series" = {
     device = "192.168.1.20:/data/series"; # Servius
