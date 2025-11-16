@@ -1,11 +1,31 @@
 { pkgs, ... }:
 
 {
+  # Add packages needed for date insertion
+  environment.systemPackages = with pkgs; [
+    wtype        # For simulating key presses
+  ];
+
+  # Script to insert current date
+  environment.etc."keyd/insert-date.sh" = {
+    text = ''
+      #!/usr/bin/env bash
+      date_str=$(date +%Y-%m-%d)
+      if command -v wtype >/dev/null 2>&1; then
+        wtype "$date_str"
+      elif command -v xdotool >/dev/null 2>&1; then
+        xdotool type --delay 0 "$date_str"
+      fi
+    '';
+    mode = "0755";
+  };
 
   # Keyd keyboard remapping configuration
   # Converted from Kanata configuration + custom qwerty-fr XKB layout
   # Provides French accents on QWERTY layout with navigation layers
   # https://wiki.nixos.org/wiki/Keyd
+  #
+  # Config errors will appear in the log output and can be accessed in the usual way using your system's service manager (e.g sudo journalctl -eu keyd).
   services.keyd = {
     enable = true;
     keyboards = {
@@ -127,6 +147,8 @@
             "q" = "acircumflex";        # â
             "w" = "egrave";             # è
             "e" = "eacute";             # é
+            # "t" = "macro(C-c C-c timeout(10) C-v)";
+            "t" = "cmd \"/usr/local/bin/type-date\""; # Insert current date YYYY-MM-DD
             "u" = "ugrave";             # ù
             "i" = "igrave";             # ì
             "o" = "ograve";             # ò
