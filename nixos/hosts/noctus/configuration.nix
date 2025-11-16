@@ -26,7 +26,7 @@
       extraEntries."debian.conf" = ''
         title Debian
         efi   /efi/debian/grubx64.efi
-        sort-key 0
+        sort-key 1
       '';
     };
   };
