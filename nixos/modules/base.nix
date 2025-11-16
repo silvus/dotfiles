@@ -107,6 +107,7 @@
     tmux
 
     # Basic utilities
+    coreutils  # Provides date command
     which
     most
     file
