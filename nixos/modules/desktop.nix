@@ -22,6 +22,7 @@
     grim                   # Screenshot tool
     slurp                  # Region selector
     wl-clipboard           # Clipboard integration
+    wtype                  # For simulating key presses
     kanshi                 # Auto layout switching (multi-monitor)
     wev                    # xev for wayland
     swaynotificationcenter # Notification daemon for sway
