@@ -100,6 +100,7 @@
     wget
     curl
     mosh
+    nfs-utils
     syncthing
 
     # Shell and terminal tools
