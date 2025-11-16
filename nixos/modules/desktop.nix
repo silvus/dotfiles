@@ -5,7 +5,7 @@
   environment.systemPackages = with pkgs; [
     # Core user applications
     firefox                # Web browser
-    firefox-devedition
+    # firefox-devedition
     wezterm                # Terminal emulator
     # rxvt-unicode         # Terminal emulator
     ghostty                # Terminal emulator
@@ -189,7 +189,7 @@
       gtk-theme-name=Everforest-Dark-B-LB
       gtk-icon-theme-name=Adwaita
       gtk-cursor-theme-name=Bibata-Original-Classic
-      gtk-cursor-theme-size=24
+      gtk-cursor-theme-size=16
       gtk-font-name=DejaVu Sans 11
       gtk-application-prefer-dark-theme=1
     '';
@@ -199,7 +199,7 @@
       gtk-theme-name=Everforest-Dark-B-LB
       gtk-icon-theme-name=Adwaita
       gtk-cursor-theme-name=Bibata-Original-Classic
-      gtk-cursor-theme-size=24
+      gtk-cursor-theme-size=16
       gtk-font-name=DejaVu Sans 11
       gtk-application-prefer-dark-theme=1
     '';
