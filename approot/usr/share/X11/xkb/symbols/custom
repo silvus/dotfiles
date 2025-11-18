@@ -1,4 +1,5 @@
 # This file comes from dotfiles.
+# Deprecated! Use keyd instead.
 
 # sudo cp ~/.dotfiles/approot/usr/share/X11/xkb/symbols/custom /usr/share/X11/xkb/symbols/custom && setxkbmap custom -option ''
 
@@ -15,6 +16,7 @@
 default partial alphanumeric_keys modifier_keys
 xkb_symbols "qwerty-fr-custom"
 {
+    # List options: /usr/share/X11/xkb/rules/xorg.lst
     include "us(basic)"
     include "shift(both_capslock)"
     include "level3(ralt_switch)"
@@ -47,7 +49,7 @@ xkb_symbols "qwerty-fr-custom"
     key <AD06> { [ y,            Y,           dead_invertedbreve,     dead_breve           ] };
     key <AD07> { [ u,            U,           ugrave,                 Ugrave               , Prior                 ] };
     key <AD08> { [ i,            I,           igrave,                 Igrave               , Up                    ] };
-    
+
     # Break Super+o ?
     # key <AD09> { [ o,            O,           ograve,                 ocircumflex          , Next                  ] };
     key <AD09> { [ o,            O,           ograve,                 ocircumflex          ] };
@@ -65,7 +67,7 @@ xkb_symbols "qwerty-fr-custom"
     key <AC08> { [ k,            K,           idiaeresis,             Idiaeresis           , Down                  ] };
     key <AC09> { [ l,            L,           odiaeresis,             Odiaeresis           , Right                 ] };
     key <AC10> { [ semicolon,    colon,       dead_acute,             dead_abovering       ] };
-    key <AC11> { [ apostrophe,   quotedbl,    dead_grave,             dead_diaeresis       ] };
+    key <AC11> { [ apostrophe,   quotedbl,    grave,                  dead_diaeresis       ] };
     key <BKSL> { [ backslash,    bar,         VoidSymbol,             doublelowquotemark   ] }; // „
 
     key <LSGT> { [ less,         greater,     lessthanequal,          greaterthanequal     ] };
