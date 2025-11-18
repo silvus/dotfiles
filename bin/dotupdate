@@ -4,11 +4,11 @@ Update system
 """
 
 import argparse
-import sys
-import socket
-import shutil
 import logging
+import shutil
+import socket
 import subprocess
+import sys
 from pathlib import Path
 
 DEBUG = False
@@ -103,7 +103,7 @@ def launch():
             subprocess.run("nix-channel --update", shell=True, check=True)
             log.info("Upgrade Nix flake")
             subprocess.run(
-                "nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:{}/.dotfiles/nixos".format(
+                "nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:{}/.dotfiles".format(
                     Path.home()
                 ),
                 shell=True,
@@ -111,7 +111,7 @@ def launch():
             )
             log.info("Upgrade Nix home-manager")
             subprocess.run(
-                "home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:{}/.dotfiles/nixos#silvus".format(
+                "home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:{}/.dotfiles#silvus".format(
                     Path.home()
                 ),
                 shell=True,
@@ -130,7 +130,7 @@ def launch():
         subprocess.run("nix-channel --update", shell=True, check=True)
         log.info("Upgrade NixOS rebuild")
         subprocess.run(
-            "sudo nixos-rebuild switch --flake path:{}/.dotfiles/nixos --upgrade".format(
+            "sudo nixos-rebuild switch --flake path:{}/.dotfiles --upgrade".format(
                 Path.home()
             ),
             shell=True,
@@ -180,4 +180,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
