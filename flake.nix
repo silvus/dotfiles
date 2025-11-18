@@ -18,8 +18,7 @@
       inherit system;
       specialArgs = { inherit hostname; };
       modules = [
-        ./modules/base.nix
-        ./hosts/${hostname}/configuration.nix
+        ./nixos/hosts/${hostname}/configuration.nix
         {
           networking.hostName = lib.mkDefault hostname;
         }
@@ -44,7 +43,7 @@
         config.allowUnfree = true;
       };
       modules = [
-        ./hosts/debian/home.nix
+        ./nixos/hosts/debian/home.nix
       ];
     };
 
