@@ -172,7 +172,7 @@
     # _JAVA_AWT_WM_NONREPARENTING = "1";
     GTK_THEME = "Everforest-Dark-B-LB";
     XCURSOR_THEME = "Bibata-Original-Classic";
-    XCURSOR_SIZE = "24";
+    XCURSOR_SIZE = "12";
     # XDG Portal variables
     # XDG_CURRENT_DESKTOP = "sway";
     # XDG_SESSION_DESKTOP = "sway";
@@ -189,7 +189,7 @@
       gtk-theme-name=Everforest-Dark-B-LB
       gtk-icon-theme-name=Adwaita
       gtk-cursor-theme-name=Bibata-Original-Classic
-      gtk-cursor-theme-size=16
+      gtk-cursor-theme-size=12
       gtk-font-name=DejaVu Sans 11
       gtk-application-prefer-dark-theme=1
     '';
@@ -199,7 +199,7 @@
       gtk-theme-name=Everforest-Dark-B-LB
       gtk-icon-theme-name=Adwaita
       gtk-cursor-theme-name=Bibata-Original-Classic
-      gtk-cursor-theme-size=16
+      gtk-cursor-theme-size=12
       gtk-font-name=DejaVu Sans 11
       gtk-application-prefer-dark-theme=1
     '';
