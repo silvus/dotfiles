@@ -27,7 +27,7 @@ nixos/
 
 To Install:
 ``` bash
-sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles/nixos
+sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles
 ```
 Note: `path:` is used to copy everything to nix store regardless to the git status.
 See https://github.com/NixOS/nix/issues/7107#issuecomment-2002363048
@@ -35,7 +35,7 @@ See https://github.com/NixOS/nix/issues/7107#issuecomment-2002363048
 
 To Upgrade:
 ``` bash
-sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles/nixos --upgrade
+sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles --upgrade
 ```
 
 To cleanup
@@ -49,17 +49,17 @@ useradd -m -G wheel -s /run/current-system/sw/bin/bash silvus
 passwd silvus
 su - silvus
 nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#git -- clone https://github.com/silvus/dotfiles.git ~/.dotfiles
-sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles/nixos#the-hostname --use-remote-sudo
+sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles#the-hostname --use-remote-sudo
 ```
 
 On Debian, install Nix and Homemanager (standalone), then:
 ``` bash
-home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles/nixos#silvus
+home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles#silvus
 ```
 
 To upgrade:
 ``` bash
-nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles/nixos
+nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles
 ```
 
 If offline:
