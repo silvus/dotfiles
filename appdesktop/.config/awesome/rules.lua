@@ -208,6 +208,7 @@ local rules = {
             class = {
                 "steam",
                 "Steam",
+                "PrismLauncher",
             }
         },
         properties = {
