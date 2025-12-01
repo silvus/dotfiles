@@ -5,7 +5,7 @@
   home = {
     username = "silvus";
     homeDirectory = "/home/silvus";
-    stateVersion = "25.05";
+    stateVersion = "25.11";
   };
 
   # Enable home-manager to manage itself
