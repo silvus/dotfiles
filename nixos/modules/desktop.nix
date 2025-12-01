@@ -45,7 +45,6 @@
 
     # Systray
     networkmanagerapplet   # get nm-applet
-    lxqt.lxqt-powermanagement # Power management applet
     pasystray              # Sound applet
 
     # Appearance and theming

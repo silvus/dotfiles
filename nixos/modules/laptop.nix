@@ -71,18 +71,20 @@ with lib;
   # Backlight control
   programs.light.enable = true;
 
+
   # Laptop-specific packages
   environment.systemPackages = with pkgs; [
-    powertop
-    acpi
-    lm_sensors
-    upower
-    brightnessctl
-    light
-    wirelesstools
-    iw
-    smartmontools
-    hdparm
+    lxqt.lxqt-powermanagement  # GUI power-management tray applet
+    powertop                   # Power usage analysis and tuning
+    acpi                       # ACPI status querying (battery, thermal)
+    # lm_sensors                 # Hardware sensors monitoring
+    # upower                     # Power device management backend
+    brightnessctl              # Backlight control utility
+    # light                      # Alternative backlight control tool
+    # wirelesstools              # Legacy wireless tools (iwconfig, etc.)
+    iw                         # Modern wireless management tool
+    # smartmontools              # SMART monitoring for storage devices
+    # hdparm                     # HDD/SSD parameter and performance tuning
   ];
 
   # Auto-suspend settings
