@@ -49,7 +49,7 @@ useradd -m -G wheel -s /run/current-system/sw/bin/bash silvus
 passwd silvus
 su - silvus
 nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#git -- clone https://github.com/silvus/dotfiles.git ~/.dotfiles
-sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles#the-hostname --use-remote-sudo
+sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles#the-hostname --sudo
 ```
 
 On Debian, install Nix and Homemanager (standalone), then:
