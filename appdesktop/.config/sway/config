@@ -24,9 +24,9 @@ client.urgent #e67e80 #e67e80 #1e2326 #e69875 #e67e80
 client.placeholder #000000 #0c0c0c #ffffff #000000 #0c0c0c
 client.background #ffffff
 
-gaps inner 10
+gaps inner 5
 # Outer gaps are in addition to inner gaps
-gaps outer -8
+gaps outer -3
 # gaps will only be enabled if a workspace has more than one child
 smart_gaps on
 # borders will only be enabled if the workspace has more than one visible child
@@ -131,3 +131,32 @@ for_window [app_id="pragtical"] move to workspace 2
 # ppt = percent of screen size
 for_window [title="Picture-in-Picture"]  floating enable, sticky enable, resize set 640 480, move position 90 ppt 90 ppt, border pixel 3
 for_window [app_id="mpv"] floating enable, sticky enable, resize set 640 480, move position 90 ppt 90 ppt, border pixel 3
+
+
+# 2025-12-01: systray is borked https://github.com/swaywm/sway/issues/3799
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+# bar {
+    # mode hide
+    # hidden_state hide
+
+    # position top
+
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    # status_command while date +'%-d.%-m.%Y. %H:%M:%S %p'; do sleep 1; done
+
+    # colors {
+    #     background          #141e1b
+    #     statusline          #d8e2de
+    #     separator           #4e8f7f
+
+    #     focused_workspace   #4e8f7f #4e8f7f #141e1b
+    #     active_workspace    #2a3a36 #2a3a36 #d8e2de
+    #     inactive_workspace  #1b2523 #1b2523 #8fa7a0
+    #     urgent_workspace    #c26d6d #c26d6d #141e1b
+    #     binding_mode        #c9a86a #c9a86a #141e1b
+    # }
+# }
