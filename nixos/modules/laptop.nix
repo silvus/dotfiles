@@ -87,16 +87,9 @@ with lib;
     # hdparm                     # HDD/SSD parameter and performance tuning
   ];
 
-  # Auto-suspend settings
-  services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchExternalPower = "suspend";
-    extraConfig = ''
-      HandlePowerKey=suspend
-      IdleAction=suspend
-      IdleActionSec=20m
-    '';
-  };
+  # Laptop lid
+  services.logind.settings.Login.HandleLidSwitch = "suspend";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "suspend";
 
   # Mobile broadband
   # networking.networkmanager.plugins = with pkgs; [

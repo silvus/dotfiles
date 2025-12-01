@@ -33,7 +33,8 @@
     pulseaudio             # Sound server
     pavucontrol            # Volume mixer GUI
     playerctl              # MPRIS control interface
-    moc                    # Music player
+    # moc                    # Music player
+    termusic               # Music player
     drawio                 # Diagrams
 
     # System utilities
@@ -67,7 +68,7 @@
     enable = true;
     settings.default_session = {
       # command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd sway";
-      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd '${pkgs.sway}/bin/sway'";
+      command = "${pkgs.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd '${pkgs.sway}/bin/sway'";
       user = "greeter";
     };
   };
@@ -210,7 +211,7 @@
     packages = with pkgs; [
       dejavu_fonts
       noto-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       font-awesome
     ] ++ (with pkgs.nerd-fonts; [
       hack
