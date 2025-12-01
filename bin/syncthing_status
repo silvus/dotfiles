@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Exit codes
+EXIT_OK=0
+EXIT_NOT_RUNNING=1
+EXIT_HAS_ERRORS=2
+
+# Check if syncthing is running
+if ! pgrep -x "syncthing" > /dev/null; then
+    echo "Syncthing is not running"
+    exit $EXIT_NOT_RUNNING
+fi
+
+# Get system status from syncthing CLI
+STATUS_JSON=$(syncthing cli show system 2>/dev/null)
+
+if [ $? -ne 0 ]; then
+    echo "Failed to communicate with Syncthing"
+    exit $EXIT_NOT_RUNNING
+fi
+
+# Check for errors in the system
+ERRORS=$(echo "$STATUS_JSON" | jq -r '.myID // empty')
+
+if [ -z "$ERRORS" ]; then
+    echo "Failed to parse Syncthing status"
+    exit $EXIT_HAS_ERRORS
+fi
+
+# Get error information
+SYSTEM_ERRORS=$(syncthing cli show system 2>/dev/null | jq -r 'select(.lastDialStatus != null) | .lastDialStatus' 2>/dev/null)
+FOLDER_ERRORS=$(syncthing cli show errors 2>/dev/null | jq -r '.errors[] // empty' 2>/dev/null)
+
+# Check if there are any errors
+if [ -n "$FOLDER_ERRORS" ] || echo "$STATUS_JSON" | jq -e '.systemErrors != null and (.systemErrors | length) > 0' > /dev/null 2>&1; then
+    echo "Syncthing is running but has errors:"
+
+    # Show system errors if any
+    SYSTEM_ERR=$(echo "$STATUS_JSON" | jq -r '.systemErrors[]?' 2>/dev/null)
+    if [ -n "$SYSTEM_ERR" ]; then
+        echo "System errors:"
+        echo "$SYSTEM_ERR" | jq -r '"\(.when): \(.message)"' 2>/dev/null || echo "$SYSTEM_ERR"
+    fi
+
+    # Show folder errors if any
+    if [ -n "$FOLDER_ERRORS" ]; then
+        echo "Folder errors:"
+        echo "$FOLDER_ERRORS"
+    fi
+
+    exit $EXIT_HAS_ERRORS
+fi
+
+# Everything is OK
+echo "Syncthing is running properly"
+# echo "Device ID: $(echo "$STATUS_JSON" | jq -r '.myID')"
+# echo "Version: $(echo "$STATUS_JSON" | jq -r '.version')"
+# echo "Uptime: $(echo "$STATUS_JSON" | jq -r '.uptime' | awk '{printf "%d days, %02d:%02d:%02d", $1/86400, ($1%86400)/3600, ($1%3600)/60, $1%60}')"
+
+exit $EXIT_OK
