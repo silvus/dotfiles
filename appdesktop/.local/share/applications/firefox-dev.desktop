@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Firefox Dev
-GenericName=Firefox Dev
-Exec=/opt/firefox-dev/firefox %u
-Terminal=false
-Icon=firefox-dev
-Type=Application
-Categories=Application;Network;X-Developer;
-Comment=Firefox Dev Web Browser.
