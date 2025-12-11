@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Paths
+DESKTOP_DIR="$HOME/.local/share/applications"
+ICON_SRC="/opt/firefox/browser/chrome/icons/default/default128.png"
+ICON_DIR="$HOME/.local/share/icons/hicolor/128x128/apps"
+DESKTOP_FILE="$DESKTOP_DIR/firefox.desktop"
+
+echo "Ensure directories exist"
+mkdir -p "$DESKTOP_DIR"
+mkdir -p "$ICON_DIR"
+
+echo "Copy the icon"
+cp "$ICON_SRC" "$ICON_DIR/firefox.png"
+
+echo "Generate desktop file to $DESKTOP_FILE"
+cat > "$DESKTOP_FILE" <<'EOF'
+[Desktop Entry]
+Name=Firefox
+GenericName=Firefox
+Exec=/opt/firefox/firefox %u
+Terminal=false
+Icon=firefox
+Type=Application
+Categories=Application;Network;X-Developer;WebBrowser;
+Comment=Firefox Web Browser.
+MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+EOF
