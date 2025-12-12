@@ -16,6 +16,11 @@ with lib;
     # Containers
     incus
 
+    # Markdown
+    marksman
+    markdown-oxide
+    # harper
+
     lua
     # lua lsp
     lua-language-server
@@ -48,7 +53,7 @@ with lib;
     # JS
     bun
 
-    # Editors
+    # GUI Editors
     vscodium
 
     # Utilities

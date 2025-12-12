@@ -1,0 +1,21 @@
+# English grammar check
+# [language-server.harper-ls]
+# command = "harper-ls"
+# args = ["--stdio"]
+
+# Markdown linter
+# [language-server.rumdl]
+# command = "rumdl"
+# args = ["server"]
+
+[[language]]
+name = "markdown"
+# language-servers = ["marksman", "markdown-oxide", "harper-ls"]
+language-servers = ["marksman", "markdown-oxide"]
+soft-wrap.enable = true
+text-width = 120
+soft-wrap.wrap-at-text-width = true
+# formatter = { command = 'dprint', args = [
+#   "fmt",
+# ] }
+# auto-format = false

@@ -33,6 +33,11 @@
     # Git TUI
     lazygit
 
+    # Markdown
+    marksman
+    markdown-oxide
+    # harper
+
     # Render graphs in Neovim
     # mermaid-cli  # mmdc
     # imagemagick
@@ -42,7 +47,7 @@
     drawio
 
     # music
-    tauon
+    # tauon
 
     # Fonts
     terminus_font
