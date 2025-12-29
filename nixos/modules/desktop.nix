@@ -13,8 +13,9 @@
     xfce.thunar-volman
     xfce.thunar-archive-plugin
     xfce.thunar-media-tags-plugin
-    thunderbird
-    signal-desktop
+    thunderbird            # Mail and calendar
+    signal-desktop         # Communication
+    zathura                # PDF
 
     # Sway and Wayland ecosystem
     waybar                 # Status bar
