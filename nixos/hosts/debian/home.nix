@@ -38,6 +38,9 @@
     markdown-oxide
     # harper
 
+    # Lua
+    lua-language-server
+
     # Render graphs in Neovim
     # mermaid-cli  # mmdc
     # imagemagick
