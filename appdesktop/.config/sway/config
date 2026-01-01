@@ -80,18 +80,23 @@ bindsym Mod4+Shift+l move right
 bindsym Mod4+Shift+j move down
 bindsym Mod4+Shift+h move left
 
-bindsym Mod4+Shift+w kill
+bindsym Mod4+q kill
 bindsym Mod4+Shift+r reload
+
+# TODO: Reboot or shutdown
 bindsym Mod4+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 bindsym Mod4+f fullscreen toggle
 bindsym Mod4+Shift+space floating toggle
+bindsym Mod4+Shift+t sticky toggle
+# TODO: Change to tab? Or tab to go to previous workspace?
 bindsym Mod4+space focus mode_toggle
 
 bindsym Mod4+h splith
 bindsym Mod4+v splitv
-bindsym Mod4+s layout stacking
-bindsym Mod4+w layout tabbed
+bindsym Mod4+d layout toggle split
+bindsym Mod4+s layout tabbed
+# bindsym Mod4+w layout stacking
 
 bindsym Mod4+r mode resize
 mode "resize" {
@@ -114,8 +119,11 @@ bindsym Mod4+Return exec wezterm
 # class need to be a reverse domain address
 exec ghostty --class=com.scratchpad.dropterm -e /home/silvus/.dotfiles/bin/tmuxdev
 
+# Start on specific workspace
+workspace 1
+
 bindsym Mod4+b exec --no-startup-id swaync-client -t -sw
-bindsym Mod4+d exec --no-startup-id dmenu_path
+# bindsym Mod4+d exec --no-startup-id dmenu_path
 bindsym Mod4+e exec --no-startup-id fuzzel
 
 # exec kanshi
