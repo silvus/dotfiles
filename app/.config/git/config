@@ -1,8 +1,5 @@
 # https://blog.gitbutler.com/how-git-core-devs-configure-git/
 
-[include]
-	path = ~/.dotfiles/custom/gitconfig
-
 [core]
 	editor = vim
 	# Make sure that CRLF is replaced with LF
@@ -101,3 +98,6 @@
 	# Reuse recorded resolutions (rebases with conflicts)
 	enabled = true
 	autoupdate = true
+
+[include]
+	path = ~/.dotfiles/custom/gitconfig
