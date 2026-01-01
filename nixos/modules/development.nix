@@ -14,7 +14,7 @@ with lib;
     clang
 
     # Containers
-    incus
+    # incus
 
     # Markdown
     marksman
@@ -54,7 +54,7 @@ with lib;
     bun
 
     # GUI Editors
-    vscodium
+    # vscodium
 
     # Utilities
     jq

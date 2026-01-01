@@ -1,5 +1,5 @@
 # Noctus - Laptop Configuration
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -7,7 +7,6 @@
 
     ../../modules/base.nix
     ../../modules/keyboard.nix
-    # Enable laptop modules
     ../../modules/desktop.nix
     ../../modules/laptop.nix
     # ../../modules/security.nix
@@ -16,18 +15,27 @@
   ];
 
   # Bootloader (dual boot with Debian)
+  # https://wiki.nixos.org/wiki/Systemd/boot
   boot.loader = {
-    timeout = 1;
-    efi.canTouchEfiVariables = true;
     systemd-boot = {
-      enable = true;
-      configurationLimit = 9;
+      # The sort key used for Nix entries
+      # sortKey = "a_01";
+
       # Dual boot with Debian
+      # Use "d" key to change the default entry (the arrow)!
       extraEntries."debian.conf" = ''
         title Debian
         efi   /efi/debian/grubx64.efi
-        sort-key 1
       '';
+        # sort-key z_99_debian
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    # bambu-studio # 2026-01-02 Cannot login
+    # orca-slicer
+    # freecad
+    # blender
+    orca-slicer
+  ];
 }
