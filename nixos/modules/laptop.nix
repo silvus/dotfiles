@@ -1,6 +1,7 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
+# { pkgs, lib, ... }:
 
-with lib;
+# with lib;
 
 {
   # TLP Power Management with good defaults
@@ -91,6 +92,16 @@ with lib;
   services.logind.settings.Login.HandleLidSwitch = "suspend";
   services.logind.settings.Login.HandleLidSwitchExternalPower = "suspend";
 
+  # Systemd user service for lxqt-powermanagement
+  systemd.user.services.lxqt-powermanagement = {
+    description = "LXQt Power Management";
+    wantedBy = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.lxqt.lxqt-powermanagement}/bin/lxqt-powermanagement";
+    };
+  };
+
   # Mobile broadband
   # networking.networkmanager.plugins = with pkgs; [
   #   networkmanager-openvpn
@@ -112,9 +123,6 @@ with lib;
 
   # Bluetooth power management
   # hardware.bluetooth.powerOnBoot = false;
-
-  # Ensure user is in video group for backlight control
-  users.users.silvus.extraGroups = [ "video" ];
 
   # Udev rules for power management
   # services.udev.extraRules = ''

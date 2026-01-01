@@ -8,7 +8,6 @@
     # TODO: should I move this to the dotfiles?
     # ./incus-virtual-machine.nix
 
-    # Enable modules for testing
     ../../modules/base.nix
     ../../modules/keyboard.nix
     ../../modules/desktop.nix

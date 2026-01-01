@@ -65,6 +65,7 @@
     wrapperFeatures.gtk = true;
   };
 
+  # https://github.com/NixOS/nixpkgs/blob/nixos-25.11/nixos/modules/services/display-managers/greetd.nix
   services.greetd = {
     enable = true;
     settings.default_session = {
@@ -72,6 +73,8 @@
       command = "${pkgs.tuigreet}/bin/tuigreet --asterisks --greet-align left --time --cmd '${pkgs.sway}/bin/sway'";
       user = "greeter";
     };
+    # Fix for systemd logs on top
+    useTextGreeter = true;
   };
 
   # Audio
@@ -148,6 +151,15 @@
       partOf = [ "graphical-session.target" ];
       serviceConfig = {
         ExecStart = "${pkgs.swaynotificationcenter}/bin/swaync";
+      };
+    };
+
+    nm-applet = {
+      description = "NetworkManager Applet";
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.networkmanagerapplet}/bin/nm-applet";
       };
     };
   };
@@ -230,4 +242,8 @@
     };
   };
 
+  # Yubikey
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+  services.pcscd.enable = true;
+  # hardware.fido2.enable = true;
 }
