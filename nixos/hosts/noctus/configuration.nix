@@ -7,7 +7,9 @@
 
     ../../modules/base.nix
     ../../modules/keyboard.nix
-    ../../modules/desktop.nix
+    ../../modules/desktop_base.nix
+    ../../modules/desktop_awesome.nix
+    # ../../modules/desktop_sway.nix
     ../../modules/laptop.nix
     # ../../modules/security.nix
     ../../modules/sandman.nix

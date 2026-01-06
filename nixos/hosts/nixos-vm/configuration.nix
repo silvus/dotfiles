@@ -10,7 +10,9 @@
 
     ../../modules/base.nix
     ../../modules/keyboard.nix
-    ../../modules/desktop.nix
+    ../../modules/desktop_base.nix
+    # ../../modules/desktop_sway.nix
+    ../../modules/desktop_awesome.nix
     ../../modules/laptop.nix
     # ../../modules/gaming.nix
     # ../../modules/security.nix
@@ -45,13 +47,13 @@
   # ];
 
   # Override greetd from desktop.nix for auto-login
-  services.greetd = {
-    enable = true;
-    settings.default_session = {
-      command = lib.mkForce "${pkgs.sway}/bin/sway";
-      user = lib.mkForce "silvus";
-    };
-  };
+  # services.greetd = {
+  #   enable = true;
+  #   settings.default_session = {
+  #     # command = lib.mkForce "${pkgs.sway}/bin/sway";
+  #     user = lib.mkForce "silvus";
+  #   };
+  # };
 
   # VM optimizations
   # services.spice-vdagentd.enable = true;

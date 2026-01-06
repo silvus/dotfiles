@@ -30,6 +30,10 @@ if file_exists("/usr/bin/wezterm") then
 elseif file_exists("/usr/bin/urxvt") then
 	config.terminal = "/usr/bin/urxvt"
 	config.terminal_quake = '/usr/bin/urxvt -name guaketerm -title terminal -e "' .. config.dotfiles .. '/bin/tmuxdev"'
+elseif file_exists("/run/current-system/sw/bin/wezterm") then
+	-- NixOs
+	config.terminal = "/run/current-system/sw/bin/wezterm"
+	config.terminal_quake = '/run/current-system/sw/bin/wezterm start --class guaketerm -- "' .. config.dotfiles .. '/bin/tmuxdev"'
 else
 	config.terminal = "xterm"
 end
@@ -96,4 +100,3 @@ if file_exists(config_custom_path) then
 end
 
 return config
-
