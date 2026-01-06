@@ -14,7 +14,7 @@ with lib;
     clang
 
     # Containers
-    # incus
+    incus
 
     # Markdown
     marksman
