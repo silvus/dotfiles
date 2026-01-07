@@ -7,6 +7,7 @@
 
     ../../modules/base.nix
     ../../modules/keyboard.nix
+    ../../modules/syncthing.nix
     # Enable server modules
     # ../../modules/security.nix
     ../../modules/development.nix

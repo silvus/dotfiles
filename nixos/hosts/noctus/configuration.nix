@@ -7,6 +7,7 @@
 
     ../../modules/base.nix
     ../../modules/keyboard.nix
+    ../../modules/syncthing.nix
     ../../modules/desktop_base.nix
     ../../modules/desktop_awesome.nix
     # ../../modules/desktop_sway.nix
@@ -14,6 +15,7 @@
     # ../../modules/security.nix
     ../../modules/sandman.nix
     ../../modules/development.nix
+    ../../modules/development_containers.nix
   ];
 
   # Bootloader (dual boot with Debian)
