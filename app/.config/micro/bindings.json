@@ -1,5 +1,10 @@
 {
     "Alt-/": "lua:comment.comment",
+    "Alt-d": "command:definition",
+    "Alt-f": "command:format",
+    "Alt-k": "command:hover",
+    "Alt-r": "command:references",
+    "Ctrl-l": "SpawnMultiCursor",
     "CtrlD": "CutLine",
     "CtrlLeft": "WordLeft",
     "CtrlRight": "WordRight",
@@ -7,7 +12,7 @@
     "CtrlShiftLeft": "SelectWordLeft",
     "CtrlShiftRight": "SelectWordRight",
     "CtrlShiftUp": "SelectUp",
+    "CtrlSpace": "command:lspcompletion",
     "CtrlUnderscore": "lua:comment.comment",
-    "CtrlW": "DeleteWordLeft",
-    "Ctrl-l": "SpawnMultiCursor"
+    "CtrlW": "DeleteWordLeft"
 }
