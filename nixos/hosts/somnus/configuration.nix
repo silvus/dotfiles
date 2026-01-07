@@ -7,6 +7,7 @@
 
     ../../modules/base.nix
     ../../modules/keyboard.nix
+    # ../../modules/syncthing.nix
     ../../modules/desktop_base.nix
     # ../../modules/desktop_sway.nix
     ../../modules/desktop_awesome.nix

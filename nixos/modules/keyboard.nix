@@ -7,7 +7,6 @@ in {
   # Add packages needed for date insertion
   environment.systemPackages = with pkgs; [
     keyd         # To get the binary in the PATH
-    wtype        # For simulating key presses
   ];
 
   # Looks like there is a keyd group

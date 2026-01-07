@@ -13,9 +13,6 @@ with lib;
     gcc
     clang
 
-    # Containers
-    incus
-
     # Markdown
     marksman
     markdown-oxide
@@ -64,14 +61,4 @@ with lib;
     sqlite
   ];
 
-  # Enable Incus containers
-  virtualisation.incus = {
-    enable = true;
-    ui.enable = true;
-  };
-
-  # Incus env
-  users.users.silvus.extraGroups = [ "incus-admin" ];
-  # Enable nftables (required for Incus)
-  networking.nftables.enable = true;
 }
