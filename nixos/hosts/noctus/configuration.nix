@@ -35,11 +35,6 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    # bambu-studio # 2026-01-02 Cannot login
-    # orca-slicer
-    # freecad
-    # blender
-    orca-slicer
-  ];
+  # environment.systemPackages = with pkgs; [
+  # ];
 }

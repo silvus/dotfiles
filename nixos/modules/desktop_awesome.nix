@@ -102,9 +102,6 @@
         # luadbi-mysql  # optional, for awesome-extra functionality
       # ];
     };
-
-    # Keyboard layout
-    xkb.layout = "us";
   };
 
   # Greetd display manager with tuigreet
