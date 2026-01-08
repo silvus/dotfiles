@@ -5,8 +5,6 @@ with lib;
 {
   environment.systemPackages = with pkgs; [
     # Core development tools
-    git
-    lazygit
     gnumake
     cmake
     pkg-config
@@ -50,15 +48,13 @@ with lib;
     # JS
     bun
 
-    # GUI Editors
-    # vscodium
-
     # Utilities
     jq
-    curl
-    wget
     lsof
     sqlite
+
+    # Static generator
+    zola
   ];
 
 }

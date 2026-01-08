@@ -105,6 +105,8 @@
     neovim
     nano
     helix
+    emacs
+    emacsPackages.doom
 
     # Network
     wget
@@ -121,7 +123,6 @@
     which
     most
     file
-    git
     fzf
     bat
     fd
@@ -129,6 +130,9 @@
     gawk
     unzip
     unrar
+    git
+    lazygit
+    yazi
 
     # Scripts
     python3

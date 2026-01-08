@@ -17,19 +17,15 @@
     xfce.thunar-archive-plugin
     xfce.thunar-media-tags-plugin
 
-    thunderbird            # Mail and calendar
-    signal-desktop         # Communication
-    zathura                # PDF
-
     # Media and sound
     mpv                    # Media player
     yt-dlp                 # Media downloader
+    spotdl                 # Music downloader
     pulseaudio             # Sound server
     pavucontrol            # Volume mixer GUI
     playerctl              # MPRIS control interface
     moc                    # Music player
     # termusic               # Music player
-    drawio                 # Diagrams
 
     # System utilities
     xdg-utils              # Desktop integration
@@ -37,7 +33,30 @@
     gnome-disk-utility     # Disk management
     # dconf-editor           # GTK configuration editor
     libnotify              # Notifications
+    ksnip                  # Screenshots
     lxappearance           # GTK theme switcher GUI
+    keepassxc              # Password manager
+    blink1                 # Command line client for the blink(1) notification light
+
+    # Code
+    vscodium               # Editor
+
+    # Office
+    thunderbird            # Mail and calendar
+    signal-desktop         # Communication
+    libreoffice            # Office suite
+    simple-scan            # Document scanner
+    gimp                   # Painting
+    drawio                 # Diagrams
+    zathura                # PDF
+    cheese                 # Webcam testing
+    mediaelch              # TVshow manager
+
+    # 3D
+    # bambu-studio # 2026-01-02 Cannot login
+    orca-slicer
+    freecad
+    # blender
 
   ];
 
@@ -54,10 +73,6 @@
   programs.dconf.enable = true;
   # services.udisks2.enable = true;
   # services.tumbler.enable = true;
-  # services.printing = {
-  #   enable = true;
-  #   drivers = with pkgs; [ hplip gutenprint ];
-  # };
   # hardware.sane.enable = true;
   # hardware.bluetooth.enable = true;
   # services.blueman.enable = true;
@@ -70,6 +85,26 @@
 
   # Enable D-Bus
   services.dbus.enable = true;
+
+  # Printing
+  # https://wiki.nixos.org/wiki/Printing
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      brlaser # Drivers for some Brother printers
+      brgenml1lpr # Generic drivers for more Brother printers
+      gutenprint # Drivers for many different printers
+      cups-filters # Auto-discovery of network printers
+      cups-browsed # Auto-discovery of network printers
+    ];
+  };
+  # Auto-discovery of network printers
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
 
   # Fonts
   # https://nixos.wiki/wiki/Fonts
