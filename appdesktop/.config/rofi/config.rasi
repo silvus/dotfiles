@@ -10,7 +10,7 @@
 
 configuration {
 	modi: "drun,combi";
-	font: "DejaVu Sans Mono 11";
+	font: "DejaVuSansM Nerd Font 11";
 /*	location: 0;*/
 /*	yoffset: 0;*/
 /*	xoffset: 0;*/
