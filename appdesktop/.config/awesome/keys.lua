@@ -500,7 +500,7 @@ keys.global = awful.util.table.join(
 
 	-- Shutdown or restart
 	awful.key({ modkey, "Shift" }, "s", function()
-		awful.spawn(config.home .. "/.dotfiles/bin/dmenu_shutdown", false)
+		awful.spawn(config.home .. "/.dotfiles/bin/menu_shutdown", false)
 	end, { description = "shutdown", group = "launcher" }),
 
 	-- VPN
@@ -671,4 +671,3 @@ keys.clients.buttons = awful.util.table.join(
 
 
 return keys
-

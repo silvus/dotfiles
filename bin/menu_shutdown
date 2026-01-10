@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -e
+
+action="$(echo -e "⏻ Shutdown\n⟳ Restart\n⏾ Suspend\n⏼ Logout" | rofi -dmenu -i -p "Session")"
+
+case "$action" in
+	"⏻ Shutdown")
+		systemctl poweroff
+		;;
+	"⟳ Restart")
+		systemctl reboot
+		;;
+	"⏾ Suspend")
+		systemctl suspend
+		;;
+	"⏼ Logout")
+		session=$(loginctl list-sessions --no-legend | grep "$(whoami)" | awk '{print $1}' | head -n 1)
+		if [ -n "$session" ]; then
+			loginctl terminate-session "$session"
+		else
+			# Fallback methods
+			if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+				loginctl terminate-session "$XDG_SESSION_ID"
+			else
+				pkill -KILL -u "$(whoami)"
+			fi
+		fi
+		;;
+	*)
+		# Handle cancellation or invalid input
+		exit 0
+		;;
+esac
