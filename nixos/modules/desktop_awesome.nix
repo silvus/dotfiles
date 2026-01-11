@@ -165,12 +165,12 @@
 
   # Environment variables for theming and X11
   environment.sessionVariables = {
-    # GTK theming
-    GTK_THEME = "Arc-Dark";
+    # GTK theming - Overrides the theme specified in config files at runtime
+    # GTK_THEME = "Arc-Dark";
 
-    # Icon theme
-    XCURSOR_THEME = "Adwaita";
-    XCURSOR_SIZE = "24";
+    # Icon theme - Overrides the theme specified in config files at runtime
+    # XCURSOR_THEME = "Adwaita";
+    # XCURSOR_SIZE = "24";
 
     # X11 session type
     XDG_SESSION_TYPE = "x11";
@@ -178,37 +178,38 @@
   };
 
   # Update environment.etc section
-  environment.etc = {
-    # GTK 2.0 settings
-    "xdg/gtk-2.0/gtkrc".text = ''
-      gtk-theme-name="Arc-Dark"
-      gtk-icon-theme-name="Numix"
-      gtk-cursor-theme-name="Adwaita"
-      gtk-cursor-theme-size=24
-      gtk-font-name="DejaVu Sans 11"
-    '';
+  # Not used! The config in HOME is more logical!
+  # environment.etc = {
+  #   # GTK 2.0 settings
+  #   "xdg/gtk-2.0/gtkrc".text = ''
+  #     gtk-theme-name="Arc-Dark"
+  #     gtk-icon-theme-name="Numix"
+  #     gtk-cursor-theme-name="Adwaita"
+  #     gtk-cursor-theme-size=24
+  #     gtk-font-name="DejaVu Sans 11"
+  #   '';
 
-    # GTK 3.0 settings
-    "gtk-3.0/settings.ini".text = ''
-      [Settings]
-      gtk-theme-name=Arc-Dark
-      gtk-icon-theme-name=Numix
-      gtk-cursor-theme-name=Adwaita
-      gtk-cursor-theme-size=24
-      gtk-font-name=DejaVu Sans 11
-      gtk-application-prefer-dark-theme=1
-    '';
+  #   # GTK 3.0 settings
+  #   "gtk-3.0/settings.ini".text = ''
+  #     [Settings]
+  #     gtk-theme-name=Arc-Dark
+  #     gtk-icon-theme-name=Numix
+  #     gtk-cursor-theme-name=Adwaita
+  #     gtk-cursor-theme-size=24
+  #     gtk-font-name=DejaVu Sans 11
+  #     gtk-application-prefer-dark-theme=1
+  #   '';
 
-    # GTK 4.0 settings
-    "gtk-4.0/settings.ini".text = ''
-      [Settings]
-      gtk-theme-name=Arc-Dark
-      gtk-icon-theme-name=Numix
-      gtk-cursor-theme-name=Adwaita
-      gtk-cursor-theme-size=24
-      gtk-font-name=DejaVu Sans 11
-      gtk-application-prefer-dark-theme=1
-    '';
-  };
+  #   # GTK 4.0 settings
+  #   "gtk-4.0/settings.ini".text = ''
+  #     [Settings]
+  #     gtk-theme-name=Arc-Dark
+  #     gtk-icon-theme-name=Numix
+  #     gtk-cursor-theme-name=Adwaita
+  #     gtk-cursor-theme-size=24
+  #     gtk-font-name=DejaVu Sans 11
+  #     gtk-application-prefer-dark-theme=1
+  #   '';
+  # };
 
 }
