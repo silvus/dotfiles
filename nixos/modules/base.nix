@@ -12,6 +12,9 @@
       configurationLimit = 9;
     };
   };
+  # optional, but ensures rpc-statsd is running for on demand mounting
+  boot.supportedFilesystems = [ "nfs" ];
+
 
   # Enable networking
   networking.networkmanager.enable = true;

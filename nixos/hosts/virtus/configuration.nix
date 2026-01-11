@@ -14,6 +14,9 @@
     ../../modules/desktop_awesome.nix
     ../../modules/gaming.nix
     # ../../modules/security.nix
+    ../../modules/mnt_movies.nix
+    ../../modules/mnt_tvshows.nix
+    # ../../modules/mnt_doc.nix
     ../../modules/development.nix
     ../../modules/development_containers.nix
   ];
