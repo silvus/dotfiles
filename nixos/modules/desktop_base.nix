@@ -36,7 +36,7 @@
     ksnip                  # Screenshots
     lxappearance           # GTK theme switcher GUI
     keepassxc              # Password manager
-    blink1                 # Command line client for the blink(1) notification light
+    blink1-tool            # Command line client for the blink(1) notification light
 
     # Code
     vscodium               # Editor
