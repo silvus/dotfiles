@@ -13,7 +13,9 @@
     ../../modules/desktop_awesome.nix
     # ../../modules/gaming.nix
     # ../../modules/security.nix
-    ../../modules/sandman.nix
+    ../../modules/mnt_movies.nix
+    ../../modules/mnt_tvshows.nix
+    ../../modules/mnt_doc.nix
     ../../modules/development.nix
   ];
 
