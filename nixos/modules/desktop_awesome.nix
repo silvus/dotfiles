@@ -92,6 +92,11 @@
         # Optional: set a custom background image
         # background = "/path/to/your/wallpaper.jpg";
       };
+      # Sleep time
+      sessionCommands = ''
+        xset s 3600 3600
+        xset dpms 3600 3600 3600
+      '';
     };
 
     # Awesome window manager
