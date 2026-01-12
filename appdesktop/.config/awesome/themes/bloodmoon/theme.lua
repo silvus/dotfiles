@@ -160,7 +160,8 @@ elseif awful.util.is_dir("/usr/share/icons/Faba") then
 elseif awful.util.is_dir("/usr/share/icons/menta") then
 	theme.icon_theme = "menta"
 else
-	theme.icon_theme = nil
+	-- Default for NixOs
+	theme.icon_theme = "Numix"
 end
 
 -- Disable the tasklist client titles.
@@ -294,4 +295,3 @@ theme.bar = bar
 
 
 return theme
-
