@@ -2,7 +2,6 @@ local string = require("string")
 local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
-local gears = require("gears")
 local lain = require("lain")
 
 local customwidget = {}
@@ -42,34 +41,29 @@ local widget_tooltip = awful.tooltip {
 }
 
 -- events
-buttons_event = awful.util.table.join(
+local buttons_event = awful.util.table.join(
 	awful.button({}, 1, function()
-		-- awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
-		awful.spawn.with_shell('pavucontrol')
+		awful.spawn("pavucontrol")
 	end),
 	awful.button({}, 2, function()
-		awful.spawn(string.format("%s -D pulse set %s 100%%", customwidget.volumecapture.cmd,
-			customwidget.volumecapture.channel))
+		awful.spawn("pactl set-source-volume @DEFAULT_SOURCE@ 100%")
 		customwidget.volumecapture.update()
 	end),
 	awful.button({}, 3, function()
-		awful.spawn(string.format("%s -D pulse set %s toggle", customwidget.volumecapture.cmd,
-			customwidget.volumecapture.togglechannel or customwidget.volumecapture.channel))
+		awful.spawn("pactl set-source-mute @DEFAULT_SOURCE@ toggle")
 		customwidget.volumecapture.update()
 	end),
 	awful.button({}, 4, function()
-		awful.spawn(string.format("%s -D pulse set %s 5%%+", customwidget.volumecapture.cmd,
-			customwidget.volumecapture.channel))
+		awful.spawn("pactl set-source-volume @DEFAULT_SOURCE@ +5%")
 		customwidget.volumecapture.update()
 	end),
 	awful.button({}, 5, function()
-		awful.spawn(string.format("%s -D pulse set %s 5%%-", customwidget.volumecapture.cmd,
-			customwidget.volumecapture.channel))
+		awful.spawn("pactl set-source-volume @DEFAULT_SOURCE@ -5%")
 		customwidget.volumecapture.update()
 	end)
 )
+
 -- customwidget.icon:buttons(buttons_event)
 customwidget.widget:buttons(buttons_event)
 
 return customwidget
-
