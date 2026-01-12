@@ -21,6 +21,7 @@
     mpv                    # Media player
     yt-dlp                 # Media downloader
     spotdl                 # Music downloader
+    alsa-utils             # Sound utility
     pulseaudio             # Sound server
     pavucontrol            # Volume mixer GUI
     playerctl              # MPRIS control interface
