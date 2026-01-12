@@ -2,7 +2,6 @@ local string = require("string")
 local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
-local gears = require("gears")
 local lain = require("lain")
 
 local customwidget = {}
@@ -84,26 +83,24 @@ local widget_tooltip = awful.tooltip {
 }
 
 -- events
-buttons_event = awful.util.table.join(
+local buttons_event = awful.util.table.join(
 	awful.button({}, 1, function()
-		-- awful.spawn.with_shell(string.format("%s -e alsamixer", terminal))
-		awful.spawn.with_shell('pavucontrol')
+		awful.spawn("pavucontrol")
 	end),
 	awful.button({}, 2, function()
 		awful.spawn('pactl set-sink-volume @DEFAULT_SINK@ 150%')
 		customwidget.volume.update()
 	end),
 	awful.button({}, 3, function()
-		awful.spawn(string.format("%s -D pulse set %s toggle", customwidget.volume.cmd,
-			customwidget.volume.togglechannel or customwidget.volume.channel))
+		awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
 		customwidget.volume.update()
 	end),
 	awful.button({}, 4, function()
-		awful.spawn(string.format("%s -D pulse set %s 5%%+", customwidget.volume.cmd, customwidget.volume.channel))
+		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%")
 		customwidget.volume.update()
 	end),
 	awful.button({}, 5, function()
-		awful.spawn(string.format("%s -D pulse set %s 5%%-", customwidget.volume.cmd, customwidget.volume.channel))
+		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%")
 		customwidget.volume.update()
 	end)
 )
