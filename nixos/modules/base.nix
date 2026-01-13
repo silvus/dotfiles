@@ -50,19 +50,6 @@
     };
   };
 
-  # Console keymap
-  console = {
-    # keyMap = "us";
-    # Derive from X11 value
-    useXkbConfig = true;
-  };
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -126,6 +113,7 @@
     which
     most
     file
+    tree
     fzf
     bat
     fd
