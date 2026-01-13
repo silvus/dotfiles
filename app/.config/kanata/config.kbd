@@ -1,6 +1,11 @@
 ;; https://github.com/jtroo/kanata/blob/main/cfg_samples/kanata.kbd
 ;; https://github.com/jtroo/kanata/blob/42d6065b2fe7ac5d9e8ca2cac57e7643d419566b/parser/src/keys/mod.rs
 
+(defcfg
+  ;; Enable cmd
+  danger-enable-cmd yes
+)
+
 ;; If you are looking for other keys, the file src/keys/mod.rs should hopefully
 ;; provide some insight.
 (defsrc
@@ -66,4 +71,8 @@
   ;; ecl (tap-hold 200 200 esc lctl)
   ;; tap: esc hold: nav layer
   ecl (tap-hold 200 200 esc @lnv)
+
+  ;; Type date-time as YYYY-MM-DD
+  pdt (cmd-output-keys bash -c "date +'%F'")
+
 )
