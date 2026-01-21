@@ -16,6 +16,7 @@
     ../../modules/desktop_awesome.nix
     ../../modules/laptop.nix
     # ../../modules/gaming.nix
+    # ../../modules/printing.nix
     # ../../modules/security.nix
     ../../modules/mnt_movies.nix
     ../../modules/mnt_tvshows.nix
