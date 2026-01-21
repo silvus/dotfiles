@@ -15,9 +15,14 @@
   # optional, but ensures rpc-statsd is running for on demand mounting
   boot.supportedFilesystems = [ "nfs" ];
 
-
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Reduce systemd timeout
+  systemd.settings.Manager = {
+    DefaultTimeoutStartSec = "10s";
+    DefaultTimeoutStopSec = "10s";
+  };
 
   # Set your time zone
   time.timeZone = "Europe/Paris";
