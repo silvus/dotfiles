@@ -61,6 +61,19 @@
 
   ];
 
+  # Reduce systemd timeout
+  systemd.settings.Manager = {
+    DefaultTimeoutStartSec = "10s";
+    DefaultTimeoutStopSec = "10s";
+  };
+  systemd.user.extraConfig = ''
+    DefaultTimeoutStartSec=10s
+    DefaultTimeoutStopSec=10s
+  '';
+
+  # Disable NetworkManager from starting at boot
+  systemd.services.NetworkManager-wait-online.enable = false;
+
   # Audio
   # security.rtkit.enable = true;
   services.pipewire = {
