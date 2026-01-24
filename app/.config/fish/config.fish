@@ -7,7 +7,6 @@ fenv source ~/.profile
 # https://github.com/fish-shell/fish-shell/issues/772
 set --global -x FISH_CLIPBOARD_CMD cat
 
-
 # Fish style # https://fishshell.com/docs/current/index.html#variables-color
 # -----------------------------------------------------------------------------
 # fish_color_normal, the default color
@@ -37,7 +36,6 @@ set --global fish_color_search_match --background='green'
 # fish_pager_color_progress, the color of the progress bar at the bottom left corner
 # fish_pager_color_secondary, the background color of the every second completion
 
-
 # Aliases
 # -----------------------------------------------------------------------------
 alias cd..='cd ..'
@@ -60,7 +58,6 @@ if type -q batcat
     alias bat='batcat'
 end
 
-
 alias tree1="tree --dirsfirst -ChFLQ 1"
 alias tree2="tree --dirsfirst -ChFLQ 2"
 alias tree3="tree --dirsfirst -ChFLQ 3"
@@ -68,12 +65,13 @@ alias tree4="tree --dirsfirst -ChFLQ 4"
 alias tree5="tree --dirsfirst -ChFLQ 5"
 alias tree6="tree --dirsfirst -ChFLQ 6"
 
+# Remove the alias and ensure my custom ls script is used
+functions -e l
 
 # Nvim profiles
 # -----------------------------------------------------------------------------
 alias nvim-lazyvim='NVIM_APPNAME=lazyvim nvim'
 alias lnvim='NVIM_APPNAME=lazyvim nvim'
-
 
 # Xset
 # -----------------------------------------------------------------------------
@@ -88,7 +86,6 @@ if type -q xset
         xset b off
     end
 end
-
 
 # FZF from Nix https://nixos.wiki/wiki/Fzf
 # -----------------------------------------------------------------------------
@@ -127,7 +124,6 @@ bind \ch fzf-history-widget
 
 # Open TODO.md with CTRL+t
 # bind \ct 'tmux_sessionizer -p "/data/doc/todo.org"'
-
 
 # TTY colour scheme (Tango like)
 # -----------------------------------------------------------------------------
@@ -170,7 +166,6 @@ if test "$TERM" = linux
     printf '\033]PFeeeeec' # bright white
     clear
 end
-
 
 # Environment specific configuration
 # -----------------------------------------------------------------------------
