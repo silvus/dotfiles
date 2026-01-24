@@ -119,7 +119,7 @@ export FZF_CTRL_T_COMMAND=
 # Use XDG
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
-if [[ -d "$CARGO_HOME" ]]; then
+if [[ -f "$CARGO_HOME/env" ]]; then
 	# rustup shell setup ($PATH)
 	source "$CARGO_HOME/env"
 fi
