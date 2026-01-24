@@ -11,7 +11,7 @@ TXTGREEN=$(tput setaf 2)
 TXTYELLOW=$(tput setaf 3)
 TXTBLUE=$(tput setaf 4)
 TXTPURPLE=$(tput setaf 5)
-TXTCYAN=$(tput setaf 6)
+# TXTCYAN=$(tput setaf 6)
 
 # Styles
 # TXTBOLD=$(tput bold)
@@ -109,6 +109,15 @@ _is_virtualenv() {
 	fi
 }
 
+# Check if nix-shell is active
+_is_nixshell() {
+	if [[ -n "$IN_NIX_SHELL" ]]; then
+		_NIX_SHELL="-[${TXTPURPLE}nix-shell${TXTRESET}]"
+	else
+		_NIX_SHELL=""
+	fi
+}
+
 # Prompt
 # --------------------------------------------------------------------------------------
 _prompt_command_function() {
@@ -118,6 +127,7 @@ _prompt_command_function() {
 	_is_writable
 	_vcs_prompt
 	_is_virtualenv
+	_is_nixshell
 }
 
 PROMPT_COMMAND=_prompt_command_function
@@ -129,7 +139,7 @@ _is_root
 
 # ┌─[21:55:59]-[silvus@mars]-[git]
 # └─[~/.dotfiles] $
-PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
+PS1='\n┌─[\[$TXTGREEN\]\D{%T}\[$TXTRESET\]]-[\[$_COLOR_USER\]\u\[$TXTYELLOW\]@\[$_COLOR_HOST\]\h\[$TXTRESET\]]\[$_VCS_PROMPT\]\[$_NIX_SHELL\]\[$_PYTHON_VENV\]\[$_LAST_COMMAND\]\n└─[\[$TXTBLUE\]\w\[$TXTRESET\]] \[$_COLOR_END\]\$\[$TXTRESET\] '
 
 # Broken when navigating history because of empty variables ($_VCS_PROMPT)
 # [21:56:13]-[silvus@mars]-[~/.dotfiles]-[git] $
