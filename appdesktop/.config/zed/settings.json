@@ -121,6 +121,10 @@
     //     }
     //   }
     // },
+    "default_model": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-5-latest"
+    },
     "enable_feedback": false,
     // Where to show notifications when the agent has either completed
     // its response, or else needs confirmation before it can run a
