@@ -66,7 +66,7 @@ SYNCTHING_FOLDERS = {
         "label": "doc",
         "rescanIntervals": 3600,
         "fsWatcherEnabled": True,
-        "devices": ["virtus", "servius", "noctus", "corus", "nix", "nixos-vm"],
+        "devices": ["virtus", "servius", "noctus", "corus", "nix"],
         "versioning": {"type": "simple", "params": {"keep": "5"}},
     },
     "trogo_work": {
@@ -84,7 +84,7 @@ SYNCTHING_FOLDERS = {
         "label": "share",
         "rescanIntervals": 86400,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "nix", "nixos-vm"],
+        "devices": ["virtus", "servius", "noctus", "nix"],
     },
     "trogo": {
         "path": "/data/trogo",
@@ -112,7 +112,7 @@ SYNCTHING_FOLDERS = {
         "label": "images",
         "rescanIntervals": 86800,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "nixos-vm"],
+        "devices": ["virtus", "servius", "noctus"],
     },
     "music": {
         "path": "/data/music",
@@ -140,7 +140,7 @@ SYNCTHING_FOLDERS = {
         "label": "z",
         "rescanIntervals": 87200,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "nixos-vm"],
+        "devices": ["virtus", "servius", "noctus"],
     },
 
     # Phone
