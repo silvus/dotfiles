@@ -58,24 +58,12 @@
       ];
 
       # Runs automatically when you enter the shell
-      shellHook = ''
-        echo "NixOS Configuration Development Environment"
-        echo ""
-        echo "Available commands:"
-        echo "  nixos-rebuild switch --flake .#\$(hostname) --sudo"
-        echo "  nixos-rebuild test --flake .#\$(hostname) --sudo"
-        echo "  nixfmt *.nix **/*.nix"
-        echo ""
-        echo "Current hostname: \$(hostname)"
-        echo "Available hosts: nixos-vm, noctus, somnus, virtus, servius"
-        echo ""
-        echo "Installation commands:"
-        echo "  useradd -m -G wheel -s /run/current-system/sw/bin/bash silvus"
-        echo "  passwd silvus"
-        echo "  su - silvus"
-        echo "  nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#git -- clone https://github.com/silvus/dotfiles.git ~/.dotfiles"
-        echo "  sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles/nixos#\$(hostname) --sudo"
-      '';
+      # shellHook = ''
+      #   echo "Available commands:"
+      #   echo "  nixos-rebuild switch --flake .#\$(hostname) --sudo"
+      #   echo "  nixos-rebuild test --flake .#\$(hostname) --sudo"
+      #   echo "  nixfmt *.nix **/*.nix"
+      # '';
     };
   };
 }
