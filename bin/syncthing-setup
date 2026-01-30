@@ -609,7 +609,6 @@ def main():
 
         SYNCTHING_DEVICES = {name: {"id": id, "introducer": name == "nix"} for name, id in nodes.items()}
 
-
         # Check and enable systemd user service if needed
         check_and_enable_systemd_service()
 
