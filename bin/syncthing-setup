@@ -519,7 +519,7 @@ def setup_syncthing():
     hostname = get_hostname()
 
     # Add all devices first
-    log.info("Adding all devices...")
+    log.info("Adding all devices")
     for device_name, device_config in SYNCTHING_DEVICES.items():
         if device_name != hostname:  # Don't add ourselves
             add_device(device_name, device_config)
@@ -563,7 +563,7 @@ def init_cli_arg():
         "-d",
         "--debug",
         action="store_true",
-        help="Debug flag (dry-run mode)",
+        help="Debug flag (dry-run mode and enable \"-vm\" host)",
         default=DEBUG,
     )
 
@@ -607,7 +607,13 @@ def main():
         secrets = tomllib.loads(result.stdout.decode())
         nodes = secrets["nodes"]
 
-        SYNCTHING_DEVICES = {name: {"id": id, "introducer": name == "nix"} for name, id in nodes.items()}
+        # Nix is the introducer
+        # If the name contains "-vm", used it only on debug mode
+        SYNCTHING_DEVICES = {
+            name: {"id": id, "introducer": name == "nix"}
+            for name, id in nodes.items()
+            if DEBUG or "-vm" not in name
+        }
 
         # Check and enable systemd user service if needed
         check_and_enable_systemd_service()
