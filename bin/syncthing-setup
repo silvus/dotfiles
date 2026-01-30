@@ -1,0 +1,643 @@
+#!/usr/bin/env python3
+"""
+Syncthing Configuration Setup Script
+
+A replacement for the NixOS Syncthing module that uses the syncthing CLI
+directly instead of unreliable curl API calls.
+
+https://superuser.com/questions/1397683/how-can-i-configure-syncthing-from-command-line-to-share-a-folder-with-another-c
+"""
+
+import argparse
+import json
+import logging
+import socket
+import subprocess
+import tomllib
+import getpass
+import sys
+from pathlib import Path
+
+DEBUG = False
+
+# Logs
+logging.basicConfig(
+    stream=sys.stdout, level=logging.INFO, format="[%(levelname)s] %(message)s"
+)
+logging.addLevelName(
+    logging.DEBUG, "\033[0;34m%s\033[1;0m" % logging.getLevelName(logging.DEBUG)
+)  # Blue
+logging.addLevelName(
+    logging.INFO, "\033[0;32m%s\033[1;0m" % logging.getLevelName(logging.INFO)
+)  # Green
+logging.addLevelName(
+    logging.WARNING, "\033[0;33m%s\033[1;0m" % logging.getLevelName(logging.WARNING)
+)  # Yellow
+logging.addLevelName(
+    logging.ERROR, "\033[0;31m%s\033[1;0m" % logging.getLevelName(logging.ERROR)
+)  # Red
+
+log = logging.getLogger("syncthingsetup")
+
+
+# Devies list come from secret age
+SYNCTHING_DEVICES = {}
+
+# Folders configuration
+SYNCTHING_FOLDERS = {
+    # Dev
+    "dev": {
+        "path": "/data/dev",
+        "rescanIntervals": 10800,
+        "fsWatcherEnabled": True,
+        "devices": ["virtus", "servius", "noctus"],
+    },
+    "work": {
+        "path": "/data/work",
+        "label": "work",
+        "rescanIntervals": 10900,
+        "fsWatcherEnabled": True,
+        "devices": ["virtus", "servius", "noctus", "nix"],
+    },
+
+    # Doc
+    "doc": {
+        "path": "/data/doc",
+        "label": "doc",
+        "rescanIntervals": 3600,
+        "fsWatcherEnabled": True,
+        "devices": ["virtus", "servius", "noctus", "corus", "nix", "nixos-vm"],
+        "versioning": {"type": "simple", "params": {"keep": "5"}},
+    },
+    "trogo_work": {
+        "path": "/data/trogo_work",
+        "label": "trogo_work",
+        "rescanIntervals": 7200,
+        "fsWatcherEnabled": True,
+        "devices": ["virtus", "servius", "chuwi"],
+        "versioning": {"type": "simple", "params": {"keep": "5"}},
+    },
+
+    # Medias
+    "share": {
+        "path": "/data/prod/share",
+        "label": "share",
+        "rescanIntervals": 86400,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "noctus", "nix", "nixos-vm"],
+    },
+    "trogo": {
+        "path": "/data/trogo",
+        "label": "trogo",
+        "rescanIntervals": 86500,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "chuwi"],
+    },
+    "book": {
+        "path": "/data/books",
+        "label": "books",
+        "rescanIntervals": 86600,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius"],
+    },
+    "audiobook": {
+        "path": "/data/audiobooks",
+        "label": "audiobooks",
+        "rescanIntervals": 86700,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius"],
+    },
+    "image": {
+        "path": "/data/images",
+        "label": "images",
+        "rescanIntervals": 86800,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "noctus", "nixos-vm"],
+    },
+    "music": {
+        "path": "/data/music",
+        "label": "music",
+        "rescanIntervals": 86900,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "noctus"],
+    },
+    "photo": {
+        "path": "/data/photos",
+        "label": "photos",
+        "rescanIntervals": 87000,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "corus"],
+    },
+    "video": {
+        "path": "/data/videos",
+        "label": "videos",
+        "rescanIntervals": 87100,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "noctus"],
+    },
+    "z": {
+        "path": "/data/z",
+        "label": "z",
+        "rescanIntervals": 87200,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "noctus", "nixos-vm"],
+    },
+
+    # Phone
+    "phone": {
+        "path": "/data/phone",
+        "label": "phone",
+        "rescanIntervals": 86300,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "noctus", "corus"],
+    },
+    "pixel_5_tcbd_photos": {
+        "path": "/data/phone_photos",
+        "label": "phone_photos",
+        "rescanIntervals": 86200,
+        "fsWatcherEnabled": False,
+        "devices": ["virtus", "servius", "corus"],
+    },
+}
+
+
+def run_query_command(cmd, check=True):
+    """Execute a shell command for querying information."""
+    log.debug(f"Running query command: {cmd}")
+    try:
+        result = subprocess.run(
+            cmd, shell=True, check=check, capture_output=True, text=True
+        )
+        if result.stdout and result.stdout.strip():
+            log.debug(f"stdout: {result.stdout.strip()}")
+        if result.stderr and result.stderr.strip():
+            log.debug(f"stderr: {result.stderr.strip()}")
+        return result
+    except subprocess.CalledProcessError as e:
+        log.error(f"Query command failed: {cmd}")
+        log.error(f"Exit code: {e.returncode}")
+        if e.stderr and e.stderr.strip():
+            log.error(f"stderr: {e.stderr.strip()}")
+        raise
+
+
+def run_modify_command(cmd, check=True):
+    """Execute a shell command that modifies configuration."""
+    if DEBUG:
+        log.debug(f"[DRY-RUN] {cmd}")
+        return None
+
+    log.debug(f"Running modify command: {cmd}")
+    try:
+        result = subprocess.run(
+            cmd, shell=True, check=check, capture_output=True, text=True
+        )
+        if result.stdout and result.stdout.strip():
+            log.debug(f"stdout: {result.stdout.strip()}")
+        if result.stderr and result.stderr.strip():
+            log.debug(f"stderr: {result.stderr.strip()}")
+        return result
+    except subprocess.CalledProcessError as e:
+        log.error(f"Modify command failed: {cmd}")
+        log.error(f"Exit code: {e.returncode}")
+        if e.stderr and e.stderr.strip():
+            log.error(f"stderr: {e.stderr.strip()}")
+        raise
+
+
+def check_and_enable_systemd_service():
+    """Check and enable Syncthing systemd service for current user."""
+    current_user = getpass.getuser()
+    service_name = "syncthing.service"
+    service_user_name = f"syncthing@{current_user}.service"
+
+    log.info(f"Checking Syncthing systemd service: {service_name}")
+
+    try:
+        # Check if service exists and is enabled (don't fail on non-zero exit code)
+        result = run_query_command(
+            f"sudo systemctl is-enabled {service_user_name}", check=False
+        )
+
+        if result.returncode == 0:
+            log.info(f"Syncthing service {service_user_name} is enabled")
+            return
+
+        log.info(f"Service {service_user_name} is disabled")
+
+
+        # Check is global service is enable (Nixos)
+        result = run_query_command(
+            f"sudo systemctl is-enabled {service_name}", check=False
+        )
+
+        if result.returncode == 0:
+            log.info(f"Syncthing service {service_name} is enabled")
+            return
+
+        log.info(f"Service {service_name} is disabled")
+
+        log.info(f"Enable {service_user_name} is disabled")
+        run_modify_command(f"sudo systemctl enable {service_user_name}", False)
+        run_modify_command(f"sudo systemctl start {service_user_name}", False)
+
+    except Exception as e:
+        log.error(f"- Failed to enable systemd service: {e}")
+        raise
+
+
+def check_syncthing_connection():
+    """Check if Syncthing service is running and accessible."""
+    try:
+        result = run_query_command("syncthing cli show system")
+        system_info = json.loads(result.stdout)
+        device_id = system_info.get("myID")
+        if not device_id:
+            raise ValueError("Could not get device ID from Syncthing")
+        log.info("Syncthing service is running")
+        return True
+    except Exception as e:
+        log.error("Syncthing service is not accessible")
+        log.error(f"Error: {e}")
+        log.error("Make sure Syncthing is running: systemctl --user start syncthing")
+        raise
+
+
+def get_local_device_id():
+    """Get the local device ID using syncthing CLI."""
+    log.info("Getting local device ID")
+
+    result = run_query_command("syncthing cli show system")
+    system_info = json.loads(result.stdout)
+    device_id = system_info.get("myID")
+    if not device_id:
+        raise ValueError("Could not get local device ID")
+    log.info(f"Local device ID: {device_id}")
+    return device_id
+
+
+def get_hostname():
+    """Get the current hostname."""
+    hostname = socket.gethostname()
+    log.info(f"Current hostname: {hostname}")
+    return hostname
+
+
+def add_device(device_name, device_config):
+    """Add a device to Syncthing configuration."""
+    device_id = device_config["id"]
+    log.info(f"Adding device: {device_name} ({device_id})")
+
+    try:
+        run_modify_command(f"syncthing cli config devices add --device-id {device_id}")
+
+        # Set as introducer if specified
+        if device_config.get("introducer", False):
+            run_modify_command(
+                f"syncthing cli config devices {device_id} introducer set true"
+            )
+
+    except Exception as e:
+        log.warning(f"Failed to add device {device_name}: {e}")
+
+
+def configure_folder_settings(folder_name, folder_config):
+    """Configure folder settings (common for both new and existing folders)."""
+    # Set folder label if specified
+    label = folder_config.get("label", folder_name)
+    run_modify_command(f"syncthing cli config folders {folder_name} label set {label}")
+
+    # Set rescan interval
+    rescan = folder_config.get("rescanIntervals", 3600)
+    run_modify_command(
+        f"syncthing cli config folders {folder_name} rescan-intervals set {rescan}"
+    )
+
+    # Set file watcher
+    watcher = "true" if folder_config["fsWatcherEnabled"] else "false"
+    run_modify_command(
+        f"syncthing cli config folders {folder_name} fswatcher-enabled set {watcher}"
+    )
+
+    # Set folder type (default is sendreceive)
+    folder_type = folder_config.get("type", "sendreceive")
+    run_modify_command(
+        f"syncthing cli config folders {folder_name} type set {folder_type}"
+    )
+
+    # Set minimum free disk space to 4GB
+    run_modify_command(
+        f"syncthing cli config folders {folder_name} min-disk-free value set 4"
+    )
+    run_modify_command(
+        f"syncthing cli config folders {folder_name} min-disk-free unit set GB"
+    )
+
+    # Set versioning if specified
+    if "versioning" in folder_config:
+        versioning = folder_config["versioning"]
+        version_type = versioning["type"]
+        run_modify_command(
+            f"syncthing cli config folders {folder_name} versioning type set {version_type}"
+        )
+
+        # Set versioning parameters
+        if "params" in versioning:
+            for param, value in versioning["params"].items():
+                run_modify_command(
+                    f"syncthing cli config folders {folder_name} versioning params set {param} {value}"
+                )
+
+
+def folder_exists(folder_name):
+    """Check if a folder exists in Syncthing configuration."""
+    try:
+        result = run_query_command("syncthing cli config folders list")
+        folders = result.stdout.strip().split("\n") if result.stdout.strip() else []
+        return folder_name in folders
+    except Exception as e:
+        log.debug(f"Could not check folder list: {e}")
+        return False
+
+
+def create_folder(folder_name, folder_config):
+    """Create a folder in Syncthing configuration."""
+    path = folder_config["path"]
+
+    # Check if folder already exists
+    if folder_exists(folder_name):
+        log.info(f"Folder {folder_name} already exists, updating configuration")
+        try:
+            configure_folder_settings(folder_name, folder_config)
+            log.debug(f"Successfully updated existing folder {folder_name}")
+        except Exception as e:
+            log.warning(f"Failed to update existing folder {folder_name}: {e}")
+        return
+
+    else:
+        log.info(f"Creating folder: {folder_name} at {path}")
+
+        try:
+            # Create the directory if it doesn't exist
+            if not DEBUG:
+                Path(path).mkdir(parents=True, exist_ok=True)
+
+            # Add folder
+            run_modify_command(
+                f"syncthing cli config folders add --id {folder_name} --path {path}"
+            )
+
+            # Configure folder settings
+            configure_folder_settings(folder_name, folder_config)
+
+            log.info(f"Successfully created folder {folder_name}")
+
+        except Exception as e:
+            log.warning(f"Failed to create folder {folder_name}: {e}")
+
+
+def configure_global_settings():
+    """Configure global Syncthing settings."""
+    log.info("Configuring global settings")
+
+    try:
+        # Enable GUI on TLS with specific address
+        run_modify_command("syncthing cli config gui enabled set true")
+        run_modify_command("syncthing cli config gui raw-use-tls set true")
+        run_modify_command("syncthing cli config gui raw-address set 0.0.0.0:5001")
+
+        # Set GUI authentication
+        run_modify_command("syncthing cli config gui user set silvus")
+
+        # Check if password exist, set if empty
+        pass_hash = run_query_command("syncthing cli config gui password get")
+        if pass_hash.returncode != 0 or len(pass_hash.stdout.strip()) == 0:
+            log.info("Set basic auth password")
+            pwd = getpass.getpass()
+            if pwd.strip():
+                run_modify_command("syncthing cli config gui password set {}".format(pwd.strip()))
+        else:
+            log.debug("Basic auth password already defined")
+
+
+        # Set GUI theme to black
+        run_modify_command("syncthing cli config gui theme set black")
+
+        # Set minimum free disk space to 5GB globally
+        # run_modify_command("syncthing cli config defaults folder min-disk-free set 5GB")
+
+        # Disable anonymous usage reporting
+        run_modify_command("syncthing cli config options uraccepted set -- -1")
+
+        # Disable browser autostart
+        run_modify_command("syncthing cli config options start-browser set false")
+
+        # Disable automatic upgrades
+        run_modify_command("syncthing cli config options auto-upgrade-intervalh set 0")
+
+        log.debug("Successfully configured global settings")
+
+    except Exception as e:
+        log.warning(f"Failed to configure global settings: {e}")
+
+
+def get_folder_devices(folder_name):
+    """Get list of devices currently sharing a folder."""
+    try:
+        result = run_query_command(
+            f"syncthing cli config folders {folder_name} dump-json"
+        )
+
+        folder_config = json.loads(result.stdout)
+        return [device["deviceID"] for device in folder_config.get("devices", [])]
+    except Exception as e:
+        log.debug(f"Could not get devices for folder {folder_name}: {e}")
+        return []
+
+
+def share_folder_with_devices(folder_name, device_names):
+    """Share a folder with specified devices."""
+    log.info(
+        f"Configuring folder {folder_name} sharing with devices: {', '.join(device_names)}"
+    )
+
+    # Get currently shared devices
+    current_devices = set(get_folder_devices(folder_name))
+
+    # Get target device IDs
+    target_devices = set()
+    for device_name in device_names:
+        if device_name in SYNCTHING_DEVICES:
+            target_devices.add(SYNCTHING_DEVICES[device_name]["id"])
+        else:
+            log.error(
+                f"- Unknown device: {device_name} (available: {', '.join(SYNCTHING_DEVICES.keys())})"
+            )
+
+    # Remove devices that are no longer in the configuration
+    # `syncthing devices remove` doesn't exist
+    # devices_to_remove = current_devices - target_devices
+    # for device_id in devices_to_remove:
+    #     try:
+    #         log.debug(f"Removing device {device_id} from folder {folder_name}")
+    #         run_modify_command(
+    #             f"syncthing cli config folders {folder_name} devices remove --device-id {device_id}"
+    #         )
+    #         log.info(f"+ Removed device {device_id} from folder {folder_name}")
+    #     except Exception as e:
+    #         log.warning(
+    #             f"- Could not remove device {device_id} from folder {folder_name}: {e}"
+    #         )
+
+    # Add devices that are not already sharing
+    devices_to_add = target_devices - current_devices
+    for device_id in devices_to_add:
+        # Find device name for logging
+        device_name = next(
+            (
+                name
+                for name, config in SYNCTHING_DEVICES.items()
+                if config["id"] == device_id
+            ),
+            device_id,
+        )
+        try:
+            log.debug(
+                f"Adding device {device_name} (ID: {device_id}) to folder {folder_name}"
+            )
+            run_modify_command(
+                f"syncthing cli config folders {folder_name} devices add --device-id {device_id}"
+            )
+            log.info(f"+ Added device {device_name} to folder {folder_name}")
+        except Exception as e:
+            log.error(
+                f"- Failed to add device {device_name} to folder {folder_name}: {e}"
+            )
+
+
+def setup_syncthing():
+    hostname = get_hostname()
+
+    # Add all devices first
+    log.info("Adding all devices...")
+    for device_name, device_config in SYNCTHING_DEVICES.items():
+        if device_name != hostname:  # Don't add ourselves
+            add_device(device_name, device_config)
+
+    # Configure global settings
+    configure_global_settings()
+
+    log.debug(f"Current hostname: {hostname}")
+
+    # Create folders that this host should have
+    log.info("Creating folders...")
+
+    # # Create /data if needed
+    # if folder_exists('/data/'):
+    #     current_user = getpass.getuser()
+    #     run_modify_command("sudo mkdir /data")
+    #     run_modify_command(f"sudo chown -R {current_user}:{current_user} /data")
+
+    for folder_name, folder_config in SYNCTHING_FOLDERS.items():
+        log.debug(
+            f"Checking folder {folder_name} with devices: {folder_config['devices']}"
+        )
+        if hostname in folder_config["devices"]:
+            create_folder(folder_name, folder_config)
+            # Share with other devices in the folder config
+            other_devices = [d for d in folder_config["devices"] if d != hostname]
+            log.debug(f"Other devices for {folder_name}: {other_devices}")
+            if other_devices:
+                share_folder_with_devices(folder_name, other_devices)
+            else:
+                log.warning(f"No other devices to share folder {folder_name} with")
+        else:
+            log.debug(
+                f"- Skipping folder {folder_name} (hostname '{hostname}' not in devices)"
+            )
+
+def init_cli_arg():
+    parser = argparse.ArgumentParser(prog="syncthingsetup")
+
+    parser.add_argument(
+        "-d",
+        "--debug",
+        action="store_true",
+        help="Debug flag (dry-run mode)",
+        default=DEBUG,
+    )
+
+    return parser.parse_args()
+
+
+def main():
+    global DEBUG
+    global SYNCTHING_DEVICES
+
+    # Parse args
+    args = init_cli_arg()
+    DEBUG = args.debug
+
+    log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+
+    try:
+        log.debug(f"Arguments: {args}")
+
+        if DEBUG:
+            log.info("Running in DEBUG mode (dry-run) - no commands will be executed")
+
+        log.info("Starting Syncthing setup...")
+
+        # Check if syncthing CLI is available
+        try:
+            run_query_command("syncthing --version")
+        except Exception as e:
+            log.error("syncthing command not found. Please install Syncthing first.")
+            log.error(f"Error: {e}")
+            return 1
+
+        log.info('Reading secrets age')
+        secrets_path = Path(__file__).parent.parent / ".secrets.age"
+        result = subprocess.run(
+            ["age", "-d", str(secrets_path)],
+            check=True,
+            stdout=subprocess.PIPE,
+        )
+
+        secrets = tomllib.loads(result.stdout.decode())
+        nodes = secrets["nodes"]
+
+        SYNCTHING_DEVICES = {name: {"id": id, "introducer": name == "nix"} for name, id in nodes.items()}
+
+
+        # Check and enable systemd user service if needed
+        check_and_enable_systemd_service()
+
+        # Check if Syncthing service is running and accessible
+        try:
+            check_syncthing_connection()
+        except Exception as e:
+            log.error("Cannot connect to Syncthing service.")
+            log.error(f"Error: {e}")
+            return 1
+
+        # Setup Syncthing
+        setup_syncthing()
+
+        log.info("Syncthing setup completed")
+        return 0
+
+    except KeyboardInterrupt:
+        log.warning("Aborting...")
+        return 1
+    except Exception as e:
+        log.error(f"Setup failed: {e}")
+        if DEBUG:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

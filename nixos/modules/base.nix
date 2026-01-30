@@ -62,6 +62,8 @@
       warn-dirty = false;
       auto-optimise-store = true;
       # trusted-users = [ "root" "@wheel" ];
+      # 500 MiB
+      download-buffer-size = 524288000;
     };
 
     # Garbage collection
@@ -132,6 +134,7 @@
 
     # Security
     gnupg
+    age
     # For Yubikey
     # pinentry-curses
     # openssh

@@ -1,5 +1,7 @@
 *.bak
 __pycache__
 
+.secrets.toml
+
 custom
 custom/
