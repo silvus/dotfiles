@@ -3,6 +3,16 @@
 {
   # Base system configuration shared by all hosts
 
+  # /tmp is not cleanup by default
+  # https://github.com/NixOS/nixpkgs/pull/338181#issuecomment-2344510691
+  boot = {
+    tmp.useTmpfs = true;
+  };
+  # FIXME Probably not needed anymore https://github.com/NixOS/nix/commit/88b7db1ba455926868dd61f5ea39e454e5fb0433
+  systemd.services.nix-daemon = {
+    environment.TMPDIR = "/var/tmp";
+  };
+
   # Bootloader
   boot.loader = {
     timeout = 1;
