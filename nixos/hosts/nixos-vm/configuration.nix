@@ -44,6 +44,13 @@
     };
   };
 
+  services.xserver = {
+    enable = true;
+    resolutions = [
+      {x = 1920; y = 1080;}
+    ];
+  };
+
   # VM-specific packages
   # environment.systemPackages = with pkgs; [
   #   neofetch
