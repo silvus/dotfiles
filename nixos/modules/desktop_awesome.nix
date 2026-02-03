@@ -94,7 +94,9 @@
       };
       # Sleep time
       sessionCommands = ''
-        xset s 3600 3600
+        # Blank screen after 50 min
+        xset s 3000 3000
+        # Power off screen after 1 hour
         xset dpms 3600 3600 3600
       '';
     };
