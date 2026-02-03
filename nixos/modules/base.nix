@@ -22,8 +22,13 @@
       configurationLimit = 9;
     };
   };
-  # optional, but ensures rpc-statsd is running for on demand mounting
+  # Optional, but ensures rpc-statsd is running for on demand mounting
   boot.supportedFilesystems = [ "nfs" ];
+
+  # Blank the virtual console after 1 hour
+  boot.kernelParams = [
+    "consoleblank=3600"
+  ];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -46,19 +51,19 @@
       LANG = "en_US.UTF-8"; # default locale for all the LC_* variables that are not explicitly set
       # LANGUAGE = ""; # fallback locales
       # LC_ALL = ""; # override LANG and all the other LC_* variables
-      LC_IDENTIFICATION = "en_US.UTF-8"; # metadata for the locale
-      LC_MESSAGES = "en_US.UTF-8"; # sets the language in which messages are displayed
+      LC_IDENTIFICATION = "en_US.UTF-8"; # Metadata for the locale
+      LC_MESSAGES = "en_US.UTF-8"; # Sets the language in which messages are displayed
       LC_COLLATE = "en_US.UTF-8"; # Collation rules used for sorting and regular expressions
-      LC_CTYPE = "en_US.UTF8"; # if change a text to uppercase
+      LC_CTYPE = "en_US.UTF8"; # If change a text to uppercase
 
-      LC_TIME = "fr_FR.UTF-8"; # date and time format
-      LC_ADDRESS = "fr_FR.UTF-8"; # postal addresses format
-      LC_MEASUREMENT = "fr_FR.UTF-8"; # settings relating to the measurement system in the locale
-      LC_MONETARY = "fr_FR.UTF-8"; # formatting used for monetary-related numeric values
-      LC_NAME = "fr_FR.UTF-8"; # formats used to address persons, general salutation for men or women
-      LC_NUMERIC = "fr_FR.UTF-8"; # formatting rules used for nonmonetary numeric, like the thousands separator
-      LC_PAPER = "fr_FR.UTF-8"; # dimensions of the standard paper size
-      LC_TELEPHONE = "fr_FR.UTF-8"; # formats to be used with telephone services
+      LC_TIME = "fr_FR.UTF-8"; # Date and time format
+      LC_ADDRESS = "fr_FR.UTF-8"; # Postal addresses format
+      LC_MEASUREMENT = "fr_FR.UTF-8"; # Settings relating to the measurement system in the locale
+      LC_MONETARY = "fr_FR.UTF-8"; # Formatting used for monetary-related numeric values
+      LC_NAME = "fr_FR.UTF-8"; # Formats used to address persons, general salutation for men or women
+      LC_NUMERIC = "fr_FR.UTF-8"; # Formatting rules used for nonmonetary numeric, like the thousands separator
+      LC_PAPER = "fr_FR.UTF-8"; # Dimensions of the standard paper size
+      LC_TELEPHONE = "fr_FR.UTF-8"; # Formats to be used with telephone services
     };
   };
 
