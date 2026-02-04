@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
-# Read SSH hosts from ~/.ssh/config
-# Pick one with FZF and ssh to it on a new Tmux window
-# if flag -m is used, used mosh instead of ssh
-
 set -e -o pipefail
 
 function print_usage() {
-	echo "Usage: $0 [-m]" 1>&2;
+	echo "Usage: $0 [-m]" 1>&2
 	echo
 	echo "Read SSH hosts from ~/.ssh/config"
 	echo "Pick one with FZF and ssh to it on a new Tmux window"
@@ -15,46 +11,65 @@ function print_usage() {
 	exit 0
 }
 
-function fzf-ssh () {
-	local fzf_path="$HOME/.fzf/bin/fzf"
-	local selected_host=$(grep "Host " $HOME/.ssh/config | grep -v '*' | awk '{print $2}' | "$fzf_path" --tmux --prompt="$SSH_LABEL Remote > ")
-
-	if [ -n "$selected_host" ]; then
-
-		if [[ -n "$TMUX" ]]; then
-			# open new window in Tmux, with host has name
-			tmux new-window -n "${selected_host}" "${SSH_PATH} ${selected_host} ${SSH_COMMAND}"
-		else
-			${SSH_PATH} "${selected_host} ${SSH_COMMAND}"
-		fi
+function resolve_fzf() {
+	if [ -x "$HOME/.fzf/bin/fzf" ]; then
+		echo "$HOME/.fzf/bin/fzf"
+	elif [ -x "/run/current-system/sw/bin/fzf" ]; then
+		echo "/run/current-system/sw/bin/fzf"
+	else
+		echo "fzf not found in ~/.fzf/bin or /run/current-system/sw/bin" 1>&2
+		exit 1
 	fi
-
 }
 
-# Env variables not setted ?
+function fzf-ssh () {
+	local fzf_path
+	fzf_path="$(resolve_fzf)"
+
+	local selected_host
+
+	set +e
+	selected_host=$(
+		grep "^Host " "$HOME/.ssh/config" \
+		| grep -v '\*' \
+		| awk '{print $2}' \
+		| "$fzf_path" --tmux --prompt="$SSH_LABEL Remote > "
+	)
+	local fzf_status=$?
+	set -e
+
+	# ESC pressed or no selection: exit cleanly
+	if [ "$fzf_status" -ne 0 ] || [ -z "$selected_host" ]; then
+		return 0
+	fi
+
+	if [ -n "$TMUX" ]; then
+		tmux new-window -n "$selected_host" "$SSH_PATH $selected_host $SSH_COMMAND"
+	else
+		$SSH_PATH "$selected_host" $SSH_COMMAND
+	fi
+}
+
+# Ensure HOME is set predictably
 HOME="/home/$(whoami)"
 
-# Default options
+# Defaults
 SSH_PATH="$(command -v ssh)"
 SSH_LABEL="SSH"
 SSH_COMMAND=""
 
-# Read flags
+# Flags
 while getopts "hm" opt; do
 	case "$opt" in
-		"h")
+		h)
 			print_usage
-			exit 0
 			;;
-		"m")
-			SSH_PATH="$(which mosh)"
+		m)
+			SSH_PATH="$(command -v mosh)"
 			SSH_LABEL="Mosh"
 			SSH_COMMAND="$HOME/.dotfiles/bin/tmuxdev"
 			;;
 	esac
 done
 
-# Execute
 fzf-ssh
-
-exit 0
