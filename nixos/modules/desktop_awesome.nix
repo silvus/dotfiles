@@ -92,12 +92,18 @@
         # Optional: set a custom background image
         # background = "/path/to/your/wallpaper.jpg";
       };
+
       # Sleep time
       sessionCommands = ''
         # Blank screen after 50 min
-        xset s 3000 3000
+        ${pkgs.xorg.xset} s 3000 3000
         # Power off screen after 1 hour
-        xset dpms 3600 3600 3600
+        ${pkgs.xorg.xset} dpms 3600 3600 3600
+
+        ${pkgs.xorg.xrdb}/bin/xrdb -merge -I$HOME ~/.Xresources
+        if [ -f "$HOME/.dotfiles/custom/Xresources" ]; then
+          ${pkgs.xorg.xrdb}/bin/xrdb -merge -I$HOME/.dotfiles/custom/Xresources
+        fi
       '';
     };
 
