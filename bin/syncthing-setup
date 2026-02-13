@@ -126,7 +126,7 @@ SYNCTHING_FOLDERS = {
         "label": "photos",
         "rescanIntervals": 87000,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "corus"],
+        "devices": ["virtus", "servius"],
     },
     "video": {
         "path": "/data/videos",
@@ -151,7 +151,7 @@ SYNCTHING_FOLDERS = {
         "fsWatcherEnabled": False,
         "devices": ["virtus", "servius", "noctus", "corus"],
     },
-    "pixel_5_tcbd_photos": {
+    "pixel_5_tcbd-photos": {
         "path": "/data/phone_photos",
         "label": "phone_photos",
         "rescanIntervals": 86200,
