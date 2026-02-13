@@ -16,11 +16,13 @@
     xfce.thunar-volman
     xfce.thunar-archive-plugin
     xfce.thunar-media-tags-plugin
+    gvfs
+    xfce.xfconf
 
     # Media and sound
     mpv                    # Media player
-    yt-dlp                 # Media downloader
-    spotdl                 # Music downloader
+    unstable.yt-dlp                 # Media downloader
+    unstable.spotdl                 # Music downloader
     alsa-utils             # Sound utility
     pulseaudio             # Sound server
     pavucontrol            # Volume mixer GUI
@@ -38,6 +40,7 @@
     lxappearance           # GTK theme switcher GUI
     keepassxc              # Password manager
     blink1-tool            # Command line client for the blink(1) notification light
+    usbutils
 
     # Code
     vscodium               # Editor
@@ -54,12 +57,17 @@
     mediaelch              # TVshow manager
 
     # 3D
-    # bambu-studio # 2026-01-02 Cannot login
-    orca-slicer
+    unstable.bambu-studio # 2026-01-02 Cannot login
+    unstable.orca-slicer
     freecad
     # blender
 
   ];
+
+  # Mount, trash, and other functionalities
+  services.gvfs.enable = true;
+  # Thumbnail support for images
+  services.tumbler.enable = true;
 
   # Reduce systemd timeout
   systemd.settings.Manager = {
