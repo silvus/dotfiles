@@ -16,6 +16,9 @@ config.check_for_updates = false
 -- Disable missing glyph notification
 config.warn_about_missing_glyphs = false
 
+-- Disable noise
+config.audible_bell = "Disabled";
+
 -- See https://gogh-co.github.io/Gogh/
 config.color_scheme = 'Tango (terminal.sexy)'
 -- config.color_scheme = 'Elementary'
