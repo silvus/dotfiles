@@ -29,7 +29,14 @@
         {
           nixpkgs.overlays = [ overlay-unstable ];
         }
+
         ./nixos/hosts/${hostname}/configuration.nix
+
+        # Import local custom module
+        (if builtins.pathExists ./custom/local.nix
+         then ./custom/local.nix
+         else { })
+
         {
           networking.hostName = lib.mkDefault hostname;
         }
