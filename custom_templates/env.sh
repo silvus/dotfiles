@@ -1,2 +1,2 @@
 # Environment specific configuration
-# Sourced fron .profile
+# Sourced from .profile
