@@ -6,8 +6,8 @@
 # Run in background if not already started
 # ------------------------------------------------------
 function run {
-	if ! pgrep $1;	then
-		$@ &
+	if ! pgrep "$1";	then
+		"$@" &
 	fi
 }
 
@@ -20,6 +20,9 @@ fi
 
 # Broken with Apparmor profile https://github.com/jonls/redshift/issues/708
 # run redshift-gtk
+# if [[ -x $(command -v gammastep-indicator) ]]; then
+# 	run gammastep-indicator
+# fi
 
 # Bluetooth applet if installed
 # if [[ -x $(which blueman-applet) ]]; then
@@ -41,4 +44,3 @@ fi
 if [[ -f "$HOME/.dotfiles/custom/autostart_launcher" ]]; then
 	source "$HOME/.dotfiles/custom/autostart_launcher"
 fi
-
