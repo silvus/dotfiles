@@ -48,7 +48,8 @@
     pasystray              # PulseAudio system tray
 
     # Screen color temperature adjustment (redshift-gtk equivalent)
-    redshift
+    # redshift
+    # gammastep
 
     # Appearance and theming
     arc-theme              # GTK theme (Arc Dark)
@@ -93,17 +94,21 @@
         # background = "/path/to/your/wallpaper.jpg";
       };
 
-      # Sleep time
       sessionCommands = ''
         # Blank screen after 50 min
-        ${pkgs.xorg.xset} s 3000 3000
+        ${pkgs.xorg.xset}/bin/xset s 3000 3000
         # Power off screen after 1 hour
-        ${pkgs.xorg.xset} dpms 3600 3600 3600
+        ${pkgs.xorg.xset}/bin/xset dpms 3600 3600 3600
 
         ${pkgs.xorg.xrdb}/bin/xrdb -merge -I$HOME ~/.Xresources
         if [ -f "$HOME/.dotfiles/custom/Xresources" ]; then
           ${pkgs.xorg.xrdb}/bin/xrdb -merge -I$HOME/.dotfiles/custom/Xresources
         fi
+
+        # Auto launcher
+        ${pkgs.writeShellScriptBin "autostart-launcher"
+          (builtins.readFile ./../../bin/autostart_launcher)
+        }/bin/autostart-launcher &
       '';
     };
 
@@ -165,15 +170,15 @@
     };
 
     # Redshift with GTK systray icon (screen color temperature)
-    redshift = {
-      description = "Redshift screen color temperature adjustment";
-      wantedBy = [ "graphical-session.target" ];
-      partOf = [ "graphical-session.target" ];
-      serviceConfig = {
-        ExecStart = "${pkgs.redshift}/bin/redshift-gtk";  # -gtk variant runs in systray
-        Restart = "on-failure";
-      };
-    };
+    # redshift = {
+    #   description = "Redshift screen color temperature adjustment";
+    #   wantedBy = [ "graphical-session.target" ];
+    #   partOf = [ "graphical-session.target" ];
+    #   serviceConfig = {
+    #     ExecStart = "${pkgs.redshift}/bin/redshift-gtk";  # -gtk variant runs in systray
+    #     Restart = "on-failure";
+    #   };
+    # };
   };
 
   # Environment variables for theming and X11

@@ -134,6 +134,8 @@
 
   # Yubikey
   services.udev.packages = [ pkgs.yubikey-personalization ];
+  hardware.gpgSmartcards.enable = true;
   services.pcscd.enable = true;
   # hardware.fido2.enable = true;
+  programs.ssh.startAgent = true;
 }

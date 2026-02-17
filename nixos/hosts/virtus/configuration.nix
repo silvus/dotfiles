@@ -1,5 +1,5 @@
 # Virtus
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
 {
   imports = [
@@ -118,7 +118,7 @@
     };
   };
 
-  services.xserver.displayManager.sessionCommands = ''
+  services.xserver.displayManager.sessionCommands = lib.mkAfter ''
     ${pkgs.autorandr}/bin/autorandr --change
   '';
 
