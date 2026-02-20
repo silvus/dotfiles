@@ -94,10 +94,11 @@
   # Desktop support
   programs.dconf.enable = true;
   # services.udisks2.enable = true;
-  # services.tumbler.enable = true;
   # hardware.sane.enable = true;
-  # hardware.bluetooth.enable = true;
-  # services.blueman.enable = true;
+
+  # Bluetouth
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   # Enable libinput for touchpad and input device support
   services.libinput.enable = true;
