@@ -47,7 +47,8 @@
     powerManagement.enable = false;
     open = false; # Required for a 1060
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    # package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
   };
   hardware.graphics.enable = true;
   nixpkgs.config.nvidia.acceptLicense = true;
