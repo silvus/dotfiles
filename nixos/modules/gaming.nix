@@ -5,10 +5,13 @@ with lib;
 {
   # Gaming packages
   environment.systemPackages = with pkgs; [
-    steam
-    # lutris
+    unstable.steam
+    unstable.lutris
+    duckstation
+    unstable.protonup-qt
+
     # gamemode
-    prismlauncher
+    # prismlauncher
   ];
 
   # Steam configuration
@@ -70,6 +73,9 @@ with lib;
 
   # Enable 32-bit support
   hardware.graphics.enable32Bit = true;
+
+  # hardware.opengl.enable = true;
+  # hardware.opengl.driSupport32Bit = true;
 
   # # Gaming directories
   # systemd.tmpfiles.rules = [
