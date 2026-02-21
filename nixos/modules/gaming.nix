@@ -8,6 +8,7 @@ with lib;
     unstable.steam
     unstable.lutris
     duckstation
+    snes9x-gtk
     unstable.protonup-qt
 
     # gamemode
@@ -76,13 +77,4 @@ with lib;
 
   # hardware.opengl.enable = true;
   # hardware.opengl.driSupport32Bit = true;
-
-  # # Gaming directories
-  # systemd.tmpfiles.rules = [
-  #   "d /home/silvus/Games 0755 silvus users -"
-  # ];
-
-  # Gaming group
-  # users.groups.gaming = {};
-  # users.users.silvus.extraGroups = [ "gaming" ];
 }

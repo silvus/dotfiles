@@ -43,6 +43,7 @@
     usbutils
 
     # Code
+    emacs-gtk
     vscodium               # Editor
 
     # Office
