@@ -97,7 +97,7 @@
   # services.udisks2.enable = true;
   # hardware.sane.enable = true;
 
-  # Bluetouth
+  # Bluetooth
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
@@ -134,8 +134,31 @@
     };
   };
 
+  # Rules Udev
+  # services.udev.extraRules = ''
+  #   # Nuphy Air 75
+  #   SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3246", MODE="0666"
+  #   # Nuphy Air 60
+  #   SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3255", MODE="0666"
+  # '';
+
+  services.udev.packages = [
+    (pkgs.writeTextFile {
+      name = "nuphyair60-udev-rules";
+      text = ''SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3255", MODE="0666"'';
+      destination = "/etc/udev/rules.d/70-nuphy-air-60.rules";
+    })
+    (pkgs.writeTextFile {
+      name = "nyphyair75-udev-rules";
+      text = ''SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3246", MODE="0666"'';
+      destination = "/etc/udev/rules.d/70-nuphy-air-75.rules";
+    })
+
+    # Yubikey
+    pkgs.yubikey-personalization
+  ];
+
   # Yubikey
-  services.udev.packages = [ pkgs.yubikey-personalization ];
   hardware.gpgSmartcards.enable = true;
   services.pcscd.enable = true;
   # hardware.fido2.enable = true;
