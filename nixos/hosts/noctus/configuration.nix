@@ -12,7 +12,7 @@
     ../../modules/desktop_awesome.nix
     # ../../modules/desktop_sway.nix
     ../../modules/laptop.nix
-    # ../../modules/gaming.nix
+    ../../modules/gaming.nix
     # ../../modules/printing.nix
     # ../../modules/security.nix
     ../../modules/mnt_movies.nix

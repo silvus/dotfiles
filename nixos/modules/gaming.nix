@@ -7,8 +7,8 @@ with lib;
   environment.systemPackages = with pkgs; [
     unstable.steam
     unstable.lutris
-    duckstation
-    snes9x-gtk
+    # duckstation
+    # snes9x-gtk
     unstable.protonup-qt
 
     # gamemode

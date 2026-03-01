@@ -58,7 +58,7 @@
     mediaelch              # TVshow manager
 
     # 3D
-    unstable.bambu-studio # 2026-01-02 Cannot login
+    # unstable.bambu-studio # 2026-01-02 Cannot login
     unstable.orca-slicer
     freecad
     # blender
