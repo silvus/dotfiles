@@ -10,7 +10,7 @@ See https://github.com/NixOS/nix/issues/7107#issuecomment-2002363048
 
 To Upgrade:
 ``` bash
-sudo nixos-rebuild switch --flake path:/home/silvus/.dotfiles --upgrade
+nix flake update
 ```
 
 To cleanup
