@@ -34,6 +34,7 @@
     xdg-utils              # Desktop integration
     gparted                # Partition manager
     gnome-disk-utility     # Disk management
+    file-roller            # Archive manager
     # dconf-editor           # GTK configuration editor
     libnotify              # Notifications
     ksnip                  # Screenshots
