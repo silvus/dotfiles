@@ -57,6 +57,7 @@
     zathura                # PDF
     cheese                 # Webcam testing
     mediaelch              # TVshow manager
+    translate-shell        # Command-line translator
 
     # 3D
     # unstable.bambu-studio # 2026-01-02 Cannot login
