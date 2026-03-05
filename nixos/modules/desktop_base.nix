@@ -155,6 +155,11 @@
       text = ''SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3246", MODE="0666"'';
       destination = "/etc/udev/rules.d/70-nuphy-air-75.rules";
     })
+    (pkgs.writeTextFile {
+      name = "xteinkx4-udev-rules";
+      text = ''SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", MODE="0666"'';
+      destination = "/etc/udev/rules.d/75-xteink-x4.rules";
+    })
 
     # Yubikey
     pkgs.yubikey-personalization
