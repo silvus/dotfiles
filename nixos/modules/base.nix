@@ -132,6 +132,7 @@
 
     # Basic utilities
     coreutils  # Provides date command
+    clang # Compiler
     which
     most
     file
@@ -139,6 +140,7 @@
     fzf
     bat
     fd
+    ripgrep
     jq
     gawk
     unzip
