@@ -70,7 +70,6 @@ with lib;
     bun
 
     # Utilities
-    jq
     lsof
     sqlite
 
