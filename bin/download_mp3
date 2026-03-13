@@ -2,10 +2,17 @@
 
 # Check if yt-dlp is installed
 if [[ -x "$(command -v yt-dlp)" ]]; then
-	yt-dlp --ignore-errors --extract-audio --audio-format mp3 --output "%(artist,uploader)s - %(track,title)s.%(ext)s" "$@"
+	yt-dlp -x \
+  --audio-format mp3 \
+  --embed-metadata \
+  --embed-thumbnail \
+  --convert-thumbnails png \
+  --replace-in-metadata "title" " ?\((?i:lyric video|official|clip official|official video|official audio|official clip|music video)\)" "" \
+  --replace-in-metadata "title" " ?(?i:official|clip official)" "" \
+  -o "%(title)s.%(ext)s" \
+  "$@"
 	exit 0
 else
 	echo "yt-dlp is not installed"
 	exit 1
 fi
-
