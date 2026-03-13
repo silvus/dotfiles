@@ -146,6 +146,11 @@
 
   services.udev.packages = [
     (pkgs.writeTextFile {
+      name = "voyager-udev-rules";
+      text = ''KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3297", ATTRS{idProduct}=="1977", MODE="0666"'';
+      destination = "/etc/udev/rules.d/70-voyager.rules";
+    })
+    (pkgs.writeTextFile {
       name = "nuphyair60-udev-rules";
       text = ''SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3255", MODE="0666"'';
       destination = "/etc/udev/rules.d/70-nuphy-air-60.rules";

@@ -143,6 +143,7 @@
     ripgrep
     jq
     gawk
+    zip
     unzip
     unrar
     git
