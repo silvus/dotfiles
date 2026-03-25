@@ -38,6 +38,7 @@
     # dconf-editor           # GTK configuration editor
     libnotify              # Notifications
     ksnip                  # Screenshots
+    alarm-clock-applet     # Alarm and timer
     lxappearance           # GTK theme switcher GUI
     keepassxc              # Password manager
     blink1-tool            # Command line client for the blink(1) notification light
