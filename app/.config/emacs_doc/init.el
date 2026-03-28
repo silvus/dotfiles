@@ -1,4 +1,4 @@
-;; straight.el
+;; straighte.el
 ;; -------------------------------------------------------------------------------
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -34,6 +34,65 @@
 ;; (use-package projectile
 ;;   :ensure t
 ;;   :init (projectile-mode))
+
+;; smart framework for minibuffer
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+
+;; use the `orderless' completion style.
+(use-package orderless
+  :ensure t
+  :init
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+;; Rich annotations in the minibuffer (docstrings, file sizes, etc.)
+(use-package marginalia
+  :ensure t
+  :init
+  :init
+  (marginalia-mode))
+
+; (use-package consult
+;   :ensure t
+;   :bind (
+;          ;; C-x bindings (ctl-x-map)
+;          ; ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+;          ("C-c b" . consult-buffer)                ;; orig. switch-to-buffer
+;          ; ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+;          ; ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+;          ;; Custom M-# bindings for fast register access
+;          ; ("M-#" . consult-register-load)
+;          ; ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+;          ; ("C-M-#" . consult-register)
+;          ;; Other custom bindings
+;          ; ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+;          ;; M-g bindings (goto-map)
+;          ; ("M-g e" . consult-compile-error)
+;          ; ("M-g f" . consult-flymake)
+;          ; ("M-g g" . consult-goto-line)             ;; orig. goto-line
+;          ; ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+;          ; ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+;          ; ("M-g m" . consult-mark)
+;          ; ("M-g k" . consult-global-mark)
+;          ; ("M-g i" . consult-imenu)
+;          ; ("M-g I" . consult-imenu-multi)
+;          ;; M-s bindings (search-map)
+;          ; ("M-s f" . consult-find)
+;          ; ("M-s F" . consult-locate)
+;          ; ("M-s g" . consult-grep)
+;          ; ("M-s G" . consult-git-grep)
+;          ; ("M-s r" . consult-ripgrep)
+;          ; ("M-s l" . consult-line)
+;          ; ("M-s L" . consult-line-multi)
+;          ; ("M-s m" . consult-multi-occur)
+;          ; ("M-s k" . consult-keep-lines)
+;          ; ("M-s u" . consult-focus-lines)))
+;   ))
+
 
 ;; Markdown
 ;; -------------------------------------------------------------------------------
