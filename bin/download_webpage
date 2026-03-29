@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+url="$1"
+
+# Strip protocol
+clean="${url#*://}"
+
+# Replace non-alphanumerics with underscores
+destination="$(echo "$clean" \
+  | tr -d '[:space:]' \
+  | tr '/:.' '_' \
+  | sed 's/[\/_]*$//'
+)"
+
+if [[ -x "$(command -v monolith)" ]]; then
+	# Check if monolith is present
+	chromium --headless --window-size=1920,1080 --run-all-compositor-stages-before-draw --virtual-time-budget=9000 --incognito --dump-dom "$url" | monolith - -I -o "$destination".html
+
+elif [[ -x "$(command -v wget)" ]]; then
+	# Check if wget is installed
+	mkdir -p "$destination"
+
+  wget \
+    --mirror \
+    --page-requisites \
+    --convert-links \
+    --adjust-extension \
+    --span-hosts \
+    --content-disposition \
+	  --no-directories \
+    --execute robots=off \
+		--wait=2 \
+		--random-wait \
+		--limit-rate=100k \
+    -P "$destination" \
+    "$url"
+	# --mirror enables recursion, timestamping, and infinite depth suitable for archiving.
+	# --page-requisites downloads all resources required to render the page.
+	# --convert-links rewrites links for local offline browsing.
+	# --adjust-extension ensures correct file extensions.
+	# --no-parent prevents traversal above the target path.
+	# --span-hosts to allow downloading assets from other domains.
+	# robots=off ignores robots.txt rules.
+	# --wait adds a minimum delay between requests.
+	# --random-wait introduces jitter.
+	# --limit-rate slows transfer to reduce burst load.
+	# --reject "index.html*" avoids noisy duplicate index files.
+	# --content-disposition to respect server filenames
+	exit 0
+else
+	echo "wget is not installed"
+	exit 1
+fi
