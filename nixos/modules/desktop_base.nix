@@ -29,6 +29,7 @@
     playerctl              # MPRIS control interface
     moc                    # Music player
     # termusic               # Music player
+    monolith               # Website archiver
 
     # System utilities
     xdg-utils              # Desktop integration
