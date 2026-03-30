@@ -3,27 +3,22 @@
 (require 'org)
 
 ;; Org files paths
-(if (file-directory-p "/data/doc/org")
-	; at home
-	(setq org-directory "/data/doc/org")
-	; at work
-	(setq org-directory "~/Notes"))
+(setq org-directory (if (file-directory-p "/data/doc") "/data/doc/" "/data/work/"))
 (setq org-default-notes-file (concat org-directory "/todo.org"))
 
-;; Collect all .org from my Org directory and subdirs
+;; Collect all .org from my Org directory and subdirs (excluding hidden)
 (load-library "find-lisp")
-(if (file-directory-p "/data/doc/org")
-	; at home (more than just-org directory to include work folder)
-	;(setq org-agenda-files (find-lisp-find-files "/data/doc" "\\.org$"))
-	; at home (just-org directory to exclude work folder)
-	(setq org-agenda-files (find-lisp-find-files org-directory "\\.org$"))
-	; at work
-	(setq org-agenda-files (find-lisp-find-files org-directory "\\.org$")))
+(setq org-agenda-files
+      (find-lisp-find-files-internal
+       org-directory
+       (lambda (file dir) (and (string-match "\\.org$" file)
+                               (not (string-prefix-p "." file))))
+       (lambda (dir parent) (not (string-prefix-p "." dir)))))
 
 ;; Org mode on start-up
 ;; (add-hook 'after-init-hook 'org-agenda-list)
 (setq initial-buffer-choice (lambda ()
-	(if (file-directory-p "/data/doc/org")
+	(if (file-directory-p "/data/doc")
 	  ; at home
 	  (org-agenda nil "e")
 	  ; at work
@@ -49,10 +44,14 @@
 	(add-hook 'org-clock-out-hook 'my-org-clock-out))
 
 ;; Start in org folder
-(setq default-directory "/data/doc")
+;; (setq default-directory "/data/doc")
+(setq default-directory org-directory)
 
 ;; Open agenda in current window, not on a split
 (setq org-agenda-window-setup (quote current-window))
+
+;; Started folded
+(setq org-startup-folded 'overview)
 
 ;; Agenda view Presenting longer than 1 week
 (setq org-agenda-span 14)
@@ -396,7 +395,7 @@
 (setq org-todo-keywords
        '(
        	;; Sequence for TASKS
-       	(sequence 
+       	(sequence
             "NEXT(n)" "TODO(t)" "WAIT(w@/!)" "BACKLOG(b)"  "|" "INACTIVE(i@)" "DELEGATED(g@)" "CANCELED(c@)" "DONE(d!)" )
         ;; Sequence for EVENTS
        	;;(sequence "VISIT(v@/!)" "|" "DIDNOTGO(z@/!)" "MEETING(m@/!)" "VISITED(y@/!)")

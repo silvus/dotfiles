@@ -93,7 +93,6 @@
 ;          ; ("M-s u" . consult-focus-lines)))
 ;   ))
 
-
 ;; Markdown
 ;; -------------------------------------------------------------------------------
 (use-package markdown-mode
@@ -104,17 +103,21 @@
         ;;  ("C-c C-e" . markdown-do)))
   )
 
-;; Dim unfocused splits
+;; Git Gutter
 ;; -------------------------------------------------------------------------------
-;; (use-package dimmer
-  ;; :ensure t
-  ;; :config
-  ;; (dimmer-mode 1)
-  ;; (setq dimmer-fraction 0.4))
+;; (use-package diff-hl
+;;  :ensure t
+;;  :config
+;;  (global-diff-hl-mode 1)
+;;  (diff-hl-flydiff-mode 1))
 
-(custom-set-faces
-  '(mode-line          ((t (:background "#37633f" :foreground "white"))))
-  '(mode-line-inactive ((t (:background "#333333" :foreground "dim gray")))))
+;; Undo tree
+;; -------------------------------------------------------------------------------
+;; (use-package undo-tree
+;;  :ensure t
+;;  :config
+;; (global-undo-tree-mode 1))
+
 
 ;; Interface
 ;; -------------------------------------------------------------------------------
@@ -131,6 +134,8 @@
 ;; Cursor
 ;; (set-cursor-color "#ffffff")
 (setq-default cursor-type 'bar)
+(add-to-list 'default-frame-alist '(cursor-type . bar))
+(modify-all-frames-parameters '((cursor-type . bar)))
 
 ;; Auto show completions for execute-extended-command
 ;; (icomplete-mode 1)
@@ -151,7 +156,9 @@
 ;; (set-face-attribute 'fringe nil :background "black")
 
 ;; Highlight Current Line
-;; (global-hl-line-mode 1)
+(global-hl-line-mode 1)
+(custom-set-faces
+ '(hl-line ((t (:background "#344530")))))
 
 ;; Theme
 (load-theme 'wombat t)
@@ -166,6 +173,10 @@
 ;;  '(default ((t (:background "#121212"))))
 ;;  '(cursor ((t (:background "white")))))
 
+;; Selected text
+(set-face-attribute 'region nil :background "#3a5f8a")
+
+;; Line Height
 (set-face-attribute 'default nil :height 90)
 
 ;; Window title (with edited status + remote indication)
@@ -178,9 +189,9 @@
 ;;         " [%*]"))
 
 ;; Disable auto-recentering on scrolling
-;; (setq scroll-step 1)
+(setq scroll-step 1)
 ;; Places lines between the current line and the screen edge
-(setq scroll-margin 10)
+(setq scroll-margin 20)
 
 ;; Save all current buffers to a "desktop" file
 (desktop-save-mode 1)
@@ -249,6 +260,28 @@
 (which-key-mode 1)
 (which-key-setup-side-window-right-bottom)
 
+;; project.el
+(defun my/project-files-no-hidden (project)
+  (seq-filter
+   (lambda (file)
+     (not (string-match-p "/\\." file)))  ;; exclude any path component starting with .
+   (project-files-filtered project)))
+
+;; Do not ask for project each time
+(setq project-current-inhibit-prompt t)
+
+;; Find file in current project
+;; (global-set-key (kbd "C-c f") 'project-find-file)
+
+;; Open dired in project root
+;; (global-set-key (kbd "C-c e")
+;;   (lambda () (interactive)
+;;     (let ((proj (project-current)))
+;;       (dired (if proj (project-root proj) default-directory)))))
+
+;; Buffer management
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 
 ;; Org-mode
 ;; -------------------------------------------------------------------------------
@@ -259,19 +292,9 @@
 ;; -------------------------------------------------------------------------------
 ;; Use standard keybindings for copy, paste, cut
 (cua-mode 1)
-;; CUA mode and ISearch
-;; (define-key isearch-mode-map (kbd "C-v") 'isearch-yank-kill)
-
-;; Shift + Arrows keys (default in Emacs 24)
-;; (setq shift-select-mode t)
 
 ;; Getting PgDn to End of BufferDC
 (setq scroll-error-top-bottom t)
-
-;;   "Delete text from current position to end of line char. This command does not push text to `kill-ring'."
-;;   (interactive)
-;;     (delete-region (progn (forward-line 0) (point))
-;;       (progn (forward-line 1) (point))))
 
 ;; (global-set-key (kbd "C-a") 'mark-whole-buffer)
 ;; (define-key org-mode-map (kbd "C-a") 'mark-whole-buffer)
@@ -292,7 +315,6 @@
         (delete-region (region-beginning) (region-end))
       (kill-whole-line))))
 
-;; Comment line
 (global-set-key (kbd "C-/")
   (lambda () (interactive)
     (if (use-region-p)
@@ -313,22 +335,34 @@
 ;; (global-set-key (kbd "C-<right>") 'forward-word)
 ;; (global-set-key (kbd "C-<left>")  'backward-word)
 
-(global-set-key (kbd "C-<left>") 'my/backward-word-stop-at-bol)
-(global-set-key (kbd "C-S-<left>") 'my/backward-word-stop-at-bol)
+;; (global-set-key (kbd "C-<left>") 'my/backward-word-stop-at-bol)
+;; (global-set-key (kbd "C-S-<left>") 'my/backward-word-stop-at-bol)
 
 ;; Splits navigation
-(global-set-key (kbd "C-x w") 'kill-buffer-and-window)
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
+(if (display-graphic-p)
+    (progn
+      ;; GUI bindings
+      (global-set-key (kbd "M-w") 'kill-buffer-and-window)
+      (global-set-key (kbd "M-<up>") 'windmove-up)
+      (global-set-key (kbd "M-<down>") 'windmove-down)
+      (global-set-key (kbd "M-<left>") 'windmove-left)
+      (global-set-key (kbd "M-<right>") 'windmove-right))
+  (progn
+    ;; Terminal bindings
+    (global-set-key (kbd "C-x w") 'kill-buffer-and-window)
+    (global-set-key (kbd "C-x <up>") 'windmove-up)
+    (global-set-key (kbd "C-x <down>") 'windmove-down)
+    (global-set-key (kbd "C-x <left>") 'windmove-left)
+    (global-set-key (kbd "C-x <right>") 'windmove-right)))
 
 ;; Open File
 ;; (global-set-key (kbd "C-x f") 'helm-find-files)
 
 ;; One escape to quit
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(define-key org-mode-map (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "<escape>") 'keyboard-quit)
+(define-key minibuffer-local-map (kbd "<escape>") 'minibuffer-keyboard-quit)
+; (global-set-key (kbd "<escape>") 'keyboard-quit)
+; (define-key org-mode-map (kbd "<escape>") 'keyboard-quit)
 
 ;; Reload emacs config
 (global-set-key (kbd "C-c C-r") (lambda () (interactive) (load-file user-init-file)))
