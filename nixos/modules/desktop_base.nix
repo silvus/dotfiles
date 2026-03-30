@@ -94,6 +94,15 @@
     alsa.enable = true;
     # alsa.support32Bit = true;
     pulse.enable = true;
+    # Disable beep/bell
+    # https://discourse.nixos.org/t/alert-sound-randomly-played-after-24-05-upgrade/46367
+    extraConfig = {
+      pipewire."99-silent-bell.conf" = {
+        "context.properties" = {
+          "module.x11.bell" = false;
+        };
+      };
+    };
   };
 
   # Desktop support
