@@ -16,6 +16,7 @@ end-of-line-diagnostics = "hint"
 # Show tabs bar to list buffers
 bufferline = "multiple"
 # rulers = [120]
+scrolloff = 25
 
 [editor.cursor-shape]
 insert = "bar"
