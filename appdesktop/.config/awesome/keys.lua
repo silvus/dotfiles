@@ -655,7 +655,7 @@ keys.clients.keys = awful.util.table.join(
 	awful.key({ modkey, }, "F4", function(c)
 		c:kill()
 	end, { description = "close", group = "client" }),
-	awful.key({ modkey, }, "w", function(c)
+	awful.key({ modkey, "Shift" }, "w", function(c)
 		c:kill()
 	end, { description = "close", group = "client" })
 )
