@@ -24,10 +24,9 @@ with lib;
 
     python3
     # python lsp
-    pyright
-    # ty
-    # python formatter
+    ty
     ruff
+    python313Packages.ruff
 
     rustc
     cargo
@@ -65,6 +64,8 @@ with lib;
     # php85Extensions.uuid
     # php85Extensions.sodium
     # php85Extensions.readline
+    # LSP
+    # intelephense
 
     # JS
     bun
