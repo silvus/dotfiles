@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -e
+
+NOTE_PATH="${NOTE_PATH:-${SILVUSDOC}}"
+
+if [[ -z "$NOTE_PATH" ]]; then
+	echo "jrnl: NOTE_PATH or SILVUSDOC must be set" >&2
+	exit 1
+fi
+
+JOURNAL_DIR="$NOTE_PATH/journalogs"
+YEAR=$(date '+%Y')
+MONTH=$(date '+%m')
+DATE=$(date '+%Y-%m-%d')
+DAY_NAME=$(date '+%A')
+NOTE_FILE="$JOURNAL_DIR/$YEAR/$MONTH/$DATE.md"
+
+# Capitalise first letter of day name (locale-safe)
+DAY_NAME="$(echo "$DAY_NAME" | sed 's/./\u&/')"
+
+# Create parent directories if needed
+mkdir -p "$(dirname "$NOTE_FILE")"
+
+# Create note from template if it doesn't exist yet
+if [[ ! -f "$NOTE_FILE" ]]; then
+	printf '# %s %s\n\n' "$DATE" "$DAY_NAME" > "$NOTE_FILE"
+fi
+
+# Open the note — use tmux_sessionizer if inside a tmux session, $EDITOR otherwise
+if [[ -z "$TMUX" ]]; then
+	(cd "$NOTE_PATH" && "${EDITOR:-vim}" "$NOTE_FILE")
+else
+	tmux_sessionizer -p "$NOTE_FILE" -n "jrnl"
+fi
