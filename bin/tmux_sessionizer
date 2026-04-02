@@ -128,6 +128,7 @@ def init_cli_arg():
     )
     parser.add_argument("-s", "--session-mode", action="store_true", help="Start in session mode")
     parser.add_argument("-p", "--project", help="Open a project in a non interactive way")
+    parser.add_argument("-n", "--name", help="Override the window/session name")
 
     return parser.parse_args()
 
@@ -178,6 +179,10 @@ def main():
             return
 
         selected_name = os.path.basename(selected).replace(".", "_").replace(" ", "_")
+
+        if args.name:
+            # Override the window name from argument
+            selected_name = args.name
 
         # Log selection to HISTORY_TRACK with the current timestamp
         with open(HISTORY_TRACK, "a") as file:
