@@ -19,7 +19,7 @@
 (setq straight-use-package-by-default t)
 
 ;; Keep emacs Custom-settings in separate file
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file "~/.config/emacs/custom.el")
 (load custom-file 'noerror)
 
 ;; Fuzzy find selector
@@ -194,7 +194,7 @@
 (setq scroll-margin 20)
 
 ;; Save all current buffers to a "desktop" file
-(desktop-save-mode 1)
+; (desktop-save-mode 1)
 
 ;; Splash screen
 (setq inhibit-splash-screen t
@@ -245,8 +245,8 @@
   kept-old-versions 2 ;; Number of oldest versions to keep.
   version-control t) ;; Use version numbers for backups.
 ;; Backup / autosave directories
-(defvar backup-dir (expand-file-name "~/.emacs.d/backup/"))
-(defvar autosave-dir (expand-file-name "~/.emacs.d/autosave/"))
+(defvar backup-dir (expand-file-name "~/.config/emacs/backup/"))
+(defvar autosave-dir (expand-file-name "~/.config/emacs/autosave/"))
 (setq backup-directory-alist (list (cons ".*" backup-dir)))
 (setq auto-save-list-file-prefix autosave-dir)
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
@@ -354,6 +354,7 @@
     (global-set-key (kbd "C-x <down>") 'windmove-down)
     (global-set-key (kbd "C-x <left>") 'windmove-left)
     (global-set-key (kbd "C-x <right>") 'windmove-right)))
+(global-set-key (kbd "C-o") #'other-window)
 
 ;; Open File
 ;; (global-set-key (kbd "C-x f") 'helm-find-files)

@@ -3,7 +3,7 @@
 set -e
 
 TODO_PATH="/data/doc/todo.org"
-EMACS_CMD="emacs --init-directory $HOME/.config/emacs -nw"
+EMACS_CMD="emacs -nw"
 
 if [[ -z "$TMUX" ]]; then
 	$EMACS_CMD "$TODO_PATH"

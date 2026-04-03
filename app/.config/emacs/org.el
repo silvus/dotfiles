@@ -15,40 +15,52 @@
                                (not (string-prefix-p "." file))))
        (lambda (dir parent) (not (string-prefix-p "." dir)))))
 
-;; Org mode on start-up
-;; (add-hook 'after-init-hook 'org-agenda-list)
-(setq initial-buffer-choice (lambda ()
-	(if (file-directory-p "/data/doc")
-	  ; at home
-	  (org-agenda nil "e")
-	  ; at work
-	  (org-agenda nil "s"))
-  (get-buffer "*Org Agenda*")))
 
-;; Hooks
-(defun my-org-clock-out ()
-	" Call external script on org-mode clock out "
-	(shell-command (format "%s %s"
-		"~/.emacs.d/hooks/org-clock-out.sh"
-		(shell-quote-argument(
-			;format "%s: %s" (buffer-file-name (window-buffer (minibuffer-selected-window))) (org-clock-get-clock-string)
-			format "%s: %s" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) (org-clock-get-clock-string)
-			;(concat "lebuffer" ": " (org-clock-get-clock-string))
-			;(concat (buffer-file-name (window-buffer (minibuffer-selected-window))) ": " (org-clock-get-clock-string))
-			;(concat (buffer-file-name (window-buffer (minibuffer-selected-window))) ": " (org-clock-get-clock-string))
-			;; format "%s: %s" (buffer-file-name (window-buffer (minibuffer-selected-window))) (org-clock-get-clock-string)))
-		)))
-	)
-)
-(when (file-readable-p "~/.emacs.d/hooks/org-clock-out.sh")
-	(add-hook 'org-clock-out-hook 'my-org-clock-out))
+; Org mode on start-up
+; (add-hook 'after-init-hook 'org-agenda-list)
+ (setq initial-buffer-choice (lambda ()
+ 	(if (file-directory-p "/data/doc")
+ 	  ; at home
+ 	  (org-agenda nil "e")
+ 	  ; at work
+ 	  (org-agenda nil "s"))
+   (get-buffer "*Org Agenda*")))
+
+
+; ;; Hooks
+; (defun my-org-clock-out ()
+; 	" Call external script on org-mode clock out "
+; 	(shell-command (format "%s %s"
+; 		"~/.config/emacs/hooks/org-clock-out.sh"
+; 		(shell-quote-argument(
+; 			;format "%s: %s" (buffer-file-name (window-buffer (minibuffer-selected-window))) (org-clock-get-clock-string)
+; 			format "%s: %s" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) (org-clock-get-clock-string)
+; 			;(concat "lebuffer" ": " (org-clock-get-clock-string))
+; 			;(concat (buffer-file-name (window-buffer (minibuffer-selected-window))) ": " (org-clock-get-clock-string))
+; 			;(concat (buffer-file-name (window-buffer (minibuffer-selected-window))) ": " (org-clock-get-clock-string))
+; 			;; format "%s: %s" (buffer-file-name (window-buffer (minibuffer-selected-window))) (org-clock-get-clock-string)))
+; 		)))
+; 	)
+; )
+; (when (file-readable-p "~/.config/emacs/hooks/org-clock-out.sh")
+; 	(add-hook 'org-clock-out-hook 'my-org-clock-out))
 
 ;; Start in org folder
 ;; (setq default-directory "/data/doc")
 (setq default-directory org-directory)
 
 ;; Open agenda in current window, not on a split
-(setq org-agenda-window-setup (quote current-window))
+; (setq org-agenda-window-setup (quote current-window))
+;; Make org-agenda always reuse the other window
+; (setq org-agenda-window-setup 'other-window)
+; (setq org-agenda-window-setup 'other-)
+
+;; Prevent agenda buffers from deleting or reconfiguring the layout
+; (setq org-agenda-restore-windows-after-quit t)
+; (setq org-agenda-allow-remote-requests t)
+;
+;; Left calendar to update without being replaced
+(setq org-agenda-sticky t)
 
 ;; Started folded
 (setq org-startup-folded 'overview)

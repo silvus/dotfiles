@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Emacs (Doc)
-Comment=Launch Emacs with minimal configuration
-Exec=emacs --init-directory /home/silvus/.config/emacs_doc/ %F
-Icon=emacs
-Terminal=false
-Categories=Utility;TextEditor;
