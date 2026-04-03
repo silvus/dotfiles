@@ -27,6 +27,18 @@
    (get-buffer "*Org Agenda*")))
 
 
+(defun my/open-todo-on-right ()
+  "After agenda is ready, split right and open todo.org."
+  (when (and (eq major-mode 'org-agenda-mode)
+             (not (get-buffer-window "*Org Entry*"))) ; run only once
+    (let ((agenda-win (selected-window)))
+      (split-window-right)
+      (other-window 1)
+      (find-file "/data/doc/todo.org")
+      (select-window agenda-win))))   ; return focus to agenda
+
+(add-hook 'org-agenda-finalize-hook #'my/open-todo-on-right)
+
 ; ;; Hooks
 ; (defun my-org-clock-out ()
 ; 	" Call external script on org-mode clock out "
@@ -50,13 +62,12 @@
 (setq default-directory org-directory)
 
 ;; Open agenda in current window, not on a split
-; (setq org-agenda-window-setup (quote current-window))
+(setq org-agenda-window-setup (quote current-window))
 ;; Make org-agenda always reuse the other window
 ; (setq org-agenda-window-setup 'other-window)
-; (setq org-agenda-window-setup 'other-)
 
 ;; Prevent agenda buffers from deleting or reconfiguring the layout
-; (setq org-agenda-restore-windows-after-quit t)
+(setq org-agenda-restore-windows-after-quit t)
 ; (setq org-agenda-allow-remote-requests t)
 ;
 ;; Left calendar to update without being replaced
@@ -504,3 +515,10 @@
                  (calendar-iso-from-absolute
                   (calendar-absolute-from-gregorian (list month day year)))))
         'font-lock-face 'calendar-iso-week-face))
+
+
+;; Invert Tab and Enter
+(add-hook 'org-agenda-mode-hook
+          (lambda ()
+            (local-set-key (kbd "RET") #'org-agenda-goto)
+            (local-set-key (kbd "TAB") #'org-agenda-switch-to)))
