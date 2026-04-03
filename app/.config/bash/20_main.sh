@@ -41,7 +41,7 @@ alias findandmovehereallfiles="find . -mindepth 2 -type f -print -exec mv {} . \
 # Programs
 # -----------------------------------------------------------------------------
 alias bat='batcat'
-alias fd='fdfind'
+# alias fd='fdfind'
 alias y='yazi'
 
 # Enable color support of ls and also add handy aliases

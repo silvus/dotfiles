@@ -52,7 +52,7 @@ end
 
 alias b='$BROWSER'
 alias keymapazertyqwerty="setxkbmap -model pc105 -layout fr,gb -variant oss,intl -option \"grp:shift_caps_toggle,grp_led:scroll,nbsp:level4,lv3:ralt_switch,compose:menu,eurosign:e\""
-alias fd='fdfind'
+# alias fd='fdfind'
 
 if type -q batcat
     alias bat='batcat'
