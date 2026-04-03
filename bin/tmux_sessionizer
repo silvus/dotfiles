@@ -129,6 +129,7 @@ def init_cli_arg():
     parser.add_argument("-s", "--session-mode", action="store_true", help="Start in session mode")
     parser.add_argument("-p", "--project", help="Open a project in a non interactive way")
     parser.add_argument("-n", "--name", help="Override the window/session name")
+    parser.add_argument("-c", "--command", help="Override the open command (instead of $EDITOR)")
 
     return parser.parse_args()
 
@@ -141,6 +142,7 @@ def main():
     DEBUG = args.debug
     session_mode = args.session_mode
     project = args.project
+    command_override = args.command
 
     log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
 
@@ -168,7 +170,9 @@ def main():
         selected = os.path.expanduser(selected)
 
         tmux_open_command = ''
-        if os.path.isfile(selected):
+        if command_override:
+            tmux_open_command = "{} \"{}\"".format(command_override, selected)
+        elif os.path.isfile(selected):
             tmux_open_command = "{} \"{}\"".format(os.getenv('EDITOR', shutil.which('vim')), selected)
         elif selected in (os.path.expanduser(p) for p in EDIT_PATHS):
             tmux_open_command = "cd {1} && {0} \"{1}\"".format(os.getenv('EDITOR', shutil.which('vim')), selected)

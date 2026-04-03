@@ -2,12 +2,11 @@
 
 set -e
 
-export TODO_PATH="/data/doc/01_todo.md"
+TODO_PATH="/data/doc/todo.org"
+EMACS_CMD="emacs --init-directory $HOME/.config/emacs -nw"
 
-tmux_running=$(pgrep tmux)
-
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-	(cd "$NOTE_PATH" && nvim "$TODO_PATH")
+if [[ -z "$TMUX" ]]; then
+	$EMACS_CMD "$TODO_PATH"
 else
-	tmux_sessionizer -p "$TODO_PATH"
+	tmux_sessionizer -p "$TODO_PATH" -n "todo" -c "$EMACS_CMD"
 fi
