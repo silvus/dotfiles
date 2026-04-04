@@ -5,6 +5,7 @@
 ;; Org files paths
 (setq org-directory (if (file-directory-p "/data/doc") "/data/doc/" "/data/work/"))
 (setq org-default-notes-file (concat org-directory "/todo.org"))
+(setq diary-file (concat org-directory "/journal.org"))
 
 ;; Collect all .org from my Org directory and subdirs (excluding hidden)
 (load-library "find-lisp")
@@ -97,6 +98,30 @@
 ;; Agenda clock report parameters
 (setq org-agenda-clockreport-parameter-plist '(:stepskip0 t :fileskip0 t :maxlevel 5 :tcolumns 1 :link t :narrow 80 :indent t :timestamp t))
 
+;; Keywords
+;; Tracking TODO state changes (https://orgmode.org/manual/Tracking-TODO-state-changes.html) :
+;; - '!' for a timestamp
+;; - '@' for a note with timestamp
+;; - '@/!' in addition to the note taken when entering the state, a timestamp should be recorded when leaving the state, if the target state does not configure logging for entering it
+(setq org-todo-keywords
+       '(
+       	;; Sequence for TASKS
+       	(sequence
+            "NEXT(n)" "TODO(t)" "WAIT(w@/!)" "BACKLOG(b)"  "|" "INACTIVE(i@)" "DELEGATED(g@)" "CANCELED(c@)" "DONE(d!)" )
+        ;; Sequence for EVENTS
+       	;;(sequence "VISIT(v@/!)" "|" "DIDNOTGO(z@/!)" "MEETING(m@/!)" "VISITED(y@/!)")
+       	))
+
+(setq org-capture-templates
+ '(("t" "Todo" entry (file+headline org-default-notes-file "Idea box")
+        "* TODO %?\n %i" :empty-lines 1 :prepend t)
+   ("b" "Bookmark" entry (file (lambda () (concat org-directory "/bookmark.org")))
+        "* %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n" :empty-lines 1 :prepend t)
+   ("j" "Journal" entry (file (lambda () (concat org-directory "/journal.org.gpg")))
+        "* %U %?\n  :PROPERTIES:\n  :CREATED: %T\n  :END:\n\n" :empty-lines 1 :prepend t)
+   ("m" "Mood Log" entry (file+olp+datetree (lambda () (concat org-directory "/mood.org")))
+     "* Mood Entry\n  :PROPERTIES:\n  :Score: %^{Mood score (1-10)}\n  :Sleep: %^{Hours of sleep}\n  :Notes: %^{Emotional notes}\n  :CREATED: %U\n  :END:" :empty-lines 1 :time-prompt t)
+   ))
 ;; Custom agenda
 ;; (setq org-agenda-custom-commands
 ;;   '(("s" "Simple global view"
@@ -409,31 +434,6 @@
 
 ;; Changes and notes will be stored into a drawer called LOGBOOK
 (setq org-log-into-drawer t)
-
-;; Keywords
-;; Tracking TODO state changes (https://orgmode.org/manual/Tracking-TODO-state-changes.html) :
-;; - '!' for a timestamp
-;; - '@' for a note with timestamp
-;; - '@/!' in addition to the note taken when entering the state, a timestamp should be recorded when leaving the state, if the target state does not configure logging for entering it
-(setq org-todo-keywords
-       '(
-       	;; Sequence for TASKS
-       	(sequence
-            "NEXT(n)" "TODO(t)" "WAIT(w@/!)" "BACKLOG(b)"  "|" "INACTIVE(i@)" "DELEGATED(g@)" "CANCELED(c@)" "DONE(d!)" )
-        ;; Sequence for EVENTS
-       	;;(sequence "VISIT(v@/!)" "|" "DIDNOTGO(z@/!)" "MEETING(m@/!)" "VISITED(y@/!)")
-       	))
-
-(setq org-capture-templates
- '(("t" "Todo" entry (file+headline org-default-notes-file "Idea box")
-        "* TODO %?\n %i" :empty-lines 1 :prepend t)
-   ("b" "Bookmark" entry (file (lambda () (concat org-directory "/bookmark.org")))
-        "* %?\n  :PROPERTIES:\n  :CREATED: %U\n  :END:\n\n" :empty-lines 1 :prepend t)
-   ("j" "Journal" entry (file (lambda () (concat org-directory "/journal.org.gpg")))
-        "* %U %?\n  :PROPERTIES:\n  :CREATED: %T\n  :END:\n\n" :empty-lines 1 :prepend t)
-   ("m" "Mood Log" entry (file+olp+datetree (lambda () (concat org-directory "/mood.org")))
-     "* Mood Entry\n  :PROPERTIES:\n  :Score: %^{Mood score (1-10)}\n  :Sleep: %^{Hours of sleep}\n  :Notes: %^{Emotional notes}\n  :CREATED: %U\n  :END:" :empty-lines 1 :time-prompt t)
-   ))
 
 ;; Clocking
 ; Continuous clocking
