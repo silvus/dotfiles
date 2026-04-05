@@ -31,8 +31,10 @@ with lib;
     rustc
     cargo
     # rust lsp
-    # rust-analyzer
+    rust-analyzer
     # rustup component add rust-analyzer
+    rustfmt
+    # rustup
 
     # nix lsp
     nil

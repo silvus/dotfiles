@@ -7,6 +7,22 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "base_keymap": "VSCode",
+  "vertical_scroll_margin": 15.0,
+  "minimap": {
+    "show": "never"
+  },
+  "max_tabs": 12,
+  "confirm_quit": true,
+  "buffer_font_fallbacks": [
+    "Droid Sans Mono",
+    "monospace",
+    "monospace"
+  ],
+  "buffer_font_family": "DejaVu Sans Mono",
+  "show_whitespaces": "boundary",
+  "ensure_final_newline_on_save": true,
+  "hard_tabs": true,
   "ui_font_size": 13,
   "buffer_font_size": 12,
   "agent_ui_font_size": 13,
@@ -121,6 +137,7 @@
     //     }
     //   }
     // },
+    "default_profile": "ask",
     "default_model": {
       "provider": "anthropic",
       "model": "claude-sonnet-4-5-latest"
