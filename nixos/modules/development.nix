@@ -1,6 +1,4 @@
-{ pkgs, lib, ... }:
-
-with lib;
+{ pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -45,29 +43,6 @@ with lib;
     bash-language-server
     # bash formatter
     shfmt
-
-    # PHP
-    php85
-    php85Extensions.mbstring
-    php85Extensions.intl
-    php85Extensions.curl
-    php85Extensions.bcmath
-    php85Extensions.gd
-    php85Extensions.xml
-    # php85Extensions.pdo
-    # php85Extensions.pdo_sqlite
-    php85Extensions.sqlite3
-    php85Extensions.openssl
-    php85Extensions.dom
-    php85Extensions.bz2
-    php85Extensions.zip
-    # php85Extensions.zlib
-    # php85Extensions.yaml
-    # php85Extensions.uuid
-    # php85Extensions.sodium
-    # php85Extensions.readline
-    # LSP
-    # intelephense
 
     # JS
     bun
