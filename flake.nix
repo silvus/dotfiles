@@ -37,6 +37,11 @@
          then ./custom/local.nix
          else { })
 
+        # Import prod config if present
+        (if builtins.pathExists /data/prod/devops/configuration.nix
+         then /data/prod/devops/configuration.nix
+         else { })
+
         {
           networking.hostName = lib.mkDefault hostname;
         }
@@ -49,9 +54,9 @@
     nixosConfigurations = {
       nixos-vm = mkHost "nixos-vm";
       noctus = mkHost "noctus";
-      somnus = mkHost "somnus";
       virtus = mkHost "virtus";
       servius = mkHost "servius";
+      arcus = mkHost "arcus";
     };
 
     # Home manager on Debian
