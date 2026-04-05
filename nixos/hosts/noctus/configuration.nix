@@ -20,6 +20,7 @@
     ../../modules/mnt_torrents.nix
     # ../../modules/mnt_doc.nix
     ../../modules/development.nix
+    # ../../modules/development_php.nix
     # ../../modules/development_containers.nix
   ];
 
