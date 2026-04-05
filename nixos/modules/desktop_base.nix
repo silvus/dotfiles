@@ -48,6 +48,7 @@
     # Code
     emacs-gtk
     vscodium               # Editor
+    zed-editor
 
     # Office
     thunderbird            # Mail and calendar
