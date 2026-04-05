@@ -22,6 +22,7 @@
     ../../modules/mnt_tvshows.nix
     # ../../modules/mnt_doc.nix
     ../../modules/development.nix
+    ../../modules/development_php.nix
   ];
 
   # Host-specific networking
