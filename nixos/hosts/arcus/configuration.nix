@@ -3,8 +3,7 @@
 
 {
   imports = [
-    # TODO
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
 
     ../../modules/base.nix
     # ../../modules/keyboard.nix
