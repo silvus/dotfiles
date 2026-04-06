@@ -57,7 +57,7 @@ SYNCTHING_FOLDERS = {
         "label": "work",
         "rescanIntervals": 10900,
         "fsWatcherEnabled": True,
-        "devices": ["virtus", "servius", "noctus", "nix"],
+        "devices": ["virtus", "servius", "noctus", "nix", "arcus"],
     },
 
     # Doc
@@ -66,7 +66,7 @@ SYNCTHING_FOLDERS = {
         "label": "doc",
         "rescanIntervals": 3600,
         "fsWatcherEnabled": True,
-        "devices": ["virtus", "servius", "noctus", "corus", "nix"],
+        "devices": ["virtus", "servius", "noctus", "corus", "nix", "arcus"],
         "versioning": {"type": "simple", "params": {"keep": "5"}},
     },
     "trogo_work": {
@@ -84,7 +84,7 @@ SYNCTHING_FOLDERS = {
         "label": "share",
         "rescanIntervals": 86400,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "nix"],
+        "devices": ["virtus", "servius", "noctus", "nix", "arcus"],
     },
     "trogo": {
         "path": "/data/trogo",
