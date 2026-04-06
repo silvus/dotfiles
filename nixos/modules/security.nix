@@ -18,7 +18,7 @@
 
   # SSH hardening
   services.openssh.settings = {
-    PasswordAuthentication = false;
+    # PasswordAuthentication = false;
     PermitRootLogin = "no";
     X11Forwarding = false;
     MaxAuthTries = 3;
