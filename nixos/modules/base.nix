@@ -177,6 +177,8 @@
     };
     fish.enable = true;
     git.enable = true;
+    # Opens UDP ports 60000 ... 61000
+    mosh.enable = true;
   };
   environment.variables.EDITOR = "vim";
 
