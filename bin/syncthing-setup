@@ -59,6 +59,13 @@ SYNCTHING_FOLDERS = {
         "fsWatcherEnabled": True,
         "devices": ["virtus", "servius", "noctus", "nix", "arcus"],
     },
+    "git": {
+        "path": "/data/git",
+        "label": "git",
+        "rescanIntervals": 13000,
+        "fsWatcherEnabled": False,
+        "devices": ["servius", "nix", "arcus"],
+    },
 
     # Doc
     "doc": {
