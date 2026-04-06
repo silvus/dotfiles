@@ -1,5 +1,5 @@
 # Arcus
-{ ... }:
+{ lib, ... }:
 
 {
   imports = [
@@ -26,5 +26,8 @@
   # environment.systemPackages = with pkgs; [
   # ];
 
-
+  # For a DO droplet, use grub only
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/vda";
 }
