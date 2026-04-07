@@ -37,12 +37,6 @@
          then ./custom/local.nix
          else { })
 
-        # Import prod config if present
-       (let prodConfig = /data/prod/devops + "/configuration_${hostname}.nix";
-         in if builtins.pathExists prodConfig
-            then prodConfig
-            else { })
-
         {
           networking.hostName = lib.mkDefault hostname;
         }
