@@ -14,7 +14,7 @@ in
 
   # Create directories before Syncthing starts
   systemd.tmpfiles.rules = map (dir:
-    "d ${dir} 0700 ${syncthingUser} ${syncthingGroup} -"
+    "d ${dir} 0750 ${syncthingUser} ${syncthingGroup} -"
   ) baseDirs;
 
   # Ensure Syncthing service waits for directories
