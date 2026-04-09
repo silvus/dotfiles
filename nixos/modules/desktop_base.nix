@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   # System packages — core userland tools and desktop utilities
@@ -87,6 +87,18 @@
 
   # Disable NetworkManager from starting at boot
   systemd.services.NetworkManager-wait-online.enable = false;
+
+  # Copy /etc/hosts file instead of symlinking it
+  # The goal is to edit the host file without rebuild
+  # The file will still be cleared on each rebuild, use networking.hosts for persistent data
+  environment.etc.hosts.mode = "0744";
+  # Ensure hosts file has priority in DNS resolution
+  system.nssDatabases.hosts = lib.mkForce [
+    "mymachines"
+    "files"
+    "myhostname"
+    "dns"
+  ];
 
   # Audio
   # security.rtkit.enable = true;
