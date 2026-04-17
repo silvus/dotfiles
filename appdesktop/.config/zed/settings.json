@@ -137,10 +137,10 @@
     //     }
     //   }
     // },
-    "default_profile": "ask",
+    "default_profile": "write",
     "default_model": {
-      "provider": "anthropic",
-      "model": "claude-sonnet-4-5-latest"
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4-6"
     },
     "enable_feedback": false,
     // Where to show notifications when the agent has either completed
