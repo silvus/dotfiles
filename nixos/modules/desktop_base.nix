@@ -30,6 +30,7 @@
     moc                    # Music player
     # termusic               # Music player
     monolith               # Website archiver
+    mate.eom               # Image viewer
 
     # System utilities
     xdg-utils              # Desktop integration
