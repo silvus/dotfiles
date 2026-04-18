@@ -196,15 +196,33 @@
     # openFirewall = true;
   };
 
+  # Limit journald space
+  # SystemMaxUse: absolute cap for persistent logs
+  # SystemKeepFree: guarantees free disk space
+  # SystemMaxFileSize: prevents large single files
+  # MaxRetentionSec: time-based pruning
+  # RuntimeMaxUse: cap for /run/log/journal
+  services.journald.extraConfig = ''
+    SystemMaxUse=1G
+    SystemKeepFree=500M
+    SystemMaxFileSize=100M
+    MaxRetentionSec=1month
+    RuntimeMaxUse=200M
+  '';
 
-  # Basic security settings
-  # security = {
-  #   sudo = {
-  #     enable = true;
-  #     wheelNeedsPassword = true;
-  #   };
-  #   polkit.enable = true;
-  # };
+  # Limit logs space
+  services.logrotate = {
+    enable = true;
+    settings = {
+      "/var/log/*.log" = {
+        rotate = 7;
+        daily = true;
+        compress = true;
+        missingok = true;
+        notifempty = true;
+      };
+    };
+  };
 
   # System state version
   # This value determines the NixOS release from which the default
