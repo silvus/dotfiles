@@ -10,7 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mdorg.url = "path:/data/dev/mdorg";
+    mdorg.url = "git+ssh://silvus@arcus:/data/git/mdorg";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, mdorg }:
