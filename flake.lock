@@ -170,14 +170,17 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 0,
-        "narHash": "sha256-SVE5NirMsNdBYWjJtpDFWrfodu0oQZCE5C2iy/l9zco=",
-        "path": "/data/dev/mdorg",
-        "type": "path"
+        "lastModified": 1776618697,
+        "narHash": "sha256-TMYGhIeytK07sn+LHVNIlkOuXBBfsLtLeqW6loSZ3M8=",
+        "ref": "refs/heads/main",
+        "rev": "8e2886787fdb4bb662e5e2b533558f3afa8f5a9a",
+        "revCount": 5,
+        "type": "git",
+        "url": "ssh://silvus@arcus/data/git/mdorg"
       },
       "original": {
-        "path": "/data/dev/mdorg",
-        "type": "path"
+        "type": "git",
+        "url": "ssh://silvus@arcus/data/git/mdorg"
       }
     },
     "nixpkgs": {
@@ -198,11 +201,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1775710090,
-        "narHash": "sha256-ar3rofg+awPB8QXDaFJhJ2jJhu+KqN/PRCXeyuXR76E=",
+        "lastModified": 1776169885,
+        "narHash": "sha256-l/iNYDZ4bGOAFQY2q8y5OAfBBtrDAaPuRQqWaFHVRXM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "4c1018dae018162ec878d42fec712642d214fdfa",
+        "rev": "4bd9165a9165d7b5e33ae57f3eecbcb28fb231c9",
         "type": "github"
       },
       "original": {
@@ -230,11 +233,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1776067740,
-        "narHash": "sha256-B35lpsqnSZwn1Lmz06BpwF7atPgFmUgw1l8KAV3zpVQ=",
+        "lastModified": 1776434932,
+        "narHash": "sha256-gyqXNMgk3sh+ogY5svd2eNLJ6oEwzbAeaoBrrxD0lKk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7e495b747b51f95ae15e74377c5ce1fe69c1765f",
+        "rev": "c7f47036d3df2add644c46d712d14262b7d86c0c",
         "type": "github"
       },
       "original": {
