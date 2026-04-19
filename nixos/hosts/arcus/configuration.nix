@@ -21,6 +21,7 @@
     # ../../modules/development.nix
     ../../modules/development_php.nix
     # ../../modules/development_containers.nix
+    # ../../modules/mdorg.nix
   ];
 
   # environment.systemPackages = with pkgs; [
