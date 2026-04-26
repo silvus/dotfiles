@@ -57,7 +57,14 @@
 
   environment.systemPackages = with pkgs; [
     keymapp
+
+    # ios files access
+    libimobiledevice
+    ifuse # optional, to mount using 'ifuse'
   ];
+
+    # ios files access
+  services.usbmuxd.enable = true;
 
   # Screens
   services.xserver = {
