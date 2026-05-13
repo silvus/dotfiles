@@ -57,14 +57,18 @@
 
   environment.systemPackages = with pkgs; [
     keymapp
+    blink1-tool
 
     # ios files access
     libimobiledevice
     ifuse # optional, to mount using 'ifuse'
   ];
 
-    # ios files access
-  services.usbmuxd.enable = true;
+  # Android notifications
+  programs.kdeconnect.enable = true;
+
+  # IOS files access
+  # services.usbmuxd.enable = true;
 
   # Screens
   services.xserver = {
