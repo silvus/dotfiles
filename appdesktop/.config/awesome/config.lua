@@ -59,6 +59,9 @@ if file_exists(config.home .. "/bin/blink1-flash") then
 	config.blink_path = config.home .. "/bin/blink1-flash"
 elseif file_exists("/usr/local/blink-tool") then
 	config.blink_path = "/usr/local/blink-tool"
+elseif file_exists("/run/current-system/sw/bin/blink1-tool") then
+	-- NixOs
+	config.blink_path = "/run/current-system/sw/bin/blink1-tool"
 end
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
