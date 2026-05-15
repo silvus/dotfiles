@@ -2,6 +2,6 @@
 
 {
   environment.systemPackages = [
-    mdorg.packages.${pkgs.system}.default
+    mdorg.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 }
