@@ -1,5 +1,5 @@
 # Noctus - Laptop Configuration
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -12,7 +12,7 @@
     ../../modules/desktop_awesome.nix
     # ../../modules/desktop_sway.nix
     ../../modules/laptop.nix
-    ../../modules/gaming.nix
+    # ../../modules/gaming.nix
     # ../../modules/printing.nix
     # ../../modules/security.nix
     ../../modules/mnt_movies.nix
@@ -42,6 +42,17 @@
     };
   };
 
-  # environment.systemPackages = with pkgs; [
-  # ];
+  environment.systemPackages = with pkgs; [
+    steam
+  ];
+
+  # Steam configuration
+  # Just Steam for Noctus, not the whole gaming stuff
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    gamescopeSession.enable = true;
+  };
+
 }
