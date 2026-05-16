@@ -78,19 +78,4 @@ with lib;
   # hardware.opengl.enable = true;
   # hardware.opengl.driSupport32Bit = true;
 
-
-  # 2026-05-06 fix for Lutris (fail on tests, openldap problem)
-  nixpkgs.overlays = [
-    (final: prev: {
-      openldap = prev.openldap.overrideAttrs (old: {
-        doCheck = false;
-      });
-
-      lutris = prev.lutris.override {
-        openldap = prev.openldap.overrideAttrs (_: {
-          doCheck = false;
-        });
-      };
-    })
-  ];
 }

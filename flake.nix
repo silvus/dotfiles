@@ -18,10 +18,28 @@
     system = "x86_64-linux";
     lib = nixpkgs.lib;
 
+    # 2026-05-06 fix for Lutris (fail on tests, openldap problem)
+    # overlay-unstable = final: prev: {
+    #   unstable = import nixpkgs-unstable {
+    #     inherit system;
+    #     config.allowUnfree = true;
+    #   };
+    # };
     overlay-unstable = final: prev: {
       unstable = import nixpkgs-unstable {
         inherit system;
-        config.allowUnfree = true;
+
+        config = {
+          allowUnfree = true;
+        };
+
+        overlays = [
+          (ufinal: uprev: {
+            openldap = uprev.openldap.overrideAttrs (_: {
+              doCheck = false;
+            });
+          })
+        ];
       };
     };
 
