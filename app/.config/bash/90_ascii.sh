@@ -48,7 +48,6 @@ __asciiart() {
     # Disk usage (no GNU df --output support on Termux)
     local DISKSPACE
     DISKSPACE=$(df / 2>/dev/null | awk 'NR==2 {gsub("%","",$5); print $5}')
-
     [ "$DISKSPACE" ] || DISKSPACE="N/A"
 
     # Colors
