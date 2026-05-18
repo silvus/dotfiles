@@ -52,7 +52,7 @@
     sqlite
 
     # Static generator
-    zola
+    # zola
 
     # Android
     # NIXPKGS_ALLOW_UNFREE=1 nix-shell -p androidenv.androidPkgs.platform-tools

@@ -11,8 +11,11 @@
     ../../modules/desktop_base.nix
     # ../../modules/desktop_sway.nix
     ../../modules/desktop_awesome.nix
+    ../../modules/desktop_office.nix
+    ../../modules/desktop_3dmodel.nix
     ../../modules/gaming.nix
     ../../modules/printing.nix
+    ../../modules/desktop_udev.nix
     # ../../modules/security.nix
     ../../modules/mnt_movies.nix
     ../../modules/mnt_tvshows.nix
@@ -22,6 +25,7 @@
     ../../modules/development_php.nix
     ../../modules/development_containers.nix
     ../../modules/mdorg.nix
+    ../../modules/movies.nix
   ];
 
   # Bootloader (dual boot with Debian)
@@ -56,12 +60,12 @@
   nixpkgs.config.nvidia.acceptLicense = true;
 
   environment.systemPackages = with pkgs; [
-    keymapp
-    blink1-tool
+    keymapp                # Voyager keyboard utility
+    blink1-tool            # Command line client for the blink(1) notification light
 
     # ios files access
-    libimobiledevice
-    ifuse # optional, to mount using 'ifuse'
+    # libimobiledevice
+    # ifuse # optional, to mount using 'ifuse'
   ];
 
   # Android notifications
