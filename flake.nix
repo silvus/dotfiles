@@ -11,9 +11,10 @@
     };
 
     mdorg.url = "git+ssh://silvus@arcus:/data/git/mdorg";
+    movies.url = "git+ssh://silvus@arcus:/data/git/movies";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, mdorg }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, mdorg, movies }:
   let
     system = "x86_64-linux";
     lib = nixpkgs.lib;
@@ -47,7 +48,7 @@
       inherit system;
 
       specialArgs = {
-        inherit hostname mdorg;
+        inherit hostname mdorg movies;
       };
       modules = [
         {
