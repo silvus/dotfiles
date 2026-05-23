@@ -88,6 +88,9 @@ config.layouts = {
 	-- awful.layout.suit.corner.se,
 }
 
+-- Tag selected at startup
+config.tag_first_selected = 1
+
 -- Include config customisation to override previous default values
 -- This file should return a table, for exemple:
 -- local config = {}

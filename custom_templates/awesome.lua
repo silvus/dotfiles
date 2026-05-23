@@ -16,4 +16,7 @@ local config = {}
 -- Default layout master width
 -- config.layouts_master_width = 0.5
 
+-- Tag selected at startup
+-- config.tag_first_selected = 1
+
 return config
