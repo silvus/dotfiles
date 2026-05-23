@@ -49,6 +49,12 @@
     borgbackup
   ];
 
+  # Autologin
+  services.xserver.displayManager.lightdm.autoLogin = {
+    enable = true;
+    user = "silvus";
+  };
+
   # Autostart
   systemd.user.services.movies = {
     description = "Movies";
