@@ -26,6 +26,7 @@
     ../../modules/development_containers.nix
     ../../modules/mdorg.nix
     ../../modules/movies.nix
+    # ../../modules/transmission.nix
   ];
 
   # Bootloader (dual boot with Debian)
@@ -62,6 +63,8 @@
   environment.systemPackages = with pkgs; [
     keymapp                # Voyager keyboard utility
     blink1-tool            # Command line client for the blink(1) notification light
+
+    # unstable.fresh-editor
 
     # ios files access
     # libimobiledevice

@@ -117,8 +117,8 @@
     neovim
     nano
     helix
-    emacs
-    emacsPackages.doom
+    # emacs
+    # emacsPackages.doom
 
     # Network
     wget

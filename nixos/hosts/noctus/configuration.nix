@@ -27,6 +27,7 @@
     # ../../modules/development_containers.nix
     ../../modules/mdorg.nix
     ../../modules/movies.nix
+    # ../../modules/transmission.nix
   ];
 
   # Bootloader (dual boot with Debian)
