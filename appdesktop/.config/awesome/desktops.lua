@@ -2,6 +2,7 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 
 local screens = require("screens")
+local config= require("config")
 
 local desktops = {}
 
@@ -63,7 +64,7 @@ local function init(s)
 				layout = (tag.layout or awful.layout.suit.tile),
 				icon = tag.icon,
 				screen = s,
-				selected = (i == 1),
+				selected = (i == config.tag_first_selected),
 				-- icon_only = true,
 			})
 		end
@@ -78,4 +79,3 @@ desktops.init = init
 desktops.tags_names = tags_names
 
 return desktops
-
