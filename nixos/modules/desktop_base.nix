@@ -140,11 +140,6 @@
     };
   };
 
-  services.udev.packages = [
-    # Yubikey
-    pkgs.yubikey-personalization
-  ];
-
   # Yubikey
   hardware.gpgSmartcards.enable = true;
   services.pcscd.enable = true;

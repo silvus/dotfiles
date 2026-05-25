@@ -1,15 +1,10 @@
 { pkgs, ... }:
 
 {
-  # Rules Udev
-  # services.udev.extraRules = ''
-  #   # Nuphy Air 75
-  #   SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3246", MODE="0666"
-  #   # Nuphy Air 60
-  #   SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3255", MODE="0666"
-  # '';
-
   services.udev.packages = [
+    # Yubikey
+    pkgs.yubikey-personalization
+
     (pkgs.writeTextFile {
       name = "voyager-udev-rules";
       text = ''KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3297", ATTRS{idProduct}=="1977", MODE="0666"'';
