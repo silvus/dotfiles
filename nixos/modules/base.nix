@@ -146,6 +146,7 @@
     zip
     unzip
     unrar
+    p7zip
     git
     lazygit
     yazi
