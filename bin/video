@@ -8,4 +8,8 @@ export DISPLAY="${DISPLAY:-:0}"
 MPV_EXEC="$(command -v mpv) --vo=gpu,drm --ao=alsa"
 MPV_FORMAT='bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]'
 
-$MPV_EXEC --ytdl-format="$MPV_FORMAT" "$@"
+# Sponsorblock cannot work on a streaming process, I should use https://github.com/po5/mpv_sponsorblock instead
+$MPV_EXEC \
+  --ytdl-format="$MPV_FORMAT" \
+  --ytdl-raw-options=sponsorblock-remove=sponsor \
+  "$@"
