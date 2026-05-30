@@ -48,7 +48,7 @@ in {
   # The order of the entries is not preserved so keyd service fail...
   environment.systemPackages = with pkgs; [
     keyd            # To get the binary in the PATH
-    xorg.setxkbmap  # Needed for layout setup
+    setxkbmap       # Needed for layout setup
   ];
 
   # Looks like there is a keyd group

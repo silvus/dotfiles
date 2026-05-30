@@ -12,12 +12,12 @@
     # rxvt-unicode         # Terminal emulator
     ghostty                # Terminal emulator
 
-    xfce.thunar            # File manager
-    xfce.thunar-volman
-    xfce.thunar-archive-plugin
-    xfce.thunar-media-tags-plugin
+    thunar            # File manager
+    thunar-volman
+    thunar-archive-plugin
+    thunar-media-tags-plugin
     gvfs
-    xfce.xfconf
+    xfconf
 
     # Media and sound
     mpv                    # Media player
@@ -30,7 +30,7 @@
     moc                    # Music player
     # termusic               # Music player
     monolith               # Website archiver
-    mate.eom               # Image viewer
+    eom               # Image viewer
 
     # System utilities
     bc

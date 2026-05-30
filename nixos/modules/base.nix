@@ -151,6 +151,9 @@
     lazygit
     yazi
 
+    # Need for command-not-found package
+    sqlite
+
     # Scripts
     python3
 

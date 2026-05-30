@@ -7,13 +7,15 @@
     awesome
 
     # X11 core utilities (equivalents to: xorg xinit xserver-common xserver-xorg)
-    xorg.xinit
-    xorg.xorgserver      # X.Org X11 server - core display server
-    xorg.xrandr          # Resize and rotate screen utility for multi-monitor setup
-    xorg.xev             # Event viewer for X11
-    xorg.xprop           # X property utility
-    xorg.xwininfo        # Window information utility
-    xorg.setxkbmap       # Set X keyboard mapping
+    xinit
+    xorgserver      # X.Org X11 server - core display server
+    xrandr          # Resize and rotate screen utility for multi-monitor setup
+    xev             # Event viewer for X11
+    xprop           # X property utility
+    xwininfo        # Window information utility
+    setxkbmap       # Set X keyboard mapping
+    xset
+    xrdb
 
     # Display and monitor management
     arandr             # GUI for xrandr (monitor configuration)
@@ -96,13 +98,13 @@
 
       sessionCommands = ''
         # Blank screen after 50 min
-        ${pkgs.xorg.xset}/bin/xset s 3000 3000
+        ${pkgs.xset}/bin/xset s 3000 3000
         # Power off screen after 1 hour
-        ${pkgs.xorg.xset}/bin/xset dpms 3600 3600 3600
+        ${pkgs.xset}/bin/xset dpms 3600 3600 3600
 
-        ${pkgs.xorg.xrdb}/bin/xrdb -merge -I$HOME ~/.Xresources
+        ${pkgs.xrdb}/bin/xrdb -merge -I$HOME ~/.Xresources
         if [ -f "$HOME/.dotfiles/custom/Xresources" ]; then
-          ${pkgs.xorg.xrdb}/bin/xrdb -merge -I$HOME/.dotfiles/custom/Xresources
+          ${pkgs.xrdb}/bin/xrdb -merge -I$HOME/.dotfiles/custom/Xresources
         fi
 
         # Auto launcher
