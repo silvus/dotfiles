@@ -19,6 +19,11 @@
     system = "x86_64-linux";
     lib = nixpkgs.lib;
 
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
+
     # 2026-05-06 fix for Lutris (fail on tests, openldap problem)
     # overlay-unstable = final: prev: {
     #   unstable = import nixpkgs-unstable {
@@ -107,6 +112,20 @@
       #   echo "  nixos-rebuild test --flake .#\$(hostname) --sudo"
       #   echo "  nixfmt *.nix **/*.nix"
       # '';
+    };
+
+    # Run this with `nix run github:silvus/dotfiles` (hostname must be defined)
+    apps.${system}.default = {
+      type = "app";
+      program = toString (
+        pkgs.writeShellScript "switch-system" ''
+          set -euo pipefail
+
+          exec ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch \
+            --flake ${self}#$(hostname) \
+            --sudo
+        ''
+      );
     };
   };
 }
