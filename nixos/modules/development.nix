@@ -37,7 +37,7 @@
     # nix lsp
     nil
     # nix formatter
-    nixfmt-rfc-style
+    nixfmt
 
     # bash lsp
     bash-language-server
@@ -49,7 +49,8 @@
 
     # Utilities
     lsof
-    sqlite
+    # iftop
+    # nethogs
 
     # Static generator
     # zola
