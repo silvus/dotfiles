@@ -137,6 +137,7 @@
     most
     file
     tree
+    bc
     fzf
     bat
     fd
