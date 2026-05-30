@@ -95,6 +95,19 @@ function fish_user_key_bindings
     end
 
     fzf_key_bindings
+
+    # Fzf search current dir in EDITOR with CTRL+E
+    bind \ce fzf-editor-open
+
+    # Fzf trigger file with CTRL+P
+    bind \cp fzf-file-widget
+
+    # Fzf trigger history with CTRL+H
+    bind \ch fzf-history-widget
+
+    # Fzf search doc in EDITOR with CTRL+D
+    # bind \co 'fzf-editor-open /data/doc'
+
 end
 
 # yazi Shell wrapper to cd
@@ -110,18 +123,6 @@ end
 
 # Bindings
 # -----------------------------------------------------------------------------
-# Fzf search current dir in EDITOR with CTRL+E
-bind \ce fzf-editor-open
-
-# Fzf trigger file with CTRL+P
-bind \cp fzf-file-widget
-
-# Fzf trigger history with CTRL+H
-bind \ch fzf-history-widget
-
-# Fzf search doc in EDITOR with CTRL+D
-# bind \co 'fzf-editor-open /data/doc'
-
 # Open TODO.md with CTRL+t
 # bind \ct 'tmux_sessionizer -p "/data/doc/todo.org"'
 
