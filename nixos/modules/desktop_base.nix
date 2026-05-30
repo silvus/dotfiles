@@ -33,6 +33,8 @@
     mate.eom               # Image viewer
 
     # System utilities
+    bc
+    rink
     xdg-utils              # Desktop integration
     gparted                # Partition manager
     gnome-disk-utility     # Disk management
