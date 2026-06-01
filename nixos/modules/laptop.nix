@@ -69,10 +69,6 @@
   #   };
   # };
 
-  # Backlight control
-  programs.light.enable = true;
-
-
   # Laptop-specific packages
   environment.systemPackages = with pkgs; [
     lxqt.lxqt-powermanagement  # GUI power-management tray applet
@@ -81,7 +77,6 @@
     # lm_sensors                 # Hardware sensors monitoring
     # upower                     # Power device management backend
     brightnessctl              # Backlight control utility
-    # light                      # Alternative backlight control tool
     # wirelesstools              # Legacy wireless tools (iwconfig, etc.)
     iw                         # Modern wireless management tool
     # smartmontools              # SMART monitoring for storage devices
