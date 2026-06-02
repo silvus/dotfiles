@@ -18,4 +18,15 @@ with lib;
   users.users.silvus.extraGroups = [ "incus-admin" ];
   # Enable nftables (required for Incus)
   networking.nftables.enable = true;
+
+  networking.firewall = {
+    # Required for container routing
+    trustedInterfaces = [ "incusbr0" ];
+    checkReversePath = false;
+  };
+
+  # Enable IPv4 forwarding
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+  };
 }
