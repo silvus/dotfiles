@@ -10,6 +10,7 @@
     ../../modules/syncthing.nix
     ../../modules/desktop_base.nix
     # ../../modules/desktop_sway.nix
+    # ../../modules/desktop_niri.nix
     ../../modules/desktop_awesome.nix
     # ../../modules/desktop_office.nix
     # ../../modules/desktop_3dmodel.nix

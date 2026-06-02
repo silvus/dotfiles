@@ -13,6 +13,7 @@
     ../../modules/desktop_office.nix
     # ../../modules/desktop_3dmodel.nix
     # ../../modules/desktop_sway.nix
+    # ../../modules/desktop_niri.nix
     ../../modules/laptop.nix
     # ../../modules/gaming.nix
     # ../../modules/printing.nix

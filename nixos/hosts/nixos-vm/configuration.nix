@@ -10,16 +10,17 @@
 
     ../../modules/base.nix
     ../../modules/keyboard.nix
-    ../../modules/syncthing.nix
+    # ../../modules/syncthing.nix
     ../../modules/desktop_base.nix
     # ../../modules/desktop_sway.nix
-    ../../modules/desktop_awesome.nix
-    ../../modules/laptop.nix
+    ../../modules/desktop_niri.nix
+    # ../../modules/desktop_awesome.nix
+    # ../../modules/laptop.nix
     # ../../modules/gaming.nix
     # ../../modules/printing.nix
     # ../../modules/security.nix
-    ../../modules/mnt_movies.nix
-    ../../modules/mnt_tvshows.nix
+    # ../../modules/mnt_movies.nix
+    # ../../modules/mnt_tvshows.nix
     # ../../modules/mnt_doc.nix
     ../../modules/development.nix
     ../../modules/development_php.nix
@@ -45,12 +46,15 @@
     };
   };
 
-  services.xserver = {
-    enable = true;
-    resolutions = [
-      {x = 1920; y = 1080;}
-    ];
-  };
+  # Not compatible with `programs.ssh.startAgent`
+  services.gnome.gcr-ssh-agent.enable = false;
+
+  # services.xserver = {
+  #   enable = true;
+  #   resolutions = [
+  #     {x = 1920; y = 1080;}
+  #   ];
+  # };
 
   # VM-specific packages
   # environment.systemPackages = with pkgs; [
