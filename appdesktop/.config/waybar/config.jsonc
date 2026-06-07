@@ -1,0 +1,61 @@
+{
+  "layer": "top",
+  "position": "left",
+  "width": 16,
+
+  "modules-left": [
+    "niri/workspaces",
+  ],
+
+  "modules-center": [
+  ],
+
+  "modules-right": [
+    "custom/vpn",
+    "load",
+    // "cpu",
+    // "memory",
+    "tray",
+    "clock"
+  ],
+
+  "niri/workspaces": {
+    "format": "{icon}",
+    "all-outputs": false,
+    "current-only": false
+  },
+
+  "custom/vpn": {
+    "exec": "nmcli -t connection show --active | grep -q vpn && echo VPN",
+    "interval": 30,
+    "rotate": 90,
+    "return-type": "plain"
+  },
+
+  "load": {
+    "interval": 2,
+    "format": "{load1}",
+    "rotate": 90,
+  },
+
+  // "cpu": {
+  //   "format": "C {usage}%",
+  //   "rotate": 90
+  // },
+
+  // "memory": {
+  //   "format": "RAM {}%",
+  //   "rotate": 90
+  // },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 4
+  },
+
+  "clock": {
+    "format": "{:%H:%M:%S}",
+    "rotate": 90,
+    "tooltip-format": "{:%A %d %B %Y}"
+  }
+}
