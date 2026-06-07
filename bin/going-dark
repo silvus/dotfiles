@@ -1,0 +1,232 @@
+#!/usr/bin/env python3
+
+"""
+Toggle desktop theme dark/light.
+"""
+
+import os
+import sys
+import shutil
+import logging
+import argparse
+import subprocess
+
+
+__author__ = "Silvus"
+__version__ = "2026.06"
+
+PATH_SCRIPT = os.path.basename(__file__)
+
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format="[%(levelname)s] %(message)s",
+)
+
+log = logging.getLogger(PATH_SCRIPT)
+
+DEBUG = False
+
+TMUX_THEME_DARK = os.path.expanduser(
+    "~/.config/tmux/tmux.theme.dark.conf"
+)
+TMUX_THEME_LIGHT = os.path.expanduser(
+    "~/.config/tmux/tmux.theme.light.conf"
+)
+
+
+def run(cmd):
+    log.debug("running: %s", " ".join(cmd))
+
+    try:
+        subprocess.run(
+            cmd,
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception as exc:
+        log.warning("failed: %s", exc)
+
+
+def capture(cmd):
+    log.debug("capture: %s", " ".join(cmd))
+    try:
+        result = subprocess.run(
+            cmd,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        return result.stdout.strip()
+    except Exception:
+        return None
+
+def get_current_theme():
+    """
+    Determine the current GTK color scheme.
+
+    Preference order:
+      1. gsettings
+      2. dconf
+
+    If no desktop settings backend is available,
+    assume dark mode.
+    """
+
+    value = None
+
+    if shutil.which("gsettings"):
+        value = capture(
+            [
+                shutil.which("gsettings"),
+                "get",
+                "org.gnome.desktop.interface",
+                "color-scheme",
+            ]
+        )
+        log.debug(f"Getting {value} from gsettings")
+
+
+    if not value and shutil.which("dconf"):
+        value = capture(
+            [
+                shutil.which("dconf"),
+                "read",
+                "/org/gnome/desktop/interface/color-scheme",
+            ]
+        )
+        log.debug(f"Getting {value} from gsettings")
+
+    if value and "prefer-dark" in value:
+        return "dark"
+
+    # Default to light to swith to dark
+    return "light"
+
+def set_gtk_theme(mode):
+    """
+    Update the desktop-wide GTK color preference.
+    """
+    log.debug('Set GTK Theme')
+
+    value = (
+        "prefer-light"
+        if mode == "light"
+
+        else "prefer-dark"
+    )
+
+    if shutil.which("gsettings"):
+        run(
+            [
+                shutil.which("gsettings"),
+                "set",
+                "org.gnome.desktop.interface",
+                "color-scheme",
+                value,
+            ]
+        )
+    if shutil.which("dconf"):
+        run(
+            [
+                shutil.which("dconf"),
+                "write",
+                "/org/gnome/desktop/interface/color-scheme",
+                f'"{value}"',
+            ]
+        )
+
+
+def set_tmux_theme(mode):
+    log.debug('Set tmux Theme')
+    tmux = shutil.which("tmux")
+    if not tmux:
+        return
+
+    theme_file = (
+        TMUX_THEME_LIGHT
+        if mode == "light"
+        else TMUX_THEME_DARK
+    )
+
+    if not os.path.exists(theme_file):
+        log.warning(
+            "tmux theme not found: %s",
+            theme_file,
+        )
+        return
+
+    run([tmux, "source-file", theme_file])
+
+    run(
+        [
+            tmux,
+            "display-message",
+            f"Theme switched to {mode}",
+        ]
+    )
+
+
+def main():
+    global DEBUG
+
+    parser = argparse.ArgumentParser(
+        description="Toggle desktop theme"
+    )
+
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s {0}".format(__version__),
+    )
+
+    parser.add_argument(
+        "-d",
+        "--debug",
+        action="store_true",
+        default=False,
+    )
+
+    args = parser.parse_args()
+
+    DEBUG = args.debug
+
+    log.setLevel(
+        logging.DEBUG if DEBUG else logging.INFO
+    )
+
+    try:
+        log.debug('Start')
+        current = get_current_theme()
+        mode = (
+            "light"
+            if current == "dark"
+            else "dark"
+        )
+
+        log.info(
+            "switching from %s to %s",
+            current,
+            mode,
+        )
+
+        set_gtk_theme(mode)
+        set_tmux_theme(mode)
+
+        log.debug('End')
+
+    except Exception as exc:
+        log.error(exc)
+
+        if DEBUG:
+            raise
+
+        return 1
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

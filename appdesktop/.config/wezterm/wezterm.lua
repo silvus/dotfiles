@@ -20,9 +20,31 @@ config.warn_about_missing_glyphs = false
 config.audible_bell = "Disabled";
 
 -- See https://gogh-co.github.io/Gogh/
-config.color_scheme = 'Tango (terminal.sexy)'
+-- config.color_scheme = 'Tango (terminal.sexy)'
 -- config.color_scheme = 'Elementary'
 -- config.color_scheme = 'Pro'
+-- config.color_scheme = 'Everblush'
+-- config.color_scheme = 'tokyonight_night'
+-- config.color_scheme = 'rose_pine'
+
+--Dynamic theme
+-- https://wezterm.org/config/lua/wezterm.gui/get_appearance.html
+local function get_appearance()
+    -- wezterm.gui is not available to the mux server
+    if wezterm.gui then
+        return wezterm.gui.get_appearance()
+    end
+    return 'Dark'
+end
+local function get_color_scheme()
+    local appearance = get_appearance();
+    if appearance:find 'Dark' then
+        return 'Tango (terminal.sexy)'
+    else
+        return 'Tango Adapted'
+    end
+end
+config.color_scheme = get_color_scheme()
 
 config.use_cap_height_to_scale_fallback_fonts = true
 config.font = wezterm.font_with_fallback({
