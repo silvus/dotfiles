@@ -49,18 +49,18 @@ in {
   environment.systemPackages = with pkgs; [
     keyd            # To get the binary in the PATH
     setxkbmap       # Needed for layout setup
-    kbd             # TTY config
+    # kbd             # TTY config
   ];
 
-  # Set TTY repeat rate
-  systemd.services.kbdrate = {
-    description = "Set console keyboard repeat rate";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.kbd}/bin/kbdrate -d 250 -r 50";
-    };
-  };
+  # # Set TTY repeat rate
+  # systemd.services.kbdrate = {
+  #   description = "Set console keyboard repeat rate";
+  #   wantedBy = [ "multi-user.target" ];
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     ExecStart = "${pkgs.kbd}/bin/kbdrate -d 250 -r 50";
+  #   };
+  # };
 
   # Looks like there is a keyd group
   users.groups.keyd = {};
