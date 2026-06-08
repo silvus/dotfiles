@@ -55,8 +55,9 @@
 
     # Appearance and theming
     arc-theme              # GTK theme (Arc Dark)
-    everforest-gtk-theme   # gtk theme
-    numix-icon-theme       # Icon theme (Numix)
+    kora-icon-theme        # Icon theme
+    # everforest-gtk-theme   # gtk theme
+    # numix-icon-theme       # Icon theme (Numix)
     adwaita-icon-theme     # Adwaita icon theme (includes cursor theme)
   ];
 
@@ -72,11 +73,11 @@
           enable = true;
           # Theme configuration
           theme = {
-            name = "Everforest-Dark";
-            package = pkgs.everforest-gtk-theme;
+            name = "Arc-Dark";
+            package = pkgs.arc-theme;
           };
           iconTheme = {
-            name = "Everforest-Dark";
+            name = "Kora";
             package = pkgs.numix-icon-theme;
           };
           cursorTheme = {
