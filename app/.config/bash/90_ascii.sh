@@ -61,14 +61,44 @@ __asciiart() {
     TXTCYAN=$(tput setaf 6)
     TXTRESET=$(tput sgr0)
 
+    # Distribution detection
+    # local DISTRO="generic"
+    # if [ -r /etc/os-release ]; then
+    #     . /etc/os-release
+    #     case "$ID" in
+    #         nixos) DISTRO="nixos" ;;
+    #     esac
+    # fi
+
     # Output
-    echo -e "${TXTBLUE}      .--.      ${TXTRESET}${TXTCYAN}${USER}${TXTRESET}@${TXTYELLOW}${HOST}${TXTRESET}"
-    echo -e "${TXTBLUE}     |o_o |     ${TXTRESET}${TXTCYAN}IP      ${TXTGREEN}${IP_LOCAL}${TXTRESET}"
-    echo -e "${TXTBLUE}     |:_/ |     ${TXTRESET}${TXTCYAN}Kernel  ${TXTGREEN}${OS} ${ARCH} ${KERNEL}${TXTRESET}"
-    echo -e "${TXTBLUE}    //   \ \    ${TXTRESET}${TXTCYAN}Shell   ${TXTGREEN}${SHELL}${TXTRESET}"
-    echo -e "${TXTBLUE}   (|     | )   ${TXTRESET}${TXTCYAN}Disk /  ${TXTGREEN}${DISKSPACE}%${TXTRESET}"
-    echo -e "${TXTBLUE}  / \_   _/ \   ${TXTRESET}"
-    echo -e "${TXTBLUE}  \___)=(___/   ${TXTRESET}${TXTCYAN}Uptime  ${TXTGREEN}${UPTIME}${TXTRESET}"
+    # if [ "$DISTRO" = "nixos" ]; then
+    #     echo -e "${TXTBLUE}        __    ${TXTCYAN}____    __${TXTRESET}          ${TXTCYAN}${USER}${TXTRESET}@${TXTYELLOW}${HOST}${TXTRESET}"
+    #     echo -e "${TXTBLUE}       /  \\   ${TXTCYAN}\\   \\  /  \\${TXTRESET}         ${TXTCYAN}IP      ${TXTGREEN}${IP_LOCAL}${TXTRESET}"
+    #     echo -e "${TXTBLUE}       \\   \\   ${TXTCYAN}\\   \\/   /${TXTRESET}         ${TXTCYAN}Kernel  ${TXTGREEN}${OS} ${ARCH} ${KERNEL}${TXTRESET}"
+    #     echo -e "${TXTBLUE}     ___\\   \\___${TXTCYAN}\\      /${TXTRESET}          ${TXTCYAN}Shell   ${TXTGREEN}${SHELL}${TXTRESET}"
+    #     echo -e "${TXTBLUE}    /            ${TXTCYAN}\\    /${TXTBLUE}   /\\${TXTRESET}      ${TXTCYAN}Disk /  ${TXTGREEN}${DISKSPACE}%${TXTRESET}"
+    #     echo -e "${TXTBLUE}   /______________${TXTCYAN}\\   \\${TXTBLUE}  /  \\${TXTRESET}"
+    #     echo -e "${TXTCYAN}        /   /      \\   \\${TXTBLUE}/   /${TXTRESET}     ${TXTCYAN}Uptime  ${TXTGREEN}${UPTIME}${TXTRESET}"
+    #     echo -e "${TXTCYAN} ______/   /        \\  ${TXTBLUE}/   /___${TXTRESET}"
+    #     echo -e "${TXTCYAN}/         /          ${TXTBLUE}\\/        \\${TXTRESET}"
+    #     echo -e "${TXTCYAN}\\____    /${TXTBLUE}\\          /${TXTCYAN}   ______/${TXTRESET}"
+    #     echo -e "${TXTCYAN}    /   /${TXTBLUE}  \\        /${TXTCYAN}   /${TXTRESET}"
+    #     echo -e "${TXTCYAN}   /   /${TXTBLUE}\\   \\${TXTCYAN}______${TXTBLUE}/${TXTCYAN}___${TXTBLUE}/${TXTCYAN}_____${TXTRESET}"
+    #     echo -e "${TXTCYAN}   \\  /${TXTBLUE}  \\   \\${TXTCYAN}              /${TXTRESET}"
+    #     echo -e "${TXTCYAN}    \\/${TXTBLUE}   /    \\${TXTCYAN}____    ____/${TXTRESET}"
+    #     echo -e "${TXTBLUE}       /      \\${TXTCYAN}   \\   \\${TXTRESET}"
+    #     echo -e "${TXTBLUE}      /   /\\   \\${TXTCYAN}   \\   \\${TXTRESET}"
+    #     echo -e "${TXTBLUE}      \\__/  \\___\\${TXTCYAN}   \\__/${TXTRESET}"
+    # else
+        echo -e "${TXTBLUE}      .--.      ${TXTRESET}${TXTCYAN}${USER}${TXTRESET}@${TXTYELLOW}${HOST}${TXTRESET}"
+        echo -e "${TXTBLUE}     |o_o |     ${TXTRESET}${TXTCYAN}IP      ${TXTGREEN}${IP_LOCAL}${TXTRESET}"
+        echo -e "${TXTBLUE}     |:_/ |     ${TXTRESET}${TXTCYAN}Kernel  ${TXTGREEN}${OS} ${ARCH} ${KERNEL}${TXTRESET}"
+        echo -e "${TXTBLUE}    //   \\\\      ${TXTRESET}${TXTCYAN}Shell   ${TXTGREEN}${SHELL}${TXTRESET}"
+        echo -e "${TXTBLUE}   (|     | )   ${TXTRESET}${TXTCYAN}Disk /  ${TXTGREEN}${DISKSPACE}%${TXTRESET}"
+        echo -e "${TXTBLUE}  / \\_   _/ \\   ${TXTRESET}"
+        echo -e "${TXTBLUE}  \\___)=(___/   ${TXTRESET}${TXTCYAN}Uptime  ${TXTGREEN}${UPTIME}${TXTRESET}"
+    # fi
+
     echo ''
 }
 

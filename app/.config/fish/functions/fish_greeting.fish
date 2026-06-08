@@ -87,12 +87,46 @@ function fish_logo \
         }'
     )
 
+    # Kernel
+    set kernel_info (uname -s)" "(uname -m)" "(uname -r)
+
+    # Distro detection
+    set DISTRO generic
+    if test -r /etc/os-release
+        set ID (grep '^ID=' /etc/os-release | cut -d= -f2 | tr -d '"')
+
+        if test "$ID" = nixos
+            set DISTRO nixos
+        end
+    end
+
     # Render ASCII logo
-    echo '                 '$o'___
+    if test "$DISTRO" = nixos
+        echo "        $o""__    $m""____    __$o                  $m$USER$o@$host_name"
+        echo "       $o/  \\   $m\\   \\  /  \\$o         $m""IP      $i$ip_addr$o"
+        echo "       $o\\   \\   $m\\   \\/   /$o         $m""Kernel  $i$kernel_info$o"
+        echo "     $o""___\\   \\___$m\\      /$o          $m""Disk /  $i$disk_percent%$o"
+        echo "    $o/            $m\\    /$o   /\\      $m""Date    $i$current_date$o"
+        echo "   $o/______________$m\\   \\$o  /  \\     $m""Uptime  $i$uptime_text$o"
+        echo "        $m/   /      \\   \\$o/   /$o"
+        echo "$m ______/   /        \\  $o/   /___"
+        echo "$m/         /          $o\\/        \\"
+        echo "$m\\____    /$o\\          /$m   ______/"
+        echo "$m    /   /$o  \\        /$m   /"
+        echo "$m""   /   /""$o""\\   \\$m""______""$o""/""$m""___""$o""/""$m""_____"
+        echo "$m""   \\  /""$o""  \\   \\$m""              /"
+        echo "$m""    \\/""$o""   /    \\$m""____    ____/"
+        echo "$o       /      \\$m   \\   \\"
+        echo "$o      /   /\\   \\$m   \\   \\"
+        echo "$o      \\__/  \\___\\$m   \\__/"
+        echo ""
+
+    else
+        echo '                 '$o'___
   ___======____='$m'-'$i'-'$m'-='$o')                     '$o$USER'@'$host_name$o'
 /T            \_'$i'--='$m'=='$o')            '$m'IP      '$i$ip_addr$o'
 '$mouth' \ '$m'('$i$eye$m')   '$o'\~    \_'$i'-='$m'='$o')            '$m'Uptime  '$i$uptime_text$o'
- \      / )J'$m'~~    '$o'\\'$i'-='$o')            '$m'Kernel  '$i(uname -s) (uname -m) (uname -r)$o'
+ \      / )J'$m'~~    '$o'\\'$i'-='$o')            '$m'Kernel  '$i$kernel_info$o'
   \\\\___/  )JJ'$m'~'$i'~~   '$o'\)             '$m'Disk /  '$i$disk_percent'%'$o'
    \_____/JJJ'$m'~~'$i'~~    '$o'\\            '$m'Date    '$i$current_date$o'
    '$m'/ '$o'\  '$i', \\'$o'J'$m'~~~'$i'~~     '$m'\\
@@ -103,6 +137,7 @@ function fish_logo \
                       '$o'/'$m'J'$i'\\'$m'J'$o'T\\'$m'JJJ'$o'J)
                       (J'$m'JJ'$o'| \UUU)
                        (UU)'(set_color normal)
+    end
 end
 
 # Fish greeting hook
