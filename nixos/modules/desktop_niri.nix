@@ -25,6 +25,8 @@
     # Appearance and theming
     everforest-gtk-theme   # gtk theme
     adwaita-icon-theme     # Adwaita icon theme (includes cursor theme)
+
+    glib                   # To get gsettings (wayland specific)
   ];
 
   xdg.portal = {

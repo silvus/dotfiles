@@ -26,6 +26,8 @@
     # For Waybar. Gtk css interfer and force a with of 28px (which is huge)
     # to force a small size, fake a smaller gtk theme
     adapta-gtk-theme
+
+    glib                   # To get gsettings (wayland specific)
   ];
 
   # Wayland and Sway

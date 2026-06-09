@@ -40,7 +40,6 @@
     gnome-disk-utility     # Disk management
     file-roller            # Archive manager
     # dconf-editor           # GTK configuration editor
-    glib                   # To get gsettings
     libnotify              # Notifications
     ksnip                  # Screenshots
     lxappearance           # GTK theme switcher GUI
