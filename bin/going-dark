@@ -110,32 +110,47 @@ def set_gtk_theme(mode):
     """
     log.debug('Set GTK Theme')
 
-    value = (
-        "prefer-light"
-        if mode == "light"
+    color_scheme = ("prefer-light" if mode == "light" else "prefer-dark")
+    # gtk_theme = ( "Arc-Darker" if mode == "light" else "Arc-Dark")
 
-        else "prefer-dark"
-    )
-
-    if shutil.which("gsettings"):
+    gsettings = shutil.which("gsettings")
+    if gsettings:
         run(
             [
-                shutil.which("gsettings"),
+                gsettings,
                 "set",
                 "org.gnome.desktop.interface",
                 "color-scheme",
-                value,
+                color_scheme,
             ]
         )
-    if shutil.which("dconf"):
+        # run(
+        #     [
+        #         gsettings,
+        #         "set",
+        #         "org.gnome.desktop.interface",
+        #         "gtk-theme",
+        #         gtk_theme,
+        #     ]
+        # )
+    dconf = shutil.which("dconf")
+    if dconf:
         run(
             [
-                shutil.which("dconf"),
+                dconf,
                 "write",
                 "/org/gnome/desktop/interface/color-scheme",
-                f'"{value}"',
+                f'"{color_scheme}"',
             ]
         )
+        # run(
+        #     [
+        #         dconf,
+        #         "write",
+        #         "/org/gnome/desktop/interface/gtk-theme",
+        #         f'"{gtk_theme}"',
+        #     ]
+        # )
 
 
 def set_tmux_theme(mode):
