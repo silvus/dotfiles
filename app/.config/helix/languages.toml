@@ -15,7 +15,11 @@ language-servers = ["marksman", "markdown-oxide"]
 soft-wrap.enable = true
 text-width = 120
 soft-wrap.wrap-at-text-width = true
-# formatter = { command = 'dprint', args = [
-#   "fmt",
-# ] }
-# auto-format = false
+formatter = { command = "dprint", args = ["fmt", "--stdin", "md"] }
+# formatter = { command = 'prettier', args = [
+#   "--parser",
+#   "markdown",
+#   "--prose-wrap",
+#   "never",
+# ]}
+auto-format = true
