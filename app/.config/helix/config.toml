@@ -16,7 +16,7 @@ end-of-line-diagnostics = "hint"
 # Show tabs bar to list buffers
 bufferline = "multiple"
 # rulers = [120]
-scrolloff = 25
+scrolloff = 80
 
 [editor.cursor-shape]
 insert = "bar"
@@ -97,6 +97,12 @@ S-right = "extend_char_right"
 S-left = "extend_char_left"
 S-home = ["select_mode", "goto_line_start"]
 S-end= ["select_mode", "goto_line_end"]
+
+H = "goto_line_start"
+L = "goto_line_end"
+J = "page_cursor_half_down"
+K = "page_cursor_half_up"
+
 0 = "goto_line_start"
 "$" = "goto_line_end"
 "^" = "goto_first_nonwhitespace"
@@ -123,6 +129,19 @@ C-right = "move_next_word_start"
 C-left = "move_prev_word_end"
 S-right = "extend_char_right"
 S-left = "extend_char_left"
+
+# Escape with jj
+# j	= {j = 'normal_mode'}
+
+# Force to learn
+# up = "no_op"
+# down = "no_op"
+# left = "no_op"
+# right = "no_op"
+# pageup = "no_op"
+# pagedown = "no_op"
+# home = "no_op"
+# end = "no_op"
 
 [keys.select]
 C-s = ":w" # Maps Ctrl-s to the typable command :w which is an alias for :write (save file)
