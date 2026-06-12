@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 
-;; straighte.el
+;; straight.el
 ;; -------------------------------------------------------------------------------
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -124,11 +124,11 @@
 
 ;; Git Gutter
 ;; -------------------------------------------------------------------------------
-;; (use-package diff-hl
-;;  :ensure t
-;;  :config
-;;  (global-diff-hl-mode 1)
-;;  (diff-hl-flydiff-mode 1))
+(use-package diff-hl
+ :ensure t
+ :config
+ (global-diff-hl-mode 1)
+ (diff-hl-flydiff-mode 1))
 
 ;; Undo tree
 ;; -------------------------------------------------------------------------------
@@ -137,6 +137,72 @@
 ;;  :config
 ;; (global-undo-tree-mode 1))
 
+;; Code
+;; -------------------------------------------------------------------------------
+;; LSP
+(use-package eglot
+  :ensure nil
+  :hook ((python-ts-mode . eglot-ensure)
+         (rust-ts-mode . eglot-ensure)
+         (nix-mode . eglot-ensure)
+         (lua-mode . eglot-ensure))
+  :config
+  (add-to-list 'eglot-server-programs
+               '(nix-mode . ("nil"))))
+
+;; Suggestions
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0)
+  (corfu-auto-prefix 2)
+  (corfu-cycle t)
+  :init
+  (global-corfu-mode))
+
+;; Treesitter
+(setq major-mode-remap-alist
+      '((python-mode . python-ts-mode)
+        (rust-mode . rust-ts-mode)
+        (css-mode . css-ts-mode)
+        (js-mode . js-ts-mode)
+        (javascript-mode . js-ts-mode)
+        (yaml-mode . yaml-ts-mode)
+        (bash-mode . bash-ts-mode)
+        (sh-mode . bash-ts-mode)
+        (json-mode . json-ts-mode)))
+
+;; Formatter
+(use-package apheleia
+  :config
+  (setf (alist-get 'markdown-mode apheleia-mode-alist)
+        'dprint)
+        (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
+(setf (alist-get 'rust-ts-mode apheleia-mode-alist) 'rustfmt)
+(setf (alist-get 'lua-mode apheleia-mode-alist) 'stylua)
+(setf (alist-get 'nix-mode apheleia-mode-alist) 'alejandra)
+
+  (setf (alist-get 'dprint apheleia-formatters)
+        '("dprint"
+          "fmt"
+          "--stdin"
+          "--stdin-file-path"
+          filepath))
+
+  (apheleia-global-mode +1))
+
+;; Format on save
+; (add-hook 'before-save-hook #'apheleia-format-buffer)
+(dolist (hook '(python-ts-mode-hook
+                rust-ts-mode-hook
+                nix-mode-hook
+                lua-mode-hook
+                markdown-mode-hook))
+  (add-hook hook
+            (lambda ()
+              (add-hook 'before-save-hook
+                        #'apheleia-format-buffer
+                        nil t))))
 
 ;; Interface
 ;; -------------------------------------------------------------------------------
@@ -289,7 +355,7 @@
 ;       `((".*" ,emacs-lock-dir t)))
 
 ;; Ensure directories exist
-(dolist (dir (list emacs-backup-dir emacs-autosave-dir emacs-lock-dir))
+; (dolist (dir (list emacs-backup-dir emacs-autosave-dir emacs-lock-dir)))
 (dolist (dir (list emacs-backup-dir emacs-autosave-dir))
   (unless (file-directory-p dir)
     (make-directory dir t)))
@@ -406,6 +472,13 @@
         (bury-buffer))
     (delete-window)))
 
+;; Split and focus
+(defun my/split-window-right ()
+  (interactive)
+  (select-window (split-window-right)))
+(defun my/split-window-below ()
+  (interactive)
+  (select-window (split-window-below)))
 (if (display-graphic-p)
     (progn
       ;; GUI bindings
@@ -416,8 +489,8 @@
       (global-set-key (kbd "M-<down>") 'windmove-down)
       (global-set-key (kbd "M-<left>") 'windmove-left)
       (global-set-key (kbd "M-<right>") 'windmove-right)
-      (global-set-key (kbd "M-v") #'split-window-right)
-      (global-set-key (kbd "M-h") #'split-window-below))
+      (global-set-key (kbd "M-v") #'my/split-window-right)
+      (global-set-key (kbd "M-h") #'my/split-window-below))
   (progn
     ;; Terminal bindings
     ; (global-set-key (kbd "C-x w") 'kill-buffer-and-window)
@@ -427,8 +500,8 @@
     (global-set-key (kbd "C-x <down>") 'windmove-down)
     (global-set-key (kbd "C-x <left>") 'windmove-left)
     (global-set-key (kbd "C-x <right>") 'windmove-right)
-    (global-set-key (kbd "C-x v") #'split-window-right)
-    (global-set-key (kbd "C-x h") #'split-window-below))
+    (global-set-key (kbd "C-x v") #'my/split-window-right)
+    (global-set-key (kbd "C-x h") #'my/split-window-below))
 )
 (global-set-key (kbd "C-o") #'other-window)
 
@@ -444,7 +517,7 @@
 ;; Reload emacs config
 (global-set-key (kbd "C-c C-r") (lambda () (interactive) (load-file user-init-file)))
 ;; Edit emacs config
-(global-set-key (kbd "C-c C-e") (lambda () (interactive) (find-file user-init-file)))
+(global-set-key (kbd "C-c C-o") (lambda () (interactive) (find-file user-init-file)))
 
 ;; Org agenda
 (global-set-key (kbd "C-c a") 'org-agenda)
