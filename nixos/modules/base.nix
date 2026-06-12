@@ -117,7 +117,7 @@
     neovim
     nano
     helix
-    # emacs
+    emacs
     # emacsPackages.doom
 
     # Network

@@ -47,9 +47,9 @@
     usbutils               # Provide lsusb
 
     # Code
-    # emacs-gtk
+    emacs-gtk
     vscodium               # Editor
-    zed-editor
+    # zed-editor
   ];
 
   # Mount, trash, and other functionalities

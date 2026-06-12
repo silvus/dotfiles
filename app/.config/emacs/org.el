@@ -19,13 +19,13 @@
 
 ; Org mode on start-up
 ; (add-hook 'after-init-hook 'org-agenda-list)
- (setq initial-buffer-choice (lambda ()
- 	(if (file-directory-p "/data/doc")
- 	  ; at home
- 	  (org-agenda nil "e")
- 	  ; at work
- 	  (org-agenda nil "s"))
-   (get-buffer "*Org Agenda*")))
+ ; (setq initial-buffer-choice (lambda ()
+ ; 	(if (file-directory-p "/data/doc")
+ ; 	  ; at home
+ ; 	  (org-agenda nil "e")
+ ; 	  ; at work
+ ; 	  (org-agenda nil "s"))
+ ;   (get-buffer "*Org Agenda*")))
 
 
 (defun my/open-todo-on-right ()
@@ -60,7 +60,7 @@
 
 ;; Start in org folder
 ;; (setq default-directory "/data/doc")
-(setq default-directory org-directory)
+; (setq default-directory org-directory)
 
 ;; Open agenda in current window, not on a split
 (setq org-agenda-window-setup (quote current-window))
