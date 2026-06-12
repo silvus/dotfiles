@@ -77,7 +77,7 @@
             package = pkgs.arc-theme;
           };
           iconTheme = {
-            name = "Kora";
+            name = "kora";
             package = pkgs.numix-icon-theme;
           };
           cursorTheme = {
