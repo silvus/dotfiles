@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; straighte.el
 ;; -------------------------------------------------------------------------------
 (defvar bootstrap-version)
@@ -39,6 +41,8 @@
 (use-package vertico
   :ensure t
   :init
+  (setq vertico-resize t)
+  (setq vertico-count 22)
   (vertico-mode))
 
 ;; use the `orderless' completion style.
@@ -53,12 +57,26 @@
 (use-package marginalia
   :ensure t
   :init
-  :init
   (marginalia-mode))
 
-; (use-package consult
-;   :ensure t
-;   :bind (
+;; Project and find file management
+(use-package consult
+  :ensure t
+  :init
+  ;; Search everything except .git
+  (setq consult-ripgrep-args
+    "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --hidden --glob '!.git'")
+  ;; How to defined a root project? Default to .git, use Syncthing too
+  (setq project-vc-extra-root-markers '(".stfolder"))
+  ;; Always opens file selection after switching
+  (setq project-switch-commands 'project-find-file)
+  :bind (
+    ("C-p" . project-find-file) ;; Find file in current project
+    ("C-S-F" . consult-ripgrep)
+    ("C-S-p" . project-switch-project)
+    ("C-c f" . project-find-file)
+    ; TODO
+    ; M-x project-dired
 ;          ;; C-x bindings (ctl-x-map)
 ;          ; ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
 ;          ("C-c b" . consult-buffer)                ;; orig. switch-to-buffer
@@ -91,12 +109,13 @@
 ;          ; ("M-s m" . consult-multi-occur)
 ;          ; ("M-s k" . consult-keep-lines)
 ;          ; ("M-s u" . consult-focus-lines)))
-;   ))
+))
 
 ;; Markdown
 ;; -------------------------------------------------------------------------------
 (use-package markdown-mode
   :ensure t
+  :mode "\\.md\\'"  ;; Enable only for md files
   ;; :mode ("README\\.md\\'" . gfm-mode)
   ;; :init (setq markdown-command "multimarkdown")
   ;; :bind (:map markdown-mode-map
@@ -130,6 +149,10 @@
 
 ;; Show bell
 ; (setq visible-bell t)
+
+;; Minibuffer
+; (setq resize-mini-windows t)
+; (setq max-mini-window-height 0.25)
 
 ;; Cursor
 ;; (set-cursor-color "#ffffff")
@@ -223,8 +246,9 @@
 (delete-selection-mode t)
 (transient-mark-mode t)
 
-;; Use X clipboard
-(setq x-select-enable-clipboard t)
+;; Use X primary clipboard
+(setq select-enable-clipboard t)
+(setq select-enable-primary t)
 
 ; (require 'recentf)
 ; (recentf-mode 1)
@@ -234,6 +258,41 @@
 ;; Change default folder
 ;(setq default-directory (getenv "SILVUSPROJECT"))
 ;;(setq default-directory "/data/dev")
+
+;; Backup files (~ files)
+(defvar emacs-backup-dir
+  (expand-file-name "backup/" user-emacs-directory))
+(setq backup-directory-alist
+      `(("." . ,emacs-backup-dir)))
+(setq make-backup-files t
+      backup-by-copying t
+      version-control t
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2)
+
+;; Auto-save files (#file#)
+(defvar emacs-autosave-dir
+  (expand-file-name "autosave/" user-emacs-directory))
+(setq auto-save-file-name-transforms
+      `((".*" ,emacs-autosave-dir t)))
+(setq auto-save-list-file-prefix
+      (expand-file-name "saves-" emacs-autosave-dir))
+
+;; Lock files (. #file)
+(setq create-lockfiles nil)
+; (defvar emacs-lock-dir
+;   (expand-file-name "lock/" user-emacs-directory))
+; (unless (file-directory-p emacs-lock-dir)
+;   (make-directory emacs-lock-dir t))
+; (setq lock-file-name-transforms
+;       `((".*" ,emacs-lock-dir t)))
+
+;; Ensure directories exist
+(dolist (dir (list emacs-backup-dir emacs-autosave-dir emacs-lock-dir))
+(dolist (dir (list emacs-backup-dir emacs-autosave-dir))
+  (unless (file-directory-p dir)
+    (make-directory dir t)))
 
 ;; Enable backup files.
 (setq make-backup-files t)
@@ -261,26 +320,20 @@
 (which-key-setup-side-window-right-bottom)
 
 ;; project.el
-(defun my/project-files-no-hidden (project)
-  (seq-filter
-   (lambda (file)
-     (not (string-match-p "/\\." file)))  ;; exclude any path component starting with .
-   (project-files-filtered project)))
+;; (defun my/project-files-no-hidden (project)
+;;  (seq-filter
+;;   (lambda (file)
+;;     (not (string-match-p "/\\." file)))  ;; exclude any path component starting with .
+;;   (project-files-filtered project)))
 
 ;; Do not ask for project each time
-(setq project-current-inhibit-prompt t)
-
-;; Find file in current project
-;; (global-set-key (kbd "C-c f") 'project-find-file)
+;; (setq project-current-inhibit-prompt t)
 
 ;; Open dired in project root
 ;; (global-set-key (kbd "C-c e")
 ;;   (lambda () (interactive)
 ;;     (let ((proj (project-current)))
 ;;       (dired (if proj (project-root proj) default-directory)))))
-
-;; Buffer management
-(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 
 ;; Org-mode
@@ -292,9 +345,15 @@
 ;; -------------------------------------------------------------------------------
 ;; Use standard keybindings for copy, paste, cut
 (cua-mode 1)
+(with-eval-after-load 'cua-base
+  (define-key cua--cua-keys-keymap (kbd "M-v") nil)
+  (define-key cua--cua-keys-keymap (kbd "M-h") nil))
 
 ;; Getting PgDn to End of BufferDC
 (setq scroll-error-top-bottom t)
+
+;; Buffer management
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; (global-set-key (kbd "C-a") 'mark-whole-buffer)
 ;; (define-key org-mode-map (kbd "C-a") 'mark-whole-buffer)
@@ -338,22 +397,39 @@
 ;; (global-set-key (kbd "C-<left>") 'my/backward-word-stop-at-bol)
 ;; (global-set-key (kbd "C-S-<left>") 'my/backward-word-stop-at-bol)
 
-;; Splits navigation
+;; Close the pane if there are multiple panes; otherwise close the document
+(defun my/close ()
+  (interactive)
+  (if (one-window-p)
+      (if (buffer-file-name)
+          (kill-current-buffer)
+        (bury-buffer))
+    (delete-window)))
+
 (if (display-graphic-p)
     (progn
       ;; GUI bindings
-      (global-set-key (kbd "M-w") 'kill-buffer-and-window)
+      ; (global-set-key (kbd "M-w") 'kill-buffer-and-window)
+      ; (global-set-key (kbd "M-w") #'kill-current-buffer)
+      (global-set-key (kbd "M-w") #'my/close)
       (global-set-key (kbd "M-<up>") 'windmove-up)
       (global-set-key (kbd "M-<down>") 'windmove-down)
       (global-set-key (kbd "M-<left>") 'windmove-left)
-      (global-set-key (kbd "M-<right>") 'windmove-right))
+      (global-set-key (kbd "M-<right>") 'windmove-right)
+      (global-set-key (kbd "M-v") #'split-window-right)
+      (global-set-key (kbd "M-h") #'split-window-below))
   (progn
     ;; Terminal bindings
-    (global-set-key (kbd "C-x w") 'kill-buffer-and-window)
+    ; (global-set-key (kbd "C-x w") 'kill-buffer-and-window)
+    ; (global-set-key (kbd "C-x w") 'kill-current-buffer)
+    (global-set-key (kbd "C-x w") #'my/close)
     (global-set-key (kbd "C-x <up>") 'windmove-up)
     (global-set-key (kbd "C-x <down>") 'windmove-down)
     (global-set-key (kbd "C-x <left>") 'windmove-left)
-    (global-set-key (kbd "C-x <right>") 'windmove-right)))
+    (global-set-key (kbd "C-x <right>") 'windmove-right)
+    (global-set-key (kbd "C-x v") #'split-window-right)
+    (global-set-key (kbd "C-x h") #'split-window-below))
+)
 (global-set-key (kbd "C-o") #'other-window)
 
 ;; Open File
