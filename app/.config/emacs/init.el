@@ -59,57 +59,34 @@
   :init
   (marginalia-mode))
 
+;; Recent files
+(use-package recentf
+  :ensure t
+  :init
+  (recentf-mode 1)
+  :custom
+  (recentf-max-saved-items 50)
+  (recentf-auto-cleanup 'never))
+
 ;; Project and find file management
 (use-package consult
   :ensure t
   :init
   ;; Search everything except .git
   (setq consult-ripgrep-args
-    "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --hidden --glob '!.git'")
+	"rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --hidden --glob '!.git'")
   ;; How to defined a root project? Default to .git, use Syncthing too
   (setq project-vc-extra-root-markers '(".stfolder"))
   ;; Always opens file selection after switching
   (setq project-switch-commands 'project-find-file)
   :bind (
-    ("C-p" . project-find-file) ;; Find file in current project
-    ("C-S-F" . consult-ripgrep)
-    ("C-S-p" . project-switch-project)
-    ("C-c f" . project-find-file)
-    ; TODO
-    ; M-x project-dired
-;          ;; C-x bindings (ctl-x-map)
-;          ; ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-;          ("C-c b" . consult-buffer)                ;; orig. switch-to-buffer
-;          ; ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-;          ; ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-;          ;; Custom M-# bindings for fast register access
-;          ; ("M-#" . consult-register-load)
-;          ; ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-;          ; ("C-M-#" . consult-register)
-;          ;; Other custom bindings
-;          ; ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-;          ;; M-g bindings (goto-map)
-;          ; ("M-g e" . consult-compile-error)
-;          ; ("M-g f" . consult-flymake)
-;          ; ("M-g g" . consult-goto-line)             ;; orig. goto-line
-;          ; ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-;          ; ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-;          ; ("M-g m" . consult-mark)
-;          ; ("M-g k" . consult-global-mark)
-;          ; ("M-g i" . consult-imenu)
-;          ; ("M-g I" . consult-imenu-multi)
-;          ;; M-s bindings (search-map)
-;          ; ("M-s f" . consult-find)
-;          ; ("M-s F" . consult-locate)
-;          ; ("M-s g" . consult-grep)
-;          ; ("M-s G" . consult-git-grep)
-;          ; ("M-s r" . consult-ripgrep)
-;          ; ("M-s l" . consult-line)
-;          ; ("M-s L" . consult-line-multi)
-;          ; ("M-s m" . consult-multi-occur)
-;          ; ("M-s k" . consult-keep-lines)
-;          ; ("M-s u" . consult-focus-lines)))
-))
+	 ("C-p" . project-find-file) ;; Find file in current project
+	 ("C-S-F" . consult-ripgrep)  ;; Find string in current project
+	 ("C-S-p" . project-switch-project) ;; Change project
+	 ("C-e" . consult-recent-file) ;; List recent files
+	 ("C-b" . consult-buffer) ;; List buffers
+	 ("C-S-e" . dired) ;; List Files
+	 ))
 
 ;; Markdown
 ;; -------------------------------------------------------------------------------
@@ -119,16 +96,16 @@
   ;; :mode ("README\\.md\\'" . gfm-mode)
   ;; :init (setq markdown-command "multimarkdown")
   ;; :bind (:map markdown-mode-map
-        ;;  ("C-c C-e" . markdown-do)))
+  ;;  ("C-c C-e" . markdown-do)))
   )
 
 ;; Git Gutter
 ;; -------------------------------------------------------------------------------
 (use-package diff-hl
- :ensure t
- :config
- (global-diff-hl-mode 1)
- (diff-hl-flydiff-mode 1))
+  :ensure t
+  :config
+  (global-diff-hl-mode 1)
+  (diff-hl-flydiff-mode 1))
 
 ;; Undo tree
 ;; -------------------------------------------------------------------------------
@@ -177,10 +154,10 @@
   :config
   (setf (alist-get 'markdown-mode apheleia-mode-alist)
         'dprint)
-        (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
-(setf (alist-get 'rust-ts-mode apheleia-mode-alist) 'rustfmt)
-(setf (alist-get 'lua-mode apheleia-mode-alist) 'stylua)
-(setf (alist-get 'nix-mode apheleia-mode-alist) 'alejandra)
+  (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
+  (setf (alist-get 'rust-ts-mode apheleia-mode-alist) 'rustfmt)
+  (setf (alist-get 'lua-mode apheleia-mode-alist) 'stylua)
+  (setf (alist-get 'nix-mode apheleia-mode-alist) 'alejandra)
 
   (setf (alist-get 'dprint apheleia-formatters)
         '("dprint"
@@ -192,7 +169,7 @@
   (apheleia-global-mode +1))
 
 ;; Format on save
-; (add-hook 'before-save-hook #'apheleia-format-buffer)
+;; (add-hook 'before-save-hook #'apheleia-format-buffer)
 (dolist (hook '(python-ts-mode-hook
                 rust-ts-mode-hook
                 nix-mode-hook
@@ -206,19 +183,19 @@
 
 ;; Interface
 ;; -------------------------------------------------------------------------------
-; (menu-bar-mode -1)
+;; (menu-bar-mode -1)
 ;; Prevent the warning "Symbol's function definition is void" when running emacs in the console
 (if (display-graphic-p)
     (progn
       (tool-bar-mode -1)))
-      ;(scroll-bar-mode -1)))
+;; (scroll-bar-mode -1)))
 
 ;; Show bell
-; (setq visible-bell t)
+;; (setq visible-bell t)
 
 ;; Minibuffer
-; (setq resize-mini-windows t)
-; (setq max-mini-window-height 0.25)
+;; (setq resize-mini-windows t)
+;; (setq max-mini-window-height 0.25)
 
 ;; Cursor
 ;; (set-cursor-color "#ffffff")
@@ -280,10 +257,11 @@
 ;; Disable auto-recentering on scrolling
 (setq scroll-step 1)
 ;; Places lines between the current line and the screen edge
-(setq scroll-margin 20)
+;; (setq scroll-margin 20)
+(setq scroll-margin 80)
 
 ;; Save all current buffers to a "desktop" file
-; (desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
 ;; Splash screen
 (setq inhibit-splash-screen t
@@ -316,13 +294,8 @@
 (setq select-enable-clipboard t)
 (setq select-enable-primary t)
 
-; (require 'recentf)
-; (recentf-mode 1)
-; (setq recentf-max-menu-items 25)
-;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
-
 ;; Change default folder
-;(setq default-directory (getenv "SILVUSPROJECT"))
+;; (setq default-directory (getenv "SILVUSPROJECT"))
 ;;(setq default-directory "/data/dev")
 
 ;; Backup files (~ files)
@@ -347,36 +320,18 @@
 
 ;; Lock files (. #file)
 (setq create-lockfiles nil)
-; (defvar emacs-lock-dir
-;   (expand-file-name "lock/" user-emacs-directory))
-; (unless (file-directory-p emacs-lock-dir)
-;   (make-directory emacs-lock-dir t))
-; (setq lock-file-name-transforms
-;       `((".*" ,emacs-lock-dir t)))
+;; (defvar emacs-lock-dir
+;;   (expand-file-name "lock/" user-emacs-directory))
+;; (unless (file-directory-p emacs-lock-dir)
+;;   (make-directory emacs-lock-dir t))
+;; (setq lock-file-name-transforms
+;;       `((".*" ,emacs-lock-dir t)))
 
 ;; Ensure directories exist
-; (dolist (dir (list emacs-backup-dir emacs-autosave-dir emacs-lock-dir)))
+;; (dolist (dir (list emacs-backup-dir emacs-autosave-dir emacs-lock-dir)))
 (dolist (dir (list emacs-backup-dir emacs-autosave-dir))
   (unless (file-directory-p dir)
     (make-directory dir t)))
-
-;; Enable backup files.
-(setq make-backup-files t)
-;; Copy all files, don't rename them.
-(setq backup-by-copying t)
-;; Versioning backup file
-(setq delete-old-versions t ;; Don't ask to delete excess backup versions.
-  kept-new-versions 6 ;; Number of newest versions to keep.
-  kept-old-versions 2 ;; Number of oldest versions to keep.
-  version-control t) ;; Use version numbers for backups.
-;; Backup / autosave directories
-(defvar backup-dir (expand-file-name "~/.config/emacs/backup/"))
-(defvar autosave-dir (expand-file-name "~/.config/emacs/autosave/"))
-(setq backup-directory-alist (list (cons ".*" backup-dir)))
-(setq auto-save-list-file-prefix autosave-dir)
-(setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
-;; (setq backup-directory-alist `((".*" . "~/.emacs.d/backup")))
-;; (setq auto-save-file-name-transforms `((".*" "~/.emacs.d/autosave" t)))
 
 ;; Scratch mode
 ;; (setq initial-major-mode 'python-mode)
@@ -421,10 +376,10 @@
 ;; Buffer management
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-;; (global-set-key (kbd "C-a") 'mark-whole-buffer)
+(global-set-key (kbd "C-a") 'mark-whole-buffer)
 ;; (define-key org-mode-map (kbd "C-a") 'mark-whole-buffer)
 (global-set-key (kbd "C-s") 'save-buffer)
-;; ;(global-set-key (kbd "C-e") 'buffer-menu)
+;; (global-set-key (kbd "C-e") 'buffer-menu)
 
 ;; (global-set-key (kbd "C-o") 'find-file)
 ;; (global-set-key (kbd "M-o") 'recentf-open-files)
@@ -435,16 +390,20 @@
 
 ;; Delete line
 (global-set-key (kbd "C-d")
-  (lambda () (interactive)
-    (if (use-region-p)
-        (delete-region (region-beginning) (region-end))
-      (kill-whole-line))))
-
+		(lambda ()
+		  (interactive)
+		  (if (use-region-p)
+		      (delete-region (region-beginning) (region-end))
+		    (delete-region
+		     (line-beginning-position)
+		     (min (point-max)
+			  (line-beginning-position 2))))))
+;; Comment line
 (global-set-key (kbd "C-/")
-  (lambda () (interactive)
-    (if (use-region-p)
-        (comment-or-uncomment-region (region-beginning) (region-end))
-      (comment-or-uncomment-region (line-beginning-position) (line-end-position)))))
+		(lambda () (interactive)
+		  (if (use-region-p)
+		      (comment-or-uncomment-region (region-beginning) (region-end))
+		    (comment-or-uncomment-region (line-beginning-position) (line-end-position)))))
 
 ;; (global-set-key (kbd "C-z") 'undo)
 ;; (global-set-key (kbd "C-y") 'redo)
@@ -482,8 +441,8 @@
 (if (display-graphic-p)
     (progn
       ;; GUI bindings
-      ; (global-set-key (kbd "M-w") 'kill-buffer-and-window)
-      ; (global-set-key (kbd "M-w") #'kill-current-buffer)
+      ;; (global-set-key (kbd "M-w") 'kill-buffer-and-window)
+      ;; (global-set-key (kbd "M-w") #'kill-current-buffer)
       (global-set-key (kbd "M-w") #'my/close)
       (global-set-key (kbd "M-<up>") 'windmove-up)
       (global-set-key (kbd "M-<down>") 'windmove-down)
@@ -493,8 +452,8 @@
       (global-set-key (kbd "M-h") #'my/split-window-below))
   (progn
     ;; Terminal bindings
-    ; (global-set-key (kbd "C-x w") 'kill-buffer-and-window)
-    ; (global-set-key (kbd "C-x w") 'kill-current-buffer)
+    ;; (global-set-key (kbd "C-x w") 'kill-buffer-and-window)
+    ;; (global-set-key (kbd "C-x w") 'kill-current-buffer)
     (global-set-key (kbd "C-x w") #'my/close)
     (global-set-key (kbd "C-x <up>") 'windmove-up)
     (global-set-key (kbd "C-x <down>") 'windmove-down)
@@ -502,17 +461,14 @@
     (global-set-key (kbd "C-x <right>") 'windmove-right)
     (global-set-key (kbd "C-x v") #'my/split-window-right)
     (global-set-key (kbd "C-x h") #'my/split-window-below))
-)
+  )
 (global-set-key (kbd "C-o") #'other-window)
-
-;; Open File
-;; (global-set-key (kbd "C-x f") 'helm-find-files)
 
 ;; One escape to quit
 (global-set-key (kbd "<escape>") 'keyboard-quit)
 (define-key minibuffer-local-map (kbd "<escape>") 'minibuffer-keyboard-quit)
-; (global-set-key (kbd "<escape>") 'keyboard-quit)
-; (define-key org-mode-map (kbd "<escape>") 'keyboard-quit)
+;; (global-set-key (kbd "<escape>") 'keyboard-quit)
+;; (define-key org-mode-map (kbd "<escape>") 'keyboard-quit)
 
 ;; Reload emacs config
 (global-set-key (kbd "C-c C-r") (lambda () (interactive) (load-file user-init-file)))
@@ -529,6 +485,6 @@
 ;; (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 ;; (global-set-key (kbd "ESC")      'keyboard-escape-quit)
 ;; (global-set-key [escape] 'keyboard-escape-quit)         ;; everywhere else
-; Map escape to cancel (like C-g)...
+					; Map escape to cancel (like C-g)...
 ;; (define-key isearch-mode-map [escape] 'isearch-abort)   ;; isearch
 ;; (define-key isearch-mode-map "\e" 'isearch-abort)   ;; \e seems to work better for terminals
