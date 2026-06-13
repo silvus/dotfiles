@@ -26,18 +26,7 @@
 
 ;; Fuzzy find selector
 ;; -------------------------------------------------------------------------------
-;; Fuzzy find all
-;; (use-package helm
-;;   :ensure t
-;;   :straight t
-;;  )
-
-;; ;; Handle project, do not change default directory for each file opened
-;; (use-package projectile
-;;   :ensure t
-;;   :init (projectile-mode))
-
-;; smart framework for minibuffer
+;; Smart framework for minibuffer
 (use-package vertico
   :ensure t
   :init
@@ -45,7 +34,7 @@
   (setq vertico-count 22)
   (vertico-mode))
 
-;; use the `orderless' completion style.
+;; Use the `orderless' completion style
 (use-package orderless
   :ensure t
   :init
@@ -79,12 +68,14 @@
   (setq project-vc-extra-root-markers '(".stfolder"))
   ;; Always opens file selection after switching
   (setq project-switch-commands 'project-find-file)
+  ;; Disable preview to select file with just one enter
+  ;; (setq consult-preview-key nil)
   :bind (
 	 ("C-p" . project-find-file) ;; Find file in current project
 	 ("C-S-F" . consult-ripgrep)  ;; Find string in current project
 	 ("C-S-p" . project-switch-project) ;; Change project
-	 ("C-e" . consult-recent-file) ;; List recent files
-	 ("C-b" . consult-buffer) ;; List buffers
+	 ("C-S-o" . consult-recent-file) ;; List recent files
+	 ("C-e" . consult-buffer) ;; List buffers
 	 ("C-S-e" . dired) ;; List Files
 	 ))
 
@@ -180,6 +171,10 @@
               (add-hook 'before-save-hook
                         #'apheleia-format-buffer
                         nil t))))
+
+;; Rust
+(use-package rust-mode
+  :mode "\\.rs\\'")
 
 ;; Interface
 ;; -------------------------------------------------------------------------------
