@@ -154,7 +154,7 @@
         '("dprint"
           "fmt"
           "--stdin"
-          "--stdin-file-path"
+          ;; "--stdin-file-path"
           filepath))
 
   (apheleia-global-mode +1))
