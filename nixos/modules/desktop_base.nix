@@ -123,6 +123,8 @@
   fonts = {
     packages = with pkgs; [
       dejavu_fonts
+      libertinus # For Typst
+      # source-serif # For Typst
       noto-fonts
       noto-fonts-color-emoji
       font-awesome

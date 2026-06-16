@@ -14,5 +14,7 @@
     cheese                 # Webcam testing
     mediaelch              # TVshow manager
     translate-shell        # Command-line translator
+
+    typst
   ];
 }
