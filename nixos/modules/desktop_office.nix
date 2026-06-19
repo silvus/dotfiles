@@ -16,5 +16,6 @@
     translate-shell        # Command-line translator
 
     typst
+    typstyle
   ];
 }

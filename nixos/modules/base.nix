@@ -164,6 +164,7 @@
     # pinentry-curses
     # openssh
     # libfido2
+    borgbackup
 
     # System information
     ncdu
