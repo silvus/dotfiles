@@ -2,6 +2,10 @@
 
 ;; straight.el
 ;; -------------------------------------------------------------------------------
+;; To update:
+;; M-x straight-pull-all
+;; M-x straight-rebuild-all
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -41,6 +45,11 @@
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
+
+;; Fuzzy match
+(use-package hotfuzz
+  :init
+  (setq completion-styles '(hotfuzz orderless basic)))
 
 ;; Rich annotations in the minibuffer (docstrings, file sizes, etc.)
 (use-package marginalia
@@ -89,6 +98,17 @@
   ;; :bind (:map markdown-mode-map
   ;;  ("C-c C-e" . markdown-do)))
   )
+
+;; (use-package markdown-ts-mode
+;; :mode ("\\.md\\'" . markdown-ts-mode)
+;; :defer 't
+;; :config
+;; (add-to-list 'treesit-language-source-alist '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src"))
+;; (add-to-list 'treesit-language-source-alist '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src")))
+
+;;  Typst
+(use-package typst-ts-mode
+  :mode ("\\.typ\\'" . typst-ts-mode))
 
 ;; Git Gutter
 ;; -------------------------------------------------------------------------------
@@ -140,11 +160,16 @@
         (sh-mode . bash-ts-mode)
         (json-mode . json-ts-mode)))
 
+(use-package treesit-auto
+  :config
+  (setq treesit-auto-install 'prompt)
+  (global-treesit-auto-mode))
+
 ;; Formatter
 (use-package apheleia
   :config
-  (setf (alist-get 'markdown-mode apheleia-mode-alist)
-        'dprint)
+  (setf (alist-get 'markdown-mode apheleia-mode-alist) 'dprint)
+  (setf (alist-get 'typst-ts-mode apheleia-mode-alist) 'typstyle)
   (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
   (setf (alist-get 'rust-ts-mode apheleia-mode-alist) 'rustfmt)
   (setf (alist-get 'lua-mode apheleia-mode-alist) 'stylua)
@@ -156,8 +181,24 @@
           "--stdin"
           ;; "--stdin-file-path"
           filepath))
+  (setf (alist-get 'typstyle apheleia-formatters)
+        '("typstyle"
+	  filepath))
 
   (apheleia-global-mode +1))
+
+;; Lisp Formatter
+;; (use-package elisp-autofmt
+;;   :commands (elisp-autofmt-mode elisp-autofmt-buffer)
+;;   :hook (emacs-lisp-mode . elisp-autofmt-mode)
+;;   :config
+;;   (with-eval-after-load 'elisp-autofmt
+;;     (add-to-list 'elisp-autofmt-load-packages 'use-package-core))
+;;   (add-hook 'emacs-lisp-mode-hook
+;;             (lambda ()
+;;               (add-hook 'before-save-hook
+;; 			#'elisp-autofmt-buffer
+;; 			nil t))))
 
 ;; Format on save
 ;; (add-hook 'before-save-hook #'apheleia-format-buffer)
@@ -165,12 +206,14 @@
                 rust-ts-mode-hook
                 nix-mode-hook
                 lua-mode-hook
-                markdown-mode-hook))
+                markdown-mode-hook
+		typst-ts-mode))
   (add-hook hook
             (lambda ()
-              (add-hook 'before-save-hook
+	      (add-hook 'before-save-hook
                         #'apheleia-format-buffer
                         nil t))))
+
 
 ;; Rust
 (use-package rust-mode
@@ -193,10 +236,9 @@
 ;; (setq max-mini-window-height 0.25)
 
 ;; Cursor
-;; (set-cursor-color "#ffffff")
-(setq-default cursor-type 'bar)
-(add-to-list 'default-frame-alist '(cursor-type . bar))
-(modify-all-frames-parameters '((cursor-type . bar)))
+(setq-default cursor-type 'box)
+(add-to-list 'default-frame-alist '(cursor-type . box))
+(modify-all-frames-parameters '((cursor-type . box)))
 
 ;; Auto show completions for execute-extended-command
 ;; (icomplete-mode 1)
@@ -233,6 +275,11 @@
 ;;  ;; If there is more than one, they won't work right.
 ;;  '(default ((t (:background "#121212"))))
 ;;  '(cursor ((t (:background "white")))))
+(set-face-attribute 'show-paren-match nil
+                    :background "#5f8059"
+                    :foreground "#ffffff"
+                    :weight 'bold)
+(set-cursor-color "#ffffff")
 
 ;; Selected text
 (set-face-attribute 'region nil :background "#3a5f8a")
@@ -252,11 +299,40 @@
 ;; Disable auto-recentering on scrolling
 (setq scroll-step 1)
 ;; Places lines between the current line and the screen edge
-;; (setq scroll-margin 20)
 (setq scroll-margin 80)
+;; (setq maximum-scroll-margin 800)
+;; (setq scroll-conservatively 800)
 
-;; Save all current buffers to a "desktop" file
-;; (desktop-save-mode 1)
+;; Restore the previous Emacs session on startup. Reopens files, windows, and many buffer states.
+(desktop-save-mode 1)
+;; Store desktop/session files in the Emacs configuration directory.
+(setq desktop-path (list user-emacs-directory))
+
+;; Save the desktop/session state every xx seconds.
+(setq desktop-auto-save-timeout 10)
+
+;; What Emacs does when it finds a desktop lock file ? Loads the desktop file without asking
+;; (setq desktop-load-locked-desktop t)
+;; checks whether the PID stored in the lock file is still running
+(setq desktop-load-locked-desktop 'check-pid)
+
+;; Track recently opened files.
+(recentf-mode 1)
+
+;; Save positions in files between sessions
+(require 'saveplace)
+(setq-default save-place t)
+;; Remember cursor position in files between sessions.
+(save-place-mode 1)
+
+;; Remember minibuffer history
+(savehist-mode 1)
+
+;; Automatically save modified files to disk.
+;; (auto-save-visited-mode 1)
+
+;; Save modified files every 5 seconds when they change.
+;; (setq auto-save-visited-interval 5)
 
 ;; Splash screen
 (setq inhibit-splash-screen t
@@ -265,10 +341,6 @@
 ;; See matching pairs of parentheses
 (setq show-paren-delay 0)
 (show-paren-mode 1)
-
-;; Save positions in files between sessions
-(require 'saveplace)
-(setq-default save-place t)
 
 ;; yes or no becomes y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
