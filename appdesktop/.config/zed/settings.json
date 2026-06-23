@@ -7,6 +7,15 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "edit_predictions": {
+    "allow_data_collection": "no"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "base_keymap": "VSCode",
   "vertical_scroll_margin": 15.0,
   "minimap": {
@@ -72,12 +81,12 @@
   // Titlebar related settings
   "title_bar": {
     // Whether to show the branch icon beside branch switcher in the titlebar.
-    "show_branch_icon": true,
     // Whether to show the branch name button in the titlebar.
     // "show_branch_name": true,
     // Whether to show the project host and name in the titlebar.
     // "show_project_items": true,
     // Whether to show onboarding banners in the titlebar.
+    "show_branch_status_icon": true,
     "show_onboarding_banner": false
     // Whether to show user picture in the titlebar.
     // "show_user_picture": true,
@@ -104,10 +113,12 @@
   "use_smartcase_search": true,
   "project_panel": {
     // Spacing between worktree entries in the project panel. Can be 'comfortable' or 'standard'.
+    "dock": "left",
     "entry_spacing": "standard"
   },
   "collaboration_panel": {
     // Whether to show the collaboration panel button in the status bar.
+    "dock": "left",
     "button": false
   },
   "agent": {
@@ -137,9 +148,20 @@
     //     }
     //   }
     // },
+    "favorite_models": [
+      {
+        "provider": "anthropic",
+        "model": "claude-sonnet-4-6",
+        "enable_thinking": true,
+        "effort": "high"
+      }
+    ],
+    "dock": "right",
     "default_profile": "write",
     "default_model": {
-      "provider": "zed.dev",
+      "effort": "high",
+      "enable_thinking": true,
+      "provider": "anthropic",
       "model": "claude-sonnet-4-6"
     },
     "enable_feedback": false,
@@ -149,11 +171,11 @@
     // "primary_screen" - Show the notification only on your primary screen (default)
     // "all_screens" - Show these notifications on all screens
     // "never" - Never show these notifications
-    "notify_when_agent_waiting": "never",
+    "notify_when_agent_waiting": "primary_screen",
     // Default: false
-    "play_sound_when_agent_done": true,
+    "play_sound_when_agent_done": "always",
     // When enabled, the agent can run potentially destructive actions without asking for your confirmation.
-    "always_allow_tool_actions": false
+    
   },
   // Whether the screen sharing icon is shown in the os status bar.
   "show_call_status_icon": false,
