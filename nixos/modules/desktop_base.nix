@@ -12,7 +12,7 @@
     # rxvt-unicode         # Terminal emulator
     ghostty                # Terminal emulator
 
-    thunar            # File manager
+    thunar                 # File manager
     thunar-volman
     thunar-archive-plugin
     thunar-media-tags-plugin
@@ -21,16 +21,16 @@
 
     # Media and sound
     mpv                    # Media player
-    unstable.yt-dlp                 # Media downloader
-    unstable.spotdl                 # Music downloader
+    unstable.yt-dlp        # Media downloader
+    unstable.spotdl        # Music downloader
     alsa-utils             # Sound utility
     pulseaudio             # Sound server
     pavucontrol            # Volume mixer GUI
     playerctl              # MPRIS control interface
     moc                    # Music player
-    # termusic               # Music player
+    # termusic             # Music player
     monolith               # Website archiver
-    eom               # Image viewer
+    eom                    # Image viewer
 
     # System utilities
     bc
@@ -39,7 +39,7 @@
     gparted                # Partition manager
     gnome-disk-utility     # Disk management
     file-roller            # Archive manager
-    # dconf-editor           # GTK configuration editor
+    # dconf-editor         # GTK configuration editor
     libnotify              # Notifications
     ksnip                  # Screenshots
     lxappearance           # GTK theme switcher GUI
@@ -47,9 +47,9 @@
     usbutils               # Provide lsusb
 
     # Code
-    emacs-gtk
+    # emacs-gtk
     vscodium               # Editor
-    # zed-editor
+    zed-editor
   ];
 
   # Mount, trash, and other functionalities
