@@ -44,6 +44,11 @@
     rustfmt
     # rustup
 
+    # Golang
+    go
+    # Golang LSP
+    gopls
+
     # nix lsp
     nil
     # nix formatter
