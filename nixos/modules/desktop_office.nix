@@ -8,7 +8,7 @@
     libreoffice            # Office suite
     simple-scan            # Document scanner
     gimp                   # Painting
-    drawio                 # Diagrams
+    # drawio                 # Diagrams
     alarm-clock-applet     # Alarm and timer
     zathura                # PDF
     cheese                 # Webcam testing
