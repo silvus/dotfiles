@@ -23,3 +23,8 @@ formatter = { command = "dprint", args = ["fmt", "--stdin", "md"] }
 #   "never",
 # ]}
 auto-format = true
+
+[[language]]
+name = "typst"
+auto-format = true
+formatter = { command = "typstyle" }
