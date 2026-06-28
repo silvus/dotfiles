@@ -4,7 +4,7 @@
   environment.systemPackages = with pkgs; [
     # Office
     thunderbird            # Mail and calendar
-    signal-desktop         # Communication
+    # signal-desktop         # Communication
     libreoffice            # Office suite
     simple-scan            # Document scanner
     gimp                   # Painting

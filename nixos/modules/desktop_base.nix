@@ -49,7 +49,9 @@
     # Code
     # emacs-gtk
     vscodium               # Editor
-    zed-editor
+    # zed-editor
+
+    # obsidian               # PKM
   ];
 
   # Mount, trash, and other functionalities
