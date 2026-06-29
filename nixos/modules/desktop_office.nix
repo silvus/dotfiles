@@ -12,7 +12,7 @@
     alarm-clock-applet     # Alarm and timer
     zathura                # PDF
     cheese                 # Webcam testing
-    mediaelch              # TVshow manager
+    # mediaelch              # TVshow manager
     translate-shell        # Command-line translator
 
     typst
