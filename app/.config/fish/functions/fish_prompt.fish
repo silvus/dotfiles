@@ -81,6 +81,9 @@ function fish_prompt --description 'Write out the left prompt'
     if not set -q __fish_color_yellow
         set -g __fish_color_yellow (set_color yellow)
     end
+    if not set -q __fish_color_magenta
+        set -g __fish_color_magenta (set_color magenta)
+    end
 
     # Switch user color if root
     if not set -q __fish_prompt_color_username
@@ -97,12 +100,14 @@ function fish_prompt --description 'Write out the left prompt'
         set -g __fish_prompt_hostname (hostname|cut -d . -f 1)
     end
 
-    # Switch hostname color on ssh
+    # Switch hostname color on ssh / VM / container
     if not set -q __fish_color_hostname
         if begin
                 test -n "$SSH_CLIENT"; or test -n "$SSH_TTY"
             end
             set -g __fish_color_hostname $__fish_color_red
+        else if command -sq systemd-detect-virt; and test (systemd-detect-virt) != none
+            set -g __fish_color_hostname $__fish_color_magenta
         else
             set -g __fish_color_hostname $__fish_color_blue
         end
