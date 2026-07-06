@@ -132,6 +132,7 @@
     # Basic utilities
     coreutils  # Provides date command
     clang # Compiler
+    gnumake # Makefiles
     which
     most
     file
