@@ -3,7 +3,6 @@
 {
   environment.systemPackages = with pkgs; [
     # Core development tools
-    gnumake
     cmake
     pkg-config
     gcc
@@ -30,7 +29,8 @@
     # lua formatter
     stylua
 
-    python3
+    # Python already in base
+    # python3
     # python lsp
     ty
     ruff
