@@ -3,6 +3,9 @@
 {
   # System packages — core userland tools and desktop utilities
   environment.systemPackages = with pkgs; [
+    nfs-utils
+    borgbackup
+
     # Core user applications
     firefox                # Web browser
     firefox-devedition
@@ -52,6 +55,7 @@
     # zed-editor
 
     # obsidian               # PKM
+    # micro-full
   ];
 
   # Mount, trash, and other functionalities

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   # Base system configuration shared by all hosts
@@ -114,17 +114,16 @@
   environment.systemPackages = with pkgs; [
     # Editor
     vim
-    neovim
-    nano
+    # neovim
     helix
-    emacs
+    # nano
+    # emacs
     # emacsPackages.doom
 
     # Network
     wget
     curl
     mosh
-    nfs-utils
 
     # Shell and terminal tools
     fish
@@ -164,14 +163,12 @@
     # pinentry-curses
     # openssh
     # libfido2
-    borgbackup
 
     # System information
     ncdu
     dfc
     htop
     btop
-
   ];
 
   # Enable essential programs
@@ -185,7 +182,7 @@
     # Opens UDP ports 60000 ... 61000
     mosh.enable = true;
   };
-  environment.variables.EDITOR = "vim";
+  environment.variables.EDITOR = lib.mkForce "hx";
 
   # Set default shell
   environment.shells = with pkgs; [ fish bash ];

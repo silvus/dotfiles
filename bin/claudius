@@ -1,0 +1,450 @@
+#!/usr/bin/env python3
+
+"""
+Mount a project into the claudius Incus container and launch claude.
+Creates the Incus VM and provisions it via nixos-rebuild if it doesn't exist yet.
+"""
+
+import os
+import sys
+import time
+import shlex
+import logging
+import argparse
+import subprocess
+
+
+__author__ = "Silvus"
+__version__ = "2026.07"
+
+# Paths
+PATH_SCRIPT = os.path.basename(__file__)
+
+# Logs
+logging.basicConfig(
+    stream=sys.stdout, level=logging.INFO, format="[%(levelname)s] %(message)s"
+)
+log = logging.getLogger(PATH_SCRIPT)
+
+DEBUG = False
+
+# Config
+CONTAINER = "claudius"
+IMAGE = "images:nixos/26.05"
+RUN_USER = "silvus"
+DOTFILES_PATH = "/home/silvus/.dotfiles"
+BOOT_TIMEOUT_S = 60
+BOOT_POLL_INTERVAL_S = 2
+PATH_TIMEOUT_S = 20
+PATH_POLL_INTERVAL_S = 1
+# Only instance-local devices show up in `incus config device list`;
+# root/eth0 are profile-inherited and never appear here.
+DEVICES_KEEP = ["dotfiles"]
+
+
+def run(cmd, **kwargs):
+    """
+    Run a command, logging it first.
+
+    Wraps subprocess.run for commands whose failure should abort the script
+    (container creation, provisioning, device mutation, launching claude).
+    Raises subprocess.CalledProcessError on non-zero exit unless the caller
+    passes check=False explicitly.
+
+    :param cmd: Command and arguments as a list of strings.
+    :param kwargs: Extra keyword arguments forwarded to subprocess.run.
+    :return: The completed subprocess.CompletedProcess instance.
+    """
+    log.debug("+ %s", " ".join(cmd))
+    kwargs.setdefault("check", True)
+    return subprocess.run(cmd, **kwargs)
+
+
+def exec_login(remote_cmd, **kwargs):
+    """
+    Run a command inside the container through a root login shell, so
+    NixOS's full PATH (via /etc/set-environment) is sourced first.
+
+    A bare `incus exec` doesn't source NixOS's profile setup, which is
+    where coreutils and other system tools get added to PATH. Anything
+    that shells out internally (nixos-rebuild, or even `test` itself)
+    can fail with FileNotFoundError without this.
+
+    :param remote_cmd: Command and arguments as a list of strings, same
+        convention as run(). Joined and shell-quoted internally since
+        `bash -lc` requires a single command string.
+    :param kwargs: Extra keyword arguments forwarded to subprocess/run.
+    :return: The completed process (subprocess.run or run(), matching kwargs).
+    """
+    shell_cmd = " ".join(shlex.quote(part) for part in remote_cmd)
+    cmd = ["incus", "exec", CONTAINER, "--", "bash", "-lc", shell_cmd]
+    if kwargs.pop("check", None) is False:
+        return subprocess.run(cmd, **kwargs)
+    return run(cmd, **kwargs)
+
+
+def exec_login_as(username, remote_cmd, **kwargs):
+    """
+    Run a command inside the container as a given user, through a login
+    shell (su -), so HOME/SHELL/USER/PATH are set up the way that user's
+    actual login environment would set them.
+
+    Needed for anything that relies on `~` resolving to the target
+    user's home rather than root's (e.g. the dotfiles installer, which
+    symlinks into os.path.expanduser("~")).
+
+    :param username: User to run the command as.
+    :param remote_cmd: Command and arguments as a list of strings, same
+        convention as run(). Joined and shell-quoted internally since
+        `su -c` requires a single command string.
+    :param kwargs: Extra keyword arguments forwarded to subprocess/run.
+    :return: The completed process (subprocess.run or run(), matching kwargs).
+    """
+    shell_cmd = " ".join(shlex.quote(part) for part in remote_cmd)
+    cmd = ["incus", "exec", CONTAINER, "--", "su", "-", username, "-c", shell_cmd]
+    if kwargs.pop("check", None) is False:
+        return subprocess.run(cmd, **kwargs)
+    return run(cmd, **kwargs)
+
+
+def container_exists():
+    """
+    Check whether the claudius container/VM has been created.
+
+    :return: True if `incus info` succeeds for CONTAINER, False otherwise.
+    """
+    result = subprocess.run(
+        ["incus", "info", CONTAINER],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    return result.returncode == 0
+
+
+def container_is_running():
+    """
+    Check whether the claudius container/VM is currently running.
+
+    :return: True if Incus reports its status as RUNNING, False otherwise.
+    """
+    result = subprocess.run(
+        ["incus", "list", CONTAINER, "--format", "csv", "-c", "s"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    return result.stdout.strip() == "RUNNING"
+
+
+def list_devices():
+    """
+    List instance-local device names configured on the container.
+
+    Note: this only returns devices added directly to the instance (e.g. via
+    `incus config device add`), not devices inherited from a profile.
+
+    :return: List of device name strings.
+    """
+    result = subprocess.run(
+        ["incus", "config", "device", "list", CONTAINER],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def device_exists(device_name):
+    """
+    Check whether a given device is already configured on the container.
+
+    :param device_name: Name of the device to look for.
+    :return: True if the device is present, False otherwise.
+    """
+    result = subprocess.run(
+        ["incus", "config", "device", "show", CONTAINER],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    return any(line.strip() == f"{device_name}:" for line in result.stdout.splitlines())
+
+
+def remove_device(device_name):
+    """
+    Remove a device from the container.
+
+    :param device_name: Name of the device to remove.
+    """
+    run(["incus", "config", "device", "remove", CONTAINER, device_name])
+
+
+def cleanup_devices():
+    """
+    Remove all instance-local devices except those in DEVICES_KEEP.
+
+    Intended as an opt-in step (via --cleanup) to tidy up mounts left behind
+    by previous project sessions, without touching protected devices such as
+    the shared dotfiles mount.
+    """
+    to_remove = [d for d in list_devices() if d not in DEVICES_KEEP]
+    if not to_remove:
+        return
+    log.info("Removing devices: %s", ", ".join(to_remove))
+    for dev in to_remove:
+        remove_device(dev)
+
+
+def add_disk_device(device_name, path):
+    """
+    Add a shifted disk device mounting a host path into the container
+    at the same path.
+
+    :param device_name: Name to register the device under.
+    :param path: Host path to bind-mount; also used as the guest path.
+    """
+    log.info("Mounting %s into %s...", path, CONTAINER)
+    run(
+        [
+            "incus",
+            "config",
+            "device",
+            "add",
+            CONTAINER,
+            device_name,
+            "disk",
+            f"source={path}",
+            f"path={path}",
+            "shift=true",
+        ]
+    )
+
+
+def wait_for_boot():
+    log.info("Waiting for %s to boot...", CONTAINER)
+    deadline = time.time() + BOOT_TIMEOUT_S
+    while time.time() < deadline:
+        result = exec_login(
+            ["true"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False
+        )
+        if result.returncode == 0:
+            return
+        time.sleep(BOOT_POLL_INTERVAL_S)
+    log.error("%s did not become ready in time", CONTAINER)
+    sys.exit(1)
+
+
+def wait_for_path(path, timeout_s=PATH_TIMEOUT_S, poll_interval_s=PATH_POLL_INTERVAL_S):
+    log.info("Waiting for %s to appear inside %s...", path, CONTAINER)
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        result = exec_login(
+            ["test", "-e", path],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        if result.returncode == 0:
+            return
+        time.sleep(poll_interval_s)
+    log.error("%s did not appear inside %s in time", path, CONTAINER)
+    sys.exit(1)
+
+
+def launch_and_provision():
+    """
+    Create the claudius VM from IMAGE and provision it end to end.
+
+    Steps: launch the VM, wait for boot, mount the dotfiles share, wait
+    for the mount to actually appear inside the guest, run
+    `nixos-rebuild switch` against the claudius flake output, and set a
+    password for RUN_USER (needed for `su -` later).
+    """
+    log.info("Launching %s from %s...", CONTAINER, IMAGE)
+    run(
+        [
+            "incus",
+            "launch",
+            IMAGE,
+            CONTAINER,
+            "--vm",
+            "-c",
+            "boot.autostart=false",
+            "-c",
+            "security.secureboot=false",
+            "-c",
+            "limits.memory=3GiB",
+        ]
+    )
+
+    wait_for_boot()
+
+    if not device_exists("dotfiles"):
+        add_disk_device("dotfiles", DOTFILES_PATH)
+        wait_for_path(DOTFILES_PATH)
+
+    log.info("Running nixos-rebuild switch...")
+    exec_login(
+        [
+            "nixos-rebuild",
+            "switch",
+            "--flake",
+            f"path:{DOTFILES_PATH}#{CONTAINER}",
+            "--sudo",
+        ]
+    )
+
+    log.info(
+        "Set a password for %s inside the container (needed for su - %s):",
+        RUN_USER,
+        RUN_USER,
+    )
+    exec_login(["passwd", RUN_USER])
+
+    log.info("Install dotfiles")
+    exec_login_as(RUN_USER, [f"{DOTFILES_PATH}/bin/dotfiles"])
+
+
+def ensure_container_ready():
+    """
+    Make sure claudius exists and is running, creating/provisioning it
+    from scratch if needed, or starting it if it exists but is stopped.
+    """
+    if container_exists():
+        if not container_is_running():
+            log.info("%s exists but is stopped — starting it.", CONTAINER)
+            run(["incus", "start", CONTAINER])
+            wait_for_boot()
+    else:
+        launch_and_provision()
+
+
+def mount_current_project():
+    """
+    Ensure the current working directory is mounted into the container.
+
+    Derives a device name from the directory's basename (stripping a
+    leading dot, e.g. .dotfiles -> dotfiles), and mounts it at the same
+    path inside the container if not already present.
+
+    :return: The current working directory path (also the guest path).
+    """
+    path = os.getcwd()
+    device_name = os.path.basename(path).lstrip(".")
+
+    if not device_name:
+        log.error("Could not derive a device name from the current directory: %s", path)
+        sys.exit(1)
+
+    if not device_exists(device_name):
+        add_disk_device(device_name, path)
+        wait_for_path(path)
+
+    return path
+
+
+def launch_claude(path):
+    """
+    Launch `claude` inside the container as RUN_USER, in the given path.
+
+    Uses `su - RUN_USER` to get a proper login shell (sourcing profile
+    files and setting up HOME/SHELL/USER normally) rather than a bare
+    --user/--group exec, which leaves those environment variables unset.
+
+    :param path: Directory to cd into before running claude.
+    """
+    remote_cmd = f"cd {shlex.quote(path)} && claude"
+    run(
+        [
+            "incus",
+            "exec",
+            CONTAINER,
+            "--",
+            "su",
+            "-",
+            RUN_USER,
+            "-c",
+            remote_cmd,
+        ]
+    )
+
+
+def init_cli_arg():
+    """
+    Parse command-line arguments.
+
+    :return: The parsed argparse.Namespace.
+    """
+    # Parse args
+    parser = argparse.ArgumentParser(
+        description="Mount the current directory into the claudius container and run "
+        "'claude' there. Creates the Incus VM if it doesn't exist yet."
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s {0}".format(__version__),
+        help="show program's version number and exit",
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="Debug flag", default=DEBUG
+    )
+    parser.add_argument(
+        "-c",
+        "--cleanup",
+        action="store_true",
+        help=f"Remove existing project mounts (except {DEVICES_KEEP}) before mounting "
+        "the current directory",
+        default=False,
+    )
+    return parser.parse_args()
+
+
+# Main launcher
+def main():
+    """
+    Entry point: ensure claudius is ready, optionally clean up stale
+    project mounts, mount the current directory, and launch claude.
+
+    :return: Process exit code (0 on success, 1 on handled errors).
+    """
+    global DEBUG
+
+    # Parse args
+    args = init_cli_arg()
+    DEBUG = args.debug
+
+    log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+
+    try:
+        log.debug("start")
+
+        ensure_container_ready()
+
+        if args.cleanup:
+            cleanup_devices()
+
+        path = mount_current_project()
+        launch_claude(path)
+
+        log.debug("end")
+
+    except subprocess.CalledProcessError as exc:
+        log.error(exc)
+        if DEBUG:
+            raise
+        return 1
+
+    except Exception as exc:
+        log.error(exc)
+        if DEBUG:
+            raise
+        return 1
+
+    except KeyboardInterrupt:
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
