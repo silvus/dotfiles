@@ -9,44 +9,47 @@ function fish_right_prompt --description 'Write out the right prompt'
     if not set -q __fish_color_normal
         set -g __fish_color_normal (set_color normal)
     end
+    if not set -q __fish_color_blue
+        set -g __fish_color_blue (set_color blue)
+    end
 
     # Current time
     set __fish_time_status (date +%H:%M:%S)
 
-    # Git prompt
-    set -g __fish_git_prompt_show_informative_status 1
-    set -g __fish_git_prompt_showdirtystate 1
-    set -g __fish_git_prompt_showstashstate 1
-    set -g __fish_git_prompt_showuntrackedfiles 1
-    set -g __fish_git_prompt_showupstream informative
+    # Git prompt (one-time config)
+    if not set -q __fish_git_prompt_configured
+        set -g __fish_git_prompt_configured 1
 
-    set -g __fish_git_prompt_color_branch yellow
-    set -g __fish_git_prompt_char_upstream_ahead "↑"
-    set -g __fish_git_prompt_char_upstream_behind "↓"
-    set -g __fish_git_prompt_char_upstream_prefix ""
+        set -g __fish_git_prompt_show_informative_status 1
+        set -g __fish_git_prompt_showdirtystate 1
+        set -g __fish_git_prompt_showstashstate 1
+        set -g __fish_git_prompt_showuntrackedfiles 1
+        set -g __fish_git_prompt_showupstream informative
 
-    set -g __fish_git_prompt_char_stagedstate "●"
-    set -g __fish_git_prompt_char_dirtystate "✚"
-    set -g __fish_git_prompt_char_untrackedfiles "…"
-    set -g __fish_git_prompt_char_conflictedstate "✖"
-    set -g __fish_git_prompt_char_cleanstate "✔"
+        set -g __fish_git_prompt_color_branch yellow
+        set -g __fish_git_prompt_char_upstream_ahead "↑"
+        set -g __fish_git_prompt_char_upstream_behind "↓"
+        set -g __fish_git_prompt_char_upstream_prefix ""
 
-    set -g __fish_git_prompt_color_dirtystate blue
-    set -g __fish_git_prompt_color_stagedstate yellow
-    set -g __fish_git_prompt_color_invalidstate red
-    set -g __fish_git_prompt_color_untrackedfiles $fish_color_normal
-    set -g __fish_git_prompt_color_cleanstate green --bold
+        set -g __fish_git_prompt_char_stagedstate "●"
+        set -g __fish_git_prompt_char_dirtystate "✚"
+        set -g __fish_git_prompt_char_untrackedfiles "…"
+        set -g __fish_git_prompt_char_conflictedstate "✖"
+        set -g __fish_git_prompt_char_cleanstate "✔"
 
-    # Check if git status is empty
-    set __fish_git_status (__fish_git_prompt)
-    if test -z $__fish_git_status
-        set __fish_git_status ""
+        set -g __fish_git_prompt_color_dirtystate blue
+        set -g __fish_git_prompt_color_stagedstate yellow
+        set -g __fish_git_prompt_color_invalidstate red
+        set -g __fish_git_prompt_color_untrackedfiles normal
+        set -g __fish_git_prompt_color_cleanstate green --bold
     end
+
+    set __fish_git_status (__fish_git_prompt)
 
     # Check for NixOS shell
     set __fish_nix_shell ""
     if test -n "$IN_NIX_SHELL"
-        set -g __fish_color_nix (set_color brmagenta)
+        set __fish_color_nix (set_color brmagenta)
         set __fish_nix_shell "[$__fish_color_nix""nix-shell$__fish_color_normal]-"
     end
 
