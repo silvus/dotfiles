@@ -214,10 +214,13 @@ def main():
             window_list = subprocess.run(window_list_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             window_names = window_list.stdout.decode().splitlines()
             if selected_name not in window_names:
+                # Trailing colon targets the session (next free index), not the
+                # window named "main" -- bare "-t main" collides with that
+                # window's own index when base-index puts it at 1.
                 if tmux_open_command:
-                    subprocess.run(["tmux", "new-window", "-t", "main", "-n", selected_name, "-c", os.path.dirname(selected), tmux_open_command], check=False)
+                    subprocess.run(["tmux", "new-window", "-t", "main:", "-n", selected_name, "-c", os.path.dirname(selected), tmux_open_command], check=False)
                 else:
-                    subprocess.run(["tmux", "new-window", "-t", "main", "-n", selected_name, "-c", selected], check=False)
+                    subprocess.run(["tmux", "new-window", "-t", "main:", "-n", selected_name, "-c", selected], check=False)
 
             subprocess.run(["tmux", "select-window", "-t", selected_name], check=False)
             subprocess.run(["tmux", "switch-client", "-t", "main"], check=False)
