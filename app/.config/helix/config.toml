@@ -82,6 +82,7 @@ other-lines = "warning"
 C-s = ":w" # Maps Ctrl-s to the typable command :w which is an alias for :write (save file)
 # S-C-s = "save_selection" # save selection to jumplist, was on ctrl+s
 C-q = ":quit"
+C-l = ":rla"
 # C-o = ":open ~/.config/helix/config.toml" # Maps Ctrl-o to opening of the helix config file
 # a = "move_char_left" # Maps the 'a' key to the move_char_left command
 # w = "move_line_up" # Maps the 'w' key move_line_up
