@@ -209,8 +209,8 @@ def main():
             subprocess.run(["tmux", "switch-client", "-t", selected_name], check=False)
         else:
             # Window mode
-            # Check if a window with the selected name exists
-            window_list_cmd = ["tmux", "list-windows", "-F", "#W"]
+            # Check if a window with the selected name exists in "main" specifically
+            window_list_cmd = ["tmux", "list-windows", "-t", "main", "-F", "#W"]
             window_list = subprocess.run(window_list_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             window_names = window_list.stdout.decode().splitlines()
             if selected_name not in window_names:
