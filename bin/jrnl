@@ -27,11 +27,11 @@ if [[ ! -f "$NOTE_FILE" ]]; then
 	printf '# %s %s\n\n' "$DATE" "$DAY_NAME" > "$NOTE_FILE"
 fi
 
-# Open the note — use tmux_sessionizer if inside a tmux session, $EDITOR otherwise
+# Open the note — use tmuxdev if inside a tmux session, $EDITOR otherwise
 if [[ -z "$TMUX" ]]; then
 	(cd "$NOTE_PATH" && "${EDITOR:-vim}" "$NOTE_FILE")
 else
-	# tmux_sessionizer -p "$NOTE_FILE" -n "jrnl"
+	# tmuxdev -p "$NOTE_FILE" -n "jrnl"
 	# For the command instead of using editor to fix the working-dir and go to end of file
-	tmux_sessionizer -p "$NOTE_FILE" -n "jrnl" -c "hx --working-dir $NOTE_PATH +999999 $NOTE_FILE"
+	tmuxdev -p "$NOTE_FILE" -n "jrnl" -c "hx --working-dir $NOTE_PATH +999999 $NOTE_FILE"
 fi

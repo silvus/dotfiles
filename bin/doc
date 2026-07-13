@@ -7,5 +7,5 @@ export NOTE_PATH="/data/doc"
 if [[ -z $TMUX ]]; then
 	(cd $NOTE_PATH && nvim .)
 else
-	tmux_sessionizer -p "$NOTE_PATH"
+	tmuxdev -p "$NOTE_PATH"
 fi

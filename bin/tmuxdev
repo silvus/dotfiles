@@ -1,63 +1,416 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-# Launch tmux
-# -----------------------------------------------------------------------------
-_launch_tmux() {
-	local _TMUX_SESSION_NAME="main"
+import argparse
+import importlib.machinery
+import importlib.util
+import logging
+import os
+import shutil
+import subprocess
+import sys
+import time
+from pathlib import Path
 
-	# Make sure Fish is flagged as not started at this point
-	unset FISH_IS_STARTED
+__author__ = "Silvus"
+__version__ = "2026.07"
 
-	# make sure tmux server is running
-	tmux start-server
+DOTFILES_HOME = Path.home() / ".dotfiles"
+HISTORY_TRACK = Path.home() / ".tmux_sessionizer_history"
+FZF_FALLBACK_PATH = Path.home() / ".fzf" / "bin" / "fzf"
+MAX_HISTORY_SIZE = 100
+CUSTOM_INIT_PATH = DOTFILES_HOME / "custom" / "tmuxdev.py"
+# Per-project equivalent of CUSTOM_INIT_PATH, looked up inside the project's
+# own directory -- replaces the old bin/tmux_session_init ".tmux-init" feature.
+# Still plain Python despite the extensionless name (matches ".tmux-init"'s
+# own convention of a hidden, extensionless project-local file).
+PROJECT_INIT_FILENAME = ".tmuxdev"
 
-	# Determine if session is running
-	tmux has-session -t "${_TMUX_SESSION_NAME}"
-	if [[ "$?" != 0 ]]; then
+PATH_SCRIPT = os.path.basename(__file__)
 
-		# Launch session
-		tmux new-session -s "${_TMUX_SESSION_NAME}" -d
+DEBUG = False
 
-		# Remind stuff
-		# if [[ -x "$(command -v remind 2>/dev/null)" ]]; then
-		# 	if [[ -x "/data/doc/.bin/remindnotif" ]]; then
-		# 		tmux split-window -h -t "${_TMUX_SESSION_NAME}" "/data/doc/.bin/remindnotif"
-		# 		tmux resize-pane -t "${_TMUX_SESSION_NAME}" -x 85
-		# 	fi
-		# 	if [[ -x "/data/doc/.bin/remindreload" ]]; then
-		# 		tmux split-window -v -t "${_TMUX_SESSION_NAME}" "/data/doc/.bin/remindreload"
-		# 		tmux resize-pane -t "${_TMUX_SESSION_NAME}" -y 75
-		# 		tmux select-pane -t 1
-		# 	fi
-		# fi
+# Logs
+logging.basicConfig(
+    stream=sys.stdout, level=logging.INFO, format="[%(levelname)s] %(message)s"
+)
+log = logging.getLogger(PATH_SCRIPT)
 
-		# Source env script
-		# /!\ DEPRECATED
-		# Use tmux_session_init_custom instead
-		if [[ -f "${SILVUSDOTFILES_CUSTOM}/tmuxdev" ]]; then
-			source "${SILVUSDOTFILES_CUSTOM}/tmuxdev"
-		elif [[ -f "$HOME/.dotfiles/custom/tmuxdev" ]]; then
-			# When urxvt is started by Awesomewm, bash_aliases is not sourced and env variables are missing
-			source "$HOME/.dotfiles/custom/tmuxdev"
-		fi
 
-		# Focus on first window
-		tmux select-window -t 1
+NOTES_PATH = "/data/doc"
+WORK_PATH = "/data/work"
+TODO_PATH = "/data/doc/01_todo.md"
+DEV_PATH = "/data/dev"
+PROD_PATH = "/data/prod"
+PROJECTS_PATH = "/data/projects"
+DEV_SCAN_PATHS = [DEV_PATH, PROD_PATH, PROJECTS_PATH]
 
-		# Attach to session
-		tmux attach -t "${_TMUX_SESSION_NAME}"
+SPECIAL_PATHS = [TODO_PATH, str(DOTFILES_HOME), NOTES_PATH, WORK_PATH]
+EDIT_PATHS = [NOTES_PATH, WORK_PATH]
+MAIN_SESSION = "main"
 
-	else
-		# Attach to session without disturbing the others clients
-		tmux new-session -t "${_TMUX_SESSION_NAME}"
-	fi
-}
 
-# Check if tmux is installed
-if [[ -x "$(command -v tmux 2>/dev/null)" ]]; then
-	_launch_tmux
-else
-	echo "Tmux is not installed"
-	exit 1
-fi
+def is_tmux_running():
+    result = subprocess.run(
+        ["pgrep", "tmux"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    return result.returncode == 0
 
+
+def get_project_paths():
+    paths = []
+
+    # Simple paths
+    for path in SPECIAL_PATHS:
+        expanded_path = os.path.expanduser(path)
+        if os.path.isfile(expanded_path) or os.path.isdir(expanded_path):
+            paths.append(expanded_path)
+
+    # Scanned path
+    for base_path in DEV_SCAN_PATHS:
+        path_obj = Path(base_path)
+        if path_obj.is_dir():
+            depth = 1 if base_path != PROJECTS_PATH else 2
+            paths.extend(str(p) for p in path_obj.glob(f"{'*/' * depth}"))
+    return paths
+
+
+def get_prioritized_paths(all_paths):
+    history_entries = {}
+
+    if HISTORY_TRACK.exists():
+        with open(HISTORY_TRACK, "r") as file:
+            for line in file:
+                timestamp, path = line.strip().split(maxsplit=1)
+                history_entries[path] = int(timestamp)
+
+    # Sort paths by last usage timestamp, defaulting to 0 if not in history
+    return sorted(all_paths, key=lambda p: history_entries.get(p, 0), reverse=True)
+
+
+def deduplicate_history():
+    if not HISTORY_TRACK.exists():
+        return
+
+    seen = set()
+    unique_entries = []
+
+    with open(HISTORY_TRACK, "r") as file:
+        for line in reversed(file.readlines()):
+            _, path = line.strip().split(maxsplit=1)
+            if path not in seen:
+                seen.add(path)
+                unique_entries.append(line)
+
+    unique_entries.reverse()
+
+    with open(HISTORY_TRACK, "w") as file:
+        file.writelines(unique_entries)
+
+
+def limit_history_size():
+    if not HISTORY_TRACK.exists():
+        return
+
+    with open(HISTORY_TRACK, "r") as file:
+        lines = file.readlines()
+
+    if len(lines) > MAX_HISTORY_SIZE:
+        with open(HISTORY_TRACK, "w") as file:
+            file.writelines(lines[-MAX_HISTORY_SIZE:])
+
+
+def _load_and_run_setup(init_path, name, path, target):
+    """Load a PROJECTS-dict Python file and run PROJECTS[name](target, path)
+    if present. Exceptions are isolated here so a bug in user-supplied init
+    code can't prevent the caller from continuing (e.g. switching the client
+    to the newly-created window)."""
+    if not init_path.exists():
+        return
+    # spec_from_file_location alone guesses the loader from the file
+    # extension and silently returns None for extensionless files like
+    # PROJECT_INIT_FILENAME -- load as Python source explicitly instead.
+    module_name = f"tmuxdev_init_{init_path.stem or init_path.name}"
+    loader = importlib.machinery.SourceFileLoader(module_name, str(init_path))
+    spec = importlib.util.spec_from_loader(module_name, loader)
+    if spec is None or spec.loader is None:
+        log.error(f"Could not load custom init module from {init_path}")
+        return
+    try:
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        setup = getattr(module, "PROJECTS", {}).get(name)
+        if setup:
+            setup(target, path)
+    except Exception as exc:
+        log.error(f"Custom init from {init_path} for {name!r} failed: {exc}")
+
+
+def run_custom_init(name, path, target):
+    _load_and_run_setup(CUSTOM_INIT_PATH, name, path, target)
+    _load_and_run_setup(Path(path) / PROJECT_INIT_FILENAME, name, path, target)
+
+
+def build_target(session, window=None):
+    """Fully-qualified tmux target for a session or session:window. A bare
+    name can collide with an unrelated session/window sharing it, so a
+    session-only target always keeps its trailing colon."""
+    return f"{session}:{window}" if window else f"{session}:"
+
+
+def bootstrap_main_session():
+    """Ensure the persistent "main" session exists and attach to it. Default
+    behavior with no flags -- what window-manager configs invoke bare."""
+    subprocess.run(["tmux", "start-server"], check=False)
+    os.environ.pop("FISH_IS_STARTED", None)
+
+    log.debug(f"bootstrapping {MAIN_SESSION!r}")
+    session_exists = (
+        subprocess.run(
+            ["tmux", "has-session", f"-t={MAIN_SESSION}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        ).returncode
+        == 0
+    )
+
+    if not session_exists:
+        home = str(Path.home())
+        subprocess.run(
+            [
+                "tmux",
+                "new-session",
+                "-s",
+                MAIN_SESSION,
+                "-n",
+                MAIN_SESSION,
+                "-d",
+                "-c",
+                home,
+            ],
+            check=False,
+        )
+        run_custom_init(MAIN_SESSION, home, build_target(MAIN_SESSION))
+        subprocess.run(
+            ["tmux", "select-window", "-t", build_target(MAIN_SESSION, "1")],
+            check=False,
+        )
+        os.execvp("tmux", ["tmux", "attach", "-t", MAIN_SESSION])
+    else:
+        # Attach as a grouped client instead of a plain attach, so we don't
+        # disturb the window/pane other clients already have selected.
+        os.execvp("tmux", ["tmux", "new-session", "-t", MAIN_SESSION])
+
+
+def run_fzf(paths):
+    fzf_path = shutil.which("fzf")
+    if not fzf_path:
+        fzf_path = FZF_FALLBACK_PATH
+        if not fzf_path.exists():
+            log.error(f"fzf not found at expected path {fzf_path}")
+            return None
+
+    # Display a tilde for clarity.
+    paths = [s.replace(Path.home().absolute().as_posix(), "~") for s in paths]
+
+    process = subprocess.Popen(
+        [fzf_path, "--tmux"], stdin=subprocess.PIPE, stdout=subprocess.PIPE
+    )
+    stdout, _ = process.communicate(input="\n".join(paths).encode())
+    return os.path.expanduser(stdout.decode().strip())
+
+
+def init_cli_arg():
+    """Parse args"""
+    parser = argparse.ArgumentParser(
+        description='Bootstrap/attach the persistent "main" tmux session (default), '
+        "or pick a project to open with --pick"
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s {0}".format(__version__),
+        help="show program's version number and exit",
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="Debug flag", default=DEBUG
+    )
+    parser.add_argument(
+        "-P",
+        "--pick",
+        action="store_true",
+        help="Project-picker mode instead of the default main-session bootstrap. "
+        "Implied by -p/-s/-n/-c; only needed on its own to launch the "
+        "interactive fzf picker with no other arguments",
+    )
+    parser.add_argument(
+        "-s", "--session-mode", action="store_true", help="Start in session mode"
+    )
+    parser.add_argument(
+        "-p", "--project", help="Open a project in a non interactive way"
+    )
+    parser.add_argument("-n", "--name", help="Override the window/session name")
+    parser.add_argument(
+        "-c",
+        "--command",
+        help="Override the open command (ignore -p for the command execution)",
+    )
+
+    return parser.parse_args()
+
+
+def main():
+    global DEBUG
+
+    # Parse args
+    args = init_cli_arg()
+    DEBUG = args.debug
+    session_mode = args.session_mode
+    project = args.project
+    command_override = args.command
+
+    log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+
+    try:
+        log.debug("start")
+        log.debug(args)
+
+        # Any project-selection flag implies picker mode; only the bare,
+        # argument-less invocation falls through to the main-session bootstrap.
+        picker_mode = (
+            args.pick
+            or session_mode
+            or project is not None
+            or args.name is not None
+            or command_override is not None
+        )
+        if not picker_mode:
+            bootstrap_main_session()
+            return
+
+        if not is_tmux_running():
+            log.error("Tmux is not running")
+            return
+
+        if project:
+            selected = project
+        else:
+            # Launch fzf
+            project_paths = get_project_paths()
+            prioritized_paths = get_prioritized_paths(project_paths)
+            selected = run_fzf(prioritized_paths)
+
+        if not selected:
+            log.debug("No selection to open")
+            return
+
+        selected = os.path.expanduser(selected)
+
+        tmux_open_command = ""
+        if command_override:
+            tmux_open_command = "{}".format(command_override)
+        elif os.path.isfile(selected):
+            tmux_open_command = '{} "{}"'.format(
+                os.getenv("EDITOR", shutil.which("vim")), selected
+            )
+        elif selected in (os.path.expanduser(p) for p in EDIT_PATHS):
+            tmux_open_command = 'cd {1} && {0} "{1}"'.format(
+                os.getenv("EDITOR", shutil.which("vim")), selected
+            )
+            # 2025-09-09: change EDITOR to helix, but for doc we want org mode support
+            # tmux_open_command = "cd {1} && {0} \"{1}\"".format(shutil.which('nvim'), selected)
+        elif not os.path.isdir(selected):
+            log.error(f"Selected projet does not exit {selected}")
+            return
+
+        # The pane's starting directory is selected's parent only when selected
+        # is itself a file -- EDIT_PATHS/directory selections must not go up a
+        # level, since (unlike tmux_open_command's own embedded `cd`) this
+        # value is also handed to run_custom_init as the project's own path.
+        start_path = os.path.dirname(selected) if os.path.isfile(selected) else selected
+
+        selected_name = os.path.basename(selected).replace(".", "_").replace(" ", "_")
+
+        if args.name:
+            # Override the window name from argument
+            selected_name = args.name
+
+        # Log selection to HISTORY_TRACK with the current timestamp
+        with open(HISTORY_TRACK, "a") as file:
+            file.write(f"{int(time.time())} {selected}\n")
+
+        # Remove duplicates and limit history size
+        deduplicate_history()
+        limit_history_size()
+
+        if session_mode:
+            # Session mode
+            session_check_cmd = ["tmux", "has-session", f"-t={selected_name}"]
+            session_exists = (
+                subprocess.run(
+                    session_check_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                ).returncode
+                == 0
+            )
+
+            if not session_exists:
+                new_session_cmd = [
+                    "tmux",
+                    "new-session",
+                    "-n",
+                    selected_name,
+                    "-ds",
+                    selected_name,
+                    "-c",
+                    start_path,
+                ]
+                if tmux_open_command:
+                    new_session_cmd.append(tmux_open_command)
+                subprocess.run(new_session_cmd, check=False)
+                run_custom_init(selected_name, start_path, build_target(selected_name))
+            subprocess.run(["tmux", "switch-client", "-t", selected_name], check=False)
+        else:
+            # Window mode
+            # Check if a window with the selected name exists in MAIN_SESSION specifically
+            window_list_cmd = ["tmux", "list-windows", "-t", MAIN_SESSION, "-F", "#W"]
+            window_list = subprocess.run(
+                window_list_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            window_names = window_list.stdout.decode().splitlines()
+            if selected_name not in window_names:
+                # Trailing colon targets the session (next free index), not the
+                # window named MAIN_SESSION -- bare "-t main" collides with that
+                # window's own index when base-index puts it at 1.
+                new_window_cmd = [
+                    "tmux",
+                    "new-window",
+                    "-t",
+                    build_target(MAIN_SESSION),
+                    "-n",
+                    selected_name,
+                    "-c",
+                    start_path,
+                ]
+                if tmux_open_command:
+                    new_window_cmd.append(tmux_open_command)
+                subprocess.run(new_window_cmd, check=False)
+                run_custom_init(
+                    selected_name, start_path, build_target(MAIN_SESSION, selected_name)
+                )
+
+            subprocess.run(["tmux", "select-window", "-t", selected_name], check=False)
+            subprocess.run(["tmux", "switch-client", "-t", MAIN_SESSION], check=False)
+
+        log.debug("end")
+
+    except Exception as exc:
+        log.error(exc)
+        if DEBUG:
+            raise
+
+    except KeyboardInterrupt:
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
