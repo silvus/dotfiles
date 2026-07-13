@@ -343,7 +343,7 @@ def mount_current_project():
     return path
 
 
-def launch_claude(path):
+def launch_claude(path, claude_args=()):
     """
     Launch `claude` inside the container as RUN_USER, in the given path.
 
@@ -352,7 +352,11 @@ def launch_claude(path):
     --user/--group exec, which leaves those environment variables unset.
 
     :param path: Directory to cd into before running claude.
+    :param claude_args: Extra CLI arguments to forward to `claude` as-is
+        (e.g. --resume, --continue, --model ...).
     """
+    claude_cmd = " ".join(["claude", *(shlex.quote(a) for a in claude_args)])
+
     run(
         [
             "incus",
@@ -365,7 +369,7 @@ def launch_claude(path):
             "-",
             RUN_USER,
             "-c",
-            f"cd {shlex.quote(path)} && claude",
+            f"cd {shlex.quote(path)} && {claude_cmd}",
         ]
     )
 
@@ -374,12 +378,17 @@ def init_cli_arg():
     """
     Parse command-line arguments.
 
+    Arguments not recognized by claudius itself (e.g. --resume, --continue,
+    --model ...) are collected into args.claude_args and forwarded as-is to
+    `claude`.
+
     :return: The parsed argparse.Namespace.
     """
     # Parse args
     parser = argparse.ArgumentParser(
         description="Mount the current directory into the claudius container and run "
-        "'claude' there. Creates the Incus VM if it doesn't exist yet."
+        "'claude' there. Creates the Incus VM if it doesn't exist yet. "
+        "Any unrecognized arguments are forwarded to 'claude'.",
     )
     parser.add_argument(
         "-v",
@@ -399,7 +408,9 @@ def init_cli_arg():
         "the current directory",
         default=False,
     )
-    return parser.parse_args()
+    args, claude_args = parser.parse_known_args()
+    args.claude_args = claude_args
+    return args
 
 
 # Main launcher
@@ -427,7 +438,7 @@ def main():
             cleanup_devices()
 
         path = mount_current_project()
-        launch_claude(path)
+        launch_claude(path, claude_args=args.claude_args)
 
         log.debug("end")
 
