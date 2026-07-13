@@ -5,3 +5,5 @@ __pycache__
 
 custom
 custom/
+
+.claude/settings.local.json
