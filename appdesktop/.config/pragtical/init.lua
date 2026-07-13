@@ -186,7 +186,7 @@ formatter.config("ruff", {
 		"%.py$",
 		"%/dotfiles",
 		"%/dotinstall",
-		"%/tmux_sessionizer",
+		"%/tmuxdev",
 	},
 })
 lspconfig.pyright.setup(common.merge({
@@ -194,7 +194,7 @@ lspconfig.pyright.setup(common.merge({
 		"%.py$",
 		"%/dotfiles",
 		"%/dotinstall",
-		"%/tmux_sessionizer",
+		"%/tmuxdev",
 	},
 	command = {
 		os.getenv("HOME") .. "/.nix-profile/bin/pyright-langserver",

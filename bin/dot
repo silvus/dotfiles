@@ -7,5 +7,5 @@ export DOT_PATH="$HOME/.dotfiles"
 if [[ -z $TMUX ]]; then
 	(cd "$DOT_PATH" && "${EDITOR:nvim}" .)
 else
-	tmux_sessionizer -p "$DOT_PATH"
+	tmuxdev -p "$DOT_PATH"
 fi

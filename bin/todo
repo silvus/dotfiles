@@ -9,8 +9,8 @@ if [[ -z $TMUX ]]; then
 else
 
 	if command -v mdorg >/dev/null 2>&1; then
-		tmux_sessionizer -p "$TODO_PATH" -c "mdorg"
+		tmuxdev -p "$TODO_PATH" -c "mdorg"
   else
-		tmux_sessionizer -p "$TODO_PATH"
+		tmuxdev -p "$TODO_PATH"
   fi
 fi

@@ -16,12 +16,12 @@ return {
 		-- With a /data/doc, it's a personnal env
 		local dirstat = vim.uv.fs_stat('/data/doc')
 		if dirstat then
-			org_default_notes_file = '/data/doc/todo.org'
+			org_default_notes_file = '/data/doc/01_todo.md'
 			org_agenda_files = {
 				'/data/doc/**/*',
 			}
 		else
-			org_default_notes_file = '/data/work/todo.org'
+			org_default_notes_file = '/data/work/todo.md'
 			org_agenda_files = {
 				'/data/work/**/*',
 			}
@@ -252,4 +252,3 @@ return {
 	-- org.agenda:agenda({ show_clock_report = true })
 	-- end,
 }
-

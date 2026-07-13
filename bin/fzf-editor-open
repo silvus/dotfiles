@@ -29,5 +29,5 @@ if [[ -z "$1" ]]; then
 	fzf-editor-open
 else
 	# Session named passed has arg
-	tmux_sessionizer -p "$1"
+	tmuxdev -p "$1"
 fi

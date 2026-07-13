@@ -124,7 +124,7 @@ end
 # Bindings
 # -----------------------------------------------------------------------------
 # Open TODO.md with CTRL+t
-# bind \ct 'tmux_sessionizer -p "/data/doc/todo.org"'
+# bind \ct 'tmuxdev -p "/data/doc/01_todo.md"'
 
 # TTY colour scheme (Tango like)
 # -----------------------------------------------------------------------------
