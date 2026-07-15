@@ -46,7 +46,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    # claude code
     llm-agents.packages.${stdenv.hostPlatform.system}.claude-code
+    # llm-agents.packages.${stdenv.hostPlatform.system}.codex
   ];
 }
