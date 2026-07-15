@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 """
-Mount a project into the claudius Incus container and launch claude.
+Mount a project into the claudius Incus container and launch an AI coding
+agent (claude, codex, ...) there.
 Creates the Incus VM and provisions it via nixos-rebuild if it doesn't exist yet.
 """
 
@@ -33,6 +34,7 @@ CONTAINER = "claudius"
 IMAGE = "images:nixos/26.05"
 RUN_USER = "silvus"
 DOTFILES_PATH = "/home/silvus/.dotfiles"
+DEFAULT_AGENT = "claude"
 BOOT_TIMEOUT_S = 60
 BOOT_POLL_INTERVAL_S = 2
 PATH_TIMEOUT_S = 20
@@ -343,19 +345,21 @@ def mount_current_project():
     return path
 
 
-def launch_claude(path, claude_args=()):
+def launch_agent(agent, path, agent_args=()):
     """
-    Launch `claude` inside the container as RUN_USER, in the given path.
+    Launch the given agent CLI inside the container as RUN_USER, in the
+    given path.
 
     Uses `su - RUN_USER` to get a proper login shell (sourcing profile
     files and setting up HOME/SHELL/USER normally) rather than a bare
     --user/--group exec, which leaves those environment variables unset.
 
-    :param path: Directory to cd into before running claude.
-    :param claude_args: Extra CLI arguments to forward to `claude` as-is
+    :param agent: Name of the agent binary to run (e.g. "claude", "codex").
+    :param path: Directory to cd into before running the agent.
+    :param agent_args: Extra CLI arguments to forward to the agent as-is
         (e.g. --resume, --continue, --model ...).
     """
-    claude_cmd = " ".join(["claude", *(shlex.quote(a) for a in claude_args)])
+    agent_cmd = " ".join([agent, *(shlex.quote(a) for a in agent_args)])
 
     run(
         [
@@ -369,7 +373,7 @@ def launch_claude(path, claude_args=()):
             "-",
             RUN_USER,
             "-c",
-            f"cd {shlex.quote(path)} && {claude_cmd}",
+            f"cd {shlex.quote(path)} && {agent_cmd}",
         ]
     )
 
@@ -379,16 +383,16 @@ def init_cli_arg():
     Parse command-line arguments.
 
     Arguments not recognized by claudius itself (e.g. --resume, --continue,
-    --model ...) are collected into args.claude_args and forwarded as-is to
-    `claude`.
+    --model ...) are collected into args.agent_args and forwarded as-is to
+    the agent CLI.
 
     :return: The parsed argparse.Namespace.
     """
     # Parse args
     parser = argparse.ArgumentParser(
         description="Mount the current directory into the claudius container and run "
-        "'claude' there. Creates the Incus VM if it doesn't exist yet. "
-        "Any unrecognized arguments are forwarded to 'claude'.",
+        "an AI coding agent there. Creates the Incus VM if it doesn't exist yet. "
+        "Any unrecognized arguments are forwarded to the agent.",
     )
     parser.add_argument(
         "-v",
@@ -408,8 +412,14 @@ def init_cli_arg():
         "the current directory",
         default=False,
     )
-    args, claude_args = parser.parse_known_args()
-    args.claude_args = claude_args
+    parser.add_argument(
+        "-a",
+        "--agent",
+        help=f"Agent CLI to launch inside the container (default: {DEFAULT_AGENT})",
+        default=DEFAULT_AGENT,
+    )
+    args, agent_args = parser.parse_known_args()
+    args.agent_args = agent_args
     return args
 
 
@@ -417,7 +427,7 @@ def init_cli_arg():
 def main():
     """
     Entry point: ensure claudius is ready, optionally clean up stale
-    project mounts, mount the current directory, and launch claude.
+    project mounts, mount the current directory, and launch the agent.
 
     :return: Process exit code (0 on success, 1 on handled errors).
     """
@@ -438,7 +448,7 @@ def main():
             cleanup_devices()
 
         path = mount_current_project()
-        launch_claude(path, claude_args=args.claude_args)
+        launch_agent(args.agent, path, agent_args=args.agent_args)
 
         log.debug("end")
 
