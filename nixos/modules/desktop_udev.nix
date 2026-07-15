@@ -44,6 +44,11 @@
       text = ''SUBSYSTEM=="tty", ATTRS{idVendor}=="18d1", ATTRS{idProduct}=="4ee1", MODE="0666"'';
       destination = "/etc/udev/rules.d/76-pixel8a.rules";
     })
+    (pkgs.writeTextFile {
+      name = "pixel5-udev-rules";
+      text = ''SUBSYSTEM=="tty", ATTRS{idVendor}=="18d1", ATTRS{idProduct}=="0003", MODE="0666"'';
+      destination = "/etc/udev/rules.d/76-pixel5.rules";
+    })
   ];
 
 }
