@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# List Syncthing sync-conflict files in the current directory and subfolders
+
+find . -type f -iname "*.sync-conflict-*"
