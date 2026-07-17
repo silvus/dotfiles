@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Interactively review Syncthing sync-conflict files
+#
+# enter  : open the conflict file and its original side by side in $EDITOR
+# ctrl-d : delete the selected conflict file
+# esc    : quit
+
+set -e -o pipefail
+
+CONFLICT_RE='\.sync-conflict-[0-9]{8}-[0-9]{6}-[A-Za-z0-9]{7}'
+SELF="$(readlink -f "$0")"
+
+original_of() {
+	echo "$1" | sed -E "s/$CONFLICT_RE//"
+}
+
+# Re-invoked by fzf (via $SELF) to avoid depending on the user's login shell
+case "${1:-}" in
+	--preview)
+		orig="$(original_of "$2")"
+		if [ -f "$orig" ]; then
+			diff -u --color=always "$orig" "$2" || true
+		else
+			echo "No original file (already deleted/moved): $orig"
+			echo "---"
+			cat "$2"
+		fi
+		exit 0
+		;;
+	--edit)
+		orig="$(original_of "$2")"
+		if [ -f "$orig" ]; then
+			"${EDITOR:-vim}" "$orig" "$2" || true
+		else
+			"${EDITOR:-vim}" "$2" || true
+		fi
+		exit 0
+		;;
+esac
+
+FIND_CMD="find . -type f -iname '*.sync-conflict-*'"
+
+find . -type f -iname "*.sync-conflict-*" | fzf \
+	--preview "\"$SELF\" --preview {}" \
+	--bind "enter:execute(\"$SELF\" --edit {})+reload($FIND_CMD)" \
+	--bind "ctrl-d:execute(rm -i {})+reload($FIND_CMD)" \
+	--header 'enter: open both in $EDITOR | ctrl-d: delete | esc: quit'
