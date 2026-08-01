@@ -327,6 +327,17 @@ local rules = {
     },
 }
 
+-- Let the active theme add/override rules (e.g. per-host tag placement).
+-- Rules are applied in list order with later matches winning, so a rule
+-- appended here for a class already matched above will override its
+-- properties for that class. A theme opts in by setting theme.rules
+-- (an array of rule entries, same shape as above) before `return theme`.
+if beautiful.rules then
+	for _, rule in ipairs(beautiful.rules) do
+		table.insert(rules, rule)
+	end
+end
+
 -- Connect a signal on new client appears
 -- https://superuser.com/questions/585058/how-to-move-just-opened-new-window-of-an-already-started-client-to-a-tag-automat?rq=1
 -- client.connect_signal("manage",function(c,startup)

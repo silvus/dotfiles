@@ -48,6 +48,10 @@ theme.tasklist_bg_focus                         = theme.bg_normal
 theme.tasklist_spacing                          = 15
 theme.tasklist_fg_normal                        = "#FFFFFF"
 
+-- Height/width rotated
+theme.graph_height                              = 15
+theme.graph_width                               = 30
+
 theme.titlebar_fg_normal                        = "#333333"
 theme.titlebar_bg_normal                        = "#1c2b25"
 theme.titlebar_bg_focus                         = "#022603"
@@ -170,24 +174,12 @@ theme.master_width_factor = config.layouts_master_width
 
 -- Bar (Wibar) management
 
-function widget_rotate(w, inverse)
-	local direction = 'east'
-	if inverse then
-		direction = 'west'
-	end
-
-	return wibox.container {
-		w,
-		direction = direction,
-		widget = wibox.container.rotate
-	}
-end
-
 -- Build a bar
 function bar(s)
 
 	-- Customs widgets definitions
 	-- Import need to be done after beautiful init or colors are not defined
+	local widget_rotate = require("widgets.rotate")
 	local widget_separator = require("widgets.separator")
 	local widget_separator_vertical = require("widgets.separator_vertical")
 	local widget_layout = require("widgets.layout")
