@@ -177,24 +177,12 @@ theme.master_width_factor = config.layouts_master_width
 
 -- Bar (Wibar) management
 
-function widget_rotate(w, inverse)
-	local direction = 'east'
-	if inverse then
-		direction = 'west'
-	end
-
-	return wibox.container {
-		w,
-		direction = direction,
-		widget = wibox.container.rotate
-	}
-end
-
 -- Build a bar
 function bar(s)
 
 	-- Customs widgets definitions
 	-- Import need to be done after beautiful init or colors are not defined
+	local widget_rotate = require("widgets.rotate")
 	local widget_separator = require("widgets.separator")
 	local widget_separator_vertical = require("widgets.separator_vertical")
 	local widget_layout = require("widgets.layout")

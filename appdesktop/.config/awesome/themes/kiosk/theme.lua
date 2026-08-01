@@ -1,3 +1,8 @@
+-- Minimal theme for single-purpose kiosk boxes (fullscreen media player).
+-- See the "Keybindings override" and "Rules override" sections below for
+-- how this theme can diverge from the default profile without touching
+-- keys.lua / rules.lua.
+
 -- ---------------------------------------------------------------------
 -- Init
 -- ---------------------------------------------------------------------
@@ -14,12 +19,13 @@ local theme = {}
 -- Config
 -- ---------------------------------------------------------------------
 
-theme.name = "bloodmoon"
+theme.name = "kiosk"
 
-theme.info                                      = "#400d0f"
-theme.error                                     = "#FFA500"
-theme.success                                   = "#7d1318"
-theme.primary                                   = "#4a030a"
+-- Catppuccin Mocha: https://github.com/catppuccin/catppuccin
+theme.info                                      = "#89b4fa" -- blue
+theme.error                                     = "#f38ba8" -- red
+theme.success                                   = "#a6e3a1" -- green
+theme.primary                                   = "#cba6f7" -- mauve
 
 theme.notification_position                     = "bottom_right"
 theme.notification_max_width                    = 500
@@ -30,10 +36,10 @@ theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
 theme.font                                      = "DejaVu Sans Mono 9"
 
 theme.fg_normal                                 = theme.info
-theme.bg_normal                                 = "#111111"
+theme.bg_normal                                 = "#1e1e2e" -- base
 
-theme.fg_focus                                  = "#BBBBBB"
-theme.bg_focus                                  = theme.primary
+theme.fg_focus                                  = "#cdd6f4" -- text
+theme.bg_focus                                  = "#313244" -- surface0
 
 theme.fg_urgent                                 = "#FFFFFF"
 theme.bg_urgent                                 = theme.error
@@ -43,31 +49,29 @@ theme.taglist_fg_focus                          = "#FFFFFF"
 theme.taglist_bg_normal                         = theme.bg_normal
 theme.taglist_bg_focus                          = theme.success
 
-theme.tasklist_fg_normal                        = "#333333"
-theme.tasklist_fg_focus                         = theme.fg_focus
-theme.tasklist_bg_normal                        = theme.bg_normal
-theme.tasklist_bg_focus                         = "#400202"
+theme.tasklist_fg_focus                         = theme.fg_normal
+theme.tasklist_bg_focus                         = theme.bg_normal
 theme.tasklist_spacing                          = 15
+theme.tasklist_fg_normal                        = "#FFFFFF"
 
 -- Height/width rotated
 theme.graph_height                              = 15
 theme.graph_width                               = 30
 
 theme.titlebar_fg_normal                        = "#333333"
-theme.titlebar_bg_normal                        = "#1c0d0d"
-theme.titlebar_bg_focus                         = "#400202"
+theme.titlebar_bg_normal                        = "#181825" -- mantle
+theme.titlebar_bg_focus                         = "#45475a" -- surface1
 
 theme.snap_bg                                   = theme.primary
 theme.snap_border_width                         = 5
 
-theme.border_normal                             = "#141414"
-theme.border_focus                              = theme.success
+theme.border_normal                             = "#11111b" -- crust
+theme.border_focus                              = theme.primary
 theme.border_width                              = 2
 
--- theme.useless_gap                               = 5
--- theme.gap_single_client                         = true
+-- Kiosk: apps run fullscreen, no need for gaps
 theme.gap_single_client                         = false
-theme.useless_gap                               = 4
+theme.useless_gap                               = 0
 
 theme.menu_height                               = 16
 theme.menu_width                                = 250
@@ -168,112 +172,107 @@ end
 theme.tasklist_disable_task_name = true
 --  Disable the extra tasklist client property notification icons.
 theme.tasklist_plain_task_name = false
--- theme.tasklist_disable_icon = true
--- theme.maximized_hide_border = true
--- theme.fullscreen_hide_border = true
 
 theme.master_width_factor = config.layouts_master_width
 
+-- Kiosk: every desktop starts fullscreen (single app, no tiling).
+-- desktops.lua uses this as the default for any tag that doesn't set its
+-- own `layout` explicitly.
+theme.tags_default_layout = awful.layout.suit.max
+
+-- Kiosk: plain numbered tags, no icons. Overrides the default icon-based
+-- tag list defined in desktops.lua (same 10 tags, same names/order, so
+-- keybindings that index screen.tags[i] -- e.g. the scratchpad at [10] --
+-- still work unchanged).
+theme.tags = {
+	{ name = "1" },
+	{ name = "2" },
+	{ name = "3" },
+	{ name = "4" },
+	{ name = "5" },
+	{ name = "6" },
+	{ name = "7" },
+	{ name = "8" },
+	{ name = "9" },
+	{ name = "0" },
+}
+
+-- ---------------------------------------------------------------------
+-- Rules override (optional)
+-- ---------------------------------------------------------------------
+-- rules.lua appends theme.rules (if set) after its own rules, so entries
+-- here can add new rules or override the tag/properties of a class that
+-- the shared rules.lua already matches (later rule wins).
+--
+-- Here: the "movies" media explorer normally lands on tag 8 (see the
+-- "Mixed" rule in rules.lua) but on this kiosk it should open on tag 1.
+theme.rules = {
+	{
+		rule_any = { class = { "movies" } },
+		properties = {
+			tag = "1",
+		}
+	},
+}
+
+-- ---------------------------------------------------------------------
+-- Keybindings override (optional, not used yet)
+-- ---------------------------------------------------------------------
+-- This theme currently keeps the default keybindings from keys.lua.
+-- To fully replace them for this profile, set both of these before
+-- `return theme` (keys.lua checks for them once beautiful.init has run):
+--
+-- Use config.modkey here, not the bare `modkey` global -- that global is
+-- only set once keys.lua itself runs, which happens *after* beautiful.init
+-- (and thus after this file), so it would still be nil at this point.
+--
+-- theme.keys_global = awful.util.table.join(
+-- 	awful.key({ config.modkey }, "q", function()
+-- 		awful.spawn("systemctl --user restart mediaplayer")
+-- 	end, { description = "restart media player", group = "kiosk" })
+-- )
+-- theme.keys_clients = {
+-- 	keys = awful.util.table.join(
+-- 		awful.key({ config.modkey }, "F4", function(c)
+-- 			c:kill()
+-- 		end, { description = "close", group = "client" })
+-- 	),
+-- 	buttons = awful.util.table.join(
+-- 		awful.button({}, 1, function(c)
+-- 			client.focus = c
+-- 			c:raise()
+-- 		end)
+-- 	),
+-- }
+
+-- ---------------------------------------------------------------------
 -- Bar (Wibar) management
-
--- Build a bar
+-- ---------------------------------------------------------------------
 function bar(s)
-
-	-- Customs widgets definitions
-	-- Import need to be done after beautiful init or colors are not defined
 	local widget_rotate = require("widgets.rotate")
-	local widget_separator = require("widgets.separator")
-	local widget_separator_vertical = require("widgets.separator_vertical")
-	local widget_layout = require("widgets.layout")
-	local widget_tags = require("widgets.tags")
 	local widget_tags_vertical = require("widgets.tags_vertical")
-	local widget_tasks = require("widgets.tasks")
-	local widget_tasks_vertical = require("widgets.tasks_vertical")
-	local widget_clock_vertical = require("widgets.clock_vertical")
-	local widget_volumecapture = require("widgets.volumecapture")
-	local widget_volume = require("widgets.volume")
-	local widget_keyboardlayout = require("widgets.keyboardlayout")
-	-- local widget_notifications = require("widgets.notifications")
-	local widget_net = require("widgets.net")
-	local widget_sysload = require("widgets.sysload")
-	local widget_vpn = require("widgets.vpn")
 	local widget_systray = require("widgets.systray")
 
-	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
-	local layoutbox = widget_layout.widget(s)
+	local wibox_custom = awful.wibar({
+		position = "left",
+		screen = s,
+		width = 20,
+		visible = (s == screens.get_primary()) and config.show_bar or false,
+		bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
+	})
 
-	local wibox_custom = nil
-
-	-- Widget for main screen only
-	if s == screens.get_primary() then
-		-- Create a vertical wibox
-		wibox_custom = awful.wibar({
-			position = "left",
-			screen = s,
-			visible = config.show_bar,
-			bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
-		})
-
-		-- Add widgets to the wibox
-		wibox_custom:setup {
-			layout = wibox.layout.align.vertical,
-			{ -- Left widgets
-				layout = wibox.layout.fixed.vertical,
-				widget_tags_vertical.widget(s),
-				widget_separator_vertical.widget,
-			},
-			{ -- Middle widget
-				layout = wibox.layout.fixed.vertical,
-				widget_tasks_vertical.widget(s),
-			},
-			{ -- Right widgets
-				layout = wibox.layout.fixed.vertical,
-				widget_vpn.icon,
-				widget_separator_vertical.widget,
-				widget_net.icon,
-				widget_rotate(widget_net.widget, true),
-				widget_sysload.icon,
-				widget_rotate(widget_sysload.widget, true),
-				widget_rotate(widget_keyboardlayout.widget),
-				widget_separator_vertical.widget,
-				-- widget_notifications.widget,
-				widget_volumecapture.widget,
-				widget_volume.widget,
-				widget_rotate(widget_systray.widget),
-				widget_separator_vertical.widget,
-				widget_clock_vertical.widget,
-				{
-					layoutbox,
-					layout = wibox.container.margin(layoutbox ,0 ,0 ,0 ,-5)
-				},
-			},
-		}
-
-	else
-		-- secondary screen (always horizontal)
-		wibox_custom = awful.wibar({
-			position = "top",
-			screen = s,
-			visible = false,
-			--height = 25
-		})
-		wibox_custom:setup {
-			layout = wibox.layout.align.horizontal,
-			{ -- Left widgets
-				layout = wibox.layout.fixed.horizontal,
-				widget_tags.widget(s),
-			},
-			{ -- Middle widget
-				layout = wibox.layout.fixed.horizontal,
-				widget_tasks.widget(s),
-			},
-			{ -- Right widgets
-				layout = wibox.layout.fixed.horizontal,
-				widget_separator.widget,
-				layoutbox,
-			},
-		}
-	end
+	wibox_custom:setup {
+		layout = wibox.layout.align.vertical,
+		{ -- Top widget
+			layout = wibox.layout.fixed.vertical,
+			widget_tags_vertical.widget(s),
+		},
+		nil, -- Middle (unused)
+		{ -- Bottom widget
+			layout = wibox.layout.fixed.vertical,
+			widget_rotate(widget_systray.widget),
+		},
+	}
 
 	return wibox_custom
 end

@@ -4,6 +4,7 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 local screens = require("screens")
 local desktops = require("desktops")
 local config = require("config")
+local beautiful = require("beautiful")
 -- Quake like terminal (single instance for all screens)
 local quake = require("utils.quake")
 local widget_volume = require("widgets.volume")
@@ -669,5 +670,15 @@ keys.clients.buttons = awful.util.table.join(
 	awful.button({ modkey }, 1, awful.mouse.client.move),
 	awful.button({ modkey }, 3, awful.mouse.client.resize))
 
+
+-- Let the active theme fully replace keybindings (e.g. a kiosk profile).
+-- A theme opts in by setting theme.keys_global and/or theme.keys_clients
+-- (a table with .keys and .buttons) before `return theme` in its theme.lua.
+if beautiful.keys_global then
+	keys.global = beautiful.keys_global
+end
+if beautiful.keys_clients then
+	keys.clients = beautiful.keys_clients
+end
 
 return keys
