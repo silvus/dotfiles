@@ -49,8 +49,8 @@ theme.tasklist_spacing                          = 15
 theme.tasklist_fg_normal                        = "#FFFFFF"
 
 -- Height/width rotated
-theme.graph_height                              = 15
-theme.graph_width                               = 30
+-- theme.graph_height                              = 1
+-- theme.graph_width                               = 75
 
 theme.titlebar_fg_normal                        = "#333333"
 theme.titlebar_bg_normal                        = "#1c2b25"

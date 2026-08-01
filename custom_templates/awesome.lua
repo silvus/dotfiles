@@ -1,8 +1,7 @@
 local config = {}
 
--- config.theme = "lagoon"
+-- Theme to use (matrix, bloodmoon, everforest, kiosk)
 -- config.theme = "matrix"
--- config.theme = "bloodmoon"
 
 -- Videos windows placement (auto, float, fullscreen, tiled)
 -- config.rules_videos = "auto"
