@@ -68,6 +68,7 @@
     keymapp                # Voyager keyboard utility
     blink1-tool            # Command line client for the blink(1) notification light
 
+    kcc # convert comic/manga to EPUB
     # unstable.fresh-editor
 
     # ios files access
