@@ -27,6 +27,7 @@
       llm-agents,
     }:
     let
+      # Arch for this flake's own outputs (pkgs, devShells, apps, home-manager)
       system = "x86_64-linux";
 
       pkgs = import nixpkgs {
@@ -34,38 +35,46 @@
         config.allowUnfree = true;
       };
 
+      overlay-unstable = final: prev: {
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      };
+
       # 2026-05-06 fix for Lutris (fail on tests, openldap problem)
       # overlay-unstable = final: prev: {
       #   unstable = import nixpkgs-unstable {
       #     inherit system;
-      #     config.allowUnfree = true;
+
+      #     config = {
+      #       allowUnfree = true;
+      #     };
+
+      #     overlays = [
+      #       (ufinal: uprev: {
+      #         openldap = uprev.openldap.overrideAttrs (_: {
+      #           doCheck = false;
+      #         });
+      #       })
+      #     ];
       #   };
       # };
-      overlay-unstable = final: prev: {
-        unstable = import nixpkgs-unstable {
-          inherit system;
 
-          config = {
-            allowUnfree = true;
-          };
-
-          overlays = [
-            (ufinal: uprev: {
-              openldap = uprev.openldap.overrideAttrs (_: {
-                doCheck = false;
-              });
-            })
-          ];
-        };
-      };
-
+      # hostSystem is the target arch for this specific host (e.g. "aarch64-linux"
+      # for a Raspberry Pi), independent of the flake's own `system` above.
       mkHost =
-        hostname:
+        hostname: hostSystem:
         nixpkgs.lib.nixosSystem {
-          inherit system;
+          system = hostSystem;
 
           specialArgs = {
-            inherit hostname mdorg movies llm-agents;
+            inherit
+              hostname
+              mdorg
+              movies
+              llm-agents
+              ;
           };
           modules = [
             {
@@ -87,13 +96,15 @@
     {
 
       # NixOs
+      # Second argument to mkHost is that host's arch (hostSystem), set per-host
+      # so hosts on a different arch (e.g. a Raspberry Pi) can be added here.
       nixosConfigurations = {
-        nixos-vm = mkHost "nixos-vm";
-        claudius = mkHost "claudius";
-        noctus = mkHost "noctus";
-        virtus = mkHost "virtus";
-        servius = mkHost "servius";
-        arcus = mkHost "arcus";
+        nixos-vm = mkHost "nixos-vm" "x86_64-linux";
+        claudius = mkHost "claudius" "x86_64-linux";
+        noctus = mkHost "noctus" "x86_64-linux";
+        virtus = mkHost "virtus" "x86_64-linux";
+        servius = mkHost "servius" "x86_64-linux";
+        arcus = mkHost "arcus" "x86_64-linux";
       };
 
       # Home manager on Debian
