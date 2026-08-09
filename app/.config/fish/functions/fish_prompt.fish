@@ -118,17 +118,13 @@ function fish_right_prompt --description 'Write out the right prompt'
 end
 
 function fish_prompt --description 'Write out the left prompt'
-    # Save the return status and duration of the previous command
-    # (must happen first, see fish_right_prompt)
-    set -l stat $status
-    set -l duration $CMD_DURATION
-
     __fish_prompt_init
 
-    # Transient (already-submitted) prompt line: [time]─[return_code exec_time] $
+    # Transient (already-submitted) prompt line: just time + $
+    # (no status/exec time here: --final-rendering runs before the commandline
+    # is executed, so $status would reflect the previous command, not this one)
     if test "$argv[1]" = --final-rendering
-        set -l __fish_status_segment (__fish_prompt_status_segment $stat $duration)
-        printf '[%s%s%s]─[%s] $ ' "$__fish_color_blue" (date +%H:%M:%S) "$__fish_color_normal" "$__fish_status_segment"
+        printf '[%s%s%s] $ ' "$__fish_color_blue" (date +%H:%M:%S) "$__fish_color_normal"
         return
     end
 
