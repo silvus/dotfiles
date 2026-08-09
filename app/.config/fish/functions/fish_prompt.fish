@@ -1,4 +1,6 @@
 function __fish_prompt_init --description 'One-time setup shared by fish_prompt and fish_right_prompt'
+    # Guard flag so this setup only runs once per session, however many times/from
+    # whichever prompt function it gets called first
     if set -q __fish_prompt_configured
         return
     end
@@ -63,26 +65,41 @@ function __fish_prompt_init --description 'One-time setup shared by fish_prompt 
     set -g __fish_git_prompt_color_invalidstate red
     set -g __fish_git_prompt_color_untrackedfiles normal
     set -g __fish_git_prompt_color_cleanstate green --bold
+
+    # Once a commandline is submitted, redraw its prompt in a minimal form
+    set -g fish_transient_prompt 1
+end
+
+function __fish_prompt_status_segment --description 'Colored "<stat> [<exec_time>]" segment shared by both prompts' --argument-names stat duration
+    set -l color $__fish_color_green
+    if test $stat -gt 0
+        set color $__fish_color_red
+    end
+
+    # Show execution time next to the status if the last command took more than 2s
+    set -l exec_time ""
+    if test -n "$duration"; and test "$duration" -gt 2000
+        set exec_time " $__fish_color_yellow"(math --scale=1 "$duration / 1000")"s$__fish_color_normal"
+    end
+
+    printf '%s%s%s%s' "$color" "$stat" "$__fish_color_normal" "$exec_time"
 end
 
 function fish_right_prompt --description 'Write out the right prompt'
     # Save the return status and duration of the previous command
+    # (must happen first: $status/$CMD_DURATION reflect the last command run,
+    # and would otherwise be clobbered by the commands below)
     set -l stat $status
     set -l duration $CMD_DURATION
 
+    # No right prompt on the transient (already-submitted) prompt line
+    if test "$argv[1]" = --final-rendering
+        return
+    end
+
     __fish_prompt_init
 
-    # Set the color for the status depending on the value
-    set -l __fish_color_status $__fish_color_green
-    if test $stat -gt 0
-        set __fish_color_status $__fish_color_red
-    end
-
-    # Show execution time next to the status if the last command took more than 2s
-    set -l __fish_exec_time ""
-    if test -n "$duration"; and test "$duration" -gt 2000
-        set __fish_exec_time " $__fish_color_yellow"(math --scale=1 "$duration / 1000")"s$__fish_color_normal"
-    end
+    set -l __fish_status_segment (__fish_prompt_status_segment $stat $duration)
 
     # Current time
     set -l __fish_time_status (date +%H:%M:%S)
@@ -96,12 +113,24 @@ function fish_right_prompt --description 'Write out the right prompt'
         set __fish_nix_shell "[$__fish_color_nix""nix-shell$__fish_color_normal]-"
     end
 
-    printf '%s %s[%s%s%s%s]─[%s%s%s]' "$__fish_git_status" "$__fish_nix_shell" "$__fish_color_status" "$stat" "$__fish_color_normal" "$__fish_exec_time" "$__fish_color_blue" "$__fish_time_status" "$__fish_color_normal"
+    printf '%s %s[%s]─[%s%s%s]' "$__fish_git_status" "$__fish_nix_shell" "$__fish_status_segment" "$__fish_color_blue" "$__fish_time_status" "$__fish_color_normal"
 
 end
 
 function fish_prompt --description 'Write out the left prompt'
+    # Save the return status and duration of the previous command
+    # (must happen first, see fish_right_prompt)
+    set -l stat $status
+    set -l duration $CMD_DURATION
+
     __fish_prompt_init
+
+    # Transient (already-submitted) prompt line: [time]─[return_code exec_time] $
+    if test "$argv[1]" = --final-rendering
+        set -l __fish_status_segment (__fish_prompt_status_segment $stat $duration)
+        printf '[%s%s%s]─[%s] $ ' "$__fish_color_blue" (date +%H:%M:%S) "$__fish_color_normal" "$__fish_status_segment"
+        return
+    end
 
     # Change $ color if the user hasn't write permissions on the current directory
     set -l __fish_color_permission $__fish_color_normal
