@@ -14,3 +14,5 @@ __pycache__/
 .pdm.toml
 __pypackages__/
 .ruff_cache/
+
+**/.claude/settings.local.json
