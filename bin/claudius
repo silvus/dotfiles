@@ -307,6 +307,47 @@ def launch_and_provision():
     exec_login_as(RUN_USER, [f"{DOTFILES_PATH}/bin/dotfiles"])
 
 
+def restart_container():
+    """
+    Restart the claudius VM.
+
+    Exits with an error if the container hasn't been created yet.
+    """
+    if not container_exists():
+        log.error("%s does not exist yet. Run claudius normally to create it.", CONTAINER)
+        sys.exit(1)
+    log.info("Restarting %s...", CONTAINER)
+    run(["incus", "restart", CONTAINER])
+    wait_for_boot()
+
+
+def update_container():
+    """
+    Re-run `nixos-rebuild switch` inside the claudius VM to apply config
+    changes, without touching mounts or launching an agent.
+
+    Exits with an error if the container hasn't been created yet. Starts
+    the VM first if it's stopped.
+    """
+    if not container_exists():
+        log.error("%s does not exist yet. Run claudius normally to create it.", CONTAINER)
+        sys.exit(1)
+    if not container_is_running():
+        log.info("%s exists but is stopped — starting it.", CONTAINER)
+        run(["incus", "start", CONTAINER])
+        wait_for_boot()
+    log.info("Running nixos-rebuild switch...")
+    exec_login(
+        [
+            "nixos-rebuild",
+            "switch",
+            "--flake",
+            f"path:{DOTFILES_PATH}#{CONTAINER}",
+            "--sudo",
+        ]
+    )
+
+
 def ensure_container_ready():
     """
     Make sure claudius exists and is running, creating/provisioning it
@@ -378,13 +419,21 @@ def launch_agent(agent, path, agent_args=()):
     )
 
 
+COMMANDS = {
+    "restart": restart_container,
+    "update": update_container,
+}
+
+
 def init_cli_arg():
     """
     Parse command-line arguments.
 
     Arguments not recognized by claudius itself (e.g. --resume, --continue,
     --model ...) are collected into args.agent_args and forwarded as-is to
-    the agent CLI.
+    the agent CLI. A leading positional matching a name in COMMANDS is
+    captured in args.command instead of being treated as an agent arg;
+    any other positional is left in args.agent_args untouched.
 
     :return: The parsed argparse.Namespace.
     """
@@ -392,7 +441,9 @@ def init_cli_arg():
     parser = argparse.ArgumentParser(
         description="Mount the current directory into the claudius container and run "
         "an AI coding agent there. Creates the Incus VM if it doesn't exist yet. "
-        "Any unrecognized arguments are forwarded to the agent.",
+        "Any unrecognized arguments are forwarded to the agent. "
+        "Run '%(prog)s restart' to restart the VM, or '%(prog)s update' to "
+        "re-run nixos-rebuild inside it.",
     )
     parser.add_argument(
         "-v",
@@ -418,7 +469,20 @@ def init_cli_arg():
         help=f"Agent CLI to launch inside the container (default: {DEFAULT_AGENT})",
         default=DEFAULT_AGENT,
     )
+    parser.add_argument(
+        "command",
+        nargs="?",
+        default=None,
+        help=f"Command to run instead of launching an agent: {', '.join(COMMANDS)}",
+    )
     args, agent_args = parser.parse_known_args()
+
+    if args.command is not None and args.command not in COMMANDS:
+        # Not a real command (e.g. a positional prompt meant for the agent) —
+        # put it back at the front of the forwarded args.
+        agent_args = [args.command] + agent_args
+        args.command = None
+
     args.agent_args = agent_args
     return args
 
@@ -433,7 +497,6 @@ def main():
     """
     global DEBUG
 
-    # Parse args
     args = init_cli_arg()
     DEBUG = args.debug
 
@@ -441,6 +504,10 @@ def main():
 
     try:
         log.debug("start")
+
+        if args.command is not None:
+            COMMANDS[args.command]()
+            return 0
 
         ensure_container_ready()
 
