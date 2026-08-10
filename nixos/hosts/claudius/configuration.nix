@@ -49,4 +49,7 @@
     llm-agents.packages.${stdenv.hostPlatform.system}.claude-code
     # llm-agents.packages.${stdenv.hostPlatform.system}.codex
   ];
+
+  # Reclaim freed blocks from the host-side storage pool image
+  services.fstrim.enable = true;
 }
