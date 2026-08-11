@@ -7,7 +7,13 @@
 
     (pkgs.writeTextFile {
       name = "voyager-udev-rules";
-      text = ''KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3297", ATTRS{idProduct}=="1977", MODE="0666"'';
+      text = ''
+        # ZSA Voyager HID access
+        KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE:="0666"
+
+        # ZSA Voyager Keymapp / DFU flashing
+        SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", MODE:="0666", SYMLINK+="ignition_dfu"
+      '';
       destination = "/etc/udev/rules.d/70-voyager.rules";
     })
     (pkgs.writeTextFile {
