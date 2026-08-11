@@ -1,5 +1,5 @@
 # Claudius
-{ pkgs, llm-agents, modulesPath,... }:
+{ pkgs, lib, llm-agents, modulesPath,... }:
 
 {
   imports = [
@@ -50,6 +50,13 @@
     # llm-agents.packages.${stdenv.hostPlatform.system}.codex
   ];
 
+  # More aggressive GC
+  nix.gc.dates = lib.mkForce "hourly";
+  nix.gc.options = lib.mkForce "--delete-older-than 3d";
+
   # Reclaim freed blocks from the host-side storage pool image
-  services.fstrim.enable = true;
+  services.fstrim = {
+    enable = true;
+    interval = "*:0/15"; # every 15 minutes
+  };
 }
