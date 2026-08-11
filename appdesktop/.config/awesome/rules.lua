@@ -288,7 +288,7 @@ local rules = {
     },
     -- Ksnip (screenshots)
     {
-        rule_any = { class = { "ksnip" } },
+        rule_any = { class = { "ksnip", "screengrab" } },
         properties = {
             -- Floating on top and sticky
             floating = true,
