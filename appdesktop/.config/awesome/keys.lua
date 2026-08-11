@@ -481,8 +481,8 @@ keys.global = awful.util.table.join(
 
 	-- Print screen
 	awful.key({}, "Print", function()
-		awful.spawn("ksnip", false)
-	end, { description = "make a printscreen with ksnip", group = "launcher" }),
+		awful.spawn("screengrab --region", false)
+	end, { description = "make a printscreen", group = "launcher" }),
 
 	-- Reload
 	awful.key({ modkey, "Shift" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),

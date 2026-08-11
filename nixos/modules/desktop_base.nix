@@ -44,7 +44,8 @@
     file-roller            # Archive manager
     # dconf-editor         # GTK configuration editor
     libnotify              # Notifications
-    ksnip                  # Screenshots
+    # ksnip                  # Screenshots https://github.com/ksnip/ksnip/issues/1177
+    lxqt.screengrab        # Screenshots
     lxappearance           # GTK theme switcher GUI
     keepassxc              # Password manager
     usbutils               # Provide lsusb
