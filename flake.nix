@@ -12,6 +12,7 @@
 
     mdorg.url = "git+ssh://silvus@arcus:/data/git/mdorg";
     movies.url = "git+ssh://silvus@arcus:/data/git/movies";
+    sandash.url = "git+ssh://silvus@arcus:/data/git/sandash";
 
     llm-agents.url = "github:numtide/llm-agents.nix";
   };
@@ -24,6 +25,7 @@
       home-manager,
       mdorg,
       movies,
+      sandash,
       llm-agents,
     }:
     let
@@ -42,25 +44,6 @@
         };
       };
 
-      # 2026-05-06 fix for Lutris (fail on tests, openldap problem)
-      # overlay-unstable = final: prev: {
-      #   unstable = import nixpkgs-unstable {
-      #     inherit system;
-
-      #     config = {
-      #       allowUnfree = true;
-      #     };
-
-      #     overlays = [
-      #       (ufinal: uprev: {
-      #         openldap = uprev.openldap.overrideAttrs (_: {
-      #           doCheck = false;
-      #         });
-      #       })
-      #     ];
-      #   };
-      # };
-
       # hostSystem is the target arch for this specific host (e.g. "aarch64-linux"
       # for a Raspberry Pi), independent of the flake's own `system` above.
       mkHost =
@@ -73,6 +56,7 @@
               hostname
               mdorg
               movies
+              sandash
               llm-agents
               ;
           };
@@ -105,6 +89,10 @@
         virtus = mkHost "virtus" "x86_64-linux";
         servius = mkHost "servius" "x86_64-linux";
         arcus = mkHost "arcus" "x86_64-linux";
+
+        # Sandash kiosks: Raspberry Pi 3B + official 7" touchscreen
+        primus = mkHost "primus" "aarch64-linux";
+        secundus = mkHost "secundus" "aarch64-linux";
       };
 
       # Home manager on Debian
