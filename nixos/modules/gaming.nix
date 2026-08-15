@@ -5,14 +5,25 @@ with lib;
 {
   # Gaming packages
   environment.systemPackages = with pkgs; [
-    unstable.steam
-    unstable.lutris
+    steam
+    lutris
+    protonup-qt
+
+    # unstable.steam
+    # unstable.lutris
+    # unstable.protonup-qt
     # duckstation
     # snes9x-gtk
-    unstable.protonup-qt
-
     # gamemode
     # prismlauncher
+
+    # Dwarf fortress
+    dwarf-therapist
+    # dfhack
+    # dwarf-fortress
+    # dwarf-fortress-packages.soundSense
+    # dwarf-fortress-packages.themes.mayday
+    # dwarf-fortress-packages.dwarf-therapist
   ];
 
   # Steam configuration
