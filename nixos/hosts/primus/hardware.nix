@@ -97,6 +97,28 @@ in
     fi
   '';
 
+  # sd-image-aarch64.nix mounts this "noauto", so it's never actually
+  # mounted at boot -- silently disabling the activation script above.
+  # Mount it normally (still "nofail") so firmware refreshes happen.
+  fileSystems."/boot/firmware".options = lib.mkForce [ "nofail" ];
+
+  # SD card wear reduction: always-on kiosk, nothing needs to survive a reboot.
+
+  # journald still fsyncs every line to disk despite base.nix's size caps.
+  services.journald.extraConfig = lib.mkForce ''
+    Storage=volatile
+    RuntimeMaxUse=50M
+  '';
+
+  # Avoids an atime write on every file read.
+  fileSystems."/".options = [ "noatime" ];
+
+  # Don't let a crash-looping kiosk app fill the card with core dumps.
+  systemd.coredump.enable = false;
+
+  # Rebuilds here are infrequent; weekly GC just wastes a scan most weeks.
+  nix.gc.dates = lib.mkForce "monthly";
+
   # Dedicated low-priv user for the kiosk session. Group memberships are a
   # fallback for DRM/input device access; logind normally grants the active
   # seat0 session ACLs to these devices automatically.
