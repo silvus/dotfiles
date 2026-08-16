@@ -18,7 +18,7 @@ with lib;
     # prismlauncher
 
     # Dwarf fortress
-    dwarf-therapist
+    # dwarf-therapist
     # dfhack
     # dwarf-fortress
     # dwarf-fortress-packages.soundSense
