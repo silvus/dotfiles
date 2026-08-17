@@ -59,4 +59,9 @@
     enable = true;
     interval = "*:0/15"; # every 15 minutes
   };
+
+  swapDevices = [ {
+    device = "/var/lib/swapfile";
+    size = 8*1024; # 8GB
+  } ];
 }
