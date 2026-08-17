@@ -10,9 +10,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mdorg.url = "git+ssh://silvus@arcus:/data/git/mdorg";
-    movies.url = "git+ssh://silvus@arcus:/data/git/movies";
-    sandash.url = "git+ssh://silvus@arcus:/data/git/sandash";
+    mdorg.url = "git+ssh://arcus:/data/git/mdorg";
+    movies.url = "git+ssh://arcus:/data/git/movies";
 
     llm-agents.url = "github:numtide/llm-agents.nix";
   };
@@ -25,7 +24,6 @@
       home-manager,
       mdorg,
       movies,
-      sandash,
       llm-agents,
     }:
     let
@@ -56,7 +54,6 @@
               hostname
               mdorg
               movies
-              sandash
               llm-agents
               ;
           };
@@ -89,10 +86,6 @@
         virtus = mkHost "virtus" "x86_64-linux";
         servius = mkHost "servius" "x86_64-linux";
         arcus = mkHost "arcus" "x86_64-linux";
-
-        # Sandash kiosks: Raspberry Pi 3B + official 7" touchscreen
-        primus = mkHost "primus" "aarch64-linux";
-        secundus = mkHost "secundus" "aarch64-linux";
       };
 
       # Home manager on Debian

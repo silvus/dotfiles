@@ -77,8 +77,14 @@
     # ifuse # optional, to mount using 'ifuse'
   ];
 
+
+  # Builds for rpi3
+  boot.binfmt.emulatedSystems = [
+  "aarch64-linux"
+  ];
+
   # Android notifications
-  programs.kdeconnect.enable = true;
+  # programs.kdeconnect.enable = true;
 
   # IOS files access
   # services.usbmuxd.enable = true;
