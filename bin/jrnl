@@ -40,15 +40,30 @@ if [[ "$JOURNAL_MODE" == "weekly" ]]; then
 		printf '\n## %s %s\n\n' "$DATE" "$DAY_NAME" >>"$NOTE_FILE"
 	fi
 else
-	NOTE_FILE="$JOURNAL_DIR/$YEAR/$MONTH/$DATE.md"
+	# Pre-generate the daily file for every day for. today + 7 days
+	MONDAY=$(date -d "$DATE -$(($(date '+%u') - 1)) days" '+%Y-%m-%d')
+	END=$(date -d "$DATE +7 days" '+%Y-%m-%d')
 
-	# Create parent directories if needed
-	mkdir -p "$(dirname "$NOTE_FILE")"
+	D="$MONDAY"
+	while [[ "$D" < "$END" || "$D" == "$END" ]]; do
+		Y=$(date -d "$D" '+%Y')
+		M=$(date -d "$D" '+%m')
+		DN=$(date -d "$D" '+%A')
+		DN="${DN^}"
+		F="$JOURNAL_DIR/$Y/$M/$D.md"
 
-	# Create note from template if it doesn't exist yet
-	if [[ ! -f "$NOTE_FILE" ]]; then
-		printf '# %s %s\n\n' "$DATE" "$DAY_NAME" >"$NOTE_FILE"
-	fi
+		mkdir -p "$(dirname "$F")"
+
+		if [[ ! -f "$F" ]]; then
+			printf '# %s %s\n\n' "$D" "$DN" >"$F"
+		fi
+
+		if [[ "$D" == "$DATE" ]]; then
+			NOTE_FILE="$F"
+		fi
+
+		D=$(date -d "$D +1 day" '+%Y-%m-%d')
+	done
 fi
 
 # Open the note — use tmuxdev if inside a tmux session, $EDITOR otherwise
