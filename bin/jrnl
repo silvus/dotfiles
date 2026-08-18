@@ -2,6 +2,11 @@
 
 set -e
 
+# Journal file granularity: "daily" (one file per day) or "weekly" (one file
+# per week, named week_<WW>.md, with a new "## <date>" section appended each
+# day it's opened).
+JOURNAL_MODE="daily"
+
 NOTE_PATH="${NOTE_PATH:-${SILVUSDOC}}"
 
 if [[ -z "$NOTE_PATH" ]]; then
@@ -12,19 +17,38 @@ fi
 JOURNAL_DIR="$NOTE_PATH/journalogs"
 YEAR=$(date '+%Y')
 MONTH=$(date '+%m')
+WEEK=$(date '+%V')
 DATE=$(date '+%Y-%m-%d')
 DAY_NAME=$(date '+%A')
-NOTE_FILE="$JOURNAL_DIR/$YEAR/$MONTH/$DATE.md"
 
 # Capitalise first letter of day name (locale-safe)
 DAY_NAME="$(echo "$DAY_NAME" | sed 's/./\u&/')"
 
-# Create parent directories if needed
-mkdir -p "$(dirname "$NOTE_FILE")"
+if [[ "$JOURNAL_MODE" == "weekly" ]]; then
+	NOTE_FILE="$JOURNAL_DIR/$YEAR/$MONTH/week_$WEEK.md"
 
-# Create note from template if it doesn't exist yet
-if [[ ! -f "$NOTE_FILE" ]]; then
-	printf '# %s %s\n\n' "$DATE" "$DAY_NAME" > "$NOTE_FILE"
+	# Create parent directories if needed
+	mkdir -p "$(dirname "$NOTE_FILE")"
+
+	# Create note from template if it doesn't exist yet
+	if [[ ! -f "$NOTE_FILE" ]]; then
+		printf '# Week %s\n' "$WEEK" >"$NOTE_FILE"
+	fi
+
+	# Append a section for today if it isn't already in the file
+	if ! grep -q "^## $DATE" "$NOTE_FILE"; then
+		printf '\n## %s %s\n\n' "$DATE" "$DAY_NAME" >>"$NOTE_FILE"
+	fi
+else
+	NOTE_FILE="$JOURNAL_DIR/$YEAR/$MONTH/$DATE.md"
+
+	# Create parent directories if needed
+	mkdir -p "$(dirname "$NOTE_FILE")"
+
+	# Create note from template if it doesn't exist yet
+	if [[ ! -f "$NOTE_FILE" ]]; then
+		printf '# %s %s\n\n' "$DATE" "$DAY_NAME" >"$NOTE_FILE"
+	fi
 fi
 
 # Open the note — use tmuxdev if inside a tmux session, $EDITOR otherwise
