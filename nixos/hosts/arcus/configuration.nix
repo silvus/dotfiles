@@ -24,6 +24,9 @@
     # ../../modules/mdorg.nix
   ];
 
+  # Per-host, not shared via base.nix.
+  system.stateVersion = "25.11";
+
   # environment.systemPackages = with pkgs; [
   # ];
 

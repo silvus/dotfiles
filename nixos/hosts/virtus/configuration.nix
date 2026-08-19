@@ -30,6 +30,9 @@
     # ../../modules/transmission.nix
   ];
 
+  # Per-host, not shared via base.nix.
+  system.stateVersion = "25.11";
+
   # Bootloader (dual boot with Debian)
   # https://wiki.nixos.org/wiki/Systemd/boot
   boot.loader = {
