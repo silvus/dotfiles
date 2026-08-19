@@ -25,6 +25,9 @@
     # ../../modules/development_php.nix
   ];
 
+  # Per-host, not shared via base.nix.
+  system.stateVersion = "26.05";
+
   # Host-specific networking
   networking = {
     hostName = "claudius";
