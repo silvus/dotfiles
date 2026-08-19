@@ -604,7 +604,7 @@ def main():
             return 1
 
         log.info('Reading secrets age')
-        secrets_path = Path(__file__).parent.parent / ".secrets.age"
+        secrets_path = Path(__file__).parent.parent / "secrets" / "syncthing.age"
         result = subprocess.run(
             ["age", "-d", str(secrets_path)],
             check=True,
