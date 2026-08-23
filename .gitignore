@@ -7,3 +7,4 @@ custom
 custom/
 
 .claude/settings.local.json
+/result

@@ -73,17 +73,10 @@
 
     kcc # convert comic/manga to EPUB
     rpi-imager # Flash image to rpi sd card
-    # unstable.fresh-editor
 
     # ios files access
     # libimobiledevice
     # ifuse # optional, to mount using 'ifuse'
-  ];
-
-
-  # Builds for rpi3
-  boot.binfmt.emulatedSystems = [
-  "aarch64-linux"
   ];
 
   # Android notifications
