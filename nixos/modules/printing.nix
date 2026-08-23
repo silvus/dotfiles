@@ -19,4 +19,8 @@
     nssmdns4 = true;
     openFirewall = true;
   };
+
+  # Scanner
+  hardware.sane.enable = true;
+
 }

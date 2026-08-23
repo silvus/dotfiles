@@ -110,7 +110,6 @@
   # Desktop support
   programs.dconf.enable = true;
   # services.udisks2.enable = true;
-  # hardware.sane.enable = true;
 
   # Bluetooth
   hardware.bluetooth.enable = true;
