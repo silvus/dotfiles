@@ -1,0 +1,429 @@
+#!/usr/bin/env python3
+
+"""
+Sort photos/videos into /data/photos/YYYY/MM/, renamed by capture date
+(YYYYMMDD_HHMMSS.ext).
+
+Capture date is read from:
+  - JPEG EXIF, and EXIF embedded in TIFF-based RAW formats (CR2, NEF, DNG,
+    ARW, ORF) since they're a bare TIFF structure themselves
+    (DateTimeOriginal, DateTimeDigitized, then IFD0 DateTime)
+  - QuickTime/MP4 atoms (mvhd creation time) for .mov/.mp4/.m4v
+  - file mtime, as a fallback for everything else (including RAF, whose
+    proprietary container isn't a plain TIFF)
+"""
+
+import argparse
+import filecmp
+import logging
+import mmap
+import os
+import shutil
+import struct
+import sys
+from datetime import datetime, timedelta
+
+logger = logging.getLogger("photos_sort")
+
+
+SOURCES = [
+    ("/data/photos/a_ranger", False), # moving
+    # ("/data/media/phone_photo/", True),  # phone phobos, in copy
+    # ("/data/utils/phone_photo_cronos", False),  # phone cronos, moving
+    # ("/data/utils/phone_photo_catus", False),  # phone catus, moving
+    # ("/data/utils/phone_photo_pixelus", False),  # phone pixelus, moving
+    ("/data/phone_photos", False),  # phone corus, moving
+    ("/data/phone_photos_pixel8", True),  # phone pixel8, in copy
+]
+
+DEST_DIR = "/data/photos"
+IMAGE_EXTS = {
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tif",
+    ".tiff",
+    ".heic",
+    ".heif",
+    ".webp",
+}
+RAW_EXTS = {".cr2", ".nef", ".arw", ".dng", ".orf", ".raf"}
+VIDEO_EXTS = {".mp4", ".mov", ".m4v", ".avi", ".3gp", ".mkv"}
+MEDIA_EXTS = IMAGE_EXTS | RAW_EXTS | VIDEO_EXTS
+
+RENAME_FORMAT = "%Y%m%d_%H%M%S"
+
+
+class ColorFormatter(logging.Formatter):
+    """Colors just the level name (e.g. INFO/WARNING)"""
+
+    LEVEL_COLORS = {
+        logging.DEBUG: "\033[36m",  # cyan
+        logging.INFO: "\033[32m",  # green
+        logging.WARNING: "\033[33m",  # yellow
+        logging.ERROR: "\033[31m",  # red
+        logging.CRITICAL: "\033[1;31m",  # bold red
+    }
+    RESET = "\033[0m"
+
+    def __init__(self, *args, use_color=True, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.use_color = use_color
+
+    def format(self, record):
+        levelname = record.levelname
+        color = self.LEVEL_COLORS.get(record.levelno) if self.use_color else None
+        if color:
+            record.levelname = f"{color}{levelname}{self.RESET}"
+        try:
+            return super().format(record)
+        finally:
+            record.levelname = levelname  # don't leak the color codes to other handlers
+
+
+# -------- EXIF (JPEG) --------
+
+
+def read_jpeg_exif_date(path):
+    """Return a datetime from a JPEG's EXIF tags, or None."""
+    try:
+        with open(path, "rb") as f:
+            if f.read(2) != b"\xff\xd8":
+                return None
+            exif = _find_jpeg_exif_segment(f)
+            if exif is None:
+                return None
+            return _parse_exif_date(exif)
+    except (OSError, struct.error):
+        return None
+
+
+def _find_jpeg_exif_segment(f):
+    while True:
+        marker = f.read(2)
+        if len(marker) < 2 or marker[0] != 0xFF:
+            return None
+        if marker[1] in (0xD8, 0x01) or 0xD0 <= marker[1] <= 0xD7:
+            continue  # markers without a payload
+        if marker[1] == 0xDA:  # start of scan: no more metadata follows
+            return None
+        size_bytes = f.read(2)
+        if len(size_bytes) < 2:
+            return None
+        size = struct.unpack(">H", size_bytes)[0]
+        payload = f.read(size - 2)
+        if marker[1] == 0xE1 and payload[:6] == b"Exif\x00\x00":
+            return payload[6:]
+
+
+def _parse_exif_date(tiff):
+    if tiff[:2] == b"II":
+        endian = "<"
+    elif tiff[:2] == b"MM":
+        endian = ">"
+    else:
+        return None
+
+    def u16(off):
+        return struct.unpack_from(endian + "H", tiff, off)[0]
+
+    def u32(off):
+        return struct.unpack_from(endian + "I", tiff, off)[0]
+
+    def read_ifd(offset):
+        entries = {}
+        count = u16(offset)
+        for i in range(count):
+            entry_off = offset + 2 + i * 12
+            tag = u16(entry_off)
+            typ = u16(entry_off + 2)
+            entries[tag] = (typ, entry_off)
+        return entries, offset + 2 + count * 12
+
+    def ascii_value(typ, entry_off):
+        if typ != 2:
+            return None
+        count = u32(entry_off + 4)
+        if count <= 4:
+            data = tiff[entry_off + 8 : entry_off + 8 + count]
+        else:
+            value_off = u32(entry_off + 8)
+            data = tiff[value_off : value_off + count]
+        return data.split(b"\x00", 1)[0].decode("ascii", "replace")
+
+    ifd0_offset = u32(4)
+    ifd0, _ = read_ifd(ifd0_offset)
+
+    exif_ptr = ifd0.get(0x8769)
+    if exif_ptr:
+        exif_ifd, _ = read_ifd(u32(exif_ptr[1] + 8))
+        for tag in (0x9003, 0x9004):  # DateTimeOriginal, DateTimeDigitized
+            if tag in exif_ifd:
+                typ, entry_off = exif_ifd[tag]
+                value = ascii_value(typ, entry_off)
+                date = _parse_exif_datetime_string(value)
+                if date:
+                    return date
+
+    if 0x0132 in ifd0:  # IFD0 DateTime
+        typ, entry_off = ifd0[0x0132]
+        date = _parse_exif_datetime_string(ascii_value(typ, entry_off))
+        if date:
+            return date
+
+    return None
+
+
+def _parse_exif_datetime_string(value):
+    if not value:
+        return None
+    try:
+        return datetime.strptime(value.strip(), "%Y:%m:%d %H:%M:%S")
+    except ValueError:
+        return None
+
+
+def read_raw_exif_date(path):
+    """Return a datetime from a TIFF-based RAW file's EXIF tags, or None.
+
+    CR2, NEF, DNG, ARW, and ORF are themselves a TIFF structure starting
+    at byte 0 (no JPEG/APP1 wrapper to unwrap first, unlike a plain JPEG).
+    mmap is used so parsing a large RAW file doesn't require reading the
+    whole thing into memory up front.
+    """
+    try:
+        if os.path.getsize(path) < 8:
+            return None
+        with (
+            open(path, "rb") as f,
+            mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as tiff,
+        ):
+            return _parse_exif_date(tiff)
+    except (OSError, ValueError, struct.error):
+        return None
+
+
+# -------- QuickTime / MP4 --------
+
+# QuickTime/MP4 "mvhd" timestamps count seconds since the Mac/QuickTime
+# epoch (1904-01-01), not the Unix epoch (1970-01-01) — a quirk inherited
+# from classic Mac OS. See ISO/IEC 14496-12 (the mvhd box definition).
+QT_EPOCH = datetime(1904, 1, 1)
+
+
+def read_quicktime_date(path):
+    """Return a datetime from an mp4/mov 'mvhd' atom, or None."""
+    try:
+        with open(path, "rb") as f:
+            date = _find_mvhd_date(f, os.path.getsize(path))
+    except (OSError, struct.error):
+        return None
+    if date is None or date.year < 1970:
+        return None
+    return date
+
+
+def _find_mvhd_date(f, end, depth=0):
+    if depth > 8:
+        return None
+    while f.tell() < end:
+        header = f.read(8)
+        if len(header) < 8:
+            return None
+        size, atom_type = struct.unpack(">I4s", header)
+        header_size = 8
+        if size == 1:  # 64-bit size
+            size = struct.unpack(">Q", f.read(8))[0]
+            header_size = 16
+        if size == 0:
+            # ISO/IEC 14496-12: a size of 0 means "box extends to the end
+            # of the file" — only valid for the last top-level box (e.g. a
+            # trailing mdat when moov comes later in the file).
+            body_end = end
+        elif size < header_size:
+            return None
+        else:
+            body_end = f.tell() + (size - header_size)
+
+        if atom_type == b"mvhd":
+            version = f.read(1)[0]
+            f.read(3)  # flags
+            if version == 1:
+                created = struct.unpack(">Q", f.read(8))[0]
+            else:
+                created = struct.unpack(">I", f.read(4))[0]
+            return QT_EPOCH + timedelta(seconds=created)
+
+        if atom_type in (b"moov", b"trak", b"mdia", b"udta"):
+            result = _find_mvhd_date(f, min(body_end, end), depth + 1)
+            if result:
+                return result
+
+        f.seek(body_end)
+    return None
+
+
+# -------- date resolution --------
+
+
+def get_capture_date(path):
+    ext = os.path.splitext(path)[1].lower()
+    date = None
+    if ext in IMAGE_EXTS:
+        date = read_jpeg_exif_date(path)
+    elif ext in RAW_EXTS:
+        date = read_raw_exif_date(path)
+    elif ext in VIDEO_EXTS:
+        date = read_quicktime_date(path)
+    if date is None:
+        date = datetime.fromtimestamp(os.path.getmtime(path))
+    return date
+
+
+# -------- sorting --------
+
+
+def iter_media_files(src_dir):
+    for root, _dirs, files in os.walk(src_dir):
+        for name in files:
+            yield os.path.join(root, name)
+
+
+def unique_destination(dest_file, src_file, existing):
+    """Return (final_dest_or_None, duplicate). None dest means: skip, it's a duplicate.
+
+    Existing files at dest_file are never overwritten, in both copy and move
+    mode: if the content is byte-identical it's treated as already sorted
+    (skipped, source left untouched — this is what makes re-running a
+    --copy source like /data/phone_photos_pixel8 idempotent); if the name
+    collides but the content differs, a numeric suffix (_1, _2, ...) is
+    added until a free name is found.
+
+    `existing` maps a dest path to the source file already claiming it in
+    this run, for paths not yet on disk (relevant in --dry-run, where
+    nothing is actually written, and across SOURCES writing to the same
+    destination filename in one invocation). Once a dest_file is really on
+    disk, it's checked directly rather than trusting `existing`, since a
+    --move'd source file may no longer exist to compare against.
+    """
+    root, ext = os.path.splitext(dest_file)
+    append = 1
+    while True:
+        if os.path.isfile(dest_file):
+            compare_to = dest_file
+        else:
+            compare_to = existing.get(dest_file)
+        if compare_to is None:
+            return dest_file, False
+        if filecmp.cmp(src_file, compare_to, shallow=False):
+            return None, True
+        dest_file = f"{root}_{append}{ext}"
+        append += 1
+
+
+def sort_photos(src_dir, dest_dir, existing, copy_files=False, dry_run=False):
+    total = moved = duplicates = skipped = errors = 0
+    tag = "[DRY-RUN] " if dry_run else ""
+
+    for src_file in iter_media_files(src_dir):
+        name = os.path.basename(src_file)
+        if name.startswith("."):
+            continue
+        ext = os.path.splitext(name)[1].lower()
+        if ext not in MEDIA_EXTS:
+            continue
+
+        total += 1
+        date = get_capture_date(src_file)
+        year_dir = os.path.join(dest_dir, date.strftime("%Y"), date.strftime("%m"))
+        dest_file = os.path.join(year_dir, date.strftime(RENAME_FORMAT) + ext)
+
+        if os.path.abspath(dest_file) == os.path.abspath(src_file):
+            skipped += 1
+            continue
+
+        dest_file, duplicate = unique_destination(dest_file, src_file, existing)
+
+        if duplicate:
+            duplicates += 1
+            logger.info("%sskip (duplicate of existing file): %s", tag, src_file)
+            continue
+
+        verb = "copy" if copy_files else "move"
+        logger.info("%s%s: %s -> %s", tag, verb, src_file, dest_file)
+
+        existing[dest_file] = src_file
+        if not dry_run:
+            try:
+                os.makedirs(year_dir, exist_ok=True)
+                if copy_files:
+                    shutil.copy2(src_file, dest_file)
+                else:
+                    shutil.move(src_file, dest_file)
+            except OSError as e:
+                # One bad file (permission denied, full disk, ...) shouldn't
+                # abort the whole run: log it and keep going with the rest.
+                errors += 1
+                logger.error(
+                    "%sfailed to %s %s -> %s: %s", tag, verb, src_file, dest_file, e
+                )
+                continue
+        moved += 1
+
+    action = "would move/copy" if dry_run else "moved/copied"
+    logger.info(
+        "%s%s: %d file(s) seen, %d %s, %d duplicate(s) skipped, %d already in place, %d error(s).",
+        tag,
+        src_dir,
+        total,
+        moved,
+        action,
+        duplicates,
+        skipped,
+        errors,
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Sort and rename photos/videos by capture date into /data/photos/YYYY/MM/.",
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="show what would happen without touching files",
+    )
+    args = parser.parse_args()
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(
+        ColorFormatter(
+            "%(asctime)s %(levelname)s %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+            use_color=handler.stream.isatty(),
+        )
+    )
+    logging.basicConfig(level=logging.INFO, handlers=[handler])
+
+    if args.dry_run:
+        logger.info("[DRY-RUN] no files will be moved, copied, or overwritten")
+
+    existing = {}  # dest path -> claiming source file, shared across SOURCES this run
+    for src_dir, copy_files in SOURCES:
+        if not os.path.isdir(src_dir):
+            logger.warning("skip source (not a directory): %s", src_dir)
+            continue
+        sort_photos(
+            src_dir, DEST_DIR, existing, copy_files=copy_files, dry_run=args.dry_run
+        )
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        logger.warning("interrupted by user, exiting")
+        sys.exit(130)
