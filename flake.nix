@@ -10,8 +10,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mdorg.url = "git+ssh://arcus:/data/git/mdorg";
-    movies.url = "git+ssh://arcus:/data/git/movies";
+    mdorg.url = "git+ssh://silvus@arcus:/data/git/mdorg";
+    movies.url = "git+ssh://silvus@arcus:/data/git/movies";
 
     llm-agents.url = "github:numtide/llm-agents.nix";
   };

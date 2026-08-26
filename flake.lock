@@ -127,11 +127,11 @@
         "rev": "f1faafca81ba38c2769cfee73da9f8c389e2bec8",
         "revCount": 13,
         "type": "git",
-        "url": "ssh://arcus/data/git/mdorg"
+        "url": "ssh://silvus@arcus/data/git/mdorg"
       },
       "original": {
         "type": "git",
-        "url": "ssh://arcus/data/git/mdorg"
+        "url": "ssh://silvus@arcus/data/git/mdorg"
       }
     },
     "movies": {
@@ -147,11 +147,11 @@
         "rev": "7792e78aef17a40e531994906a8418e0d4c10a34",
         "revCount": 45,
         "type": "git",
-        "url": "ssh://arcus/data/git/movies"
+        "url": "ssh://silvus@arcus/data/git/movies"
       },
       "original": {
         "type": "git",
-        "url": "ssh://arcus/data/git/movies"
+        "url": "ssh://silvus@arcus/data/git/movies"
       }
     },
     "nixpkgs": {
