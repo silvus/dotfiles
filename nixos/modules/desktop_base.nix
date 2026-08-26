@@ -4,6 +4,7 @@
   # System packages — core userland tools and desktop utilities
   environment.systemPackages = with pkgs; [
     nfs-utils
+    wireguard-tools
     borgbackup
 
     # Core user applications
