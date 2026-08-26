@@ -25,7 +25,7 @@
     # ../../modules/mnt_doc.nix
     ../../modules/development.nix
     # ../../modules/development_php.nix
-    # ../../modules/development_containers.nix
+    ../../modules/development_containers.nix
     ../../modules/mdorg.nix
     ../../modules/movies.nix
     # ../../modules/transmission.nix
