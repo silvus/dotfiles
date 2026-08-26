@@ -154,6 +154,6 @@
   # Yubikey
   hardware.gpgSmartcards.enable = true;
   services.pcscd.enable = true;
-  # hardware.fido2.enable = true;
+  services.udev.packages = [ pkgs.libfido2 ];
   programs.ssh.startAgent = true;
 }

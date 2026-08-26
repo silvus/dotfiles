@@ -66,6 +66,9 @@
 [gpg]
 	# Sign with a SSH key
 	format = ssh
+[gpg "ssh"]
+	# File mapping identities to allowed SSH signing keys, for `git log --show-signature` / `git verify-commit`
+	allowedSignersFile = ~/.config/git/allowed_signers
 [help]
 	# Git will guess what you meant and try to run it
 	# autocorrect = prompt
