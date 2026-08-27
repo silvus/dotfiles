@@ -70,7 +70,10 @@ def on_exit(filepath_tmp):
 def open_editor(filepath):
     logger.debug("Open editor on {}".format(filepath))
 
-    if shutil.which("codium"):
+    if shutil.which("hx"):
+        logger.info("Open tempory decrypted file in Helix")
+        execute_cmd(["hx", filepath])
+    elif shutil.which("codium"):
         logger.info("Open tempory decrypted file in Codium")
         execute_cmd(["codium", "--wait", filepath])
     elif shutil.which("geany"):
