@@ -14,7 +14,7 @@
 
     wezterm                # Terminal emulator
     # rxvt-unicode         # Terminal emulator
-    ghostty                # Terminal emulator
+    # ghostty                # Terminal emulator
 
     thunar                 # File manager
     thunar-volman
@@ -37,8 +37,8 @@
     eom                    # Image viewer
 
     # System utilities
-    bc
-    rink
+    bc                     # Calculator
+    rink                   # Calculator
     xdg-utils              # Desktop integration
     gparted                # Partition manager
     gnome-disk-utility     # Disk management
@@ -113,8 +113,8 @@
   # services.udisks2.enable = true;
 
   # Bluetooth
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
+  # hardware.bluetooth.enable = true;
+  # services.blueman.enable = true;
 
   # Enable libinput for touchpad and input device support
   services.libinput.enable = true;
@@ -155,5 +155,5 @@
   hardware.gpgSmartcards.enable = true;
   services.pcscd.enable = true;
   services.udev.packages = [ pkgs.libfido2 ];
-  programs.ssh.startAgent = true;
+  # programs.ssh.startAgent = true;
 }

@@ -99,10 +99,10 @@
       };
 
       sessionCommands = ''
-        # Blank screen after 50 min
-        ${pkgs.xset}/bin/xset s 3000 3000
-        # Power off screen after 1 hour
-        ${pkgs.xset}/bin/xset dpms 3600 3600 3600
+        # Blank screen after 35 min
+        ${pkgs.xset}/bin/xset s 2100 2100
+        # Power off screen after 45 min
+        ${pkgs.xset}/bin/xset dpms 2700 2700 2700
 
         ${pkgs.xrdb}/bin/xrdb -merge -I$HOME ~/.Xresources
         if [ -f "$HOME/.dotfiles/custom/Xresources" ]; then
