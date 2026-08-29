@@ -114,7 +114,7 @@
   environment.systemPackages = with pkgs; [
     # Editor
     vim
-    # neovim
+    neovim
     helix
     # nano
     # emacs
