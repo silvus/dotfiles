@@ -32,6 +32,11 @@
   # TLP Power Management
   services.tlp = {
     enable = true;
+
+    # tlp-pd: TLP's own power-profiles-daemon-compatible D-Bus interface
+    # Used by lxqt-powermanagement to change profile
+    pd.enable = true;
+
     settings = {
       # Battery thresholds
       # START_CHARGE_THRESH_BAT0 = 20;
@@ -42,19 +47,19 @@
       # CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
       # CPU energy/performance policy (EPP hint on intel_pstate)
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      # CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      # CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power"; # TLP default, no-op
 
       # Platform profile (firmware-level power/perf profile)
-      PLATFORM_PROFILE_ON_AC = "performance";
-      PLATFORM_PROFILE_ON_BAT = "low-power";
+      # PLATFORM_PROFILE_ON_AC = "performance";
+      # PLATFORM_PROFILE_ON_BAT = "balanced"; # TLP default, no-op
 
       # Runtime power management (PCI/USB device idling)
-      RUNTIME_PM_ON_AC = "on";
-      RUNTIME_PM_ON_BAT = "auto";
+      # RUNTIME_PM_ON_AC = "on";
+      # RUNTIME_PM_ON_BAT = "auto";
 
       # USB autosuspend
-      USB_AUTOSUSPEND = 1;
+      # USB_AUTOSUSPEND = 1;
 
       # WiFi power saving
       # WIFI_PWR_ON_AC = "off";
