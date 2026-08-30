@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# Wraps helix so the Linux console (TERM=linux) gets a 16-color-safe theme
+# instead of the truecolor theme (carbonfox) used everywhere else.
+
+set -e
+
+self_dir=$(cd "$(dirname "$0")" && pwd)
+
+real_hx=""
+IFS=:
+for dir in $PATH; do
+  if [ "$dir" != "$self_dir" ] && [ -x "$dir/hx" ]; then
+    real_hx="$dir/hx"
+    break
+  fi
+done
+unset IFS
+
+if [ -z "$real_hx" ]; then
+  echo "hx: no real helix binary found on PATH" >&2
+  exit 127
+fi
+
+if [ "$TERM" = "linux" ]; then
+  src="$HOME/.config/helix/config.toml"
+  cache_dir="$HOME/.cache/helix"
+  cache_config="$cache_dir/tty-config.toml"
+
+  mkdir -p "$cache_dir"
+  if [ ! -f "$cache_config" ] || [ "$src" -nt "$cache_config" ]; then
+    sed 's/^theme = .*/theme = "term16_dark"/' "$src" >"$cache_config"
+  fi
+
+  exec "$real_hx" -c "$cache_config" "$@"
+else
+  exec "$real_hx" "$@"
+fi
