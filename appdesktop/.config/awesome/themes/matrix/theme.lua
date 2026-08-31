@@ -7,6 +7,7 @@ local gears  = require("gears")
 local wibox = require("wibox")
 local screens = require("screens")
 local config = require('config')
+local color = require("utils.color")
 
 local theme = {}
 
@@ -43,10 +44,11 @@ theme.taglist_fg_focus                          = "#FFFFFF"
 theme.taglist_bg_normal                         = theme.bg_normal
 theme.taglist_bg_focus                          = theme.success
 
-theme.tasklist_fg_focus                         = theme.fg_normal
-theme.tasklist_bg_focus                         = theme.bg_normal
+theme.tasklist_fg_focus                         = "#FFFFFF"
+theme.tasklist_bg_focus                         = color.darken(theme.success, 0.5)
 theme.tasklist_spacing                          = 15
 theme.tasklist_fg_normal                        = "#FFFFFF"
+theme.tasklist_bg_normal                        = theme.bg_normal
 
 -- Height/width rotated
 -- theme.graph_height                              = 1

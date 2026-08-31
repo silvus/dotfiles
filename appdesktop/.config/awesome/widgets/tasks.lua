@@ -31,7 +31,7 @@ customwidget.buttons = awful.util.table.join(
 )
 
 -- Build tasks widget list
-function widget(s)
+local function widget(s)
 	-- Create a tasklist widget
 	-- return awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, customwidget.buttons)
 
