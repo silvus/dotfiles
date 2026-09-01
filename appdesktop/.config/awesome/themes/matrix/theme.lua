@@ -192,7 +192,6 @@ local function bar(s)
 	local widget_tags_vertical = require("widgets.tags_vertical")
 	local widget_tasks_vertical = require("widgets.tasks_vertical")
 	local widget_clock = require("widgets.clock")
-	local widget_clock_vertical = require("widgets.clock_vertical")
 	local widget_sound = require("widgets.sound")
 	local widget_sound_input = require("widgets.sound_input")
 	local widget_notifications = require("widgets.notifications")
@@ -265,7 +264,7 @@ local function bar(s)
 				widget_rotate(widget_systray.widget),
 				widget_separator_vertical.widget,
 				widget_clock.icon,
-				widget_clock_vertical.widget,
+				widget_rotate(widget_clock.widget),
 				widget_separator_vertical.widget,
 				{
 					layoutbox,
