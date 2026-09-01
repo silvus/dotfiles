@@ -177,7 +177,7 @@ theme.master_width_factor = config.layouts_master_width
 -- Bar (Wibar) management
 
 -- Build a bar
-function bar(s)
+local function bar(s)
 
 	-- Customs widgets definitions
 	-- Import need to be done after beautiful init or colors are not defined
@@ -191,8 +191,8 @@ function bar(s)
 	local widget_tasks_vertical = require("widgets.tasks_vertical")
 	local widget_clock = require("widgets.clock")
 	local widget_clock_vertical = require("widgets.clock_vertical")
-	local widget_volumecapture = require("widgets.volumecapture")
-	local widget_volume = require("widgets.volume")
+	local widget_sound = require("widgets.sound")
+	local widget_sound_input = require("widgets.sound_input")
 	local widget_notifications = require("widgets.notifications")
 	local widget_cpu = require("widgets.cpu")
 	local widget_ram = require("widgets.ram")
@@ -201,7 +201,7 @@ function bar(s)
 	local widget_moc = require("widgets.moc")
 	local widget_systray = require("widgets.systray")
 	-- local widget_prompt = require("widgets.prompt")
-	local widget_keyboardlayout = require("widgets.keyboardlayout")
+	-- local widget_keyboardlayout = require("widgets.keyboardlayout")
 	local widget_battery = require("widgets.battery")
 
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using. One layoutbox per screen.
@@ -253,11 +253,12 @@ function bar(s)
 				widget_separator_vertical.widget,
 				widget_ram.icon,
 				widget_rotate(widget_ram.widget),
-				widget_rotate(widget_keyboardlayout.widget),
+				-- widget_rotate(widget_keyboardlayout.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
-				widget_volumecapture.widget,
-				widget_volume.widget,
+				widget_sound_input.widget,
+				widget_sound.icon_out,
+				widget_rotate(widget_sound.widget_out),
 				widget_separator_vertical.widget,
 				widget_rotate(widget_systray.widget),
 				widget_separator_vertical.widget,

@@ -7,7 +7,7 @@ local config = require("config")
 local beautiful = require("beautiful")
 -- Quake like terminal (single instance for all screens)
 local quake = require("utils.quake")
-local widget_volume = require("widgets.volume")
+local widget_sound = require("widgets.sound")
 local widget_notifications = require("widgets.notifications")
 local menubar = require("menubar")
 
@@ -23,7 +23,7 @@ local keys = {}
 modkey = config.modkey
 
 -- Panic buttons actions
-function panic_key()
+local function panic_key()
 	-- for all screens
 	for s in screen do
 		-- Go to second tag to fake history
@@ -40,7 +40,7 @@ function panic_key()
 
 	-- Mute sound
 	awful.spawn("amixer -D pulse sset Master mute", false)
-	widget_volume.volume.update()
+	widget_sound.update()
 
 	-- Clear all notifications
 	naughty.destroy_all_notifications()
@@ -78,14 +78,14 @@ function panic_key()
 end
 
 -- Unpanic button
-function unpanic_key(restore_tag)
+local function unpanic_key(restore_tag)
 	-- Unmute notifications
 	naughty.resume()
 	widget_notifications.update()
 
 	-- Unmute sound
 	awful.spawn("amixer -D pulse sset Master unmute", false)
-	widget_volume.volume.update()
+	widget_sound.update()
 
 	-- Restaure previous tag
 	if restore_tag then
@@ -408,30 +408,30 @@ keys.global = awful.util.table.join(
 
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function()
-		awful.spawn("amixer -q sset Master 5%-", false)
+		awful.spawn("amixer -q sset Master 10%-", false)
 		-- trigger widget update
-		widget_volume.volume.update()
+		widget_sound.update()
 	end, { description = "Volume up", group = "audio" }),
 	awful.key({}, "XF86AudioRaiseVolume", function()
-		awful.spawn("amixer -q sset Master 5%+", false)
-		widget_volume.volume.update()
+		awful.spawn("amixer -q sset Master 10%+", false)
+		widget_sound.update()
 	end, { description = "Volume down", group = "audio" }),
 	awful.key({}, "XF86AudioMute", function()
 		awful.spawn("amixer -q sset Master toggle", false)
-		widget_volume.volume.update()
+		widget_sound.update()
 	end, { description = "volume mute", group = "audio" }),
 	-- Simulated volume keys
 	awful.key({ modkey }, "Page_Down", function()
-		awful.spawn("amixer -q sset Master 5%-", false)
-		widget_volume.volume.update()
+		awful.spawn("amixer -q sset Master 10%-", false)
+		widget_sound.update()
 	end, { description = "Volume up", group = "audio" }),
 	awful.key({ modkey }, "Page_Up", function()
-		awful.spawn("amixer -q sset Master 5%+", false)
-		widget_volume.volume.update()
+		awful.spawn("amixer -q sset Master 10%+", false)
+		widget_sound.update()
 	end, { description = "Volume down", group = "audio" }),
 	awful.key({ modkey }, "End", function()
 		awful.spawn("amixer -q sset Master toggle", false)
-		widget_volume.volume.update()
+		widget_sound.update()
 	end, { description = "volume mute toggle", group = "audio" }),
 
 	-- Media Keys
