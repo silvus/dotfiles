@@ -249,7 +249,7 @@ theme.rules = {
 -- Bar (Wibar) management
 -- ---------------------------------------------------------------------
 local function bar(s)
-	local widget_rotate = require("widgets.rotate")
+	local widget_rotate = require("utils.widget_rotate")
 	local widget_tags_vertical = require("widgets.tags_vertical")
 	local widget_systray = require("widgets.systray")
 

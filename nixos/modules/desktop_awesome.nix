@@ -8,17 +8,17 @@
 
     # X11 core utilities (equivalents to: xorg xinit xserver-common xserver-xorg)
     xinit
-    xorgserver      # X.Org X11 server - core display server
-    xrandr          # Resize and rotate screen utility for multi-monitor setup
-    xev             # Event viewer for X11
-    xprop           # X property utility
-    xwininfo        # Window information utility
-    setxkbmap       # Set X keyboard mapping
+    xorgserver # X.Org X11 server - core display server
+    xrandr # Resize and rotate screen utility for multi-monitor setup
+    xev # Event viewer for X11
+    xprop # X property utility
+    xwininfo # Window information utility
+    setxkbmap # Set X keyboard mapping
     xset
     xrdb
 
     # Display and monitor management
-    arandr             # GUI for xrandr (monitor configuration)
+    arandr # GUI for xrandr (monitor configuration)
     # autorandr          # Automatic display configuration
 
     # Clipboard managers (xclip, xsel equivalents)
@@ -26,15 +26,15 @@
     xsel
 
     # X11 automation tools (xdotool, wmctrl equivalents)
-    xdotool            # Command-line X11 automation tool
-    wmctrl             # Control window manager from command line
+    xdotool # Command-line X11 automation tool
+    wmctrl # Control window manager from command line
 
     # Screen locker (i3lock equivalent)
     i3lock
 
     # Notification daemon and utilities (zenity equivalent)
-    zenity             # Display GTK dialogs from shell scripts
-    libnotify          # Send desktop notifications
+    zenity # Display GTK dialogs from shell scripts
+    libnotify # Send desktop notifications
     # dunst              # Lightweight notification daemon
 
     # Suckless tools (suckless-tools equivalent: dmenu)
@@ -46,7 +46,7 @@
     rxvt-unicode-emoji
 
     # System tray applications
-    networkmanagerapplet   # NetworkManager applet (nm-applet)
+    networkmanagerapplet
     # pasystray              # PulseAudio system tray
 
     # Screen color temperature adjustment (redshift-gtk equivalent)
@@ -54,11 +54,11 @@
     # gammastep
 
     # Appearance and theming
-    arc-theme              # GTK theme (Arc Dark)
-    kora-icon-theme        # Icon theme
+    arc-theme # GTK theme (Arc Dark)
+    kora-icon-theme # Icon theme
     # everforest-gtk-theme   # gtk theme
     # numix-icon-theme       # Icon theme (Numix)
-    adwaita-icon-theme     # Adwaita icon theme (includes cursor theme)
+    adwaita-icon-theme # Adwaita icon theme (includes cursor theme)
   ];
 
   # Enable X11 windowing system
@@ -110,9 +110,7 @@
         fi
 
         # Auto launcher
-        ${pkgs.writeShellScriptBin "autostart-launcher"
-          (builtins.readFile ./../../bin/autostart_launcher)
-        }/bin/autostart-launcher &
+        ${pkgs.writeShellScriptBin "autostart-launcher" (builtins.readFile ./../../bin/autostart_launcher)}/bin/autostart-launcher &
       '';
     };
 
@@ -120,8 +118,7 @@
     windowManager.awesome = {
       enable = true;
       # luaModules = with pkgs.luaPackages; [
-        # luarocks  # package manager for Lua modules
-        # luadbi-mysql  # optional, for awesome-extra functionality
+      # luarocks  # package manager for Lua modules
       # ];
     };
   };
@@ -151,7 +148,6 @@
 
   # Systemd user services for X11 session
   systemd.user.services = {
-    # NetworkManager Applet
     nm-applet = {
       description = "NetworkManager Applet";
       wantedBy = [ "graphical-session.target" ];
@@ -200,7 +196,7 @@
   };
 
   # Update environment.etc section
-  # Not used! The config in HOME is more logical!
+  # Not used! The config in HOME is the way
   # environment.etc = {
   #   # GTK 2.0 settings
   #   "xdg/gtk-2.0/gtkrc".text = ''

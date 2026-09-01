@@ -25,7 +25,7 @@ local netbar = wibox.widget {
 	-- widget 			= wibox.widget.progressbar
 	widget           = wibox.widget.graph,
 }
-local net = lain.widget.net({
+lain.widget.net({
 	-- width = 100, border_width = 0, ticks = true, ticks_size = 100,
 	settings = function()
 		-- netbar:set_value(net_now.received)
@@ -37,4 +37,3 @@ local netbg = wibox.container.background(netbar, beautiful.info, gears.shape.rec
 customwidget.widget = wibox.container.margin(netbg, 2, 4, 4, 4)
 
 return customwidget
-
