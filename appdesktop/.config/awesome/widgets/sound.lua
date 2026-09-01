@@ -51,7 +51,7 @@ local get_volume_and_mute = pulseaudio.get_volume_and_mute
 local function make_bar()
 	local bar = wibox.widget {
 		forced_height    = beautiful.graph_height or 1,
-		forced_width     = beautiful.graph_width or 75,
+		forced_width     = beautiful.sound_graph_width or 75,
 		margins          = 1,
 		paddings         = 1,
 		ticks            = true,
