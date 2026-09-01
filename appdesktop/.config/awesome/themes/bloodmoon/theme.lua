@@ -52,7 +52,8 @@ theme.tasklist_spacing                          = 15
 
 -- Height/width rotated
 theme.graph_height                              = 15
-theme.graph_width                               = 30
+theme.graph_width                               = 25
+theme.sound_graph_width                         = 65
 
 theme.titlebar_fg_normal                        = "#333333"
 theme.titlebar_bg_normal                        = "#1c0d0d"
@@ -239,7 +240,7 @@ local function bar(s)
 				widget_rotate(widget_cpu.widget, true),
 				widget_separator_vertical.widget,
 				widget_ram.icon,
-				widget_rotate(widget_ram.widget),
+				widget_rotate(widget_ram.widget, true),
 				-- widget_rotate(widget_keyboardlayout.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,

@@ -51,8 +51,8 @@ theme.tasklist_fg_normal                        = "#FFFFFF"
 theme.tasklist_bg_normal                        = theme.bg_normal
 
 -- Height/width rotated
--- theme.graph_height                              = 1
--- theme.graph_width                               = 75
+theme.graph_height                              = 1
+theme.graph_width                               = 60
 
 theme.titlebar_fg_normal                        = "#333333"
 theme.titlebar_bg_normal                        = "#1c2b25"
@@ -252,7 +252,7 @@ local function bar(s)
 				widget_rotate(widget_cpu.widget, true),
 				widget_separator_vertical.widget,
 				widget_ram.icon,
-				widget_rotate(widget_ram.widget),
+				widget_rotate(widget_ram.widget, true),
 				-- widget_rotate(widget_keyboardlayout.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
