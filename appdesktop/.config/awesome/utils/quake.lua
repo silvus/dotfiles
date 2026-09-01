@@ -79,6 +79,7 @@ function quake:display()
     -- Toggle display
     if self.visible then
         client.hidden = false
+        client.minimized = false
         client.maximized = self.maximized
         client.fullscreen = self.fullscreen
         client:raise()
@@ -91,6 +92,7 @@ function quake:display()
         client.maximized = false
         client.fullscreen = false
         client.hidden = true
+        client.minimized = false
         local ctags = client:tags()
         for j, _ in pairs(ctags) do
             ctags[j] = nil
@@ -233,4 +235,3 @@ _M.term = quake.new({
 
 
 return _M
-
