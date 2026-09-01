@@ -2,20 +2,20 @@
 -- Init
 -- ---------------------------------------------------------------------
 
-local awful  = require("awful")
-local gears  = require("gears")
-local wibox = require("wibox")
-local screens = require("screens")
-local config = require('config')
-local color = require("utils.color")
+local awful                                     = require("awful")
+local gears                                     = require("gears")
+local wibox                                     = require("wibox")
+local screens                                   = require("screens")
+local config                                    = require('config')
+local color                                     = require("utils.color")
 
-local theme = {}
+local theme                                     = {}
 
 -- ---------------------------------------------------------------------
 -- Config
 -- ---------------------------------------------------------------------
 
-theme.name = "bloodmoon"
+theme.name                                      = "bloodmoon"
 
 theme.info                                      = "#400d0f"
 theme.error                                     = "#FFA500"
@@ -99,6 +99,12 @@ theme.music_note                                = theme.dir .. "/icons/music_not
 theme.music_note_on                             = theme.dir .. "/icons/music_note_on.png"
 theme.note                                      = theme.dir .. "/icons/note.png"
 theme.net                                       = theme.dir .. "/icons/net.png"
+theme.network_wired                             = theme.dir .. "/icons/network_wired.png"
+theme.network_wifi_high                         = theme.dir .. "/icons/network_wifi_high.png"
+theme.network_wifi_medium                       = theme.dir .. "/icons/network_wifi_medium.png"
+theme.network_wifi_low                          = theme.dir .. "/icons/network_wifi_low.png"
+theme.network_disconnected                      = theme.dir .. "/icons/network_disconnected.png"
+theme.network_off                               = theme.dir .. "/icons/network_off.png"
 theme.paint                                     = theme.dir .. "/icons/paint.png"
 theme.paragraph                                 = theme.dir .. "/icons/paragraph.png"
 theme.shield                                    = theme.dir .. "/icons/shield.png"
@@ -180,16 +186,12 @@ theme.master_width_factor = config.layouts_master_width
 
 -- Build a bar
 local function bar(s)
-
 	-- Customs widgets definitions
 	-- Import need to be done after beautiful init or colors are not defined
-	local widget_rotate = require("widgets.rotate")
-	local widget_separator = require("widgets.separator")
+	local widget_rotate = require("utils.widget_rotate")
 	local widget_separator_vertical = require("widgets.separator_vertical")
 	local widget_layout = require("widgets.layout")
-	local widget_tags = require("widgets.tags")
 	local widget_tags_vertical = require("widgets.tags_vertical")
-	local widget_tasks = require("widgets.tasks")
 	local widget_tasks_vertical = require("widgets.tasks_vertical")
 	local widget_clock_vertical = require("widgets.clock_vertical")
 	local widget_sound = require("widgets.sound")
@@ -197,6 +199,7 @@ local function bar(s)
 	-- local widget_keyboardlayout = require("widgets.keyboardlayout")
 	local widget_notifications = require("widgets.notifications")
 	local widget_net = require("widgets.net")
+	local widget_netstatus = require("widgets.netstatus")
 	local widget_cpu = require("widgets.cpu")
 	local widget_ram = require("widgets.ram")
 	local widget_vpn = require("widgets.vpn")
@@ -210,15 +213,17 @@ local function bar(s)
 	-- Widget for main screen only
 	if s == screens.get_primary() then
 		-- Create a vertical wibox
-		wibox_custom = awful.wibar({
+		local wibar_instance = awful.wibar({
 			position = "left",
 			screen = s,
 			visible = config.show_bar,
-			bg = theme.bg_normal .. "bf" -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
+			bg = theme.bg_normal ..
+			"bf"                      -- add the alpha value to the color (where "00" would be completely transparent and "ff" would be no transparency
 		})
+		wibox_custom = wibar_instance
 
 		-- Add widgets to the wibox
-		wibox_custom:setup {
+		wibar_instance:setup {
 			layout = wibox.layout.align.vertical,
 			{ -- Left widgets
 				layout = wibox.layout.fixed.vertical,
@@ -231,9 +236,9 @@ local function bar(s)
 			},
 			{ -- Right widgets
 				layout = wibox.layout.fixed.vertical,
-				widget_vpn.icon,
 				widget_separator_vertical.widget,
-				widget_net.icon,
+				widget_vpn.icon,
+				widget_netstatus.icon,
 				widget_rotate(widget_net.widget, true),
 				widget_separator_vertical.widget,
 				widget_cpu.icon,
@@ -252,33 +257,8 @@ local function bar(s)
 				widget_clock_vertical.widget,
 				{
 					layoutbox,
-					layout = wibox.container.margin(layoutbox ,0 ,0 ,0 ,-5)
+					layout = wibox.container.margin(layoutbox, 0, 0, 0, -5)
 				},
-			},
-		}
-
-	else
-		-- secondary screen (always horizontal)
-		wibox_custom = awful.wibar({
-			position = "top",
-			screen = s,
-			visible = false,
-			--height = 25
-		})
-		wibox_custom:setup {
-			layout = wibox.layout.align.horizontal,
-			{ -- Left widgets
-				layout = wibox.layout.fixed.horizontal,
-				widget_tags.widget(s),
-			},
-			{ -- Middle widget
-				layout = wibox.layout.fixed.horizontal,
-				widget_tasks.widget(s),
-			},
-			{ -- Right widgets
-				layout = wibox.layout.fixed.horizontal,
-				widget_separator.widget,
-				layoutbox,
 			},
 		}
 	end
@@ -286,8 +266,6 @@ local function bar(s)
 	return wibox_custom
 end
 
-
 theme.bar = bar
-
 
 return theme
