@@ -5,13 +5,9 @@ local globalos = require("os")
 
 local customwidget = {}
 
-icon = wibox.widget.imagebox(beautiful.clock)
-customwidget.icon = wibox.container.margin(icon, 3, 4, 3, 4)
-
 -- Textclock widget
-
--- customwidget.widget = wibox.widget.textclock("<span color='#000000' size='x-small'>H</span><span color='#ffffff'>%H</span>\n<span color='#000000' size='x-small'>M</span><span color='#ffffff'>%M</span>\n<span color='#000000' size='x-small'>S</span><span color='#ffffff'>%S</span>", 1)
--- customwidget.widget = wibox.widget.textclock("<span color='#ffffff' size='x-large'>%H</span>\n<span color='#ffffff' size='x-large'>%M</span>\n<span color='#ffffff' size='x-large'>%S</span>", 1)
+local icon = wibox.widget.imagebox(beautiful.clock)
+customwidget.icon = wibox.container.margin(icon, 3, 4, 3, 4)
 
 customwidget.widget = wibox.container {
 	wibox.widget.textclock("<span color='#ffffff'>%T</span>", 1),
@@ -20,7 +16,7 @@ customwidget.widget = wibox.container {
 }
 
 -- Tooltip
-local widget_tooltip = awful.tooltip {
+awful.tooltip {
 	objects = { customwidget.widget, customwidget.icon },
 	timer_function = function()
 		return globalos.date('%A %d %B %Y\n%T')
@@ -28,4 +24,3 @@ local widget_tooltip = awful.tooltip {
 }
 
 return customwidget
-
