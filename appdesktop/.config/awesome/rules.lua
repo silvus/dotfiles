@@ -60,10 +60,10 @@ local rules = {
             screen = awful.screen.preferred,
             titlebars_enabled = false,
             placement = awful.placement.no_overlap + awful.placement.no_offscreen + awful.placement.top,
-            -- floating = false,
-            -- maximized = false,
-            -- maximized_vertical = false,
-            -- maximized_horizontal = false,
+            floating = false,
+            maximized = false,
+            maximized_vertical = false,
+            maximized_horizontal = false,
         }
     },
 
@@ -169,7 +169,7 @@ local rules = {
         properties = {
             -- Only property needed on rules, other are set in quake.lua
             titlebars_enabled = false,
-        }
+        },
     },
     -- Files explorer
     {
