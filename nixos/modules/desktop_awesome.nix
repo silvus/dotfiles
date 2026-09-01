@@ -47,7 +47,7 @@
 
     # System tray applications
     networkmanagerapplet   # NetworkManager applet (nm-applet)
-    pasystray              # PulseAudio system tray
+    # pasystray              # PulseAudio system tray
 
     # Screen color temperature adjustment (redshift-gtk equivalent)
     # redshift
@@ -163,15 +163,15 @@
     };
 
     # PulseAudio System Tray
-    pasystray = {
-      description = "PulseAudio System Tray";
-      wantedBy = [ "graphical-session.target" ];
-      partOf = [ "graphical-session.target" ];
-      serviceConfig = {
-        ExecStart = "${pkgs.pasystray}/bin/pasystray";
-        Restart = "on-failure";
-      };
-    };
+    # pasystray = {
+    #   description = "PulseAudio System Tray";
+    #   wantedBy = [ "graphical-session.target" ];
+    #   partOf = [ "graphical-session.target" ];
+    #   serviceConfig = {
+    #     ExecStart = "${pkgs.pasystray}/bin/pasystray";
+    #     Restart = "on-failure";
+    #   };
+    # };
 
     # Redshift with GTK systray icon (screen color temperature)
     # redshift = {

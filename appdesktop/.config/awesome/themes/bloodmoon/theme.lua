@@ -178,7 +178,7 @@ theme.master_width_factor = config.layouts_master_width
 -- Bar (Wibar) management
 
 -- Build a bar
-function bar(s)
+local function bar(s)
 
 	-- Customs widgets definitions
 	-- Import need to be done after beautiful init or colors are not defined
@@ -191,8 +191,8 @@ function bar(s)
 	local widget_tasks = require("widgets.tasks")
 	local widget_tasks_vertical = require("widgets.tasks_vertical")
 	local widget_clock_vertical = require("widgets.clock_vertical")
-	local widget_volumecapture = require("widgets.volumecapture")
-	local widget_volume = require("widgets.volume")
+	local widget_sound = require("widgets.sound")
+	local widget_sound_input = require("widgets.sound_input")
 	-- local widget_keyboardlayout = require("widgets.keyboardlayout")
 	local widget_notifications = require("widgets.notifications")
 	local widget_net = require("widgets.net")
@@ -243,8 +243,9 @@ function bar(s)
 				-- widget_rotate(widget_keyboardlayout.widget),
 				widget_separator_vertical.widget,
 				widget_notifications.widget,
-				widget_volumecapture.widget,
-				widget_volume.widget,
+				widget_sound_input.widget,
+				widget_sound.icon_out,
+				widget_rotate(widget_sound.widget_out),
 				widget_rotate(widget_systray.widget),
 				widget_separator_vertical.widget,
 				widget_clock_vertical.widget,
