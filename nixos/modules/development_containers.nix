@@ -12,6 +12,8 @@ with lib;
   virtualisation.incus = {
     enable = true;
     ui.enable = true;
+    # Don't start incus.service at boot, let incus.socket start it on first use instead
+    socketActivation = true;
   };
 
   # Incus env
