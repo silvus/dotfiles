@@ -18,47 +18,6 @@
     # dprint-plugins.g-plane-pretty_yaml
     dprint-plugins.dprint-plugin-markdown
 
-    # Markdown
-    marksman
-    markdown-oxide
-    # harper
-
-    lua
-    # lua lsp
-    lua-language-server
-    # lua formatter
-    stylua
-
-    # Python already in base
-    # python3
-    # python lsp
-    ty
-    ruff
-    python313Packages.ruff
-
-    rustc
-    cargo
-    # rust lsp
-    rust-analyzer
-    # rustup component add rust-analyzer
-    rustfmt
-    # rustup
-
-    # Golang
-    go
-    # Golang LSP
-    gopls
-
-    # nix lsp
-    nil
-    # nix formatter
-    nixfmt
-
-    # bash lsp
-    bash-language-server
-    # bash formatter
-    shfmt
-
     # JS
     # bun
 
