@@ -9,7 +9,7 @@ import os
 import shutil
 import socket
 import sys
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 
 # --------------------------------------------------------------------
 # Prints (with colors)
@@ -22,15 +22,15 @@ COLOR_YELLOW = "\033[33m"
 COLOR_BLUE = "\033[34m"
 
 
-def print_header(message):
+def print_header(message: str):
     print("\n" + COLOR_BLUE + "▶ " + COLOR_RESET + message)
 
 
-def print_success(message):
+def print_success(message: str):
     print(COLOR_GREEN + "    ✔ " + COLOR_RESET + message)
 
 
-def print_progress(count, total):
+def print_progress(count: int, total: int):
     bar_length: int = 40
     percent = int(round((count / total) * 100))
     nb_bar_fill = int(round((bar_length * percent) / 100))
@@ -46,15 +46,15 @@ def print_progress(count, total):
     sys.stdout.flush()
 
 
-def print_info(message):
+def print_info(message: str):
     print(COLOR_BLUE + "    ➤ " + COLOR_RESET + message)
 
 
-def print_warning(message):
+def print_warning(message: str):
     print(COLOR_YELLOW + "    ⚠ " + COLOR_RESET + message)
 
 
-def print_error(message):
+def print_error(message: str):
     print(COLOR_RED + "    ✖ " + COLOR_RESET + message)
 
 
@@ -63,7 +63,7 @@ def print_error(message):
 # --------------------------------------------------------------------
 
 
-def assure_dir_exist(path):
+def assure_dir_exist(path: str):
     """Create parents folders for file path"""
     dir_path = os.path.dirname(os.path.expanduser(path))
     if not os.path.exists(dir_path):
@@ -73,7 +73,7 @@ def assure_dir_exist(path):
             print_error("{}".format(exc))
 
 
-def exec_command(command, show_errors=True):
+def exec_command(command: list[str], show_errors: bool = True) -> bool:
     """Execute a system command"""
     p = Popen(command, stdout=PIPE, stderr=PIPE)
     _, errors = p.communicate()
@@ -94,7 +94,7 @@ def check_requirements():
         sys.exit(2)
 
 
-def check_network():
+def check_network() -> bool:
     """
     Return False if Github isn't reachable
     """
@@ -111,14 +111,22 @@ def check_network():
     return False
 
 
-def x_is_installed():
+def x_is_installed() -> bool:
     """
     Try to guess if x is installed
     """
-    return shutil.which("startx") or shutil.which("lightdm") or shutil.which("tuigreet") or shutil.which("awesome") or shutil.which("sway") or shutil.which("Xwayland") or os.environ.get("XDG_SESSION_TYPE") == "wayland"
+    return bool(
+        shutil.which("startx")
+        or shutil.which("lightdm")
+        or shutil.which("tuigreet")
+        or shutil.which("awesome")
+        or shutil.which("sway")
+        or shutil.which("Xwayland")
+        or os.environ.get("XDG_SESSION_TYPE") == "wayland"
+    )
 
 
-def count_files(root_folder):
+def count_files(root_folder: str) -> int:
     """
     Recursive count files in rootFolder
     """
@@ -128,17 +136,17 @@ def count_files(root_folder):
     return total
 
 
-def copy_if_not_exist(source, destination):
+def copy_if_not_exist(source: str, destination: str) -> bool:
     """
     Copy file if destination doesn't exist
     """
     if not os.path.exists(destination):
         assure_dir_exist(destination)
-        return shutil.copy(source, destination)
+        return bool(shutil.copy(source, destination))
     return True
 
 
-def copy_has_root(source, destination):
+def copy_has_root(source: str, destination: str) -> bool:
     """
     Copy file has root. Use cp to not launch this script has root
     """
@@ -150,7 +158,7 @@ def copy_has_root(source, destination):
 # --------------------------------------------------------------------
 
 
-def symlink_arbo(root_source, root_destination):
+def symlink_arbo(root_source: str, root_destination: str) -> bool:
     """
     Scan "app" directory and create an equivalent symlink
     in home for each file.
@@ -182,7 +190,7 @@ def symlink_arbo(root_source, root_destination):
     return True
 
 
-def symlink(src, dest):
+def symlink(src: str, dest: str) -> bool:
     """
     Make a symlink
     """
@@ -206,7 +214,7 @@ def symlink(src, dest):
 # --------------------------------------------------------------------
 
 
-def copy_arbo(root_source, root_destination):
+def copy_arbo(root_source: str, root_destination: str) -> bool:
     """
     Scan dotfiles directory and create an equivalent file copy in home for each file.
     """
@@ -237,7 +245,9 @@ def copy_arbo(root_source, root_destination):
     return True
 
 
-def copy_files_has_root(source_path_root, files_target=None):
+def copy_files_has_root(
+    source_path_root: str, files_target: list[str] | None = None
+) -> bool:
     """
     Copy each dotfiles path in filesSource to a root counterpart, event if exist.
     filesSource is a list of absolutes file paths.
@@ -268,11 +278,11 @@ def copy_files_has_root(source_path_root, files_target=None):
 # --------------------------------------------------------------------
 
 
-def get_files_different_arbo(root_source, root_destination):
+def get_files_different_arbo(root_source: str, root_destination: str) -> list[str]:
     """
     Scan directory and for each file check if the root counterpart is the same.
     """
-    diff_files = []
+    diff_files: list[str] = []
 
     for dir_name, _, file_list in os.walk(root_source):
         for filename in file_list:
@@ -300,11 +310,11 @@ def get_files_different_arbo(root_source, root_destination):
 # --------------------------------------------------------------------
 
 
-def git_clone(url, destination):
+def git_clone(url: str, destination: str):
     return exec_command(["git", "clone", "--recursive", url, destination])
 
 
-def git_fetch(destination):
+def git_fetch(destination: str):
     return exec_command(
         [
             "git",
@@ -317,7 +327,7 @@ def git_fetch(destination):
     )
 
 
-def git_pull(destination):
+def git_pull(destination: str):
     return exec_command(
         [
             "git",
@@ -331,7 +341,7 @@ def git_pull(destination):
     )
 
 
-def git_changelog(destination):
+def git_changelog(destination: str) -> list[str]:
     """Get changelog from git commits"""
     p = Popen(
         [
@@ -353,7 +363,7 @@ def git_changelog(destination):
         return changelog.decode("UTF-8").strip().split("\n")
 
 
-def git_version(destination):
+def git_version(destination: str):
     """Get current commit"""
     p = Popen(
         [
@@ -374,7 +384,9 @@ def git_version(destination):
         return version.decode("UTF-8")
 
 
-def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
+def git_clone_or_update_dotfiles(
+    dotfilesurl: str, dotfilespath: str, restarted: bool = False
+):
     """Clone or update dotfiles"""
     print_header("Dotfiles updated" if restarted else "Dotfiles")
 
@@ -412,7 +424,7 @@ def git_clone_or_update_dotfiles(dotfilesurl, dotfilespath, restarted=False):
 # --------------------------------------------------------------------
 
 
-def launch(dotfilespath, restarted, root):
+def launch(dotfilespath: str, restarted: bool, root: bool):
     hostname = socket.gethostname()
 
     # Requirements
@@ -490,22 +502,23 @@ def launch(dotfilespath, restarted, root):
         print()
 
 
-def init_cli_arg():
+class CliArgs(argparse.Namespace):
+    path: str = os.path.expanduser("~/.dotfiles")
+    restart: bool = False
+    root: bool = False
+
+
+def init_cli_arg() -> CliArgs:
     parser = argparse.ArgumentParser(prog="dotfiles")
     parser.add_argument(
         "-p",
         "--path",
         help="Dotfiles base path. Default ~/.dotfiles",
-        default=os.path.expanduser("~/.dotfiles"),
     )
-    parser.add_argument(
-        "--restart", help=argparse.SUPPRESS, action="store_true", default=False
-    )
-    parser.add_argument(
-        "-r", "--root", help=argparse.SUPPRESS, action="store_true", default=False
-    )
+    parser.add_argument("--restart", help=argparse.SUPPRESS, action="store_true")
+    parser.add_argument("-r", "--root", help=argparse.SUPPRESS, action="store_true")
 
-    return parser.parse_args()
+    return parser.parse_args(namespace=CliArgs())
 
 
 def main():
