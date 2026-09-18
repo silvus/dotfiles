@@ -21,8 +21,15 @@
     # ../../modules/mnt_movies.nix
     # ../../modules/mnt_tvshows.nix
     # ../../modules/mnt_doc.nix
-    # ../../modules/development.nix
-    # ../../modules/development_php.nix
+    # ../../modules/development
+    # ../../modules/development/go.nix
+    # ../../modules/development/rust.nix
+    # ../../modules/development/python.nix
+    # ../../modules/development/nix.nix
+    # ../../modules/development/lua.nix
+    # ../../modules/development/bash.nix
+    # ../../modules/development/markdown.nix
+    # ../../modules/development/php.nix
   ];
 
   # Per-host, not shared via base.nix.

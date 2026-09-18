@@ -23,9 +23,16 @@
     ../../modules/mnt_tvshows.nix
     ../../modules/mnt_torrents.nix
     # ../../modules/mnt_doc.nix
-    ../../modules/development.nix
-    # ../../modules/development_php.nix
-    ../../modules/development_containers.nix
+    ../../modules/development
+    ../../modules/development/go.nix
+    ../../modules/development/rust.nix
+    ../../modules/development/python.nix
+    ../../modules/development/nix.nix
+    ../../modules/development/lua.nix
+    ../../modules/development/bash.nix
+    ../../modules/development/markdown.nix
+    # ../../modules/development/php.nix
+    ../../modules/development/containers.nix
     ../../modules/mdorg.nix
     ../../modules/movies.nix
     # ../../modules/transmission.nix
