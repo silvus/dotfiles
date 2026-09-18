@@ -54,11 +54,16 @@
     # Code
     # emacs-gtk
     vscodium               # Editor
-    # zed-editor
 
-    # obsidian               # PKM
+    zed-editor
+    # claude-agent-acp
+
+    obsidian               # PKM
     # micro-full
   ];
+
+  # Make zed dynamically-linked Linux binary works
+  # programs.nix-ld.enable = true;
 
   # Mount, trash, and other functionalities
   services.gvfs.enable = true;
