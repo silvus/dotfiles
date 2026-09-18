@@ -7,12 +7,32 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+	"terminal": {
+		"button": false,
+	},
+	"modeline_lines": 0,
+	"use_system_path_prompts": false,
 	"icon_theme": {
 		"mode": "dark",
 		"light": "Zed (Default)",
 		"dark": "Zed (Default)",
 	},
-	"cli_default_open_behavior": "existing_window",
+	"cli_default_open_behavior": "new_window",
+	"auto_install_extensions": {
+		"html": true,
+		"lua": true,
+		"make": true,
+		"nix": true,
+		// "php": true,
+		"toml": true,
+		"typst": true,
+	},
+	"language_servers": ["...", "!tailwindcss-language-server"],
+	"diagnostics": {
+		"inline": {
+			"enabled": true,
+		},
+	},
 	"lsp": {
 		"basedpyright": {
 			"settings": {
@@ -65,7 +85,7 @@
 	"theme": {
 		"mode": "dark",
 		"light": "One Light",
-		"dark": "Ayu Dark",
+		"dark": "One Dark",
 	},
 	// Set the buffer's line height.
 	// May take 3 values:
@@ -92,7 +112,7 @@
 	//         "restore_on_startup": "last_workspace",
 	//  3. Do not restore previous workspaces
 	//         "restore_on_startup": "none",
-	"restore_on_startup": "last_workspace",
+	"restore_on_startup": "last_session",
 	// Hide the values of in variables from visual display in private files
 	"redact_private_values": true,
 	// Globs to match against file paths to determine if a file is private.
@@ -113,6 +133,7 @@
 		// Whether to show the project host and name in the titlebar.
 		// "show_project_items": true,
 		// Whether to show onboarding banners in the titlebar.
+		"show_user_menu": true,
 		"show_branch_status_icon": true,
 		"show_onboarding_banner": false,
 		// Whether to show user picture in the titlebar.
