@@ -64,7 +64,17 @@ local rules = {
             maximized = false,
             maximized_vertical = false,
             maximized_horizontal = false,
-        }
+        },
+        callback = function(c)
+            -- Some apps (LibreOffice notably) set their real class/instance asynchronously
+            local function reapply()
+                c:disconnect_signal("property::class", reapply)
+                c:disconnect_signal("property::instance", reapply)
+                awful.rules.apply(c)
+            end
+            c:connect_signal("property::class", reapply)
+            c:connect_signal("property::instance", reapply)
+        end
     },
 
     -- Dialogs client
