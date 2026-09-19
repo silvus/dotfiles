@@ -6,35 +6,55 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
-  {
-    "context": "Workspace",
-    "bindings": {
-      // "shift shift": "file_finder::Toggle"
-      "alt-left": "workspace::ActivatePaneLeft",
-      "alt-right": "workspace::ActivatePaneRight",
-      "alt-up": "workspace::ActivatePaneUp",
-      "alt-down": "workspace::ActivatePaneDown"
-    }
-  },
-  {
-    "context": "Editor && vim_mode == insert",
-    "bindings": {
-      // "j k": "vim::NormalBefore"
-    }
-  },
-  {
-    "context": "Editor",
-    "bindings": {
-      "ctrl-d": "editor::DeleteLine",
-      "ctrl-shift-up": "editor::AddSelectionAbove", // Insert Cursor Above
-      "ctrl-shift-down": "editor::AddSelectionBelow", // Insert Cursor Below
+	{
+		"context": "Workspace",
+		"bindings": {
+			// "shift shift": "file_finder::Toggle"
+			"alt-left": "workspace::ActivatePaneLeft",
+			"alt-right": "workspace::ActivatePaneRight",
+			"alt-up": "workspace::ActivatePaneUp",
+			"alt-down": "workspace::ActivatePaneDown",
+			"ctrl-t": "workspace::NewFile", // Open a new tab
+			"alt-t": "workspace::NewFile", // Open a new tab
+		},
+	},
+	{
+		"context": "Pane",
+		"bindings": {
+			"alt-w": ["pane::CloseActiveItem", { "close_pinned": false }],
+		},
+	},
+	{
+		"context": "Editor && vim_mode == insert",
+		"bindings": {
+			// "j k": "vim::NormalBefore"
+		},
+	},
+	{
+		"context": "Editor",
+		"bindings": {
+			"ctrl-d": "editor::DeleteLine",
+			"ctrl-shift-up": "editor::AddSelectionAbove", // Insert Cursor Above
+			"ctrl-shift-down": "editor::AddSelectionBelow", // Insert Cursor Below
 
-      "ctrl-l": [
-        "editor::SelectNext",
-        {
-          "replace_newest": false
-        }
-      ]
-    }
-  }
+			"ctrl-l": [
+				"editor::SelectNext",
+				{
+					"replace_newest": false,
+				},
+			],
+
+			"ctrl-a": "editor::SelectLargerSyntaxNode", // Expand selection
+			"ctrl-shift-a": "editor::SelectSmallerSyntaxNode", // Shrink selection
+			"ctrl-shift-l": "editor::Format",
+			"ctrl-k": "editor::GoToDefinition",
+			"ctrl-shift-k": "pane::GoBack",
+			"ctrl-g": "project_symbols::Toggle", // overrides default go_to_line::Toggle
+			"ctrl-shift-c": "workspace::CopyPath",
+			"alt-h": "pane::SplitDown", // Horizontal split
+			"alt-v": "pane::SplitRight", // Vertical split
+			"ctrl-alt-left": "pane::GoBack", // overrides default editor::MoveToPreviousSubwordStart
+			"ctrl-alt-right": "pane::GoForward", // overrides default editor::MoveToNextSubwordEnd
+		},
+	},
 ]

@@ -62,6 +62,23 @@
 		"dock": "left",
 	},
 	"base_keymap": "VSCode",
+	// "file_finder": {
+	// 	// When the currently active file would be the first result, skip
+	// 	// focusing it and focus the second result (the previous file)
+	// 	// instead — lets ctrl-e/ctrl-p + enter jump straight back and forth.
+	// 	"skip_focus_for_active_in_search": true,
+	// },
+	// Highlight the active split
+	"active_pane_modifiers": {
+		"border_size": 1.0,
+		"inactive_opacity": 0.7,
+	},
+	// Color of the active pane border above, applied regardless of
+	// which theme (light/dark) is active. Zed actually paints the
+	// active-pane border using "border.selected", not "border.focused".
+	"experimental.theme_overrides": {
+		"border.selected": "#2e65bfbb",
+	},
 	"vertical_scroll_margin": 15.0,
 	"minimap": {
 		"show": "never",
