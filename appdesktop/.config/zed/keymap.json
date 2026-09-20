@@ -36,6 +36,8 @@
 			"ctrl-d": "editor::DeleteLine",
 			"ctrl-shift-up": "editor::AddSelectionAbove", // Insert Cursor Above
 			"ctrl-shift-down": "editor::AddSelectionBelow", // Insert Cursor Below
+			"ctrl-up": "editor::MoveToStartOfParagraph", // Jump to previous function/paragraph
+			"ctrl-down": "editor::MoveToEndOfParagraph", // Jump to next function/paragraph
 
 			"ctrl-l": [
 				"editor::SelectNext",
