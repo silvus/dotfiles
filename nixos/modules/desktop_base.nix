@@ -63,7 +63,7 @@
   ];
 
   # Make zed dynamically-linked Linux binary works
-  # programs.nix-ld.enable = true;
+  programs.nix-ld.enable = true;
 
   # Mount, trash, and other functionalities
   services.gvfs.enable = true;
