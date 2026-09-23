@@ -21,7 +21,9 @@ HISTORY_TRACK = Path.home() / ".tmux_sessionizer_history"
 FZF_FALLBACK_PATH = Path.home() / ".fzf" / "bin" / "fzf"
 MAX_HISTORY_SIZE = 100
 CUSTOM_INIT_PATH = DOTFILES_HOME / "custom" / "tmuxdev.py"
-EDITOR = os.getenv("EDITOR", shutil.which("vim"))
+
+# EDITOR = os.getenv("EDITOR", shutil.which("vim"))
+EDITOR = shutil.which("mdorg")
 
 # Per-project equivalent of CUSTOM_INIT_PATH, looked up inside the project's own directory
 PROJECT_INIT_FILENAME = ".tmuxdev"
