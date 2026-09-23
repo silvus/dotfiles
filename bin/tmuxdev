@@ -5,6 +5,7 @@ import importlib.machinery
 import importlib.util
 import logging
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -22,8 +23,10 @@ FZF_FALLBACK_PATH = Path.home() / ".fzf" / "bin" / "fzf"
 MAX_HISTORY_SIZE = 100
 CUSTOM_INIT_PATH = DOTFILES_HOME / "custom" / "tmuxdev.py"
 
-# EDITOR = os.getenv("EDITOR", shutil.which("vim"))
-EDITOR = shutil.which("mdorg")
+EDITOR = shutil.which("mdorg") or os.getenv("EDITOR", shutil.which("hx"))
+# Extra arguments always passed to EDITOR (e.g. ("--wait",))
+EDITOR_ARG: tuple[str, ...] = ()
+EDITOR_CMD = " ".join(filter(None, [EDITOR, shlex.join(EDITOR_ARG)]))
 
 # Per-project equivalent of CUSTOM_INIT_PATH, looked up inside the project's own directory
 PROJECT_INIT_FILENAME = ".tmuxdev"
@@ -295,11 +298,14 @@ def build_open_command(selected: str, command_override: str | None) -> str | Non
     """Command to run in the new pane ("" for a plain shell), or None if the
     selection can't be opened."""
     if command_override:
+        log.debug(f"Command override {command_override}")
         return command_override
     if os.path.isfile(selected):
-        return f'{EDITOR} "{selected}"'
+        log.debug(f'Is file: {EDITOR_CMD} "{selected}"')
+        return f'{EDITOR_CMD} "{selected}"'
     if selected in (os.path.expanduser(p) for p in EDIT_PATHS):
-        return f'cd {selected} && {EDITOR} "{selected}"'
+        log.debug(f'Open selected: cd {selected} && {EDITOR_CMD} "{selected}"')
+        return f'cd {selected} && {EDITOR_CMD} "{selected}"'
     if not os.path.isdir(selected):
         log.error(f"Selected projet does not exit {selected}")
         return None
@@ -370,6 +376,7 @@ def open_project(args: Args) -> None:
         return
 
     selected = os.path.expanduser(selected)
+    log.debug(f"Selected {selected}")
 
     open_command = build_open_command(selected, args.command)
     if open_command is None:
