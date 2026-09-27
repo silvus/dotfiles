@@ -82,6 +82,8 @@
       # trusted-users = [ "root" "@wheel" ];
       # 500 MiB
       download-buffer-size = 524288000;
+      # Keep build deps of live derivations (no re-download after GC)
+      keep-outputs = true;
     };
 
     # Garbage collection
