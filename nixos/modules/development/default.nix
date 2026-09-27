@@ -35,4 +35,10 @@
     # android-tools
   ];
 
+  # Load flake dev shells on cd, with GC roots in <project>/.direnv/
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
 }
