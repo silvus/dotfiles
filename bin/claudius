@@ -6,14 +6,14 @@ agent (claude, codex, ...) there.
 Creates the Incus VM and provisions it via nixos-rebuild if it doesn't exist yet.
 """
 
+import argparse
+import logging
 import os
+import re
+import shlex
+import subprocess
 import sys
 import time
-import shlex
-import logging
-import argparse
-import subprocess
-
 
 __author__ = "Silvus"
 __version__ = "2026.07"
@@ -314,7 +314,9 @@ def restart_container():
     Exits with an error if the container hasn't been created yet.
     """
     if not container_exists():
-        log.error("%s does not exist yet. Run claudius normally to create it.", CONTAINER)
+        log.error(
+            "%s does not exist yet. Run claudius normally to create it.", CONTAINER
+        )
         sys.exit(1)
     log.info("Restarting %s...", CONTAINER)
     run(["incus", "restart", CONTAINER])
@@ -330,7 +332,9 @@ def update_container():
     the VM first if it's stopped.
     """
     if not container_exists():
-        log.error("%s does not exist yet. Run claudius normally to create it.", CONTAINER)
+        log.error(
+            "%s does not exist yet. Run claudius normally to create it.", CONTAINER
+        )
         sys.exit(1)
     if not container_is_running():
         log.info("%s exists but is stopped — starting it.", CONTAINER)
@@ -367,13 +371,14 @@ def mount_current_project():
     Ensure the current working directory is mounted into the container.
 
     Derives a device name from the directory's basename (stripping a
-    leading dot, e.g. .dotfiles -> dotfiles), and mounts it at the same
-    path inside the container if not already present.
+    leading dot, e.g. .dotfiles -> dotfiles, and replacing characters
+    Incus rejects (like spaces), and
+    mounts it at the same path inside the container if not already present.
 
     :return: The current working directory path (also the guest path).
     """
     path = os.getcwd()
-    device_name = os.path.basename(path).lstrip(".")
+    device_name = re.sub(r"[^A-Za-z0-9_.-]+", "-", os.path.basename(path)).strip(".-")
 
     if not device_name:
         log.error("Could not derive a device name from the current directory: %s", path)
