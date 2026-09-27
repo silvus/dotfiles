@@ -72,5 +72,7 @@ if [[ -z "$TMUX" ]]; then
 else
 	# tmuxdev -p "$NOTE_FILE" -n "jrnl"
 	# For the command instead of using editor to fix the working-dir and go to end of file
-	tmuxdev -p "$NOTE_FILE" -n "jrnl" -c "hx --working-dir $NOTE_PATH +999999 $NOTE_FILE"
+	# tmuxdev -p "$NOTE_FILE" -n "jrnl" -c "hx --working-dir $NOTE_PATH +999999 $NOTE_FILE"
+
+	tmuxdev -p "$NOTE_FILE" -n "jrnl" -c "mdorg --path $NOTE_PATH $NOTE_FILE"
 fi
