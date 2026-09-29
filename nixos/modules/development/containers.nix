@@ -11,8 +11,7 @@ with lib;
   # Podman
   # virtualisation.podman.enable = true;
   # Docker
-  # TODO: Remove
-  virtualisation.docker.enable = true;
+  # virtualisation.docker.enable = true;
 
   # Enable Incus containers
   virtualisation.incus = {
