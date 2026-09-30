@@ -21,6 +21,16 @@ with lib;
     socketActivation = true;
   };
 
+  # Incus starts virtiofsd with --cache=never and no --allow-mmap, so shared mmap of files in a VM's disk shares fails with ENODEV.
+  # libgit2 (used by nix for git+file flakes) mmaps pack files that way and then can't see any packed object ("object not found" from `nix develop` in the VM).
+  nixpkgs.overlays = [
+    (final: prev: {
+      virtiofsd = prev.writeShellScriptBin "virtiofsd" ''
+        exec ${prev.virtiofsd}/bin/virtiofsd --allow-mmap "$@"
+      '';
+    })
+  ];
+
   # Incus env
   users.users.silvus.extraGroups = [ "incus-admin" ];
   # Enable nftables (required for Incus)
