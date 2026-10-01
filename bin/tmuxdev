@@ -76,7 +76,13 @@ def get_project_paths() -> list[str]:
         path_obj = Path(base_path)
         if path_obj.is_dir():
             depth = 1 if base_path != PROJECTS_PATH else 2
-            paths.extend(str(p) for p in path_obj.glob(f"{'*/' * depth}"))
+            paths.extend(
+                str(p)
+                for p in path_obj.glob(f"{'*/' * depth}")
+                if not any(
+                    part.startswith(".") for part in p.relative_to(path_obj).parts
+                )
+            )
     return paths
 
 
