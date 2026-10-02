@@ -1,0 +1,1030 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i python3 -p "python3.withPackages(p: [p.lxml])"
+
+import os
+import sys
+import concurrent.futures
+import logging
+import argparse
+import time
+import random
+import html
+import socket
+from datetime import datetime
+from collections import defaultdict
+import urllib.error
+import urllib.request
+import urllib.parse
+import lxml.html as lxmlhtml
+import lxml.etree as etree
+
+
+__author__ = "Silvus"
+__version__ = "202610"
+
+WORKING_DIR = os.path.realpath(os.getcwd())
+
+COLOR_RESET = "\033[0m"
+COLOR_RED = "\033[31m"
+COLOR_GREEN = "\033[32m"
+COLOR_YELLOW = "\033[33m"
+COLOR_BLUE = "\033[34m"
+
+logging.basicConfig(
+    stream=sys.stdout, level=logging.INFO, format="[%(levelname)s] %(message)s"
+)
+log = logging.getLogger("linkscanner")
+
+DEBUG = False
+COLORS = sys.stdout.isatty()
+WAIT = False
+SEO = False
+MAX_PAGES = 0
+START_URL_DOMAIN = ""
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0 linkscanner/{}".format(
+    __version__
+)
+REQUEST_TIMEOUT = 20
+HTML_CONTENT_TYPES = ("text/html", "application/xhtml+xml")
+REDIRECT_CODES = (301, 302, 303, 307, 308)
+TIMEOUT_ERRORS = (socket.timeout, TimeoutError)
+
+OPENER = urllib.request.build_opener()
+
+
+class NoRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Don't follow redirects: urllib then raises an HTTPError with the real 3xx code"""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def build_opener(start_url, auth=None):
+    """Opener with custom User-Agent, no automatic redirects and optional basic auth"""
+    handlers = [NoRedirectHandler()]
+    if auth:
+        user, _, password = auth.partition(":")
+        passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+        passman.add_password(None, start_url, user, password)
+        handlers.append(urllib.request.HTTPBasicAuthHandler(passman))
+
+    opener = urllib.request.build_opener(*handlers)
+    opener.addheaders = [("User-Agent", USER_AGENT)]
+    return opener
+
+
+def _get_domain_from_url(url):
+    hostname = urllib.parse.urlsplit(url).hostname or ""
+    return hostname.removeprefix("www.")
+
+
+def _status_class(http_code):
+    """First digit of an HTTP code (2 for 200, 3 for 301, ...)"""
+    try:
+        return int(http_code) // 100
+    except (TypeError, ValueError):
+        return 0
+
+
+def _get_response_size(conn, read_body=False):
+    """
+    Body size in bytes, from Content-Length header if present
+    Otherwise, if read_body, download the body to count it (or None if unknown)
+    """
+    content_length = conn.headers.get("Content-Length", "")
+    if content_length.isdigit():
+        return int(content_length)
+    if not read_body:
+        return None
+    size = 0
+    while chunk := conn.read(64 * 1024):
+        size += len(chunk)
+    return size
+
+
+def _format_size(size):
+    if size is None:
+        return "-"
+    if size < 1024:
+        return "{} B".format(size)
+    if size < 1024 * 1024:
+        return "{:.1f} KB".format(size / 1024)
+    return "{:.1f} MB".format(size / 1024 / 1024)
+
+
+def _format_response_time(seconds):
+    return "{:.0f} ms".format(seconds * 1000)
+
+
+def _get_srcset_urls(srcset):
+    """Urls from a srcset attribute ("a.jpg 1x, b.jpg 2x")"""
+    return [
+        candidate.split()[0] for candidate in srcset.split(",") if candidate.strip()
+    ]
+
+
+def _seo_checks_is_unique(seo_check, domdoc, is_void_element=False):
+    """
+    Utility function to check that a tag is present exactly once
+    is_void_element is used for tags without text content, like img, meta, etc...
+    """
+    dom_elements = domdoc.xpath(seo_check.xpathselector)
+    if len(dom_elements) == 1:
+        seo_check.is_ok = True
+        # Tags without text content, like img, meta, etc...
+        if is_void_element:
+            seo_check.message = '"{}"'.format(dom_elements[0].strip())
+        else:
+            seo_check.message = '"{}"'.format(dom_elements[0].text_content().strip())
+    else:
+        seo_check.message = "Found {}".format(len(dom_elements))
+
+    log.debug("SEO check : {} ({})".format(seo_check.title, seo_check.is_ok))
+    return seo_check
+
+
+def seo_checks(domdoc):
+    """ Make SEO checks on a dom document  """
+    seo_report = []
+
+    # h1
+    seo_check_h1 = SeoCheck("H1", "All pages should have one (and just one) h1", "//h1")
+    seo_report.append(_seo_checks_is_unique(seo_check_h1, domdoc))
+
+    # Meta title
+    seo_check_title = SeoCheck(
+        "Title", "All pages should have one (and just one) title", "/html/head/title"
+    )
+    seo_report.append(_seo_checks_is_unique(seo_check_title, domdoc))
+
+    # Meta description
+    seo_check_meta_description = SeoCheck(
+        "Meta description",
+        "All pages should have one (and just one) meta description",
+        '/html/head/meta[@name="description"]/@content',
+    )
+    seo_report.append(_seo_checks_is_unique(seo_check_meta_description, domdoc, True))
+
+    return seo_report
+
+
+def load_url(url):
+    """
+    Fetch an url and measure its response time (without the --wait delay)
+    Return (response_time, result, error): error is the exception raised, if any
+    """
+    if WAIT:
+        # Random wait before each request
+        sleep_time = random.uniform(0.1, 9.9)
+        log.debug("Sleeping {} seconds".format(sleep_time))
+        time.sleep(sleep_time)
+
+    start = time.perf_counter()
+    try:
+        result = fetch_url(url)
+    except Exception as error:
+        return time.perf_counter() - start, None, error
+    return time.perf_counter() - start, result, None
+
+
+def fetch_url(url):
+    """Return (http_code, new links, seo report, size in bytes or None)"""
+    log.debug("Start loading url {}".format(url))
+
+    news_links = []
+    seo_report = []
+
+    try:
+        conn = OPENER.open(url, timeout=REQUEST_TIMEOUT)
+    except urllib.error.HTTPError as error:
+        if error.code not in REDIRECT_CODES:
+            raise
+        # Redirect: return the target as the only new url to scan
+        location = error.headers.get("Location")
+        error.close()
+        if location:
+            location = urllib.parse.urljoin(url, location)
+            log.debug("Redirected {} -> {}".format(url, location))
+            news_links.append(urllib.parse.urldefrag(location)[0])
+        return error.code, news_links, seo_report, None
+
+    with conn:
+        http_code = conn.getcode()
+
+        # Only scan urls on the same base domain as the start url
+        if START_URL_DOMAIN != _get_domain_from_url(conn.geturl()):
+            log.debug(
+                "No scan because {} is not on base domain: {}".format(
+                    conn.geturl(), START_URL_DOMAIN
+                )
+            )
+            return http_code, news_links, seo_report, _get_response_size(conn)
+
+        # Don't download images, PDF, CSS, etc...
+        if conn.headers.get_content_type() not in HTML_CONTENT_TYPES:
+            log.debug(
+                "No scan because {} is {}".format(url, conn.headers.get_content_type())
+            )
+            return (
+                http_code,
+                news_links,
+                seo_report,
+                _get_response_size(conn, read_body=True),
+            )
+
+        log.debug("Read/parse/convert url data")
+        pagecontent = conn.read()
+        size = len(pagecontent)
+
+    try:
+        doc = lxmlhtml.fromstring(pagecontent)
+        doc.make_links_absolute(url)
+    except etree.ParserError as e:
+        log.warning("HTML parse error for {}: {}".format(url, e))
+        return http_code, news_links, seo_report, size
+
+    # get links, images, medias, iframes, CSS, JS
+    links = (
+        doc.xpath("//a/@href")
+        + doc.xpath("//img/@src")
+        + doc.xpath("//source/@src")
+        + doc.xpath("//video/@src")
+        + doc.xpath("//audio/@src")
+        + doc.xpath("//iframe/@src")
+        + doc.xpath("//link/@href")
+        + doc.xpath("//script/@src")
+    )
+    for srcset in doc.xpath("//img/@srcset") + doc.xpath("//source/@srcset"):
+        links += [
+            urllib.parse.urljoin(url, src) for src in _get_srcset_urls(srcset)
+        ]
+
+    for href in links:
+        # Only http(s), no mailto:, tel:, javascript:, data:, ...
+        if urllib.parse.urlsplit(href).scheme not in ("http", "https"):
+            continue
+        # Remove fragments
+        news_links.append(urllib.parse.urldefrag(href)[0])
+
+    log.debug("Links in this page : {}".format(len(news_links)))
+
+    # If seo is active and current doc is an html document (with one body)
+    if SEO and doc.find(".//body") is not None:
+        seo_report = seo_checks(doc)
+
+    return http_code, news_links, seo_report, size
+
+
+def launch_spider(start_url, report, workers=None):
+    global START_URL_DOMAIN
+
+    START_URL_DOMAIN = _get_domain_from_url(start_url)
+    log.debug("Base domain: {}".format(START_URL_DOMAIN))
+
+    urls_already_proceed = set()
+    max_pages_reached = False
+
+    log.debug("Start workers")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
+
+        log.debug("Prepare first executor with {}".format(start_url))
+        future_to_url = {executor.submit(load_url, start_url): start_url}
+        urls_already_proceed.add(start_url)
+        report.set_url_origin(start_url, "Original url")
+
+        # Loop while there is items to proceed
+        while future_to_url:
+            log.debug("Items to proceed : {}".format(len(future_to_url)))
+
+            # Wait for first scan to be done
+            done, _ = concurrent.futures.wait(
+                future_to_url,
+                timeout=60,
+                return_when=concurrent.futures.FIRST_COMPLETED,
+            )
+
+            # process any completed futures
+            for future in done:
+                url = future_to_url.pop(future)
+                log.debug("Get result of {}".format(url))
+                response_time, result, error = future.result()
+                try:
+                    if error:
+                        raise error
+                    http_code, potentials_new_links, seo_report, size = result
+                except urllib.error.HTTPError as error:
+                    report.add_url(error.code, url, response_time, error.reason)
+                    continue
+                except urllib.error.URLError as error:
+                    if isinstance(error.reason, TIMEOUT_ERRORS):
+                        report.add_url(408, url, response_time, "Timeout")
+                    else:
+                        # Not an HTTP-specific error (e.g. connection refused)
+                        report.add_url(999, url, response_time, error.reason)
+                    continue
+                except TIMEOUT_ERRORS:
+                    report.add_url(408, url, response_time, "Timeout")
+                    continue
+                except Exception as error:
+                    # Any other error (bad url, connection reset, ...): keep it in report
+                    if DEBUG:
+                        log.exception("Error on {}".format(url))
+                    report.add_url(
+                        999,
+                        url,
+                        response_time,
+                        "{}: {}".format(type(error).__name__, error),
+                    )
+                    continue
+
+                report.add_url(http_code, url, response_time)
+                report.set_report_seo(url, seo_report)
+                report.set_report_size(url, size)
+
+                add_to_queue_count = 0
+                for potential_new_link in potentials_new_links:
+                    # Keep url source for the final report
+                    report.set_url_origin(potential_new_link, url)
+
+                    if potential_new_link in urls_already_proceed:
+                        continue
+                    if MAX_PAGES and len(urls_already_proceed) >= MAX_PAGES:
+                        if not max_pages_reached:
+                            log.warning(
+                                "Max pages ({}) reached, stop adding urls".format(
+                                    MAX_PAGES
+                                )
+                            )
+                            max_pages_reached = True
+                        continue
+
+                    add_to_queue_count += 1
+                    urls_already_proceed.add(potential_new_link)
+                    future_to_url[
+                        executor.submit(load_url, potential_new_link)
+                    ] = potential_new_link
+
+                log.debug(
+                    "{} has {} links, {} added to queue".format(
+                        url, len(potentials_new_links), add_to_queue_count
+                    )
+                )
+
+    return report
+
+
+class SeoCheck:
+    """ SEO check unit """
+
+    def __init__(self, title, description, xpathselector, is_ok=False, message=""):
+        self.title = title
+        self.description = description
+        self.xpathselector = xpathselector
+        self.is_ok = is_ok
+        self.message = message
+
+    def show_status(self):
+        return "{}: {}".format(self.title, self.is_ok)
+
+    def __repr__(self):
+        return self.show_status()
+
+    def __str__(self):
+        return self.show_status()
+
+
+class Report:
+    """
+    Final report. Can be in terminal or in HTML
+    """
+
+    def __init__(self, start_url, start_time, report_html_path):
+        self.start_url = start_url
+        self.start_time = start_time
+        self.end_time = None
+        self.execution_time = None
+
+        self.report_html_path = report_html_path
+
+        self.report_url_httpcode = defaultdict(list)  # Create index on demand
+        self.report_url_origin = defaultdict(list)  # Create index on demand
+        self.report_seo = defaultdict(list)  # Create index on demand
+        self.report_response_time = {}  # Seconds, by url
+        self.report_size = {}  # Bytes, by url (None if unknown)
+
+    def add_url(self, http_code, url, response_time, error_message=None):
+        self.report_url_httpcode[http_code].append(url)
+        self.report_response_time[url] = response_time
+        # Show log in console
+        message = "{} ({})".format(url, _format_response_time(response_time))
+        if error_message:
+            message = "{} - {}".format(error_message, message)
+        self.log_http_code(http_code, message)
+
+    def set_url_origin(self, url, origin):
+        """ Keep origin if not already in list """
+        if origin not in self.report_url_origin[url]:
+            self.report_url_origin[url].append(origin)
+
+    def set_report_seo(self, url, report_seo):
+        """ Keep seo report """
+        self.report_seo[url] = report_seo
+
+    def set_report_size(self, url, size):
+        """ Keep response body size """
+        self.report_size[url] = size
+
+    def build_report(self):
+        self.end_time = datetime.now()
+        self.execution_time = str(self.end_time - self.start_time).split(".")[0]
+
+    def build_report_cli(self):
+
+        print()
+        print("{0:=^80}".format(" Linkscanner report from " + self.start_url))
+
+        # Execution time (without milliseconds)
+        print("Total execution time: {}".format(self.execution_time))
+        if self.report_response_time:
+            response_times = self.report_response_time.values()
+            slowest_url = max(
+                self.report_response_time, key=self.report_response_time.get
+            )
+            print(
+                "Average response time: {}".format(
+                    _format_response_time(sum(response_times) / len(response_times))
+                )
+            )
+            print(
+                "Slowest url: {} ({})".format(
+                    slowest_url,
+                    _format_response_time(self.report_response_time[slowest_url]),
+                )
+            )
+        known_sizes = {
+            url: size for url, size in self.report_size.items() if size is not None
+        }
+        if known_sizes:
+            heaviest_url = max(known_sizes, key=known_sizes.get)
+            print(
+                "Heaviest url: {} ({})".format(
+                    heaviest_url, _format_size(known_sizes[heaviest_url])
+                )
+            )
+        print()
+
+        for statuscode, urls in sorted(self.report_url_httpcode.items(), reverse=True):
+            url_count = len(urls)
+            url_plurial = "urls"
+            if url_count <= 1:
+                url_plurial = "url"
+
+            if statuscode == 200:
+                self.print_success(statuscode, "{} {}".format(url_count, url_plurial))
+            elif statuscode == 999:
+                self.print_info(statuscode, "{} {}".format(url_count, url_plurial))
+            elif _status_class(statuscode) == 3:
+                self.print_warning(statuscode, "{} {}".format(url_count, url_plurial))
+            else:
+                self.print_error(statuscode, "{} {}".format(url_count, url_plurial))
+
+    def build_report_html(self):
+        # Build short recap
+        short_recap = ""
+        for statuscode, urls in sorted(self.report_url_httpcode.items(), reverse=True):
+            url_count = len(urls)
+            url_plurial = "urls"
+            if url_count <= 1:
+                url_plurial = "url"
+
+            if statuscode == 200:
+                color = "green"
+            elif statuscode == 999:
+                color = "blue"
+            elif _status_class(statuscode) == 3:
+                color = "orange"
+            else:
+                color = "red"
+            short_recap += '[<span style="color: {};">{}</span>] {} {}<br />'.format(
+                color, statuscode, url_count, url_plurial
+            )
+
+        average_response_time = "-"
+        if self.report_response_time:
+            average_response_time = _format_response_time(
+                sum(self.report_response_time.values())
+                / len(self.report_response_time)
+            )
+
+        html_str_start = """
+    <html>
+        <head>
+            <meta charset="utf-8" />
+            <title>
+                Linkscanner report {0} - {1}
+            </title>
+            <style>
+             /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */button,hr,input{{overflow:visible}}progress,sub,sup{{vertical-align:baseline}}[type=checkbox],[type=radio],legend{{box-sizing:border-box;padding:0}}html{{line-height:1.15;-webkit-text-size-adjust:100%}}body{{margin:0}}h1{{font-size:2em;margin:.67em 0}}hr{{box-sizing:content-box;height:0}}code,kbd,pre,samp{{font-family:monospace,monospace;font-size:1em}}a{{background-color:transparent}}abbr[title]{{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}}b,strong{{font-weight:bolder}}small{{font-size:80%}}sub,sup{{font-size:75%;line-height:0;position:relative}}sub{{bottom:-.25em}}sup{{top:-.5em}}img{{border-style:none}}button,input,optgroup,select,textarea{{font-family:inherit;font-size:100%;line-height:1.15;margin:0}}button,select{{text-transform:none}}[type=button],[type=reset],[type=submit],button{{-webkit-appearance:button}}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{{border-style:none;padding:0}}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{{outline:ButtonText dotted 1px}}fieldset{{padding:.35em .75em .625em}}legend{{color:inherit;display:table;max-width:100%;white-space:normal}}textarea{{overflow:auto}}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{{height:auto}}[type=search]{{-webkit-appearance:textfield;outline-offset:-2px}}[type=search]::-webkit-search-decoration{{-webkit-appearance:none}}::-webkit-file-upload-button{{-webkit-appearance:button;font:inherit}}details{{display:block}}summary{{display:list-item}}[hidden],template{{display:none}}
+
+            * {{
+                box-sizing: border-box;
+                text-rendering: geometricPrecision;
+            }}
+            html {{
+                font-size: 12px;
+            }}
+            body {{
+                background-color: #000;
+                color: #ccc;
+                font-size: 1rem;
+                font-style: normal;
+                font-family: Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+                line-height: 1.3rem;
+                margin: 0;
+                padding: 0;
+                word-wrap: break-word;
+            }}
+
+            a:link {{
+                color: #0ec90e;
+                text-decoration: none;
+            }}
+            a:visited {{
+                color: #009800;
+                text-decoration: none;
+            }}
+            a:hover {{
+                color: aquamarine;
+                text-decoration: underline;
+            }}
+            a:active,
+            a:focus {{
+                color: aquamarine;
+                text-decoration: dotted;
+            }}
+
+            table {{
+                width: 100%;
+                border-collapse: collapse;
+                margin: 2rem 0;
+            }}
+            table tr:nth-child(even) {{
+                background: #181818;
+            }}
+
+            table td,
+            table th {{
+                border: 1px solid #444;
+                vertical-align: top;
+                padding: 7px;
+                font-size: 1rem;
+            }}
+            table thead th {{
+                cursor: pointer;
+                user-select: none;
+                white-space: nowrap;
+            }}
+            table thead th.sort-asc::after {{
+                content: " ▲";
+            }}
+            table thead th.sort-desc::after {{
+                content: " ▼";
+            }}
+            table thead th {{
+                font-size: 1.1rem;
+                line-height: 1.5rem;
+                padding: 10px;
+            }}
+            h1 {{
+                text-align: center;
+            }}
+            a.btn,
+            button {{
+                transition: all 0s ease-out;
+                display: inline-block;
+                padding: 0.7em 1.4em;
+                margin: 0 0.3em 0.3em 0;
+                border-radius: 0.15em;
+                border: none;
+                box-sizing: border-box;
+                text-decoration: none;
+                font-weight: 400;
+                color: #FFFFFF;
+                background: #3369ff;
+                box-shadow: 0px 5px 0px 0px #2E4476;
+                text-align: center;
+                position: relative;
+            }}
+            a.btn:hover,
+            button:hover {{
+                color: #ccc;
+                cursor: pointer;
+            }}
+            a.btn:active,
+            button:active {{
+                top: 3px;
+                box-shadow: 0px 2px 0px 0px #2E4476;
+            }}
+            @media all and (max-width:30em){{
+                a.btn,
+                button {{
+                    display: block;
+                    margin: 0.4em auto;
+                }}
+            }}
+            .container {{
+                margin: 0;
+                padding: 20px 10px;
+            }}
+            .success_background {{
+                color: #fff;
+                background: green;
+                font-weight: bold;
+            }}
+            .warning_background {{
+                color: #fff;
+                background: orange;
+                font-weight: bold;
+            }}
+            .error_background {{
+                color: #fff;
+                background: red;
+                font-weight: bold;
+            }}
+            .info_background {{
+                color: #fff;
+                background: blue;
+                font-weight: bold;
+                text-indent: -9999;
+                overflow: hidden;
+            }}
+            .full-link {{
+                position:relative;
+            }}
+            .full-link a:before {{
+                content:'';
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background-color:rgba(0,0,0,0);
+            }}
+            .text-center {{
+                text-align: center;
+            }}
+            .text-right {{
+                text-align: right;
+            }}
+            .pull-right {{
+                float: right;
+            }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Linkscanner report - {0}</h1>
+                <h2 class="text-center">{1}</h2>
+
+                <div class="pull-right">
+                    <button id="button-toggle-origin">Source Url</button>
+                    <button id="button-toggle-seo">SEO</button>
+                </div>
+
+                <div>
+                    {2}
+                </div>
+
+                <table id="reporttable">
+                    <thead>
+                        <tr>
+                            <th data-type="number">
+                                HTTP
+                            </th>
+                            <th data-type="number">
+                                Time
+                            </th>
+                            <th data-type="number">
+                                Weight
+                            </th>
+                            <th>
+                                Url
+                            </th>
+                            <th data-type="number">
+                                Source url
+                            </th>
+                            <th data-type="number">
+                                Seo
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    """.format(
+            self.start_time.strftime("%Y-%m-%d %H:%M:%S"),
+            html.escape(self.start_url),
+            short_recap,
+        )
+
+        html_str_end = """
+                    </tbody>
+                </table>
+
+                <p class="text-center">Total execution time: {0}<br />Average response time: {1}</p>
+
+            </div>
+            <script>
+            function toggle_table_column(col_no) {{
+                var rows = document.getElementById('reporttable').rows;
+
+                for (var row = 0; row < rows.length; row++) {{
+                    var cols = rows[row].cells;
+                    if (col_no >= 0 && col_no < cols.length) {{
+                        cols[col_no].style.display = cols[col_no].style.display == 'none' ? '' : 'none';
+                    }}
+                }}
+            }}
+            // Sort on header click: numbers start descending, text ascending
+            // Cells without data-sort value (unknown) always stay at the end
+            function sort_table(header) {{
+                var table = document.getElementById('reporttable');
+                var tbody = table.tBodies[0];
+                var col_no = header.cellIndex;
+                var is_number = header.dataset.type == 'number';
+                var asc = header.classList.contains('sort-desc')
+                    || (!header.classList.contains('sort-asc') && !is_number);
+
+                table.querySelectorAll('thead th').forEach(function(th) {{
+                    th.classList.remove('sort-asc', 'sort-desc');
+                }});
+                header.classList.add(asc ? 'sort-asc' : 'sort-desc');
+
+                var rows = Array.prototype.slice.call(tbody.rows);
+                rows.sort(function(row_a, row_b) {{
+                    var a = row_a.cells[col_no].dataset.sort;
+                    var b = row_b.cells[col_no].dataset.sort;
+                    if (a === '' || b === '') {{
+                        return (a === '') - (b === '');
+                    }}
+                    var result = is_number ? a - b : a.localeCompare(b);
+                    return asc ? result : -result;
+                }});
+                rows.forEach(function(row) {{
+                    tbody.appendChild(row);
+                }});
+            }}
+            document.querySelectorAll('#reporttable thead th').forEach(function(th) {{
+                th.addEventListener('click', function() {{
+                    sort_table(th);
+                }});
+            }});
+
+            document.querySelector('#button-toggle-origin').addEventListener('click', function() {{
+                toggle_table_column(4);
+            }});
+            document.querySelector('#button-toggle-seo').addEventListener('click', function() {{
+                toggle_table_column(5);
+            }});
+            // Hide by default
+            toggle_table_column(4);
+            toggle_table_column(5);
+            </script>
+        </body>
+    </html>
+    """.format(
+            self.execution_time, average_response_time
+        )
+
+        with open(self.report_html_path, "w") as report_file:
+            report_file.write(html_str_start)
+
+            # Reverse sort to have the 200 at the end
+            for statuscode, urls in sorted(
+                self.report_url_httpcode.items(), reverse=True
+            ):
+                for url in sorted(urls):
+                    status_color = "error_background"
+                    if statuscode == 200:
+                        status_color = "success_background"
+                    elif statuscode == 999:
+                        status_color = "info_background"
+                    elif _status_class(statuscode) == 3:
+                        status_color = "warning_background"
+
+                    source_count = len(self.report_url_origin[url])
+                    if source_count < 2:
+                        source_count = "{} url".format(source_count)
+                    else:
+                        source_count = "{} urls".format(source_count)
+
+                    size = self.report_size.get(url)
+                    seo_errors = sum(
+                        1 for seo in self.report_seo[url] if not seo.is_ok
+                    )
+
+                    seo_report = ""
+                    for seo in self.report_seo[url]:
+                        if seo.is_ok:
+                            seo_report += '<span style="color: green">✔</span> {} : {}<br />'.format(
+                                html.escape(seo.title), html.escape(seo.message)
+                            )
+                        else:
+                            seo_report += '<span style="color: red">✗</span> {} : {}<br />'.format(
+                                html.escape(seo.title), html.escape(seo.message)
+                            )
+
+                    report_file.write(
+                        """
+                                      <tr>
+                                          <td class="{status_color} text-center" data-sort="{statuscode}">{statuscode}</td>
+                                          <td class="text-right" style="white-space:nowrap" data-sort="{response_time_ms}">{response_time}</td>
+                                          <td class="text-right" style="white-space:nowrap" data-sort="{size_bytes}">{size}</td>
+                                          <td data-sort="{url}"><a href="{url}">{url}</a></td>
+                                          <td data-sort="{source_count_number}">
+                                            <div style="max-height: 55px; overflow: auto;">
+                                                <strong>{source_count}</strong><br />
+                                                {sources}
+                                            </div>
+                                          </td>
+                                          <td style="white-space:nowrap" data-sort="{seo_errors}">{seo_report}</td>
+                                      </tr>
+                                      """.format(
+                            statuscode=statuscode,
+                            status_color=status_color,
+                            response_time_ms=round(
+                                self.report_response_time[url] * 1000
+                            ),
+                            response_time=_format_response_time(
+                                self.report_response_time[url]
+                            ),
+                            size_bytes="" if size is None else size,
+                            size=_format_size(size),
+                            url=html.escape(url),
+                            source_count_number=len(self.report_url_origin[url]),
+                            source_count=source_count,
+                            sources="<br />".join(
+                                html.escape(origin)
+                                for origin in self.report_url_origin[url]
+                            ),
+                            seo_errors=seo_errors,
+                            seo_report=seo_report,
+                        )
+                    )
+
+            report_file.write(html_str_end)
+
+        print()
+        print("Html report generated {}".format(self.report_html_path))
+
+    def print_success(self, http_code, message):
+        if COLORS:
+            print("[" + COLOR_GREEN + str(http_code) + COLOR_RESET + "] " + message)
+        else:
+            print("[" + str(http_code) + "] " + message)
+
+    def print_info(self, http_code, message):
+        if COLORS:
+            print("[" + COLOR_BLUE + str(http_code) + COLOR_RESET + "] " + message)
+        else:
+            print("[" + str(http_code) + "] " + message)
+
+    def print_warning(self, http_code, message):
+        if COLORS:
+            print("[" + COLOR_YELLOW + str(http_code) + COLOR_RESET + "] " + message)
+        else:
+            print("[" + str(http_code) + "] " + message)
+
+    def print_error(self, http_code, message):
+        if COLORS:
+            print("[" + COLOR_RED + str(http_code) + COLOR_RESET + "] " + message)
+        else:
+            print("[" + str(http_code) + "] " + message)
+
+    def log_http_code(self, http_code, url):
+        if http_code:
+            if http_code == 999:
+                # Custom errors
+                self.print_error(http_code, url)
+            elif _status_class(http_code) == 2:
+                self.print_success(http_code, url)
+            elif _status_class(http_code) == 3:
+                self.print_warning(http_code, url)
+            elif _status_class(http_code) in (4, 5):
+                self.print_error(http_code, url)
+            else:
+                self.print_error(
+                    http_code, "Http return code not handle - {}".format(url)
+                )
+        else:
+            self.print_error("???", "No http return code {}".format(url))
+
+
+def init_cli_arg():
+
+    # Parse args
+    parser = argparse.ArgumentParser(description="Spider domain")
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s {0}".format(__version__),
+        help="show program's version number and exit",
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="Debug flag", default=DEBUG
+    )
+    parser.add_argument(
+        "-nc",
+        "--no-colors",
+        action="store_true",
+        help="Disable colors",
+        default=not COLORS,
+    )
+    parser.add_argument(
+        "-w",
+        "--wait",
+        action="store_true",
+        help="Wait before each request (random between 0.1s and 9.9s). Use 1 worker unless --workers is set",
+        default=WAIT,
+    )
+    parser.add_argument(
+        "-j",
+        "--workers",
+        type=int,
+        help="Number of parallel requests (default: min(32, cpu + 4))",
+        default=None,
+    )
+    parser.add_argument(
+        "-m",
+        "--max-pages",
+        type=int,
+        help="Stop adding urls after this many (default: 0, unlimited)",
+        default=MAX_PAGES,
+    )
+    parser.add_argument(
+        "-a",
+        "--auth",
+        help="Basic auth as user:password (or env LINKSCANNER_AUTH)",
+        default=os.environ.get("LINKSCANNER_AUTH"),
+    )
+    parser.add_argument(
+        "-r",
+        "--report",
+        help="HTML report path. Set to empty string to disable",
+        default=os.path.join(WORKING_DIR, "linkscanner_report.html"),
+    )
+    parser.add_argument(
+        "-s", "--seo", action="store_true", help="Active SEO analyse", default=SEO
+    )
+    parser.add_argument("url", type=str, help="Start url")
+
+    return parser.parse_args()
+
+
+def main():
+    global DEBUG
+    global COLORS
+    global SEO
+    global WAIT
+    global MAX_PAGES
+    global OPENER
+
+    # Parse args
+    args = init_cli_arg()
+    DEBUG = args.debug
+    COLORS = not args.no_colors  # Flag is negative, keep the opposite
+    WAIT = args.wait
+    SEO = args.seo
+    MAX_PAGES = args.max_pages
+    workers = args.workers
+    if WAIT and workers is None:
+        workers = 1
+    report_html_path = args.report
+
+    if report_html_path:
+        # Convert HTML report path to absolute
+        report_html_path = os.path.abspath(os.path.expanduser(report_html_path))
+
+    log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+
+    OPENER = build_opener(args.url, args.auth)
+
+    try:
+        report = Report(args.url, datetime.now(), report_html_path)
+        report = launch_spider(args.url, report, workers)
+
+        report.build_report()
+        report.build_report_cli()
+
+        if report_html_path:
+            report.build_report_html()
+        else:
+            log.debug("HTML report disable")
+
+    except KeyboardInterrupt:
+        sys.exit(1)
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
