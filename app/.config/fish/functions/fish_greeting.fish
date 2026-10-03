@@ -118,7 +118,7 @@ function fish_logo \
         echo "$m""    \\/""$o""   /    \\$m""____    ____/"
         echo "$o       /      \\$m   \\   \\"
         echo "$o      /   /\\   \\$m   \\   \\"
-        echo "$o      \\__/  \\___\\$m   \\__/"
+        echo "$o      \\__/  \\___\\$m   \\__/"(set_color normal)
         echo ""
 
     else
