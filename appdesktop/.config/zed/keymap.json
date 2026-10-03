@@ -16,6 +16,7 @@
 			"alt-down": "workspace::ActivatePaneDown",
 			"ctrl-t": "workspace::NewFile", // Open a new tab
 			"alt-t": "workspace::NewFile", // Open a new tab
+			"ctrl-shift-o": ["projects::OpenRecent", { "create_new_window": false }], // Project opener
 		},
 	},
 	{
@@ -53,6 +54,7 @@
 			"ctrl-shift-k": "pane::GoBack",
 			"ctrl-g": "project_symbols::Toggle", // overrides default go_to_line::Toggle
 			"ctrl-shift-c": "workspace::CopyPath",
+			"ctrl-shift-o": ["projects::OpenRecent", { "create_new_window": false }], // overrides default outline::Toggle
 			"alt-h": "pane::SplitDown", // Horizontal split
 			"alt-v": "pane::SplitRight", // Vertical split
 			"ctrl-alt-left": "pane::GoBack", // overrides default editor::MoveToPreviousSubwordStart
