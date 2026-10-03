@@ -102,7 +102,7 @@
 	"theme": {
 		"mode": "dark",
 		"light": "One Light",
-		"dark": "One Dark",
+		"dark": "Ayu Dark",
 	},
 	// Set the buffer's line height.
 	// May take 3 values:
