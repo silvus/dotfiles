@@ -20,7 +20,7 @@ local globalclient = client
 local keys = {}
 
 
-modkey = config.modkey
+local modkey = config.modkey
 
 -- Panic buttons actions
 local function panic_key()
@@ -95,7 +95,7 @@ local function unpanic_key(restore_tag)
 end
 
 -- Focus client in direction
-function focus_client(direction)
+local function focus_client(direction)
 	local c = client.focus
 	if c and c.maximized then
 		-- Focused on a maximized client, maximized next client
@@ -117,7 +117,7 @@ function focus_client(direction)
 end
 
 -- Change client size (different when floating)
-function resize_client(direction)
+local function resize_client(direction)
 	local c = client.focus
 	local floating_resize_factor = 50
 	local master_resize_factor = 0.01
@@ -146,7 +146,7 @@ function resize_client(direction)
 end
 
 -- Move client (different when floating)
-function move_client(direction)
+local function move_client(direction)
 	local c = client.focus
 	local floating_move_factor = 75
 
@@ -168,7 +168,7 @@ function move_client(direction)
 end
 
 -- Start or focus client
-function focus_or_start_client(class, command)
+local function focus_or_start_client(class, command)
 	local matcher = function(c)
 		return awful.rules.match(c, { class = class })
 	end
@@ -197,10 +197,10 @@ keys.global = awful.util.table.join(
 	end, { description = "go back to previous tag", group = "tag" }),
 
 	awful.key({ modkey }, "b", function()
-		-- local screen_focused_status = screens.get_primary().bar.visible
+		local screen_focused_status = screens.get_primary().bar.visible
 		for s in screen do
 			if s.bar then
-				s.bar.visible = not screen_primary_status
+				s.bar.visible = not screen_focused_status
 			end
 
 			-- Toggle titlebars
