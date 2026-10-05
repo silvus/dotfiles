@@ -39,6 +39,8 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    # Disable the "direnv is taking a while to execute" warning
+    settings.global.warn_timeout = "0s";
   };
 
 }
