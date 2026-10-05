@@ -9,14 +9,15 @@ https://superuser.com/questions/1397683/how-can-i-configure-syncthing-from-comma
 """
 
 import argparse
+import getpass
 import json
 import logging
 import socket
 import subprocess
-import tomllib
-import getpass
 import sys
 from pathlib import Path
+
+import tomllib
 
 DEBUG = False
 
@@ -66,7 +67,6 @@ SYNCTHING_FOLDERS = {
         "fsWatcherEnabled": False,
         "devices": ["servius", "nix", "arcus"],
     },
-
     # Doc
     "doc": {
         "path": "/data/doc",
@@ -81,10 +81,9 @@ SYNCTHING_FOLDERS = {
         "label": "trogo_work",
         "rescanIntervals": 7200,
         "fsWatcherEnabled": True,
-        "devices": ["virtus", "servius", "chuwi"],
+        "devices": ["virtus", "servius", "chuwi", "katsu"],
         "versioning": {"type": "simple", "params": {"keep": "5"}},
     },
-
     # Medias
     "share": {
         "path": "/data/prod/share",
@@ -98,7 +97,7 @@ SYNCTHING_FOLDERS = {
         "label": "trogo",
         "rescanIntervals": 86500,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "chuwi"],
+        "devices": ["virtus", "servius", "chuwi", "katsu"],
     },
     "book": {
         "path": "/data/books",
@@ -149,7 +148,6 @@ SYNCTHING_FOLDERS = {
         "fsWatcherEnabled": False,
         "devices": ["virtus", "servius", "noctus"],
     },
-
     # Phone
     "phone": {
         "path": "/data/phone",
@@ -231,7 +229,6 @@ def check_and_enable_systemd_service():
             return
 
         log.info(f"Service {service_user_name} is disabled")
-
 
         # Check is global service is enable (Nixos)
         result = run_query_command(
@@ -422,10 +419,11 @@ def configure_global_settings():
             log.info("Set basic auth password")
             pwd = getpass.getpass()
             if pwd.strip():
-                run_modify_command("syncthing cli config gui password set {}".format(pwd.strip()))
+                run_modify_command(
+                    "syncthing cli config gui password set {}".format(pwd.strip())
+                )
         else:
             log.debug("Basic auth password already defined")
-
 
         # Set GUI theme to black
         run_modify_command("syncthing cli config gui theme set black")
@@ -563,6 +561,7 @@ def setup_syncthing():
                 f"- Skipping folder {folder_name} (hostname '{hostname}' not in devices)"
             )
 
+
 def init_cli_arg():
     parser = argparse.ArgumentParser(prog="syncthingsetup")
 
@@ -570,7 +569,7 @@ def init_cli_arg():
         "-d",
         "--debug",
         action="store_true",
-        help="Debug flag (dry-run mode and enable \"-vm\" host)",
+        help='Debug flag (dry-run mode and enable "-vm" host)',
         default=DEBUG,
     )
 
@@ -603,7 +602,7 @@ def main():
             log.error(f"Error: {e}")
             return 1
 
-        log.info('Reading secrets age')
+        log.info("Reading secrets age")
         secrets_path = Path(__file__).parent.parent / "secrets" / "syncthing.age"
         result = subprocess.run(
             ["age", "-d", str(secrets_path)],
