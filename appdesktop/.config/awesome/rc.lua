@@ -111,7 +111,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. config.t
 
 -- Notifications
 naughty.config.padding = 25 -- Space between popups and edge of the workarea
-naughty.config.spacing = 2 -- Spacing between popups
+naughty.config.spacing = 2  -- Spacing between popups
 
 -- Set defaut icon
 naughty.config.notify_callback = function(args)
@@ -120,8 +120,11 @@ naughty.config.notify_callback = function(args)
 	end
 
 	if config.blink_path then
-		local blink_color = args.bg or beautiful.primary
-		awful.util.spawn(config.blink_path .. " --on --rgb '" .. blink_color .. "' --blink 10", false)
+		-- notify_callback runs before the preset is merged, so read blink settings from args.preset
+		local blink = (args.preset and args.preset.blink) or {}
+		local blink_color = args.bg or blink.color or beautiful.primary
+		local blink_count = blink.count or 10
+		awful.util.spawn(config.blink_path .. " --on --rgb '" .. blink_color .. "' --blink " .. blink_count, false)
 	end
 	return args
 end
@@ -149,10 +152,12 @@ naughty.config.presets.low.fg = beautiful.fg_urgent
 naughty.config.presets.low.bg = "#333333"
 naughty.config.presets.low.border_color = beautiful.bg_normal
 naughty.config.presets.low.timeout = 3
+naughty.config.presets.low.blink = { color = "#030336", count = 3 } -- dim, short
 -- Critical
 naughty.config.presets.critical.fg = beautiful.fg_urgent
 naughty.config.presets.critical.bg = beautiful.error
 naughty.config.presets.critical.border_color = beautiful.fg_urgent
+naughty.config.presets.critical.blink = { color = beautiful.error, count = 20 }
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = config.layouts
@@ -261,4 +266,3 @@ end)
 -- Auto start
 -- ---------------------------------------------------------------------
 awful.spawn.with_shell(config.home .. "/.dotfiles/bin/autostart_launcher")
-
