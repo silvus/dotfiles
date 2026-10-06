@@ -103,11 +103,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1791264991,
-        "narHash": "sha256-QoprbZA9g/C8tUN9i33ACf/rCvB8pdg6osjzXQDUahA=",
+        "lastModified": 1791289009,
+        "narHash": "sha256-imUns/GZVBz6cuLUScEmbWyyv2iuI8M/QJ0mIGtE1DI=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "12eafe09af4dac4755cab458ff535d164966bd53",
+        "rev": "20349173250dc39e5a5ef4dd1a41c84284687ea5",
         "type": "github"
       },
       "original": {
@@ -122,11 +122,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1791275491,
-        "narHash": "sha256-1I3W1HpfSAvoWKLCSok+hsfJD0PZ1VHf5gV1okS8y04=",
+        "lastModified": 1791285912,
+        "narHash": "sha256-wiBgI7NLx8DrWBAc3miUQym0gW4H0QG85yAzHUgLo/Y=",
         "ref": "refs/heads/main",
-        "rev": "7ed7353c80fc69f770c94f5b6b811e3c1c9e8037",
-        "revCount": 51,
+        "rev": "1b517dc6912f4fdcd175a020aa0418e90185e6ec",
+        "revCount": 52,
         "type": "git",
         "url": "ssh://silvus@arcus/data/git/mdorg"
       },
@@ -173,11 +173,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1791179034,
-        "narHash": "sha256-Ni0LBydzaCi8oek12r4mVreuFHqYlM1eTD6SfiENKfw=",
+        "lastModified": 1791260994,
+        "narHash": "sha256-Miqqk/ammqnTUxaoCyvtwoPeLbI1ksFyLxi/CazZpWY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "494ce7fd23ff6a5dff39e1fb11e9b6f2ac74bf25",
+        "rev": "151fa4e8ddfdd8dd25d945ad94ed54a13de9f6e4",
         "type": "github"
       },
       "original": {
