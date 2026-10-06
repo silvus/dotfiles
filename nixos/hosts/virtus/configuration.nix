@@ -42,20 +42,20 @@
 
   # Bootloader (dual boot with Debian)
   # https://wiki.nixos.org/wiki/Systemd/boot
-  boot.loader = {
-    systemd-boot = {
-      # The sort key used for Nix entries
-      # sortKey = "a_01";
+  # boot.loader = {
+  #   systemd-boot = {
+  #     # The sort key used for Nix entries
+  #     # sortKey = "a_01";
 
-      # Dual boot with Debian
-      # Use "d" key to change the default entry (the arrow)!
-      extraEntries."debian.conf" = ''
-        title Debian
-        efi   /efi/debian/grubx64.efi
-      '';
-        # sort-key z_99_debian
-    };
-  };
+  #     # Dual boot with Debian
+  #     # Use "d" key to change the default entry (the arrow)!
+  #     extraEntries."debian.conf" = ''
+  #       title Debian
+  #       efi   /efi/debian/grubx64.efi
+  #     '';
+  #       # sort-key z_99_debian
+  #   };
+  # };
 
   # Nvidia
   # https://wiki.nixos.org/wiki/NVIDIA
