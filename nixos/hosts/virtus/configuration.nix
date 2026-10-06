@@ -1,5 +1,10 @@
 # Virtus
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -75,8 +80,8 @@
   nixpkgs.config.nvidia.acceptLicense = true;
 
   environment.systemPackages = with pkgs; [
-    keymapp                # Voyager keyboard utility
-    blink1-tool            # Command line client for the blink(1) notification light
+    keymapp # Voyager keyboard utility
+    blink1-tool # Command line client for the blink(1) notification light
 
     kcc # convert comic/manga to EPUB
     rpi-imager # Flash image to rpi sd card
@@ -86,6 +91,9 @@
     # ifuse # optional, to mount using 'ifuse'
 
     # godot
+
+    obsidian
+    # micro-full
   ];
 
   # Android notifications

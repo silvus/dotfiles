@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
 
@@ -34,6 +34,8 @@
       rpc-bind-address = "0.0.0.0";
       # Allow web UI from LAN (default is localhost only)
       rpc-whitelist = "127.0.0.1,192.168.1.*";
+      # Hostnames allowed in the URL (DNS rebinding protection, IPs always pass)
+      rpc-host-whitelist = "servius,servius.*";
 
       peer-port-random-on-start = false;
       peer-port = 45242;
@@ -42,6 +44,24 @@
       speed-limit-down = 500;
       speed-limit-up-enabled = true;
       speed-limit-up = 5000;
+    };
+  };
+
+  systemd.services.transmission = {
+    # Start once the VPN is up (the killswitch blocks everything else anyway)
+    after = [ "wg-quick-torrent-NL.service" ];
+    wants = [ "wg-quick-torrent-NL.service" ];
+    # transmission 4.1.3 never sends READY=1: the daemon works but systemd
+    # waits in "activating" until the start timeout kills it
+    serviceConfig = {
+      Type = lib.mkForce "simple";
+      ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
+      # The service runs in a chroot with only the download dirs mounted.
+      # Seeded files are symlinks into the library, so expose it (read-only).
+      BindReadOnlyPaths = [
+        "/data/movies"
+        "/data/series"
+      ];
     };
   };
 
@@ -62,6 +82,9 @@
       "network-online.target"
       "wg-quick-torrent-NL.service"
     ];
+
+    # Systemd services only get a minimal PATH (coreutils, grep, sed, ...)
+    path = with pkgs; [ gawk ];
 
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "port-forward.sh" ''
@@ -107,31 +130,49 @@
     # - deny everything
     # - explicitly allow only safe traffic
     extraCommands = ''
-      # Drop all incoming traffic unless explicitly allowed.
-      iptables -P INPUT DROP
+      # Run a rule for both IPv4 and IPv6.
+      # Note: with enableIPv6 = false the NixOS firewall skips ip6tables entirely,
+      # but NetworkManager still brings IPv6 up on enp2s0, so we filter it ourselves.
+      both() { iptables -w "$@"; ip6tables -w "$@"; }
 
-      # Drop all outgoing traffic unless explicitly allowed.
-      # Core killswitch mechanism.
-      iptables -P OUTPUT DROP
+      # Rules live in our own chains, flushed on every (re)load,
+      # so firewall reloads don't stack duplicate rules in INPUT/OUTPUT.
+      for chain in killswitch-in killswitch-out; do
+        both -N "$chain" 2>/dev/null || true
+        both -F "$chain"
+      done
+      both -D INPUT -j killswitch-in 2>/dev/null || true
+      both -D OUTPUT -j killswitch-out 2>/dev/null || true
+      both -A INPUT -j killswitch-in
+      both -A OUTPUT -j killswitch-out
+
+      # Drop all traffic unless explicitly allowed.
+      # OUTPUT DROP is the core killswitch mechanism.
+      both -P INPUT DROP
+      both -P OUTPUT DROP
+      ip6tables -w -P FORWARD DROP
 
       # Allow loopback traffic.
       # Required for local IPC and localhost services.
-      iptables -A INPUT -i lo -j ACCEPT
-      iptables -A OUTPUT -o lo -j ACCEPT
+      both -A killswitch-in -i lo -j ACCEPT
+      both -A killswitch-out -o lo -j ACCEPT
 
       # Allow all traffic through the WireGuard VPN interface.
       # Once the tunnel is established, all torrent traffic flows here.
-      iptables -A INPUT -i torrent-NL -j ACCEPT
-      iptables -A OUTPUT -o torrent-NL -j ACCEPT
+      both -A killswitch-in -i torrent-NL -j ACCEPT
+      both -A killswitch-out -o torrent-NL -j ACCEPT
 
-      # Allow WireGuard handshake traffic on the physical NIC.
+      # Allow WireGuard handshake traffic on the physical NIC (IPv4 endpoint).
       # Without this the VPN tunnel cannot be established.
-      iptables -A OUTPUT -o enp2s0 -p udp --dport 51820 -j ACCEPT
-      iptables -A INPUT -i enp2s0 -p udp --sport 51820 -j ACCEPT
+      iptables -w -A killswitch-out -o enp2s0 -p udp --dport 51820 -j ACCEPT
+      iptables -w -A killswitch-in -i enp2s0 -p udp --sport 51820 -j ACCEPT
 
-      # Allow LAN traffic.
-      iptables -A INPUT -i enp2s0 -s 192.168.1.0/24 -j ACCEPT
-      iptables -A OUTPUT -o enp2s0 -d 192.168.1.0/24 -j ACCEPT
+      # Allow LAN traffic (IPv4 only).
+      iptables -w -A killswitch-in -i enp2s0 -s 192.168.1.0/24 -j ACCEPT
+      iptables -w -A killswitch-out -o enp2s0 -d 192.168.1.0/24 -j ACCEPT
+
+      # Reject (not drop) other IPv6 so apps fall back to IPv4 immediately.
+      ip6tables -w -A killswitch-out -j REJECT
     '';
 
     # Cleanup when firewall reloads.
@@ -147,9 +188,9 @@
   boot.kernel.sysctl = {
     # Enable IPv4 forwarding.
     "net.ipv4.ip_forward" = 1;
-    # net.ipv6.conf.all.disable_ipv6 = 1
-    # net.ipv6.conf.default.disable_ipv6 = 1
-    # net.ipv6.conf.lo.disable_ipv6 = 1
-    # net.ipv6.conf.tun0.disable_ipv6 = 1
+    "net.ipv6.conf.all.disable_ipv6" = 1;
+    "net.ipv6.conf.default.disable_ipv6" = 1;
+    "net.ipv6.conf.lo.disable_ipv6" = 1;
+    "net.ipv6.conf.tun0.disable_ipv6" = 1;
   };
 }

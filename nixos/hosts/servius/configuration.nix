@@ -52,13 +52,32 @@
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
-    open = false; # Required for a 1060
+    open = false; # Proprietary driver only for Kepler
     nvidiaSettings = true;
-    # package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    # GTX 650 (Kepler): only supported by the 470 legacy driver
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   };
   hardware.graphics.enable = true;
   nixpkgs.config.nvidia.acceptLicense = true;
+
+  # Send native 4K to the LG TV (a 1080p signal gets upscaled with overscan),
+  # but render the desktop at 1920x1080: the GPU scales it 2x.
+  # 30Hz: the GTX 650 (HDMI 1.4) can only do 4K60 in YCbCr 4:2:0, where the
+  # TTY and the ViewPortOut borders show up green instead of black.
+  # ViewPortOut (in 4K pixels) compensates the TV overscan: margins L=40 R=38 T=22 B=20.
+  # ForceFullCompositionPipeline: vsync every frame, no tearing (no compositor with awesome).
+  # Can be tested with:
+  # nvidia-settings --assign CurrentMetaMode="DPY-2: 3840x2160_30 { ViewPortIn=1920x1080, ViewPortOut=3762x2118+40+22, ForceFullCompositionPipeline=On }"
+  services.xserver.screenSection = ''
+    Option "MetaModes" "DPY-2: 3840x2160_30 { ViewPortIn=1920x1080, ViewPortOut=3762x2118+40+22, ForceFullCompositionPipeline=On }"
+  '';
+  # With ViewPortOut, RandR reports the output bigger than the desktop (borders included),
+  # so awesome would lay out past the visible area. Declare the real 1920x1080 monitor.
+  services.xserver.displayManager.sessionCommands = ''
+    # delmonitor first: setmonitor fails with BadValue if TV already exists
+    ${pkgs.xrandr}/bin/xrandr --delmonitor TV 2>/dev/null || true
+    ${pkgs.xrandr}/bin/xrandr --setmonitor TV 1920/1600x1080/900+0+0 HDMI-0
+  '';
 
   environment.systemPackages = with pkgs; [
     imapfilter

@@ -70,6 +70,12 @@
     };
   };
 
+  # Console font (shipped with kbd)
+  console = {
+    font = "Lat2-Terminus16";
+    earlySetup = true; # Apply it in initrd too
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 

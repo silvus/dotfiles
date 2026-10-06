@@ -146,6 +146,14 @@
     };
   };
 
+  # Dark theme preference, exposed by the portal (wezterm picks its color scheme from it)
+  # User-set values (dconf write) still take precedence over this default
+  programs.dconf.profiles.user.databases = [
+    {
+      settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    }
+  ];
+
   # Systemd user services for X11 session
   systemd.user.services = {
     nm-applet = {

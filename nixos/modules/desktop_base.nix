@@ -8,15 +8,15 @@
     borgbackup
 
     # Core user applications
-    firefox                # Web browser
+    firefox # Web browser
     firefox-devedition
     chromium
 
-    wezterm                # Terminal emulator
+    wezterm # Terminal emulator
     # rxvt-unicode         # Terminal emulator
     # ghostty                # Terminal emulator
 
-    thunar                 # File manager
+    thunar # File manager
     thunar-volman
     thunar-archive-plugin
     thunar-media-tags-plugin
@@ -24,42 +24,37 @@
     xfconf
 
     # Media and sound
-    mpv                    # Media player
-    unstable.yt-dlp        # Media downloader
-    unstable.spotdl        # Music downloader
-    alsa-utils             # Sound utility
-    pulseaudio             # Sound server
-    pavucontrol            # Volume mixer GUI
-    playerctl              # MPRIS control interface
-    moc                    # Music player
+    mpv # Media player
+    unstable.yt-dlp # Media downloader
+    unstable.spotdl # Music downloader
+    alsa-utils # Sound utility
+    pulseaudio # Sound server
+    pavucontrol # Volume mixer GUI
+    playerctl # MPRIS control interface
+    moc # Music player
     # termusic             # Music player
-    monolith               # Website archiver
-    eom                    # Image viewer
+    monolith # Website archiver
+    eom # Image viewer
 
     # System utilities
-    bc                     # Calculator
-    rink                   # Calculator
-    xdg-utils              # Desktop integration
-    gparted                # Partition manager
-    gnome-disk-utility     # Disk management
-    file-roller            # Archive manager
+    bc # Calculator
+    rink # Calculator
+    xdg-utils # Desktop integration
+    gparted # Partition manager
+    gnome-disk-utility # Disk management
+    file-roller # Archive manager
     # dconf-editor         # GTK configuration editor
-    libnotify              # Notifications
+    libnotify # Notifications
     # ksnip                  # Screenshots https://github.com/ksnip/ksnip/issues/1177
-    lxqt.screengrab        # Screenshots
-    lxappearance           # GTK theme switcher GUI
-    keepassxc              # Password manager
-    usbutils               # Provide lsusb
+    lxqt.screengrab # Screenshots
+    lxappearance # GTK theme switcher GUI
+    keepassxc # Password manager
+    usbutils # Provide lsusb
 
     # Code
     # emacs-gtk
-    vscodium               # Editor
-
+    vscodium # Editor
     zed-editor
-    # claude-agent-acp
-
-    obsidian               # PKM
-    # micro-full
   ];
 
   # Make zed dynamically-linked Linux binary works
@@ -133,20 +128,24 @@
   # Fonts
   # https://nixos.wiki/wiki/Fonts
   fonts = {
-    packages = with pkgs; [
-      dejavu_fonts
-      libertinus # For Typst
-      # source-serif # For Typst
-      noto-fonts
-      noto-fonts-color-emoji
-      font-awesome
-    ] ++ (with pkgs.nerd-fonts; [
-      hack
-      dejavu-sans-mono
-      inconsolata
-      jetbrains-mono
-      liberation
-    ]);
+    packages =
+      with pkgs;
+      [
+        dejavu_fonts
+        libertinus # For Typst
+        # source-serif # For Typst
+        noto-fonts
+        noto-fonts-color-emoji
+        font-awesome
+        terminus_font_ttf # For terminals
+      ]
+      ++ (with pkgs.nerd-fonts; [
+        hack
+        dejavu-sans-mono
+        inconsolata
+        jetbrains-mono
+        liberation
+      ]);
 
     fontconfig.defaultFonts = {
       serif = [ "DejaVu Serif" ];
