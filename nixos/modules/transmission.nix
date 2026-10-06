@@ -1,4 +1,3 @@
-
 { pkgs, ... }:
 
 {
@@ -7,8 +6,7 @@
   environment.systemPackages = with pkgs; [
     transmission_4
     wireguard-tools
-    natpmpc
-
+    libnatpmp
   ];
 
   # https://search.nixos.org/options?channel=25.11&query=transmission
@@ -34,6 +32,8 @@
 
       rpc-port = 9091;
       rpc-bind-address = "0.0.0.0";
+      # Allow web UI from LAN (default is localhost only)
+      rpc-whitelist = "127.0.0.1,192.168.1.*";
 
       peer-port-random-on-start = false;
       peer-port = 45242;
@@ -54,8 +54,14 @@
   systemd.services.port-forward = {
     description = "ProtonVPN NAT-PMP Port Forward";
 
-    after = [ "network-online.target" "wg-quick-torrent-NL.service" ];
-    wants = [ "wg-quick-torrent-NL.service" ];
+    after = [
+      "network-online.target"
+      "wg-quick-torrent-NL.service"
+    ];
+    wants = [
+      "network-online.target"
+      "wg-quick-torrent-NL.service"
+    ];
 
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "port-forward.sh" ''
@@ -120,8 +126,8 @@
 
       # Allow WireGuard handshake traffic on the physical NIC.
       # Without this the VPN tunnel cannot be established.
-      # iptables -A OUTPUT -o enp2s0 -p udp --dport 51820 -j ACCEPT
-      # iptables -A INPUT -i enp2s0 -p udp --sport 51820 -j ACCEPT
+      iptables -A OUTPUT -o enp2s0 -p udp --dport 51820 -j ACCEPT
+      iptables -A INPUT -i enp2s0 -p udp --sport 51820 -j ACCEPT
 
       # Allow LAN traffic.
       iptables -A INPUT -i enp2s0 -s 192.168.1.0/24 -j ACCEPT
@@ -130,8 +136,8 @@
 
     # Cleanup when firewall reloads.
     # extraStopCommands = ''
-      # iptables -P INPUT ACCEPT
-      # iptables -P OUTPUT ACCEPT
+    # iptables -P INPUT ACCEPT
+    # iptables -P OUTPUT ACCEPT
     # '';
   };
 
@@ -139,7 +145,7 @@
   networking.enableIPv6 = false;
 
   boot.kernel.sysctl = {
-      # Enable IPv4 forwarding.
+    # Enable IPv4 forwarding.
     "net.ipv4.ip_forward" = 1;
     # net.ipv6.conf.all.disable_ipv6 = 1
     # net.ipv6.conf.default.disable_ipv6 = 1

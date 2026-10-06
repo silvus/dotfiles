@@ -1,5 +1,10 @@
 # Servius
-{ pkgs, config, movies, ... }:
+{
+  pkgs,
+  config,
+  movies,
+  ...
+}:
 
 {
   imports = [
@@ -60,7 +65,7 @@
   ];
 
   # Autologin
-  services.xserver.displayManager.lightdm.autoLogin = {
+  services.displayManager.autoLogin = {
     enable = true;
     user = "silvus";
   };
@@ -81,14 +86,22 @@
   # services.cron.enable = true;
   # services.cron.systemCronJobs = [
   #   "30 2 * * * silvus /data/doc/.bin/backup_borg"
-  #   "0 */4 * * * silvus imapfilter -c /data/doc/ressources/mail/imapfilter.lua -l /tmp/imapfilter.log"
+  #   "0 * * * * silvus imapfilter -c /data/doc/ressources/mail/imapfilter.lua -l /tmp/imapfilter.log"
   # ];
 
   # Backup
   systemd.services.backup-borg = {
     description = "Borg Backup";
+    # Systemd services only get a minimal PATH
+    path = with pkgs; [
+      # bash
+      python3
+      borgbackup
+      openssh
+    ];
     serviceConfig = {
       Type = "oneshot";
+      User = "silvus";
       ExecStart = "/data/doc/.bin/backup_borg";
     };
   };
@@ -105,16 +118,14 @@
     description = "IMAP Mail Sorting";
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = ''
-        ${pkgs.imapfilter}/bin/imapfilter \
-          -c /data/doc/ressources/mail/imapfilter.lua
-      '';
+      User = "silvus";
+      ExecStart = "${pkgs.imapfilter}/bin/imapfilter -c /data/doc/ressources/mail/imapfilter.lua";
     };
   };
   systemd.timers.imapfilter = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "*-*-* 00/4:00:00";
+      OnCalendar = "*-*-* *:00:00";
       Persistent = true;
     };
   };
