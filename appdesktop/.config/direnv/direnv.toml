@@ -1,0 +1,9 @@
+# direnv configuration, see direnv.toml(1)
+
+# Not used by NixOS
+
+[global]
+# Disable the "direnv is taking a while to execute" warning
+warn_timeout = "0s"
+# Discreet grey logs (errors keep their red color)
+log_format = "\u001b[90mdirenv: %s\u001b[0m"

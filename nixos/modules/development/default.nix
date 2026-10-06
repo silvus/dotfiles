@@ -39,8 +39,17 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    # Disable the "direnv is taking a while to execute" warning
-    settings.global.warn_timeout = "0s";
+    settings.global = {
+      # Disable the "direnv is taking a while to execute" warning
+      warn_timeout = "0s";
+      # Discreet grey logs
+      log_format =
+        # Escape characters
+        let
+          esc = builtins.fromJSON ''"\u001b"'';
+        in
+        "${esc}[90mdirenv: %s${esc}[0m";
+    };
   };
 
 }
