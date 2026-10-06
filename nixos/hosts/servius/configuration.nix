@@ -69,7 +69,7 @@
   # Can be tested with:
   # nvidia-settings --assign CurrentMetaMode="DPY-2: 3840x2160_30 { ViewPortIn=1920x1080, ViewPortOut=3762x2118+40+22, ForceFullCompositionPipeline=On }"
   services.xserver.screenSection = ''
-    Option "MetaModes" "DPY-2: 3840x2160_30 { ViewPortIn=1920x1080, ViewPortOut=3762x2118+40+22, ForceFullCompositionPipeline=On }"
+    Option "MetaModes" "DPY-2: 3840x2160 { ViewPortIn=1920x1080, ViewPortOut=3762x2118+40+22, ForceFullCompositionPipeline=On }"
   '';
   # With ViewPortOut, RandR reports the output bigger than the desktop (borders included),
   # so awesome would lay out past the visible area. Declare the real 1920x1080 monitor.
@@ -94,6 +94,13 @@
     description = "Movies";
     wantedBy = [ "graphical-session.target" ];
     after = [ "graphical-session.target" ];
+    # Systemd services only get a minimal PATH: tools the app spawns by name
+    path = with pkgs; [
+      mpv # playback
+      ffmpeg # ffprobe (scrapper)
+      sqlite # database backup/restore
+      gzip # zcat (database backup/restore)
+    ];
     serviceConfig = {
       ExecStart = "${movies.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/movies";
       Restart = "on-failure";
