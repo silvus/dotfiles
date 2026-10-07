@@ -98,6 +98,17 @@
     imapfilter
   ];
 
+  # NFSv4 shares for the LAN (mnt_*.nix on the clients)
+  services.nfs.server = {
+    enable = true;
+    exports = ''
+      /data/movies   192.168.1.0/24(rw,no_subtree_check)
+      /data/series   192.168.1.0/24(rw,no_subtree_check)
+      /data/torrents 192.168.1.0/24(rw,no_subtree_check)
+    '';
+  };
+  networking.firewall.allowedTCPPorts = [ 2049 ];
+
   # Autologin
   services.displayManager.autoLogin = {
     enable = true;
