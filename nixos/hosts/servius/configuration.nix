@@ -80,6 +80,12 @@
     ${pkgs.xset}/bin/xset -dpms
   '';
 
+  # Hide the mouse cursor when idle
+  services.unclutter = {
+    enable = true;
+    timeout = 2;
+  };
+
   # Never sleep
   systemd.sleep.settings.Sleep = {
     AllowSuspend = "no";
