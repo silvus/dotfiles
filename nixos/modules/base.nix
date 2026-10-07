@@ -35,8 +35,10 @@
 
   # Set DNS
   networking.nameservers = [
-    "1.1.1.1" "2606:4700:4700::1111"
-    "8.8.8.8" "2001:4860:4860::8888"
+    "1.1.1.1"
+    "2606:4700:4700::1111"
+    "8.8.8.8"
+    "2001:4860:4860::8888"
   ];
 
   # Set your time zone
@@ -71,10 +73,10 @@
   };
 
   # Console font (shipped with kbd)
-  console = {
-    font = "Lat2-Terminus16";
-    earlySetup = true; # Apply it in initrd too
-  };
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   earlySetup = true; # Apply it in initrd too
+  # };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -82,7 +84,10 @@
   # Nix configuration
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       warn-dirty = false;
       auto-optimise-store = true;
       # trusted-users = [ "root" "@wheel" ];
@@ -138,7 +143,7 @@
     tmux
 
     # Basic utilities
-    coreutils  # Provides date command
+    coreutils # Provides date command
     clang # Compiler
     gnumake # Makefiles
     which
@@ -194,7 +199,10 @@
   environment.variables.EDITOR = lib.mkForce "hx";
 
   # Set default shell
-  environment.shells = with pkgs; [ fish bash ];
+  environment.shells = with pkgs; [
+    fish
+    bash
+  ];
 
   # Enable OpenSSH daemon
   services.openssh = {

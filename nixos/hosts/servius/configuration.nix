@@ -1,6 +1,7 @@
 # Servius
 {
   pkgs,
+  lib,
   config,
   movies,
   ...
@@ -62,8 +63,6 @@
 
   # Send native 4K to the LG TV (a 1080p signal gets upscaled with overscan),
   # but render the desktop at 1920x1080: the GPU scales it 2x.
-  # 30Hz: the GTX 650 (HDMI 1.4) can only do 4K60 in YCbCr 4:2:0, where the
-  # TTY and the ViewPortOut borders show up green instead of black.
   # ViewPortOut (in 4K pixels) compensates the TV overscan: margins L=40 R=38 T=22 B=20.
   # ForceFullCompositionPipeline: vsync every frame, no tearing (no compositor with awesome).
   # Can be tested with:
@@ -71,13 +70,23 @@
   services.xserver.screenSection = ''
     Option "MetaModes" "DPY-2: 3840x2160 { ViewPortIn=1920x1080, ViewPortOut=3762x2118+40+22, ForceFullCompositionPipeline=On }"
   '';
-  # With ViewPortOut, RandR reports the output bigger than the desktop (borders included),
-  # so awesome would lay out past the visible area. Declare the real 1920x1080 monitor.
-  services.xserver.displayManager.sessionCommands = ''
+  services.xserver.displayManager.sessionCommands = lib.mkAfter ''
     # delmonitor first: setmonitor fails with BadValue if TV already exists
-    ${pkgs.xrandr}/bin/xrandr --delmonitor TV 2>/dev/null || true
-    ${pkgs.xrandr}/bin/xrandr --setmonitor TV 1920/1600x1080/900+0+0 HDMI-0
+    # ${pkgs.xrandr}/bin/xrandr --delmonitor TV 2>/dev/null || true
+    # ${pkgs.xrandr}/bin/xrandr --setmonitor TV 1920/1600x1080/900+0+0 HDMI-0
+
+    # Never blank or power off the TV (overrides desktop_awesome.nix)
+    ${pkgs.xset}/bin/xset s off
+    ${pkgs.xset}/bin/xset -dpms
   '';
+
+  # Never sleep
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = "no";
+    AllowHibernation = "no";
+    AllowHybridSleep = "no";
+    AllowSuspendThenHibernate = "no";
+  };
 
   environment.systemPackages = with pkgs; [
     imapfilter
