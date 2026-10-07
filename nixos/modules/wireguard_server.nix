@@ -102,7 +102,7 @@ in
         "+-${ip} rule del ${ddnsRule}"
         "+${ip} rule add ${ddnsRule}"
       ];
-      ExecStart = "${pkgs.python3}/bin/python3 /etc/gandi-ddns/gandi-ddns";
+      ExecStart = "${pkgs.python3}/bin/python3 /data/dev/devops/gandi-ddns";
       StateDirectory = "gandi-ddns";
     };
   };
