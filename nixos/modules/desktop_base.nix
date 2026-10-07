@@ -26,6 +26,7 @@
     # Media and sound
     mpv # Media player
     unstable.yt-dlp # Media downloader
+    unstable.deno # JS runtime required by yt-dlp
     unstable.spotdl # Music downloader
     alsa-utils # Sound utility
     pulseaudio # Sound server
