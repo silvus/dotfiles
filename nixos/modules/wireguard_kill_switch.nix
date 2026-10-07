@@ -45,7 +45,7 @@ in
 
       # Deny everything, allow only what's safe
       extraCommands = ''
-        # IPv4 + IPv6
+        # IPv4 + IPv6 (NetworkManager brings IPv6 up anyway)
         both() { iptables -w "$@"; ip6tables -w "$@"; }
 
         # Own chains, flushed on reload (no duplicates)
@@ -81,10 +81,17 @@ in
         iptables -w -A killswitch-in -i ${nic} -s ${lanSubnet} -j ACCEPT
         iptables -w -A killswitch-out -o ${nic} -d ${lanSubnet} -j ACCEPT
 
-        # IPv6 only through the VPN. Reject: fast fallback to IPv4
-        ip6tables -w -A killswitch-in -j DROP
+        # No IPv6. Reject: fast fallback to IPv4
         ip6tables -w -A killswitch-out -j REJECT
       '';
+    };
+
+    # No IPv6
+    networking.enableIPv6 = false;
+    boot.kernel.sysctl = {
+      "net.ipv6.conf.all.disable_ipv6" = 1;
+      "net.ipv6.conf.default.disable_ipv6" = 1;
+      "net.ipv6.conf.lo.disable_ipv6" = 1;
     };
   };
 }

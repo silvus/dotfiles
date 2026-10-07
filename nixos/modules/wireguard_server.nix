@@ -1,4 +1,4 @@
-# WireGuard LAN access + Gandi dynamic DNS (IPv4 only)
+# WireGuard LAN access + Gandi dynamic DNS
 {
   pkgs,
   config,
@@ -76,12 +76,11 @@ in
     iptables -w -A killswitch-out -o ${nic} -m mark --mark ${wgFwMark} -j ACCEPT
 
     # DDNS: real IP only, never the VPN's
-    both -A killswitch-out -o ${vpn} -m owner --uid-owner ${toString ddnsUid} -j REJECT
+    iptables -w -A killswitch-out -o ${vpn} -m owner --uid-owner ${toString ddnsUid} -j REJECT
     iptables -w -A killswitch-out -o ${nic} -p tcp --dport 443 -m owner --uid-owner ${toString ddnsUid} -j ACCEPT
   '';
 
   # Dynamic DNS (script holds the token):
-  #   sudo install -Dm750 -g gandi-ddns gandi-ddns /etc/gandi-ddns/gandi-ddns
   users.users.gandi-ddns = {
     isSystemUser = true;
     uid = ddnsUid;
