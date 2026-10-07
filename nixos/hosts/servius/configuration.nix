@@ -41,6 +41,7 @@
     # ../../modules/mdorg.nix
     ../../modules/movies.nix
     ../../modules/transmission.nix
+    ../../modules/wireguard_server.nix
 
   ];
 
