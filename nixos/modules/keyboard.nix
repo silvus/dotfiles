@@ -3,7 +3,8 @@
 let
   keyboard_config = builtins.readFile ./../../approot/etc/keyd/default.conf;
 
-in {
+in
+{
 
   # Console keymap
   console = {
@@ -14,7 +15,7 @@ in {
 
   # Configure keymap in X11
   services.xserver = {
-    enable = true;  # Make sure this is set
+    enable = true; # Make sure this is set
 
     xkb = {
       model = "pc105";
@@ -30,7 +31,10 @@ in {
       # Define your custom layout
       extraLayouts.custom = {
         description = "Custom QWERTY-FR layout";
-        languages = [ "eng" "fra" ];
+        languages = [
+          "eng"
+          "fra"
+        ];
         symbolsFile = ./../../approot/usr/share/X11/xkb/symbols/custom;
       };
 
@@ -47,8 +51,8 @@ in {
   # Include the dotfiles config for now and only keep the service.
   # The order of the entries is not preserved so keyd service fail...
   environment.systemPackages = with pkgs; [
-    keyd            # To get the binary in the PATH
-    setxkbmap       # Needed for layout setup
+    keyd # To get the binary in the PATH
+    setxkbmap # Needed for layout setup
     # kbd             # TTY config
   ];
 
@@ -63,7 +67,7 @@ in {
   # };
 
   # Looks like there is a keyd group
-  users.groups.keyd = {};
+  users.groups.keyd = { };
   users.users.silvus.extraGroups = [
     "keyd"
   ];

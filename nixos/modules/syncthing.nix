@@ -13,9 +13,7 @@ in
 {
 
   # Create directories before Syncthing starts
-  systemd.tmpfiles.rules = map (dir:
-    "d ${dir} 0750 ${syncthingUser} ${syncthingGroup} -"
-  ) baseDirs;
+  systemd.tmpfiles.rules = map (dir: "d ${dir} 0750 ${syncthingUser} ${syncthingGroup} -") baseDirs;
 
   # Ensure Syncthing service waits for directories
   systemd.services."syncthing@${syncthingUser}" = {
@@ -44,7 +42,7 @@ in
 
   # Open Syncthing ports in firewall
   networking.firewall = {
-    allowedTCPPorts = [ 5001];
+    allowedTCPPorts = [ 5001 ];
     # allowedTCPPorts = [ 22000 ];
     # allowedUDPPorts = [ 21027 22000 ];
   };

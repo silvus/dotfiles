@@ -1,4 +1,3 @@
-
 { pkgs, ... }:
 
 {
@@ -8,25 +7,25 @@
     waybar
     xwayland
 
-    fuzzel                 # application launcher
+    fuzzel # application launcher
     # grim                   # screenshot tool
     # slurp                  # region selector
-    wl-clipboard           # clipboard integration
-    wtype                  # for simulating key presses
-    kanshi                 # auto layout switching (multi-monitor)
-    wev                    # xev for wayland
+    wl-clipboard # clipboard integration
+    wtype # for simulating key presses
+    kanshi # auto layout switching (multi-monitor)
+    wev # xev for wayland
     swaynotificationcenter # notification daemon for sway
-    swaylock               # lock session
+    swaylock # lock session
 
     # systray
-    networkmanagerapplet   # get nm-applet
-    pasystray              # sound applet
+    networkmanagerapplet # get nm-applet
+    pasystray # sound applet
 
     # Appearance and theming
-    everforest-gtk-theme   # gtk theme
-    adwaita-icon-theme     # Adwaita icon theme (includes cursor theme)
+    everforest-gtk-theme # gtk theme
+    adwaita-icon-theme # Adwaita icon theme (includes cursor theme)
 
-    glib                   # To get gsettings (wayland specific)
+    glib # To get gsettings (wayland specific)
   ];
 
   xdg.portal = {

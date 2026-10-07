@@ -4,30 +4,30 @@
   # System packages — core userland tools and desktop utilities
   environment.systemPackages = with pkgs; [
     # Sway and Wayland ecosystem
-    waybar                 # Status bar
-    fuzzel                 # Application launcher
-    grim                   # Screenshot tool
-    slurp                  # Region selector
-    wl-clipboard           # Clipboard integration
-    wtype                  # For simulating key presses
-    kanshi                 # Auto layout switching (multi-monitor)
-    wev                    # xev for wayland
+    waybar # Status bar
+    fuzzel # Application launcher
+    grim # Screenshot tool
+    slurp # Region selector
+    wl-clipboard # Clipboard integration
+    wtype # For simulating key presses
+    kanshi # Auto layout switching (multi-monitor)
+    wev # xev for wayland
     swaynotificationcenter # Notification daemon for sway
 
     # Systray
-    networkmanagerapplet   # get nm-applet
-    pasystray              # Sound applet
+    networkmanagerapplet # get nm-applet
+    pasystray # Sound applet
 
     # Appearance and theming
-    everforest-gtk-theme   # GTK theme
-    adwaita-icon-theme     # Icon theme
-    bibata-cursors         # Cursor theme
+    everforest-gtk-theme # GTK theme
+    adwaita-icon-theme # Icon theme
+    bibata-cursors # Cursor theme
 
     # For Waybar. Gtk css interfer and force a with of 28px (which is huge)
     # to force a small size, fake a smaller gtk theme
     adapta-gtk-theme
 
-    glib                   # To get gsettings (wayland specific)
+    glib # To get gsettings (wayland specific)
   ];
 
   # Wayland and Sway
@@ -50,7 +50,7 @@
 
   # Security
   # security.polkit.enable = true;
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
 
   # XDG portals
   # xdg.portal = {
