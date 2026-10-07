@@ -48,7 +48,6 @@ config.color_scheme = get_color_scheme()
 
 config.use_cap_height_to_scale_fallback_fonts = true
 config.font = wezterm.font_with_fallback({
-	'Terminus (TTF)',
 	'Hack Nerd Font',
 	'Hack',
 	{
