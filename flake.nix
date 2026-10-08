@@ -13,6 +13,9 @@
     mdorg.url = "git+ssh://silvus@arcus:/data/git/mdorg";
     movies.url = "git+ssh://silvus@arcus:/data/git/movies";
 
+    # Private per-host config
+    devops.url = "git+ssh://silvus@arcus:/data/git/devops";
+
     llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
@@ -24,6 +27,7 @@
       home-manager,
       mdorg,
       movies,
+      devops,
       llm-agents,
     }:
     let
@@ -63,6 +67,10 @@
             }
 
             ./nixos/hosts/${hostname}/configuration.nix
+
+            # Import private modules from the devops repo: shared, then per-host if any
+            devops.nixosModules.default
+            (devops.nixosModules.${hostname} or { })
 
             # Import local custom module
             (if builtins.pathExists ./custom/local.nix then ./custom/local.nix else { })
