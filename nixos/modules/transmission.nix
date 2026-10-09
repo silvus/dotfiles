@@ -67,8 +67,9 @@ in
       Type = lib.mkForce "simple";
       ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
       # The service runs in a chroot with only the download dirs mounted.
-      # Seeded files are symlinks into the library, so expose it (read-only).
-      BindReadOnlyPaths = [
+      # Seeded files are symlinks into the library, so expose it.
+      BindPaths = [
+        "/data/torrents"
         "/data/movies"
         "/data/series"
       ];
