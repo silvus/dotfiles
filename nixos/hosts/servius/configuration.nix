@@ -169,6 +169,10 @@
   # Imapfilter
   systemd.services.imapfilter = {
     description = "IMAP Mail Sorting";
+    # Systemd services only get a minimal PATH
+    path = with pkgs; [
+      python3
+    ];
     serviceConfig = {
       Type = "oneshot";
       User = "silvus";
