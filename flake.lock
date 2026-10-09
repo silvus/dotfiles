@@ -36,11 +36,11 @@
     },
     "devops": {
       "locked": {
-        "lastModified": 1791532404,
-        "narHash": "sha256-yCrMIuInJEFnlB38LX3HLaO5Isr9YeM3rbOuI/K8+vA=",
+        "lastModified": 1791551523,
+        "narHash": "sha256-BnkKHD7rGikjcnxDPMdrq9vK82VM076oOGxPFwsXAGM=",
         "ref": "refs/heads/main",
-        "rev": "3a841e5e5836e55fd64975646e1d7f8234191ba1",
-        "revCount": 36,
+        "rev": "b64272e5a0b16b29e6855941002ef4e97a53767a",
+        "revCount": 37,
         "type": "git",
         "url": "ssh://silvus@arcus/data/git/devops"
       },
