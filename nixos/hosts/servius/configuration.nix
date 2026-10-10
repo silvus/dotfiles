@@ -224,7 +224,8 @@ in
       Type = "oneshot";
       User = "gandi-ddns";
       Group = "gandi-ddns";
-      ExecStart = "${pkgs.python3}/bin/python3 /data/dev/devops/gandi-ddns";
+      # Install/update using sudo install -Dm750 -o root -g gandi-ddns /data/dev/devops/gandi-ddns /etc/gandi-ddns/gandi-ddns
+      ExecStart = "${pkgs.python3}/bin/python3 /etc/gandi-ddns/gandi-ddns";
       StateDirectory = "gandi-ddns";
     };
   };
