@@ -47,7 +47,7 @@ in
     # ../../modules/development/markdown.nix
     # ../../modules/development/php.nix
     # ../../modules/development/containers.nix
-    # ../../modules/mdorg.nix
+    ../../modules/mdorg.nix
     ../../modules/movies.nix
     ../../modules/transmission.nix
     ../../modules/wireguard_kill_switch.nix
