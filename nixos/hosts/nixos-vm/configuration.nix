@@ -19,9 +19,9 @@
     # ../../modules/gaming.nix
     # ../../modules/printing.nix
     # ../../modules/security.nix
-    # ../../modules/mnt_movies.nix
-    # ../../modules/mnt_tvshows.nix
-    # ../../modules/mnt_doc.nix
+    # ../../modules/mounts/movies.nix
+    # ../../modules/mounts/tvshows.nix
+    # ../../modules/mounts/doc.nix
     ../../modules/development
     ../../modules/development/go.nix
     ../../modules/development/rust.nix

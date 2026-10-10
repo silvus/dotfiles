@@ -7,6 +7,8 @@
     allowedTCPPorts = [ 22 ];
     allowedUDPPorts = [ ];
     allowPing = true;
+    # Reject instead of drop (faster feedback for legitimate clients)
+    # rejectPackets = true;
   };
 
   # Fail2ban
@@ -14,6 +16,7 @@
     enable = true;
     maxretry = 5;
     bantime = "1h";
+    ignoreIP = [ "192.168.1.0/24" ];
   };
 
   # SSH hardening
@@ -23,19 +26,19 @@
     X11Forwarding = false;
     MaxAuthTries = 3;
     ClientAliveInterval = 300;
-    ClientAliveCountMax = 2;
+    ClientAliveCountMax = 3;
   };
 
   # System security
-  security = {
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = true;
-      execWheelOnly = true;
-    };
-    lockKernelModules = true;
-    protectKernelImage = true;
-  };
+  # security = {
+  #   sudo = {
+  #     enable = true;
+  #     wheelNeedsPassword = true;
+  #     execWheelOnly = true;
+  #   };
+  #   lockKernelModules = true;
+  #   protectKernelImage = true;
+  # };
 
   # Kernel hardening
   # boot.kernel.sysctl = {
@@ -59,5 +62,5 @@
   # };
 
   # Automatic security updates disabled by default
-  system.autoUpgrade.enable = false;
+  # system.autoUpgrade.enable = false;
 }

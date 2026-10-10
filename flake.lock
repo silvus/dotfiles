@@ -36,11 +36,11 @@
     },
     "devops": {
       "locked": {
-        "lastModified": 1791553261,
-        "narHash": "sha256-HGOnt4Q7EabaUgM46aknrdRXLs6lmfDhMvna7AKQp8o=",
+        "lastModified": 1791644463,
+        "narHash": "sha256-t09vPoyPl7d3Qe95rOGOdoz8xJpOQ7OzplMDYD2PL9Q=",
         "ref": "refs/heads/main",
-        "rev": "430e124324205957f162fc83ee590975044dbd37",
-        "revCount": 38,
+        "rev": "e71b5fba3fee440e394eeae48bb4e1951172ff12",
+        "revCount": 39,
         "type": "git",
         "url": "ssh://silvus@arcus/data/git/devops"
       },
@@ -118,11 +118,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1791522838,
-        "narHash": "sha256-Q6VbwYvayJgN/7x4jI7KnSkd5NGyUwfUw57Dho4jJAE=",
+        "lastModified": 1791612911,
+        "narHash": "sha256-gG794N9c3eyZgIolqXwNuIuSbTNzOlMZ2p5MkXvNdGs=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "4bb57cff45b5554a02dba0cf7a8c7f4f010a864d",
+        "rev": "32b0d7443782bdeacea2bed59ef66d522b8a2097",
         "type": "github"
       },
       "original": {

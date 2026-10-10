@@ -42,8 +42,7 @@ in
       rpc-port = 9091;
       rpc-bind-address = "0.0.0.0";
       # Allow web UI from LAN (default is localhost only)
-      # 10.100.0.*: WireGuard peers (wireguard_server.nix)
-      rpc-whitelist = "127.0.0.1,192.168.1.*,10.100.0.*";
+      rpc-whitelist = "127.0.0.1,192.168.1.*";
       # Hostnames allowed in the URL (DNS rebinding protection, IPs always pass)
       rpc-host-whitelist = "servius,servius.*";
 
