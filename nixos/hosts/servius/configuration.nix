@@ -167,7 +167,10 @@ in
       # After wg-quick's rules (unprioritized, they'd go before ours), re-added when it restarts
       after = [ wg ];
       partOf = [ wg ];
-      wantedBy = [ wg ];
+      wantedBy = [
+        wg
+        "multi-user.target"
+      ];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
