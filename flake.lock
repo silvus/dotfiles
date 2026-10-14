@@ -36,11 +36,11 @@
     },
     "devops": {
       "locked": {
-        "lastModified": 1791644463,
-        "narHash": "sha256-t09vPoyPl7d3Qe95rOGOdoz8xJpOQ7OzplMDYD2PL9Q=",
+        "lastModified": 1791999854,
+        "narHash": "sha256-d8pIfZPEPTS8P0ySU36zzKkU9FPEWU/ZyOrM4iJIoDI=",
         "ref": "refs/heads/main",
-        "rev": "e71b5fba3fee440e394eeae48bb4e1951172ff12",
-        "revCount": 39,
+        "rev": "24cfefbad7b7ec02685554a2630477480d55c043",
+        "revCount": 40,
         "type": "git",
         "url": "ssh://silvus@arcus/data/git/devops"
       },
@@ -157,11 +157,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1791997547,
-        "narHash": "sha256-StMf1a4lYhdIIc/4+4sIZH5SHnuUtjWK5DFkKMIOYus=",
+        "lastModified": 1792000608,
+        "narHash": "sha256-g3B5urlLqWkCP9EiP3lTc68DGQeLfF5s9z7FZ0q+Zsc=",
         "ref": "refs/heads/main",
-        "rev": "4b4a5ffd16da46ea7fde9e0ab440516b643f4c78",
-        "revCount": 48,
+        "rev": "3672e05531962ac34a1a66293c846969f085e803",
+        "revCount": 50,
         "type": "git",
         "url": "ssh://silvus@arcus/data/git/movies"
       },
