@@ -47,6 +47,7 @@ in
     # ../../modules/development/markdown.nix
     # ../../modules/development/php.nix
     # ../../modules/development/containers.nix
+    ../../modules/hyperion.nix
     ../../modules/mdorg.nix
     ../../modules/movies.nix
     ../../modules/transmission.nix
@@ -59,7 +60,6 @@ in
 
   environment.systemPackages = with pkgs; [
     imapfilter
-    hyperion-ng # Ambilight
   ];
 
   # Nvidia
@@ -142,7 +142,6 @@ in
 
   networking.firewall.allowedTCPPorts = [
     2049 # NFS
-    8090 # Hyperion
   ];
 
   # SSH from outside, openFirewall (default) opens both ports
