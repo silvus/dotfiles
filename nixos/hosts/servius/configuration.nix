@@ -139,7 +139,11 @@ in
       /data/trogo/histoires ${lanSubnet}(rw,no_subtree_check)
     '';
   };
-  networking.firewall.allowedTCPPorts = [ 2049 ];
+
+  networking.firewall.allowedTCPPorts = [
+    2049 # NFS
+    8090 # Hyperion
+  ];
 
   # SSH from outside, openFirewall (default) opens both ports
   services.openssh = {
