@@ -157,11 +157,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1792092184,
-        "narHash": "sha256-B1fp3N6A+nCUjS6KOHUnaVAwcrLjGWwNHiKBX5i9vNM=",
+        "lastModified": 1792096421,
+        "narHash": "sha256-6nmRAyKlOjS+nxEzEEBPrhfiHzT8+awJpVFUU+ZyXpk=",
         "ref": "refs/heads/main",
-        "rev": "cdc0c6620d64aca3f7f64b4b78a1e7b6032a2c18",
-        "revCount": 54,
+        "rev": "ca43009a88918f4a2785d4374c03ccbb85f282b8",
+        "revCount": 55,
         "type": "git",
         "url": "ssh://silvus@arcus/data/git/movies"
       },
