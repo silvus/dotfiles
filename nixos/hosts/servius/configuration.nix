@@ -106,6 +106,7 @@ in
       ffmpeg # ffprobe (scrapper)
       sqlite # database backup/restore
       gzip # zcat (database backup/restore)
+      hyperion-ng # Ambilight
     ];
     serviceConfig = {
       ExecStart = "${movies.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/movies";
