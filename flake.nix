@@ -91,6 +91,7 @@
         nixos-vm = mkHost "nixos-vm" "x86_64-linux";
         claudius = mkHost "claudius" "x86_64-linux";
         noctus = mkHost "noctus" "x86_64-linux";
+        gladius = mkHost "gladius" "x86_64-linux";
         virtus = mkHost "virtus" "x86_64-linux";
         servius = mkHost "servius" "x86_64-linux";
         arcus = mkHost "arcus" "x86_64-linux";
