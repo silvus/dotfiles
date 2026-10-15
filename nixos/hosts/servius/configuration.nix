@@ -253,7 +253,7 @@ in
     ];
     serviceConfig = {
       Type = "oneshot";
-      User = "silvus";
+      User = "root";
       ExecStart = "/data/doc/.bin/backup_borg";
     };
   };
