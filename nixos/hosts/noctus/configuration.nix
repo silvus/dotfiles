@@ -1,41 +1,10 @@
-# Noctus - Laptop Configuration
+# Noctus - Laptop (Thinkpad X260)
 { pkgs, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
-
-    ../../modules/base.nix
-    ../../modules/keyboard.nix
-    ../../modules/syncthing.nix
-    ../../modules/desktop_base.nix
-    ../../modules/desktop_awesome.nix
-    ../../modules/desktop_office.nix
-    # ../../modules/desktop_3dmodel.nix
-    # ../../modules/desktop_sway.nix
-    # ../../modules/desktop_niri.nix
-    ../../modules/laptop.nix
-    # ../../modules/gaming.nix
-    # ../../modules/printing.nix
-    # ../../modules/desktop_udev.nix
-    # ../../modules/security.nix
-    ../../modules/mounts/movies.nix
-    ../../modules/mounts/tvshows.nix
-    ../../modules/mounts/torrents.nix
-    # ../../modules/mounts/doc.nix
-    ../../modules/development
-    ../../modules/development/go.nix
-    ../../modules/development/rust.nix
-    ../../modules/development/python.nix
-    ../../modules/development/nix.nix
-    ../../modules/development/lua.nix
-    ../../modules/development/bash.nix
-    ../../modules/development/markdown.nix
-    # ../../modules/development/php.nix
-    ../../modules/development/containers.nix
-    ../../modules/mdorg.nix
-    ../../modules/movies.nix
-    # ../../modules/transmission.nix
+    ../../modules/profiles/laptop.nix
   ];
 
   # Per-host, not shared via base.nix.
@@ -58,26 +27,13 @@
   #   };
   # };
 
-  environment.systemPackages = with pkgs; [
-    steam
-  ];
-
   # Intel VA-API hardware video decode (fixes CPU-bound YouTube stutter,
   # especially now that TLP throttles the CPU on battery)
   hardware.graphics.extraPackages = with pkgs; [
-    intel-media-driver    # VA-API driver (iHD) for Broadwell+ Intel iGPUs
-    intel-vaapi-driver    # VA-API driver (i965) fallback for older Intel iGPUs
-    libvdpau-va-gl       # VDPAU-over-VA-API wrapper for apps that only speak VDPAU
+    intel-media-driver # VA-API driver (iHD) for Broadwell+ Intel iGPUs
+    intel-vaapi-driver # VA-API driver (i965) fallback for older Intel iGPUs
+    libvdpau-va-gl # VDPAU-over-VA-API wrapper for apps that only speak VDPAU
   ];
   environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
-
-  # Steam configuration
-  # Just Steam for Noctus, not the whole gaming stuff
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    gamescopeSession.enable = true;
-  };
 
 }

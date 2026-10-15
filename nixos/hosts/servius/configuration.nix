@@ -1,4 +1,4 @@
-# Servius
+# Servius - Media center
 {
   pkgs,
   lib,

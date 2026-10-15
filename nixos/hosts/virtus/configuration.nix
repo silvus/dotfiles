@@ -1,4 +1,4 @@
-# Virtus
+# Virtus - Desktop
 {
   pkgs,
   config,
@@ -9,37 +9,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-
-    ../../modules/base.nix
-    ../../modules/keyboard.nix
-    ../../modules/syncthing.nix
-    ../../modules/desktop_base.nix
-    # ../../modules/desktop_sway.nix
-    # ../../modules/desktop_niri.nix
-    ../../modules/desktop_awesome.nix
-    ../../modules/desktop_office.nix
-    ../../modules/desktop_3dmodel.nix
-    ../../modules/gaming.nix
-    ../../modules/printing.nix
-    ../../modules/desktop_udev.nix
-    # ../../modules/security.nix
-    ../../modules/mounts/movies.nix
-    ../../modules/mounts/tvshows.nix
-    ../../modules/mounts/torrents.nix
-    # ../../modules/mounts/doc.nix
-    ../../modules/development
-    # ../../modules/development/go.nix
-    ../../modules/development/rust.nix
-    ../../modules/development/python.nix
-    ../../modules/development/nix.nix
-    ../../modules/development/lua.nix
-    ../../modules/development/bash.nix
-    ../../modules/development/markdown.nix
-    ../../modules/development/php.nix
-    ../../modules/development/containers.nix
-    ../../modules/mdorg.nix
-    ../../modules/movies.nix
-    # ../../modules/transmission.nix
+    ../../modules/profiles/desktop.nix
   ];
 
   # Per-host, not shared via base.nix.
@@ -82,25 +52,7 @@
   environment.systemPackages = with pkgs; [
     keymapp # Voyager keyboard utility
     blink1-tool # Command line client for the blink(1) notification light
-
-    kcc # convert comic/manga to EPUB
-    rpi-imager # Flash image to rpi sd card
-
-    # ios files access
-    # libimobiledevice
-    # ifuse # optional, to mount using 'ifuse'
-
-    # godot
-
-    obsidian
-    # micro-full
   ];
-
-  # Android notifications
-  # programs.kdeconnect.enable = true;
-
-  # IOS files access
-  # services.usbmuxd.enable = true;
 
   # Screens
   services.xserver = {

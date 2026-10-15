@@ -1,13 +1,14 @@
-# Claudius
-{ pkgs, lib, llm-agents, modulesPath,... }:
+# Claudius - VM
+{
+  pkgs,
+  lib,
+  llm-agents,
+  ...
+}:
 
 {
   imports = [
-    # Include the default incus configuration.
-    "${modulesPath}/virtualisation/incus-virtual-machine.nix"
-    # ./incus-virtual-machine.nix
-
-    ../../modules/base.nix
+    ../../modules/profiles/vm.nix
     # ../../modules/keyboard.nix
     # ../../modules/syncthing.nix
     # ../../modules/desktop_base.nix
@@ -35,26 +36,6 @@
   # Per-host, not shared via base.nix.
   system.stateVersion = "26.05";
 
-  # Host-specific networking
-  networking = {
-    hostName = "claudius";
-    dhcpcd.enable = false;
-    useDHCP = false;
-    useHostResolvConf = false;
-  };
-
-  systemd.network = {
-    enable = true;
-    networks."50-enp5s0" = {
-      matchConfig.Name = "enp5s0";
-      networkConfig = {
-        DHCP = "ipv4";
-        IPv6AcceptRA = true;
-      };
-      linkConfig.RequiredForOnline = "routable";
-    };
-  };
-
   environment.systemPackages = with pkgs; [
     llm-agents.packages.${stdenv.hostPlatform.system}.claude-code
     # llm-agents.packages.${stdenv.hostPlatform.system}.codex
@@ -70,8 +51,10 @@
     interval = "*:0/15"; # every 15 minutes
   };
 
-  swapDevices = [ {
-    device = "/var/lib/swapfile";
-    size = 8*1024; # 8GB
-  } ];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 8 * 1024; # 8GB
+    }
+  ];
 }

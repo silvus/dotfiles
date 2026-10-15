@@ -1,14 +1,9 @@
-# NixOS VM - Testing Configuration
-{ lib, pkgs, modulesPath, ... }:
+# NixOS VM
+{ ... }:
 
 {
   imports = [
-    # Include the default incus configuration.
-    "${modulesPath}/virtualisation/incus-virtual-machine.nix"
-    # TODO: should I move this to the dotfiles?
-    # ./incus-virtual-machine.nix
-
-    ../../modules/base.nix
+    ../../modules/profiles/vm.nix
     ../../modules/keyboard.nix
     # ../../modules/syncthing.nix
     ../../modules/desktop_base.nix
@@ -35,26 +30,6 @@
 
   # Per-host, not shared via base.nix.
   system.stateVersion = "26.05";
-
-  # Host-specific networking
-  networking = {
-    hostName = "nixos-vm";
-    dhcpcd.enable = false;
-    useDHCP = false;
-    useHostResolvConf = false;
-  };
-
-  systemd.network = {
-    enable = true;
-    networks."50-enp5s0" = {
-      matchConfig.Name = "enp5s0";
-      networkConfig = {
-        DHCP = "ipv4";
-        IPv6AcceptRA = true;
-      };
-      linkConfig.RequiredForOnline = "routable";
-    };
-  };
 
   # services.xserver = {
   #   enable = true;
