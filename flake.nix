@@ -12,6 +12,7 @@
 
     mdorg.url = "git+ssh://silvus@arcus:/data/git/mdorg";
     movies.url = "git+ssh://silvus@arcus:/data/git/movies";
+    mot.url = "git+ssh://silvus@arcus:/data/git/mot";
 
     # Private per-host config
     devops.url = "git+ssh://silvus@arcus:/data/git/devops";
@@ -27,6 +28,7 @@
       home-manager,
       mdorg,
       movies,
+      mot,
       devops,
       llm-agents,
     }:
@@ -58,6 +60,7 @@
               hostname
               mdorg
               movies
+              mot
               llm-agents
               ;
           };

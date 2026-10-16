@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, mot, ... }:
 
 {
   # System packages — core userland tools and desktop utilities
@@ -33,6 +33,7 @@
     pavucontrol # Volume mixer GUI
     playerctl # MPRIS control interface
     moc # Music player
+    mot.packages.${pkgs.stdenv.hostPlatform.system}.default # music on terminal
     # termusic             # Music player
     monolith # Website archiver
     eom # Image viewer

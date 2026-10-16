@@ -6,9 +6,13 @@ if pgrep "mpv" >/dev/null 2>&1 ; then
 	# Mpv
 	echo "seek -10" | socat - "/tmp/mpv-socket"
 
+elif pgrep -x "mot" >/dev/null 2>&1 ; then
+	# Mot
+	"${HOME}/.dotfiles/bin/music" --seek=-10
+
 elif pgrep "mocp" >/dev/null 2>&1 ; then
 	# Moc
-	${HOME}/.dotfiles/bin/music --seek=-10
+	"${HOME}/.dotfiles/bin/music" --seek=-10
 
 else
 	playerctl position 10-

@@ -6,9 +6,13 @@ if pgrep "mpv" >/dev/null 2>&1 ; then
 	# Mpv
 	echo "cycle pause" | socat - "/tmp/mpv-socket"
 
+elif pgrep -x "mot" >/dev/null 2>&1 ; then
+	# Mot
+	"${HOME}/.dotfiles/bin/music" --pause
+
 elif pgrep "mocp" >/dev/null 2>&1 ; then
 	# Moc
-	${HOME}/.dotfiles/bin/music --toggle-pause
+	"${HOME}/.dotfiles/bin/music" --toggle-pause
 
 else
 	playerctl play-pause
