@@ -254,7 +254,9 @@ in
     ];
     serviceConfig = {
       Type = "oneshot";
-      User = "root";
+      User = "silvus";
+      # Bypass file read permission
+      AmbientCapabilities = [ "CAP_DAC_READ_SEARCH" ];
       ExecStart = "/data/doc/.bin/backup_borg";
     };
   };
