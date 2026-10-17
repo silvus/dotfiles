@@ -136,11 +136,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1792149628,
-        "narHash": "sha256-z6OJhOCXlLXdP1GdqS+6wLe/blU6KGZFrib+b/nxYE8=",
+        "lastModified": 1792226690,
+        "narHash": "sha256-IFe04Zpq0aJ/sLYPBABcW7EZlqky4Bb46wubC8A50cs=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "e85b99217baf13a38fc887b31338b1833f1159c0",
+        "rev": "c250766160603f5ef582adecb4f453b009f63365",
         "type": "github"
       },
       "original": {
@@ -195,11 +195,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1792099397,
-        "narHash": "sha256-vhl/gUtJX7fkwSLEbFIl+MYRKLEpoQbW89LCVsshxKg=",
+        "lastModified": 1792261000,
+        "narHash": "sha256-CxAwhFMxI98wK+Pnm0EwtDH0xKmWv87r1C3jAd3eLbQ=",
         "ref": "refs/heads/main",
-        "rev": "5e86546d7d6548459827257ac388d0138e44a6e2",
-        "revCount": 56,
+        "rev": "3937905e71b02b4f9aa731c531f750a7ee708af8",
+        "revCount": 57,
         "type": "git",
         "url": "ssh://silvus@arcus/data/git/movies"
       },
