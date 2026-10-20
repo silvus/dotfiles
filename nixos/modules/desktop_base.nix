@@ -27,7 +27,22 @@
     mpv # Media player
     unstable.yt-dlp # Media downloader
     unstable.deno # JS runtime required by yt-dlp
-    unstable.spotdl # Music downloader
+    # Music downloader, pinned to ytmusicapi 1.12.1 (newer versions return no results)
+    # https://github.com/spotDL/spotify-downloader/issues/2779
+    (unstable.spotdl.override {
+      python3Packages =
+        (unstable.python3.override {
+          packageOverrides = pyfinal: pyprev: {
+            ytmusicapi = pyprev.ytmusicapi.overridePythonAttrs (old: rec {
+              version = "1.12.1";
+              src = old.src.override {
+                tag = version;
+                hash = "sha256-9K61PJz+edCdLv8HiuASV4Bn3Tpw4JsCbIQNn24LjSU=";
+              };
+            });
+          };
+        }).pkgs;
+    })
     alsa-utils # Sound utility
     pulseaudio # Sound server
     pavucontrol # Volume mixer GUI
