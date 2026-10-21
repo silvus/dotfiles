@@ -484,6 +484,15 @@ keys.global = awful.util.table.join(
 		awful.spawn("screengrab --region", false)
 	end, { description = "make a printscreen", group = "launcher" }),
 
+	-- Insert current date / date and time
+	-- --clearmodifiers releases the held modkey while typing
+	awful.key({ modkey }, "d", function()
+		awful.spawn.with_shell('xdotool type --clearmodifiers "$(date "+%Y-%m-%d")"')
+	end, { description = "insert current date", group = "launcher" }),
+	awful.key({ modkey, "Shift" }, "d", function()
+		awful.spawn.with_shell('xdotool type --clearmodifiers "$(date "+%Y-%m-%d %H:%M")"')
+	end, { description = "insert current date and time", group = "launcher" }),
+
 	-- Reload
 	awful.key({ modkey, "Shift" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
 	awful.key({ modkey, "Ctrl" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
