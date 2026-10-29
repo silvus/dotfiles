@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Back to the desk (revert tv_on):
+# - Turn off the TV and restore the stacked screens
+#   (autorandr profile from nixos/hosts/virtus/configuration.nix)
+# - Send the sound back to the MX3
+
+AUTORANDR_PROFILE="stacked"
+
+MX3_CARD="alsa_card.usb-TOPPING_MX3-01"
+MX3_SINK="alsa_output.usb-TOPPING_MX3-01.analog-stereo"
+MX3_PROFILE="output:analog-stereo"
+
+# Screens: --load (not --change) since the TV changes the fingerprint,
+# outputs missing from the profile (the TV) are turned off
+autorandr --load "$AUTORANDR_PROFILE"
+
+# Sound: back to the MX3 first (off/on cycle to get a working sink),
+# then disable the HDMI audio profiles once nothing plays on them
+mx3_audio() {
+  pactl set-card-profile "$MX3_CARD" off || return 1
+  pactl set-card-profile "$MX3_CARD" "$MX3_PROFILE" || return 1
+  for _ in {1..10}; do
+    pactl list short sinks | awk -v s="$MX3_SINK" '$2 == s { f = 1 } END { exit !f }' && break
+    sleep 0.3
+  done
+  pactl set-default-sink "$MX3_SINK" || return 1
+  pactl list short sink-inputs | awk '{print $1}' | while read -r input; do
+    pactl move-sink-input "$input" "$MX3_SINK" || true
+  done
+}
+
+# The TV is off anyway, disable HDMI audio even if the MX3 is missing
+mx3_ok=true
+mx3_audio || mx3_ok=false
+
+pactl list cards | awk '
+  /^\tName: / { card = $2 }
+  /^\tActive Profile: output:hdmi/ { print card }' | while read -r card; do
+  pactl set-card-profile "$card" off || true
+done
+
+if [[ "$mx3_ok" == true ]]; then
+  notify-send "TV" "TV off, sound on MX3"
+else
+  notify-send -u critical "TV" "TV off, but the MX3 is unavailable (unplugged or powered off?)"
+fi

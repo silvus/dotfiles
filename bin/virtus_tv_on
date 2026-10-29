@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Output on the TV:
+# - Turn off the top screen and enable the TV above the ultrawide
+#   (autorandr profile from nixos/hosts/virtus/configuration.nix,
+#   move the game to the TV with Super+o)
+# - Send the sound to the TV through HDMI
+# Revert with tv_off.
+
+AUTORANDR_PROFILE="tv"
+TV_OUTPUT="HDMI-1"
+# Monitor name from the TV EDID, reported by its HDMI audio port (ELD)
+TV_NAME="LG TV"
+
+# Revert to the desk (screens and sound) and report
+fail() {
+  tv_off || true
+  notify-send -u critical "TV" "$1"
+  exit 1
+}
+
+# Print "<card> <profile>" of the TV HDMI stereo profile, nothing until
+# the HDMI link is up (port available with the TV name)
+tv_audio_profile() {
+  pactl list cards | awk -v tv="$TV_NAME" '
+    /^\tName: / { card = $2 }
+    /^\t\t[^\t]/ { available = /, available\)$/; is_tv = 0 }
+    /^\t\t\t\tdevice\.product\.name = / { is_tv = index($0, tv) > 0 }
+    /^\t\t\tPart of profile\(s\): / && available && is_tv && !found {
+      sub(/^.*: /, "")
+      n = split($0, profiles, ", ")
+      for (i = 1; i <= n; i++) {
+        if (profiles[i] ~ /^output:hdmi-stereo(-extra[0-9]+)?$/) {
+          found = card " " profiles[i]
+          break
+        }
+      }
+    }
+    END { if (found) print found }'
+}
+
+# Screens: only if the TV is plugged, to avoid a blank layout
+if ! xrandr --query | awk -v o="$TV_OUTPUT" '$1 == o && $2 == "connected" { f = 1 } END { exit !f }'; then
+  notify-send -u critical "TV" "TV not connected on $TV_OUTPUT"
+  exit 1
+fi
+autorandr --load "$AUTORANDR_PROFILE"
+
+# Sound: wait for the HDMI handshake to expose the TV audio port
+hdmi_card=""
+hdmi_profile=""
+for _ in {1..20}; do
+  read -r hdmi_card hdmi_profile < <(tv_audio_profile) && break
+  sleep 0.5
+done
+if [[ -z "$hdmi_card" ]]; then
+  fail "No HDMI audio from the TV (powered off or on another input?), back to the desk"
+fi
+
+pactl set-card-profile "$hdmi_card" "$hdmi_profile"
+hdmi_sink="alsa_output.${hdmi_card#alsa_card.}.${hdmi_profile#output:}"
+for _ in {1..10}; do
+  pactl list short sinks | awk -v s="$hdmi_sink" '$2 == s { f = 1 } END { exit !f }' && break
+  sleep 0.3
+done
+pactl set-default-sink "$hdmi_sink" || fail "HDMI sink $hdmi_sink not found, back to the desk"
+# Move running streams (game already launched, music...)
+pactl list short sink-inputs | awk '{print $1}' | while read -r input; do
+  pactl move-sink-input "$input" "$hdmi_sink" || true
+done
+
+notify-send "TV" "TV on, sound on HDMI"
