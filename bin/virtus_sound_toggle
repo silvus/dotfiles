@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -u
+set -o pipefail
+
 # Toggle between:
 # - MX3 (output only)
 # - Built-in audio (duplex)
@@ -10,25 +13,47 @@ MX3_PROFILE="output:analog-stereo"
 
 BUILTIN_CARD="alsa_card.pci-0000_00_1f.3"
 BUILTIN_SINK="alsa_output.pci-0000_00_1f.3.analog-stereo"
+BUILTIN_SOURCE="alsa_input.pci-0000_00_1f.3.analog-stereo"
 BUILTIN_PROFILE="output:analog-stereo+input:analog-stereo"
 
-# Get current default sink
-current_sink=$(pactl get-default-sink)
+fail() {
+    notify-send -u critical "Audio Switch Failed" "$1"
+    exit 1
+}
+
+# wait_for <sinks|sources> <name>: wait for pipewire to create the node
+wait_for() {
+    for _ in {1..10}; do
+        pactl list short "$1" | awk -v n="$2" '$2 == n { f = 1 } END { exit !f }' && return 0
+        sleep 0.3
+    done
+    return 1
+}
+
+# Move running streams to the new default sink
+move_streams() {
+    pactl list short sink-inputs | awk '{print $1}' | while read -r input; do
+        pactl move-sink-input "$input" "$1" || true
+    done
+}
+
+current_sink=$(pactl get-default-sink) || fail "PipeWire not reachable"
 
 if [[ "$current_sink" == "$MX3_SINK" ]]; then
     # Switch to Built-in audio
-    pactl set-card-profile "$BUILTIN_CARD" "$BUILTIN_PROFILE"
-    sleep 0.3
-    new_source=$(pactl list short sources | awk '$2 ~ /^alsa_input.pci-0000_00_1f.3.analog-stereo$/ {print $2; exit}')
-    pactl set-default-sink "$BUILTIN_SINK"
-    pactl set-default-source "$new_source"
+    pactl set-card-profile "$BUILTIN_CARD" "$BUILTIN_PROFILE" || fail "Built-in audio unavailable"
+    wait_for sinks "$BUILTIN_SINK" || fail "Built-in sink $BUILTIN_SINK not found"
+    wait_for sources "$BUILTIN_SOURCE" || fail "Built-in source $BUILTIN_SOURCE not found"
+    pactl set-default-sink "$BUILTIN_SINK" || fail "Can't set default sink $BUILTIN_SINK"
+    pactl set-default-source "$BUILTIN_SOURCE" || fail "Can't set default source $BUILTIN_SOURCE"
+    move_streams "$BUILTIN_SINK"
     notify-send "Audio Switched" "Built-in Audio: Analog Stereo Duplex"
 else
-    # Switch to MX3 output only
-    pactl set-card-profile "$BUILTIN_CARD" "off"
-    pactl set-card-profile "$MX3_CARD" "$MX3_PROFILE"
-    sleep 0.3
-    pactl set-default-sink "$MX3_SINK"
+    # Switch to MX3 output only, keep built-in audio until the MX3 works
+    pactl set-card-profile "$MX3_CARD" "$MX3_PROFILE" || fail "MX3 unavailable (unplugged or powered off?)"
+    wait_for sinks "$MX3_SINK" || fail "MX3 sink $MX3_SINK not found"
+    pactl set-default-sink "$MX3_SINK" || fail "Can't set default sink $MX3_SINK"
+    move_streams "$MX3_SINK"
+    pactl set-card-profile "$BUILTIN_CARD" "off" || true
     notify-send "Audio Switched" "MX3: Analog Stereo Output"
 fi
-
