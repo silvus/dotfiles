@@ -10,6 +10,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/profiles/desktop.nix
+    ../../modules/solidcraft.nix
   ];
 
   # Per-host, not shared via base.nix.

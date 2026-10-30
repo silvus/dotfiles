@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "solidcraft": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "SOLIDCRAFT_CONTROL_TOKEN=$(cat /home/silvus/.dotfiles/custom/solidcraft/27878.token) exec solidcraft-cli mcp --connect 10.124.88.1:27878"
+      ]
+    }
+  }
+}
