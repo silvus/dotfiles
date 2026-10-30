@@ -121,6 +121,11 @@ in
     timeout = 2;
   };
 
+  # zram: compressed swap in RAM, used before the disk swap (higher priority)
+  zramSwap.enable = true;
+  # Prefer dropping page cache over swapping out apps
+  boot.kernel.sysctl."vm.swappiness" = 10;
+
   # Never sleep
   systemd.sleep.settings.Sleep = {
     AllowSuspend = "no";
