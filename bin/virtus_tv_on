@@ -5,20 +5,17 @@ set -u
 set -o pipefail
 
 # Output on the TV:
-# - Turn off the top screen and enable the TV above the ultrawide
-#   (autorandr profile from nixos/hosts/virtus/configuration.nix,
-#   move the game to the TV with Super+o)
+# - Turn off the top screen and enable the TV above the ultrawide (not an autorandr profile: it would be auto-detected since the TV stays plugged
 # - Send the sound to the TV through HDMI
-# Revert with tv_off.
+# Revert with virtus_tv_off.
 
-AUTORANDR_PROFILE="tv"
 TV_OUTPUT="HDMI-1"
 # Monitor name from the TV EDID, reported by its HDMI audio port (ELD)
 TV_NAME="LG TV"
 
 # Revert to the desk (screens and sound) and report
 fail() {
-  tv_off || true
+  virtus_tv_off || true
   notify-send -u critical "TV" "$1"
   exit 1
 }
@@ -48,7 +45,9 @@ if ! xrandr --query | awk -v o="$TV_OUTPUT" '$1 == o && $2 == "connected" { f = 
   notify-send -u critical "TV" "TV not connected on $TV_OUTPUT"
   exit 1
 fi
-autorandr --load "$AUTORANDR_PROFILE"
+# Native is 3840x2160, 1080p is lighter for the graphic card
+xrandr --output HDMI-0 --off
+xrandr --output DP-2 --primary --mode 2560x1080 --rate 60 --pos 0x1080 --output "$TV_OUTPUT" --mode 1920x1080 --rate 60 --pos 320x0
 
 # Sound: wait for the HDMI handshake to expose the TV audio port
 hdmi_card=""
