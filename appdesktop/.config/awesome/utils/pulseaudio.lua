@@ -25,6 +25,16 @@ function pulseaudio.get_volume_and_mute(kind)
 	return level, mute_out:match("yes") ~= nil
 end
 
+pulseaudio.max_sink_volume = 200
+
+-- Change the default sink volume by `delta` percent, clamped to [0, max_sink_volume].
+function pulseaudio.change_sink_volume(delta)
+	local level = pulseaudio.get_volume_and_mute("sink")
+	if not level then return end
+	local new_level = math.max(0, math.min(pulseaudio.max_sink_volume, level + delta))
+	awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ " .. new_level .. "%", false)
+end
+
 -- Debounced live-update watcher: subscribes to `pactl subscribe` and calls
 -- `update()` (after a short debounce, since pactl emits several events per
 -- change) whenever `is_relevant(line)` returns true for an event line.

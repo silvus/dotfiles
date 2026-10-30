@@ -205,11 +205,11 @@ local buttons_out = awful.util.table.join(
 		customwidget.update()
 	end),
 	awful.button({}, 4, function()
-		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +10%")
+		pulseaudio.change_sink_volume(10)
 		customwidget.update()
 	end),
 	awful.button({}, 5, function()
-		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -10%")
+		pulseaudio.change_sink_volume(-10)
 		customwidget.update()
 	end)
 )

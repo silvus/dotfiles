@@ -7,6 +7,7 @@ local config = require("config")
 local beautiful = require("beautiful")
 -- Quake like terminal (single instance for all screens)
 local quake = require("utils.quake")
+local pulseaudio = require("utils.pulseaudio")
 local widget_sound = require("widgets.sound")
 local widget_notifications = require("widgets.notifications")
 local menubar = require("menubar")
@@ -408,29 +409,29 @@ keys.global = awful.util.table.join(
 
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function()
-		awful.spawn("amixer -q sset Master 10%-", false)
+		pulseaudio.change_sink_volume(-10)
 		-- trigger widget update
 		widget_sound.update()
-	end, { description = "Volume up", group = "audio" }),
-	awful.key({}, "XF86AudioRaiseVolume", function()
-		awful.spawn("amixer -q sset Master 10%+", false)
-		widget_sound.update()
 	end, { description = "Volume down", group = "audio" }),
+	awful.key({}, "XF86AudioRaiseVolume", function()
+		pulseaudio.change_sink_volume(10)
+		widget_sound.update()
+	end, { description = "Volume up", group = "audio" }),
 	awful.key({}, "XF86AudioMute", function()
-		awful.spawn("amixer -q sset Master toggle", false)
+		awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle", false)
 		widget_sound.update()
 	end, { description = "volume mute", group = "audio" }),
 	-- Simulated volume keys
 	awful.key({ modkey }, "Page_Down", function()
-		awful.spawn("amixer -q sset Master 10%-", false)
-		widget_sound.update()
-	end, { description = "Volume up", group = "audio" }),
-	awful.key({ modkey }, "Page_Up", function()
-		awful.spawn("amixer -q sset Master 10%+", false)
+		pulseaudio.change_sink_volume(-10)
 		widget_sound.update()
 	end, { description = "Volume down", group = "audio" }),
+	awful.key({ modkey }, "Page_Up", function()
+		pulseaudio.change_sink_volume(10)
+		widget_sound.update()
+	end, { description = "Volume up", group = "audio" }),
 	awful.key({ modkey }, "End", function()
-		awful.spawn("amixer -q sset Master toggle", false)
+		awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle", false)
 		widget_sound.update()
 	end, { description = "volume mute toggle", group = "audio" }),
 
