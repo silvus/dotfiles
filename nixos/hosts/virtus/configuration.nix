@@ -119,7 +119,9 @@
   };
 
   # Apply the layout at login (autorandr.service only runs on hotplug and resume).
+  # X starts with the 3 screens side by side: turn off the TV first, autorandr does it with --fb 2560x2160 while the top screen is still at 2560x0, which fails
   services.xserver.displayManager.sessionCommands = lib.mkAfter ''
+    ${pkgs.xrandr}/bin/xrandr --output HDMI-1 --off
     ${pkgs.autorandr}/bin/autorandr --change --default ${config.services.autorandr.defaultTarget}
   '';
 }
