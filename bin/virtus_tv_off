@@ -15,8 +15,9 @@ MX3_CARD="alsa_card.usb-TOPPING_MX3-01"
 MX3_SINK="alsa_output.usb-TOPPING_MX3-01.analog-stereo"
 MX3_PROFILE="output:analog-stereo"
 
-# Screens: --load (not --change) since the TV changes the fingerprint,
-# outputs missing from the profile (the TV) are turned off
+# Screens: turn off the TV first, autorandr does it in the same xrandr call
+# as the framebuffer resize, which fails (same as at login in configuration.nix)
+xrandr --output HDMI-1 --off
 autorandr --load "$AUTORANDR_PROFILE"
 
 # Sound: back to the MX3 first (off/on cycle to get a working sink),
