@@ -79,14 +79,14 @@ SYNCTHING_FOLDERS: dict[str, FolderConfig] = {
         "path": "/data/dev",
         "rescanIntervals": 10800,
         "fsWatcherEnabled": True,
-        "devices": ["virtus", "servius", "noctus", "gladius"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius"],
     },
     "work": {
         "path": "/data/work",
         "label": "work",
         "rescanIntervals": 10900,
         "fsWatcherEnabled": True,
-        "devices": ["virtus", "servius", "noctus", "gladius", "nix"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius", "nix"],
     },
     "git": {
         "path": "/data/git",
@@ -101,7 +101,7 @@ SYNCTHING_FOLDERS: dict[str, FolderConfig] = {
         "label": "doc",
         "rescanIntervals": 3600,
         "fsWatcherEnabled": True,
-        "devices": ["virtus", "servius", "noctus", "gladius", "corus", "nix", "arcus"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius", "corus", "nix", "arcus"],
         "versioning": {"type": "simple", "params": {"keep": "5"}},
     },
     "trogo_work": {
@@ -118,7 +118,7 @@ SYNCTHING_FOLDERS: dict[str, FolderConfig] = {
         "label": "share",
         "rescanIntervals": 86400,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "gladius", "nix", "arcus"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius", "nix", "arcus"],
     },
     "trogo": {
         "path": "/data/trogo",
@@ -146,14 +146,14 @@ SYNCTHING_FOLDERS: dict[str, FolderConfig] = {
         "label": "images",
         "rescanIntervals": 86800,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "gladius"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius"],
     },
     "music": {
         "path": "/data/music",
         "label": "music",
         "rescanIntervals": 86900,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "gladius"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius"],
     },
     "photo": {
         "path": "/data/photos",
@@ -167,14 +167,14 @@ SYNCTHING_FOLDERS: dict[str, FolderConfig] = {
         "label": "videos",
         "rescanIntervals": 87100,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "gladius"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius"],
     },
     "z": {
         "path": "/data/z",
         "label": "z",
         "rescanIntervals": 87200,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "gladius"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius"],
     },
     # Phone
     "phone": {
@@ -182,7 +182,7 @@ SYNCTHING_FOLDERS: dict[str, FolderConfig] = {
         "label": "phone",
         "rescanIntervals": 86300,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "gladius", "corus"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius", "corus"],
     },
     "phone_photos_pixel8": {
         "path": "/data/phone_photos_pixel8",
