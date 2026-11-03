@@ -146,8 +146,21 @@ in
     '';
   };
 
+  # motionEye: web UI for the Motion daemon
+  services.motioneye = {
+    enable = true;
+    settings = {
+      listen = "0.0.0.0";
+      port = "8765";
+    };
+  };
+
   networking.firewall.allowedTCPPorts = [
     2049 # NFS
+  ];
+  # LAN NIC only: not on the VPN interface
+  networking.firewall.interfaces.${nic}.allowedTCPPorts = [
+    8765 # motionEye
   ];
 
   # SSH from outside, openFirewall (default) opens both ports
