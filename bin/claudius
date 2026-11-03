@@ -7,6 +7,7 @@ Creates the Incus VM and provisions it via nixos-rebuild if it doesn't exist yet
 """
 
 import argparse
+import json
 import logging
 import os
 import re
@@ -323,13 +324,70 @@ def restart_container():
     wait_for_boot()
 
 
+def flake_archive_paths(node):
+    """
+    Collect every store path from the output of `nix flake archive --json`.
+
+    :param node: A flake node: {"path": ..., "inputs": {name: node, ...}}.
+    :return: List of store paths for the node and all its nested inputs.
+    """
+    paths = [node["path"]]
+    for child in node.get("inputs", {}).values():
+        paths.extend(flake_archive_paths(child))
+    return paths
+
+
+def sync_flake_inputs():
+    """
+    Copy the flake's inputs from the host into the VM's Nix store.
+
+    The VM deliberately has no SSH credentials, so it can't fetch the private
+    inputs from arcus itself, and its hourly GC removes any source that isn't
+    referenced by a generation. With the locked sources already in its store,
+    Nix finds them by narHash and doesn't need to fetch anything.
+
+    Imported paths aren't GC roots, so this must run right before the rebuild.
+    """
+    log.info("Copying flake inputs into %s...", CONTAINER)
+    archive = subprocess.run(
+        ["nix", "flake", "archive", "--json", f"path:{DOTFILES_PATH}"],
+        stdout=subprocess.PIPE,
+        text=True,
+        check=True,
+    )
+    paths = flake_archive_paths(json.loads(archive.stdout))
+
+    with subprocess.Popen(
+        ["nix-store", "--export", *paths], stdout=subprocess.PIPE
+    ) as export:
+        # -T: no pty, so the binary export stream reaches nix-store untouched.
+        # Not exec_login(), which has no way to pass it.
+        run(
+            [
+                "incus",
+                "exec",
+                "-T",
+                CONTAINER,
+                "--",
+                "bash",
+                "-lc",
+                "nix-store --import",
+            ],
+            stdin=export.stdout,
+            stdout=subprocess.DEVNULL,
+        )
+    if export.returncode != 0:
+        raise subprocess.CalledProcessError(export.returncode, export.args)
+
+
 def update_container():
     """
     Re-run `nixos-rebuild switch` inside the claudius VM to apply config
     changes, without touching mounts or launching an agent.
 
     Exits with an error if the container hasn't been created yet. Starts
-    the VM first if it's stopped.
+    the VM first if it's stopped. Must run on the host, which provides the
+    flake inputs the VM can't fetch by itself.
     """
     if not container_exists():
         log.error(
@@ -340,6 +398,7 @@ def update_container():
         log.info("%s exists but is stopped — starting it.", CONTAINER)
         run(["incus", "start", CONTAINER])
         wait_for_boot()
+    sync_flake_inputs()
     log.info("Running nixos-rebuild switch...")
     exec_login(
         [
