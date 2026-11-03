@@ -21,7 +21,7 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
 
     # Parametric 3D CAD (desktop app + MCP CLI)
-    solidcraft.url = "github:tangency-labs/solidcraft";
+    # solidcraft.url = "github:tangency-labs/solidcraft";
   };
 
   outputs =
@@ -35,7 +35,7 @@
       mot,
       devops,
       llm-agents,
-      solidcraft,
+      # solidcraft,
     }:
     let
       # Arch for this flake's own outputs (pkgs, devShells, apps, home-manager)
@@ -67,7 +67,7 @@
               movies
               mot
               llm-agents
-              solidcraft
+              # solidcraft
               ;
           };
           modules = [
