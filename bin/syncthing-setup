@@ -182,7 +182,7 @@ SYNCTHING_FOLDERS: dict[str, FolderConfig] = {
         "label": "phone",
         "rescanIntervals": 86300,
         "fsWatcherEnabled": False,
-        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius", "corus"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius", "corus", "Pixel 8a"],
     },
     "phone_photos_pixel8": {
         "path": "/data/phone_photos_pixel8",
