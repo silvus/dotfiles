@@ -7,11 +7,11 @@ with lib;
   environment.systemPackages = with pkgs; [
     steam
     lutris
-    protonup-qt
-
-    # unstable.steam
-    # unstable.lutris
+    # unstable.umu-launcher
     # unstable.protonup-qt
+
+    faugus-launcher
+
     # duckstation
     # snes9x-gtk
     # gamemode
