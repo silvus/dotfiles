@@ -2,7 +2,8 @@
 
 set -e
 
-export TODO_PATH="/data/doc/01_todo.md"
+export NOTE_PATH="${SILVUSDOC:-/data/doc}"
+export TODO_PATH="$NOTE_PATH/01_todo.md"
 
 if [[ -z $TMUX ]]; then
 	(cd "$NOTE_PATH" && nvim "$TODO_PATH")

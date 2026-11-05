@@ -56,10 +56,6 @@ if [[ -d "${SILVUSDOTFILES}/bin" ]]; then
 	export PATH="${SILVUSDOTFILES}/bin:$PATH"
 fi
 
-if [[ -d "${SILVUSDOC}/.bin" ]]; then
-	export PATH="${SILVUSDOC}/.bin:$PATH"
-fi
-
 if [[ -d "${SILVUSPROJECT}/bin" ]]; then
 	export PATH="${SILVUSPROJECT}/bin:$PATH"
 fi
@@ -177,6 +173,11 @@ fi
 # ------------------------------------------------------
 if [[ -f "$SILVUSDOTFILES_CUSTOM/env.sh" ]]; then
 	source "$SILVUSDOTFILES_CUSTOM/env.sh"
+fi
+
+# Scripts, after env.sh so a work env's SILVUSDOC override it
+if [[ -d "${SILVUSDOC}/.bin" ]]; then
+	export PATH="${SILVUSDOC}/.bin:$PATH"
 fi
 
 
