@@ -37,7 +37,7 @@ in
     # ../../modules/mounts/tvshows.nix
     # ../../modules/mounts/torrents.nix
     # ../../modules/mounts/doc.nix
-    # ../../modules/development
+    ../../modules/development
     # ../../modules/development/go.nix
     # ../../modules/development/rust.nix
     # ../../modules/development/python.nix
