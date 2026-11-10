@@ -120,11 +120,11 @@ end
 function fish_prompt --description 'Write out the left prompt'
     __fish_prompt_init
 
-    # Transient (already-submitted) prompt line: just time + $
+    # Transient (already-submitted) prompt line: time + folder path + $
     # (no status/exec time here: --final-rendering runs before the commandline
     # is executed, so $status would reflect the previous command, not this one)
     if test "$argv[1]" = --final-rendering
-        printf '[%s%s%s] $ ' "$__fish_color_blue" (date +%H:%M:%S) "$__fish_color_normal"
+        printf '[%s%s%s]─[%s%s%s] $ ' "$__fish_color_blue" (date +%H:%M:%S) "$__fish_color_normal" "$__fish_color_green" (prompt_pwd) "$__fish_color_normal"
         return
     end
 
