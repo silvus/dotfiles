@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
-# Toggle the laptop's built-in keyboard on / off (uses sudo).
+# Toggle the laptop's built-in keyboard on / off.
 # TrackPoint and touchpad keep working. A reboot always turns it back on.
 
 set -euo pipefail
+
+# Writing to the driver needs root
+if [[ $EUID -ne 0 ]]; then
+    exec sudo "$0" "$@"
+fi
 
 drv=/sys/bus/serio/drivers/atkbd
 
@@ -12,6 +17,7 @@ port=""
 for dev in /sys/bus/serio/devices/*; do
     if [[ "$(cat "$dev/description" 2>/dev/null)" == "i8042 KBD port" ]]; then
         port=$(basename "$dev")
+        break
     fi
 done
 if [[ -z "$port" ]]; then
@@ -20,12 +26,14 @@ if [[ -z "$port" ]]; then
 fi
 
 if [[ -e "$drv/$port" ]]; then
-    action=unbind
-    msg="Disabled"
+    printf '%s' "$port" >"$drv/unbind"
 else
-    action=bind
-    msg="Enabled"
+    printf '%s' "$port" >"$drv/bind"
 fi
 
-printf '%s' "$port" | sudo tee "$drv/$action" >/dev/null
-echo "Laptop keyboard: $msg"
+# Report the real state, not the intended one
+if [[ -e "$drv/$port" ]]; then
+    echo "Laptop keyboard: enabled"
+else
+    echo "Laptop keyboard: disabled"
+fi
