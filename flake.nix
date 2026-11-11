@@ -118,6 +118,24 @@
         ];
       };
 
+      # Home manager on Ubuntu (environment close to noctus)
+      homeConfigurations.ubuntu = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = [ overlay-unstable ];
+        };
+        extraSpecialArgs = {
+          inherit mdorg mot;
+        };
+        modules = [
+          ./nixos/hosts/ubuntu/home.nix
+
+          # Local home-manager module (username, machine specific packages...)
+          (if builtins.pathExists ./custom/home.nix then ./custom/home.nix else { })
+        ];
+      };
+
       # Run this with `nix develop`
       devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
         buildInputs = with nixpkgs.legacyPackages.${system}; [

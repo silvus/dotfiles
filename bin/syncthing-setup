@@ -86,7 +86,7 @@ SYNCTHING_FOLDERS: dict[str, FolderConfig] = {
         "label": "work",
         "rescanIntervals": 10900,
         "fsWatcherEnabled": True,
-        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius", "nix"],
+        "devices": ["virtus", "servius", "noctus", "gladius", "auxilius", "nix", "g7183"],
     },
     "git": {
         "path": "/data/git",

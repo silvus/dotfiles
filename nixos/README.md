@@ -32,6 +32,13 @@ On Debian, install Nix and Homemanager (standalone), then:
 home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles#silvus
 ```
 
+On Ubuntu (GNOME), same thing with the ubuntu config:
+``` bash
+home-manager switch --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles#ubuntu
+# Once, to give nix GUI apps access to the GPU drivers
+sudo $(which non-nixos-gpu-setup)
+```
+
 To upgrade:
 ``` bash
 nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes --flake path:/home/silvus/.dotfiles
