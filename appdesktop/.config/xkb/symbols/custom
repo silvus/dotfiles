@@ -1,7 +1,7 @@
 # This file comes from dotfiles.
-# Deprecated! Use keyd instead.
 
-# sudo cp ~/.dotfiles/approot/usr/share/X11/xkb/symbols/custom /usr/share/X11/xkb/symbols/custom && setxkbmap custom -option ''
+# Linked to ~/.config/xkb/symbols/custom by bin/dotfiles (libxkbcommon user path, used by GNOME/Wayland)
+# X11 only: setxkbmap -I ~/.config/xkb custom -option "" -print | xkbcomp -I$HOME/.config/xkb - $DISPLAY
 
 # Installation method from https://github.com/OneDeadKey/kalamine (xkb_symbols part)
 # Forked from https://github.com/qwerty-fr/qwerty-fr

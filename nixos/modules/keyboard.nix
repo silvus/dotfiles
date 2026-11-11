@@ -35,7 +35,7 @@ in
           "eng"
           "fra"
         ];
-        symbolsFile = ./../../approot/usr/share/X11/xkb/symbols/custom;
+        symbolsFile = ./../../appdesktop/.config/xkb/symbols/custom;
       };
 
     };

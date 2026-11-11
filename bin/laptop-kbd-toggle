@@ -5,18 +5,16 @@
 
 set -euo pipefail
 
-# Writing to the driver needs root
+# Writing to the serio port needs root
 if [[ $EUID -ne 0 ]]; then
     exec sudo "$0" "$@"
 fi
-
-drv=/sys/bus/serio/drivers/atkbd
 
 # The built-in keyboard's port, found by its description (stays there when disabled)
 port=""
 for dev in /sys/bus/serio/devices/*; do
     if [[ "$(cat "$dev/description" 2>/dev/null)" == "i8042 KBD port" ]]; then
-        port=$(basename "$dev")
+        port=$dev
         break
     fi
 done
@@ -25,14 +23,18 @@ if [[ -z "$port" ]]; then
     exit 1
 fi
 
-if [[ -e "$drv/$port" ]]; then
-    printf '%s' "$port" >"$drv/unbind"
+if [[ -e "$port/driver" ]]; then
+    # manual: stop the kernel from re-attaching the keyboard driver on its own
+    printf manual >"$port/bind_mode"
+    printf none >"$port/drvctl"
 else
-    printf '%s' "$port" >"$drv/bind"
+    printf atkbd >"$port/drvctl"
+    printf auto >"$port/bind_mode"
 fi
 
-# Report the real state, not the intended one
-if [[ -e "$drv/$port" ]]; then
+# Report the real state, not the intended one (give an auto re-attach time to show)
+sleep 1
+if [[ -e "$port/driver" ]]; then
     echo "Laptop keyboard: enabled"
 else
     echo "Laptop keyboard: disabled"

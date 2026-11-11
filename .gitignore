@@ -3,8 +3,8 @@ __pycache__
 
 secrets/*.toml
 
-custom
-custom/
+/custom
+/custom/
 
 .claude/settings.local.json
 /result
