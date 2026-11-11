@@ -14,7 +14,7 @@
 
     wezterm # Terminal emulator
     # rxvt-unicode         # Terminal emulator
-    # ghostty                # Terminal emulator
+    ghostty # Terminal emulator
 
     thunar # File manager
     thunar-volman
