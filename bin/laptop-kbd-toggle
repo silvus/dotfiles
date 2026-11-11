@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+# Enable / disable the laptop's built-in keyboard (ThinkPad: atkbd on serio0).
+# TrackPoint and touchpad are separate devices and keep working.
+#
+# Usage: laptop-kbd-toggle [toggle|on|off|auto|status]
+#   toggle  switch state (default)
+#   on|off  force a state
+#   auto    off when an external keyboard (EXT_KBD_IDS) is plugged in, on otherwise
+#           (run by the udev rule, also at boot)
+#   status  print on|off
+#
+# Manual toggles ask for your password (pkexec); the udev rule runs as root, no prompt.
+# System setup (root copy, udev rule): install-laptop-kbd-toggle
+# Re-run it after editing this file.
+
+set -eu
+
+SERIO=serio0
+DRV=/sys/bus/serio/drivers/atkbd
+INSTALLED=/usr/local/bin/laptop-kbd-toggle
+# External keyboards, as vendor:product from lsusb (space separated)
+EXT_KBD_IDS="19f5:3255" # NuPhy Air60 V2 (USB)
+
+is_on() { [ -e "$DRV/$SERIO" ]; }
+
+ext_kbd_present() {
+    for dev in /sys/bus/usb/devices/*; do
+        [ -r "$dev/idVendor" ] && [ -r "$dev/idProduct" ] || continue
+        id="$(cat "$dev/idVendor"):$(cat "$dev/idProduct")"
+        for want in $EXT_KBD_IDS; do
+            [ "$id" = "$want" ] && return 0
+        done
+    done
+    return 1
+}
+
+message() {
+    if [ "$1" = off ]; then
+        echo "Disabled (use the external keyboard)"
+    else
+        echo "Enabled"
+    fi
+}
+
+notify() {
+    msg=$(message "$1")
+    if [ "$(id -u)" -ne 0 ]; then
+        notify-send -a laptop-kbd-toggle -i input-keyboard "Laptop keyboard" "$msg" 2>/dev/null || true
+        return 0
+    fi
+    # Root without a pkexec caller (udev): notify every user that has a session bus
+    for bus in /run/user/*/bus; do
+        [ -S "$bus" ] || continue
+        uid=$(basename "$(dirname "$bus")")
+        user=$(id -nu "$uid" 2>/dev/null) || continue
+        runuser -u "$user" -- env DBUS_SESSION_BUS_ADDRESS="unix:path=$bus" \
+            notify-send -a laptop-kbd-toggle -i input-keyboard "Laptop keyboard" "$msg" 2>/dev/null || true
+    done
+}
+
+set_state() {
+    if [ "$1" = on ]; then
+        is_on || printf '%s' "$SERIO" >"$DRV/bind"
+    else
+        if is_on; then printf '%s' "$SERIO" >"$DRV/unbind"; fi
+    fi
+}
+
+action=${1:-toggle}
+case $action in
+status)
+    if is_on; then echo on; else echo off; fi
+    exit 0
+    ;;
+toggle)
+    if is_on; then want=off; else want=on; fi
+    ;;
+on | off)
+    want=$action
+    ;;
+auto)
+    # Let a removed device leave sysfs before looking
+    sleep 1
+    if ext_kbd_present; then want=off; else want=on; fi
+    # Nothing to do: stay quiet (udev fires several events per plug, and at boot)
+    if [ "$want" = off ] && ! is_on; then exit 0; fi
+    if [ "$want" = on ] && is_on; then exit 0; fi
+    ;;
+*)
+    echo "Usage: $(basename "$0") [toggle|on|off|auto|status]" >&2
+    exit 2
+    ;;
+esac
+
+if [ "$(id -u)" -ne 0 ]; then
+    if [ ! -x "$INSTALLED" ]; then
+        notify-send -a laptop-kbd-toggle -u critical "Laptop keyboard" "Not installed: run install-laptop-kbd-toggle" 2>/dev/null || true
+        exit 1
+    fi
+    rc=0
+    pkexec "$INSTALLED" "$want" || rc=$?
+    case $rc in
+    0) notify "$want" ;;
+    126) exit 0 ;; # password dialog cancelled: nothing changed
+    *)
+        notify-send -a laptop-kbd-toggle -u critical "Laptop keyboard" "Toggle failed (pkexec exit $rc)" 2>/dev/null || true
+        exit 1
+        ;;
+    esac
+else
+    set_state "$want"
+    # Called through pkexec (or sudo): the user side sends the notification
+    [ -n "${PKEXEC_UID:-}${SUDO_USER:-}" ] || notify "$want"
+fi
