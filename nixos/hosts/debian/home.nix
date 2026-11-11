@@ -14,6 +14,15 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Generates ~/.config/nix/nix.conf (replaces the old app/.config/nix/nix.conf symlink)
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
+
   # Home packages for development
   home.packages = with pkgs; [
     # Fuzzy finder
