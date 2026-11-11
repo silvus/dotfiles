@@ -3,7 +3,7 @@
   pkgs,
   lib,
   llm-agents,
-  # solidcraft,
+  solidcraft,
   ...
 }:
 
@@ -39,7 +39,7 @@
 
   environment.systemPackages = with pkgs; [
     llm-agents.packages.${stdenv.hostPlatform.system}.claude-code
-    # solidcraft.packages.${stdenv.hostPlatform.system}.default # MCP CLI, see .mcp.json
+    solidcraft.packages.${stdenv.hostPlatform.system}.default # MCP CLI, see .mcp.json
     # llm-agents.packages.${stdenv.hostPlatform.system}.codex
   ];
 

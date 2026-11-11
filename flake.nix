@@ -10,18 +10,32 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mdorg.url = "git+ssh://silvus@arcus:/data/git/mdorg";
-    movies.url = "git+ssh://silvus@arcus:/data/git/movies";
-    mot.url = "git+ssh://silvus@arcus:/data/git/mot";
+    # Private projects: share our nixpkgs instead of each fetching its own copy
+    mdorg = {
+      url = "git+ssh://silvus@arcus:/data/git/mdorg";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    movies = {
+      url = "git+ssh://silvus@arcus:/data/git/movies";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mot = {
+      url = "git+ssh://silvus@arcus:/data/git/mot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Private per-host config
     devops.url = "git+ssh://silvus@arcus:/data/git/devops";
 
-    # Claude and others
+    # Claude and others (keeps its own nixpkgs to match the numtide binary cache)
     llm-agents.url = "github:numtide/llm-agents.nix";
 
     # Parametric 3D CAD (desktop app + MCP CLI)
-    # solidcraft.url = "github:tangency-labs/solidcraft";
+    # Pinned to a release tag: bump the tag, then `nix flake update solidcraft`
+    solidcraft = {
+      url = "github:tangency-labs/solidcraft/v0.40.0";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
@@ -35,7 +49,7 @@
       mot,
       devops,
       llm-agents,
-      # solidcraft,
+      solidcraft,
     }:
     let
       # Arch for this flake's own outputs (pkgs, devShells, apps, home-manager)
@@ -67,7 +81,7 @@
               movies
               mot
               llm-agents
-              # solidcraft
+              solidcraft
               ;
           };
           modules = [
