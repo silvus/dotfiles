@@ -20,7 +20,7 @@ PROGNAME=`basename "$0"`
 # - jq
 # - slurp
 # - awk
-if command -v swaymsg > /dev/null 2>&1; then
+if [[ -n "${SWAYSOCK:-}" ]] && command -v swaymsg > /dev/null 2>&1; then
 
     # Get the sway tree and store the output
     SWAY_TREE=$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?)')

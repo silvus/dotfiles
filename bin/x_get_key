@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-xev -event keyboard
+# Show keyboard events (keycodes, keysyms)
+# Wayland: wev, X11: xev
+if [[ -n "${WAYLAND_DISPLAY:-}" ]] && command -v wev >/dev/null 2>&1; then
+	exec wev -f wl_keyboard:key -f wl_keyboard:modifiers
+else
+	exec xev -event keyboard
+fi

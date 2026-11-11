@@ -9,10 +9,6 @@ if [[ ! -x "$(command -v lorem 2>/dev/null)" ]]; then
 	exit 1
 fi
 
-if [[ ! -x "$(command -v xclip 2>/dev/null)" ]]; then
-	echo "xclip is not installed."
-	exit 1
-fi
-
-lorem --randomize --words 50 --cols 2000 | xclip -selection clipboard
+# copy handles Wayland (wl-copy) and X11 (xclip)
+lorem --randomize --words 50 --cols 2000 | copy
 

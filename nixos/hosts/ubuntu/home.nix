@@ -123,6 +123,8 @@
     # unstable.yt-dlp # Media downloader
     # unstable.deno # JS runtime required by yt-dlp
     playerctl # MPRIS control interface
+    wl-clipboard # Clipboard (bin/copy)
+    wev # xev for Wayland (bin/x_get_key)
     # moc # Music player
     # mot.packages.${pkgs.stdenv.hostPlatform.system}.default # music on terminal
     # monolith # Website archiver
@@ -149,7 +151,7 @@
     # typstyle
 
     # jetbrains.phpstorm
-    teams-for-linux
+    # teams-for-linux
     # teams
 
 

@@ -4,5 +4,13 @@ set -e
 set -u
 set -o pipefail
 
-# Alias to xclip. To extend to support Wayland
-exec xclip -selection clipboard "$@"
+# Copy stdin (or args passed to the backend) to the clipboard
+# Wayland: wl-copy (wl-clipboard), X11: xclip
+if [[ -n "${WAYLAND_DISPLAY:-}" ]] && command -v wl-copy >/dev/null 2>&1; then
+	exec wl-copy "$@"
+elif command -v xclip >/dev/null 2>&1; then
+	exec xclip -selection clipboard "$@"
+else
+	echo "copy: neither wl-copy (Wayland) nor xclip (X11) is available" >&2
+	exit 1
+fi
