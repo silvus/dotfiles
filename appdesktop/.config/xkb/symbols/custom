@@ -1,7 +1,15 @@
 # This file comes from dotfiles.
 
-# Linked to ~/.config/xkb/symbols/custom by bin/dotfiles (libxkbcommon user path, used by GNOME/Wayland)
+# ~/.config/xkb/symbols/custom is libxkbcommon user path, used by GNOME/Wayland
+#
+# GNOME (Ubuntu, Wayland): select the layout, then log out / log in
+#   gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'custom'), ('xkb', 'us')]"
+#   gsettings set org.gnome.desktop.input-sources xkb-options "['compose:rwin', 'grp_led:scroll', 'lv3:ralt_switch', 'lv5:caps_switch', 'nbsp:none', 'shift:both_capslock']"
+# If GNOME ignores ~/.config/xkb, install system-wide (overwritten by xkb-data upgrades):
+#   sudo cp ~/.dotfiles/appdesktop/.config/xkb/symbols/custom /usr/share/X11/xkb/symbols/custom
+#
 # X11 only: setxkbmap -I ~/.config/xkb custom -option "" -print | xkbcomp -I$HOME/.config/xkb - $DISPLAY
+# NixOS: handled by nixos/modules/keyboard.nix
 
 # Installation method from https://github.com/OneDeadKey/kalamine (xkb_symbols part)
 # Forked from https://github.com/qwerty-fr/qwerty-fr
