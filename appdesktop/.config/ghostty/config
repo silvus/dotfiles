@@ -1,0 +1,61 @@
+# Ghostty config (mirrors appdesktop/.config/wezterm/wezterm.lua)
+# Doc: https://ghostty.org/docs/config/reference
+# Check: ghostty +validate-config / ghostty +list-keybinds / ghostty +list-themes
+
+# Theme follows the GNOME dark/light preference
+# (tango-dark is in ./themes, "Tango Adapted" is a built-in theme)
+theme = light:Tango Adapted,dark:tango-dark
+
+# Font (first is primary, others are fallbacks)
+font-family = Hack Nerd Font
+font-family = Hack
+font-family = Noto Color Emoji
+font-family = DejaVu Sans Mono
+font-family = JetBrains Mono
+font-size = 9
+
+# Selection
+# gselection-foreground = black
+# gselection-background = silver
+
+# Window
+window-decoration = none
+window-padding-x = 1
+window-padding-y = 0
+gtk-tabs-location = bottom
+
+# Disable noise
+bell-features = no-system,no-audio
+
+# Copy on select (primary selection, like X11 terminals)
+# copy-on-select = true
+
+# Shell integration (fish), without changing the cursor shape
+# shell-integration-features = no-cursor
+
+# Keybindings: reset all, then define only what we need
+keybind = clear
+
+# Fullscreen toggle
+keybind = f11=toggle_fullscreen
+
+# Font size
+keybind = ctrl+minus=decrease_font_size:1
+keybind = ctrl+shift+plus=increase_font_size:1
+keybind = ctrl+plus=increase_font_size:1
+keybind = ctrl+zero=reset_font_size
+
+# Copy
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = copy=copy_to_clipboard
+
+# Paste
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = paste=paste_from_clipboard
+keybind = shift+insert=paste_from_selection
+
+# Command Palette
+keybind = ctrl+shift+p=toggle_command_palette
+
+# Reload config
+# keybind = ctrl+shift+comma=reload_config
