@@ -8,10 +8,5 @@ export TODO_PATH="$NOTE_PATH/01_todo.md"
 if [[ -z $TMUX ]]; then
 	(cd "$NOTE_PATH" && nvim "$TODO_PATH")
 else
-
-	if command -v mdorg >/dev/null 2>&1; then
-		tmuxdev -p "$TODO_PATH" -c "mdorg"
-  else
-		tmuxdev -p "$TODO_PATH"
-  fi
+	tmuxdev -p "$TODO_PATH"
 fi
