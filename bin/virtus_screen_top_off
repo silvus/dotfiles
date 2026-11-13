@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Turn off the top screen, keep only the ultrawide:
+# - Not an autorandr profile: it would be auto-detected since the screen stays plugged
+# - The ultrawide moves to 0x0 so the pointer can't get lost in the empty space above it
+# Revert with virtus_screen_top_on.
+
+TOP_OUTPUT="HDMI-0"
+MAIN_OUTPUT="DP-2"
+TV_OUTPUT="HDMI-1"
+
+# is_active <output>: the output is enabled (has a geometry)
+is_active() {
+  xrandr --query | awk -v o="$1" '$1 == o && /[0-9]+x[0-9]+\+[0-9]+\+[0-9]+/ { f = 1 } END { exit !f }'
+}
+
+# The TV layout already has the top screen off
+if is_active "$TV_OUTPUT"; then
+  notify-send "Screen" "TV on, the top screen is already off"
+  exit 0
+fi
+
+if ! is_active "$TOP_OUTPUT"; then
+  notify-send "Screen" "Top screen already off"
+  exit 0
+fi
+
+xrandr --output "$TOP_OUTPUT" --off --output "$MAIN_OUTPUT" --primary --mode 2560x1080 --rate 60 --pos 0x0
+
+notify-send "Screen" "Top screen off"

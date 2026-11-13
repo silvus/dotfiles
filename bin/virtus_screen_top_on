@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+# Turn the top screen back on (revert screen_top_off):
+# restore the stacked screens (autorandr profile from nixos/hosts/virtus/configuration.nix)
+
+AUTORANDR_PROFILE="stacked"
+
+TOP_OUTPUT="HDMI-0"
+TV_OUTPUT="HDMI-1"
+
+# is_active <output>: the output is enabled (has a geometry)
+is_active() {
+  xrandr --query | awk -v o="$1" '$1 == o && /[0-9]+x[0-9]+\+[0-9]+\+[0-9]+/ { f = 1 } END { exit !f }'
+}
+
+# The stacked profile turns off the TV without moving the sound back
+if is_active "$TV_OUTPUT"; then
+  notify-send -u critical "Screen" "TV on, use virtus_tv_off to get the top screen back"
+  exit 1
+fi
+
+if ! xrandr --query | awk -v o="$TOP_OUTPUT" '$1 == o && $2 == "connected" { f = 1 } END { exit !f }'; then
+  notify-send -u critical "Screen" "Top screen not connected on $TOP_OUTPUT"
+  exit 1
+fi
+
+if is_active "$TOP_OUTPUT"; then
+  notify-send "Screen" "Top screen already on"
+  exit 0
+fi
+
+autorandr --load "$AUTORANDR_PROFILE"
+
+notify-send "Screen" "Top screen on"
