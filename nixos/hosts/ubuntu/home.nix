@@ -79,6 +79,7 @@
     # p7zip
     # git
     lazygit
+    lazydocker
     yazi
     # python3
     # Security
