@@ -30,9 +30,6 @@
     "consoleblank=3600"
   ];
 
-  # Enable networking
-  networking.networkmanager.enable = true;
-
   # Set DNS
   networking.nameservers = [
     "1.1.1.1"
@@ -110,7 +107,6 @@
     isNormalUser = true;
     description = "Silvus";
     extraGroups = [
-      "networkmanager"
       "wheel"
       "input"
       "audio"
@@ -127,7 +123,7 @@
   environment.systemPackages = with pkgs; [
     # Editor
     vim
-    neovim
+    # neovim
     helix
     # nano
     # emacs
@@ -144,7 +140,7 @@
 
     # Basic utilities
     coreutils # Provides date command
-    clang # Compiler
+    # clang # Compiler
     gnumake # Makefiles
     which
     most

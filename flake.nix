@@ -12,20 +12,20 @@
 
     # Private projects: share our nixpkgs instead of each fetching its own copy
     mdorg = {
-      url = "git+ssh://silvus@arcus:/data/git/mdorg";
+      url = "git+ssh://silvus@a.silvus.fr:/data/git/mdorg";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     movies = {
-      url = "git+ssh://silvus@arcus:/data/git/movies";
+      url = "git+ssh://silvus@a.silvus.fr:/data/git/movies";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mot = {
-      url = "git+ssh://silvus@arcus:/data/git/mot";
+      url = "git+ssh://silvus@a.silvus.fr:/data/git/mot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Private per-host config
-    devops.url = "git+ssh://silvus@arcus:/data/git/devops";
+    devops.url = "git+ssh://silvus@a.silvus.fr:/data/git/devops";
 
     # Claude and others (keeps its own nixpkgs to match the numtide binary cache)
     llm-agents.url = "github:numtide/llm-agents.nix";

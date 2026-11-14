@@ -1,6 +1,10 @@
 { pkgs, lib, mot, ... }:
 
 {
+  # Enable networking
+  networking.networkmanager.enable = true;
+  users.users.silvus.extraGroups = [ "networkmanager" ];
+
   # System packages — core userland tools and desktop utilities
   environment.systemPackages = with pkgs; [
     nfs-utils

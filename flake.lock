@@ -42,11 +42,11 @@
         "rev": "1a5324ff47d2334f594eeb6fd1fadaa069228eb6",
         "revCount": 41,
         "type": "git",
-        "url": "ssh://silvus@arcus/data/git/devops"
+        "url": "ssh://silvus@a.silvus.fr/data/git/devops"
       },
       "original": {
         "type": "git",
-        "url": "ssh://silvus@arcus/data/git/devops"
+        "url": "ssh://silvus@a.silvus.fr/data/git/devops"
       }
     },
     "flake-parts": {
@@ -136,11 +136,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1794397294,
-        "narHash": "sha256-ldRd1UWymZ+B1ngo5vNM2WYUbUYE0p8yTY6XIZJoc7A=",
+        "lastModified": 1794634844,
+        "narHash": "sha256-8HlfWrlXejz26+kK2XQuNvhO6wpQ3g+JOONywNf8d1E=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "3c4f3e7ccf54c7279659536160f9c58de38073c1",
+        "rev": "ee05b5abb7c7f4af84a5ad5420f8a6e662774f2b",
         "type": "github"
       },
       "original": {
@@ -157,17 +157,17 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1794435232,
-        "narHash": "sha256-n6216rF4iURR8uRS67ZIKPj2U6GjUJvulJvKAh4AULo=",
+        "lastModified": 1794588701,
+        "narHash": "sha256-y7usHnIzE6UJgXrltDj613qFcJQRLT0zhw8omyxJ4Lw=",
         "ref": "refs/heads/main",
-        "rev": "fa294912c6a346837f7f74a1e1068cfd9aed3c7e",
-        "revCount": 68,
+        "rev": "c5a4d706f3043dfee3f3546009225a037913b189",
+        "revCount": 72,
         "type": "git",
-        "url": "ssh://silvus@arcus/data/git/mdorg"
+        "url": "ssh://silvus@a.silvus.fr/data/git/mdorg"
       },
       "original": {
         "type": "git",
-        "url": "ssh://silvus@arcus/data/git/mdorg"
+        "url": "ssh://silvus@a.silvus.fr/data/git/mdorg"
       }
     },
     "mot": {
@@ -185,11 +185,11 @@
         "rev": "db9bd406f6796c212cdac57fc15d19a35eec069f",
         "revCount": 7,
         "type": "git",
-        "url": "ssh://silvus@arcus/data/git/mot"
+        "url": "ssh://silvus@a.silvus.fr/data/git/mot"
       },
       "original": {
         "type": "git",
-        "url": "ssh://silvus@arcus/data/git/mot"
+        "url": "ssh://silvus@a.silvus.fr/data/git/mot"
       }
     },
     "movies": {
@@ -207,11 +207,11 @@
         "rev": "10448f7257ba8fa66ea08212f7cf4bafbdfaa032",
         "revCount": 58,
         "type": "git",
-        "url": "ssh://silvus@arcus/data/git/movies"
+        "url": "ssh://silvus@a.silvus.fr/data/git/movies"
       },
       "original": {
         "type": "git",
-        "url": "ssh://silvus@arcus/data/git/movies"
+        "url": "ssh://silvus@a.silvus.fr/data/git/movies"
       }
     },
     "nixpkgs": {
@@ -232,11 +232,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1794042290,
-        "narHash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U=",
+        "lastModified": 1794386569,
+        "narHash": "sha256-x9sADJvoVG0L6RejZB+/BB4YiGZFBZrfTlhF4uBq1tQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
+        "rev": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
         "type": "github"
       },
       "original": {
@@ -248,11 +248,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1794165970,
-        "narHash": "sha256-XuAV2cUwaod3Bt4XFVqiXz3v1w2ex16W6Sv4S7EWres=",
+        "lastModified": 1794552581,
+        "narHash": "sha256-qXFIqA6FCcx7XeDzw0ZNlkDT9UiCzrNDwK8RuU8RcHM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "ac588ef1c914865dad517b337ea0eb9694a4021c",
+        "rev": "f1e5c356f35d07e7b71a6b5e6c9338e0b029e0c0",
         "type": "github"
       },
       "original": {

@@ -40,9 +40,9 @@ BOOT_TIMEOUT_S = 60
 BOOT_POLL_INTERVAL_S = 2
 PATH_TIMEOUT_S = 20
 PATH_POLL_INTERVAL_S = 1
-# Only instance-local devices show up in `incus config device list`;
-# root/eth0 are profile-inherited and never appear here.
-DEVICES_KEEP = ["dotfiles"]
+# Only instance-local devices show up in `incus config device list`.
+# root is local too (its size is set at launch); eth0 comes from the profile.
+DEVICES_KEEP = ["dotfiles", "root"]
 
 
 def run(cmd, **kwargs):
@@ -276,7 +276,10 @@ def launch_and_provision():
             "-c",
             "security.secureboot=false",
             "-c",
-            "limits.memory=3GiB",
+            "limits.memory=6GiB",
+            # Own root disk size, instead of whatever the default profile gives
+            "-d",
+            "root,size=50GiB",
         ]
     )
 
@@ -286,6 +289,8 @@ def launch_and_provision():
         add_disk_device("dotfiles", DOTFILES_PATH)
         wait_for_path(DOTFILES_PATH)
 
+    # The VM can't fetch the private inputs (no SSH key, no git): give it ours.
+    sync_flake_inputs()
     log.info("Running nixos-rebuild switch...")
     exec_login(
         [
@@ -308,6 +313,38 @@ def launch_and_provision():
     exec_login_as(RUN_USER, [f"{DOTFILES_PATH}/bin/dotfiles"])
 
 
+def remove_missing_mounts():
+    """
+    Remove disk devices whose host folder no longer exists.
+
+    Incus refuses to start (or restart) the VM when a disk device's source is
+    missing, e.g. after deleting a project that was mounted earlier.
+    """
+    result = run(
+        ["incus", "query", f"/1.0/instances/{CONTAINER}"],
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    devices = json.loads(result.stdout).get("devices", {})
+    for name, dev in devices.items():
+        if name in DEVICES_KEEP or dev.get("type") != "disk":
+            continue
+        source = dev.get("source", "")
+        if source.startswith("/") and not os.path.exists(source):
+            log.info("Removing mount %s: %s no longer exists", name, source)
+            remove_device(name)
+
+
+def start_container():
+    """
+    Start the stopped claudius VM, dropping stale mounts first.
+    """
+    log.info("%s exists but is stopped — starting it.", CONTAINER)
+    remove_missing_mounts()
+    run(["incus", "start", CONTAINER])
+    wait_for_boot()
+
+
 def restart_container():
     """
     Restart the claudius VM.
@@ -320,6 +357,7 @@ def restart_container():
         )
         sys.exit(1)
     log.info("Restarting %s...", CONTAINER)
+    remove_missing_mounts()
     run(["incus", "restart", CONTAINER])
     wait_for_boot()
 
@@ -395,9 +433,7 @@ def update_container():
         )
         sys.exit(1)
     if not container_is_running():
-        log.info("%s exists but is stopped — starting it.", CONTAINER)
-        run(["incus", "start", CONTAINER])
-        wait_for_boot()
+        start_container()
     sync_flake_inputs()
     log.info("Running nixos-rebuild switch...")
     exec_login(
@@ -418,9 +454,7 @@ def ensure_container_ready():
     """
     if container_exists():
         if not container_is_running():
-            log.info("%s exists but is stopped — starting it.", CONTAINER)
-            run(["incus", "start", CONTAINER])
-            wait_for_boot()
+            start_container()
     else:
         launch_and_provision()
 

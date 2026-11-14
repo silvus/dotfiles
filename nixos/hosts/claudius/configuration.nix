@@ -1,5 +1,6 @@
 # Claudius - VM
 {
+  config,
   pkgs,
   lib,
   llm-agents,
@@ -7,9 +8,31 @@
   ...
 }:
 
+let
+  # Only the MCP client: `solidcraft-cli mcp --connect` talks to the app running on the host.
+  # Skips the desktop app (egui/winit window + wrapper), so a lot less to compile.
+  solidcraft-cli =
+    solidcraft.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
+      (old: {
+        pname = "solidcraft-cli";
+        cargoBuildFlags = [
+          "-p"
+          "solidcraft-cli"
+        ];
+        cargoInstallFlags = [
+          "-p"
+          "solidcraft-cli"
+        ];
+        postInstall = "";
+        postFixup = "";
+      });
+in
 {
   imports = [
     ../../modules/profiles/vm.nix
+    # Off by default: built from source (no binary cache), too long on a laptop.
+    # Enable it per machine in custom/local.nix (see the hostname guard there).
+    { options.claudius.solidcraft = lib.mkEnableOption "the SolidCraft MCP CLI (see .mcp.json)"; }
     # ../../modules/keyboard.nix
     # ../../modules/syncthing.nix
     # ../../modules/desktop_base.nix
@@ -37,11 +60,13 @@
   # Per-host, not shared via base.nix.
   system.stateVersion = "26.05";
 
-  environment.systemPackages = with pkgs; [
-    llm-agents.packages.${stdenv.hostPlatform.system}.claude-code
-    solidcraft.packages.${stdenv.hostPlatform.system}.default # MCP CLI, see .mcp.json
-    # llm-agents.packages.${stdenv.hostPlatform.system}.codex
-  ];
+  environment.systemPackages =
+    with pkgs;
+    [
+      llm-agents.packages.${stdenv.hostPlatform.system}.claude-code
+      # llm-agents.packages.${stdenv.hostPlatform.system}.codex
+    ]
+    ++ lib.optional config.claudius.solidcraft solidcraft-cli;
 
   # More aggressive GC
   nix.gc.dates = lib.mkForce "hourly";
@@ -53,10 +78,9 @@
     interval = "*:0/15"; # every 15 minutes
   };
 
-  swapDevices = [
-    {
-      device = "/var/lib/swapfile";
-      size = 8 * 1024; # 8GB
-    }
-  ];
+  # Compressed swap in RAM instead of a swap file on disk
+  zramSwap.enable = true;
+
+  # Don't keep build deps of live derivations (base.nix): ~10 GiB in a throwaway VM
+  nix.settings.keep-outputs = lib.mkForce false;
 }
