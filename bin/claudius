@@ -128,15 +128,22 @@ def container_is_running():
     """
     Check whether the claudius container/VM is currently running.
 
-    :return: True if Incus reports its status as RUNNING, False otherwise.
+    Queries the instance by exact name: `incus list NAME` is a filter that
+    also matches other instances starting with NAME. Anything but Stopped
+    (Running, Ready, Starting...) counts as running, since `incus start`
+    would refuse it anyway.
+
+    :return: True unless Incus reports the instance as Stopped.
     """
     result = subprocess.run(
-        ["incus", "list", CONTAINER, "--format", "csv", "-c", "s"],
+        ["incus", "query", f"/1.0/instances/{CONTAINER}/state"],
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
         text=True,
     )
-    return result.stdout.strip() == "RUNNING"
+    if result.returncode != 0:
+        return False
+    return json.loads(result.stdout).get("status") != "Stopped"
 
 
 def list_devices():
