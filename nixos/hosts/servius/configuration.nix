@@ -38,15 +38,15 @@ in
     # ../../modules/mounts/torrents.nix
     # ../../modules/mounts/doc.nix
     ../../modules/development
-    # ../../modules/development/go.nix
-    # ../../modules/development/rust.nix
-    # ../../modules/development/python.nix
-    # ../../modules/development/nix.nix
-    # ../../modules/development/lua.nix
-    # ../../modules/development/bash.nix
-    # ../../modules/development/markdown.nix
-    # ../../modules/development/php.nix
-    # ../../modules/development/containers.nix
+    ../../modules/development/go.nix
+    ../../modules/development/rust.nix
+    ../../modules/development/python.nix
+    ../../modules/development/nix.nix
+    ../../modules/development/lua.nix
+    ../../modules/development/bash.nix
+    ../../modules/development/markdown.nix
+    ../../modules/development/php.nix
+    ../../modules/development/containers.nix
     ../../modules/hyperion.nix
     ../../modules/mdorg.nix
     ../../modules/movies.nix
