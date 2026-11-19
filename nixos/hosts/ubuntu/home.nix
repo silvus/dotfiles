@@ -116,6 +116,8 @@
     # Markdown
     marksman
     markdown-oxide
+    # JS
+    jshint
 
     # --- desktop_base.nix ---
     ghostty # Terminal emulator
