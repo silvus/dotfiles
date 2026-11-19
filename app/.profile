@@ -168,6 +168,9 @@ if [[ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]]; then
 	source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 fi
 
+if [[ -d "${HOME}/.nix-profile/bin" ]]; then
+	export PATH="$HOME/.nix-profile/bin:$PATH"
+fi
 
 # Environment specific configuration
 # ------------------------------------------------------
