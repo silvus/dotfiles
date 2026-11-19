@@ -150,6 +150,11 @@
         ];
       };
 
+      # Debius container environment (installed by bin/debius)
+      packages.${system}.debius = import ./nixos/hosts/debius/env.nix {
+        inherit pkgs llm-agents;
+      };
+
       # Run this with `nix develop`
       devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
         buildInputs = with nixpkgs.legacyPackages.${system}; [

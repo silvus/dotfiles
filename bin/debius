@@ -1,0 +1,650 @@
+#!/usr/bin/env python3
+
+"""
+Minimal take on claudius: mount a project into the debius Incus *container*
+(Debian + Nix, no NixOS) and launch an AI coding agent there.
+
+The agent environment (claude...) is built on the host from the dotfiles flake
+(packages.x86_64-linux.debius) and copied into the container's Nix store, so
+its versions match claudius. When the project has a flake with a dev shell,
+the agent runs inside `nix develop`, with the project's own tool versions.
+"""
+
+import argparse
+import json
+import logging
+import os
+import pwd
+import re
+import shlex
+import subprocess
+import sys
+import time
+
+__author__ = "Silvus"
+__version__ = "2026.11"
+
+# Paths
+PATH_SCRIPT = os.path.basename(__file__)
+
+# Logs
+logging.basicConfig(
+    stream=sys.stdout, level=logging.INFO, format="[%(levelname)s] %(message)s"
+)
+log = logging.getLogger(PATH_SCRIPT)
+
+DEBUG = False
+
+# Config
+CONTAINER = "debius"
+IMAGE = "images:debian/13"
+# Same user, uid and home as the host user running this script, so shifted
+# mounts map to it and host paths (~/.dotfiles, projects) are valid inside
+_HOST_USER = pwd.getpwuid(os.getuid())
+RUN_USER = _HOST_USER.pw_name
+RUN_UID = _HOST_USER.pw_uid
+RUN_HOME = _HOST_USER.pw_dir
+DOTFILES_PATH = os.path.join(RUN_HOME, ".dotfiles")
+ENV_FLAKE = f"path:{DOTFILES_PATH}#debius"
+DEFAULT_AGENT = "claude"
+# Per-project `nix develop` profiles (GC roots), dropped after DEVSHELL_KEEP_DAYS unused
+DEVSHELL_DIR = f"{RUN_HOME}/.local/state/nix/profiles"
+DEVSHELL_KEEP_DAYS = 14
+BOOT_TIMEOUT_S = 60
+BOOT_POLL_INTERVAL_S = 2
+PATH_TIMEOUT_S = 20
+PATH_POLL_INTERVAL_S = 1
+# Host nix: flakes may not be enabled in its config (e.g. Nix on Ubuntu)
+NIX = ["nix", "--extra-experimental-features", "nix-command flakes"]
+# Only instance-local devices show up in `incus config device list`.
+# root and eth0 come from the profile.
+DEVICES_KEEP = ["dotfiles"]
+
+# Run as root inside the container on creation. Idempotent.
+PROVISION_SCRIPT = f"""
+set -eu
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+# nix-setup-systemd: Debian's packaged multi-user Nix (daemon + nixbld users).
+# Only used as the daemon: the nix client comes from the debius env (same as the hosts).
+# python3 + git: dotfiles installer
+apt-get install -y --no-install-recommends \\
+    nix-setup-systemd ca-certificates git python3 locales-all
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+
+cat > /etc/nix/nix.conf <<'CONF'
+build-users-group = nixbld
+experimental-features = nix-command flakes
+auto-optimise-store = true
+keep-outputs = false
+keep-derivations = false
+max-jobs = auto
+CONF
+systemctl restart nix-daemon.service
+
+# Same name, uid and home as the host user
+mkdir -p "$(dirname {RUN_HOME})"
+if ! id {RUN_USER} >/dev/null 2>&1; then
+    existing=$(getent passwd {RUN_UID} | cut -d: -f1 || true)
+    if [ -n "$existing" ]; then
+        usermod -l {RUN_USER} -d {RUN_HOME} -m "$existing"
+    else
+        useradd -m -u {RUN_UID} -d {RUN_HOME} -s /bin/bash {RUN_USER}
+    fi
+fi
+# Debian restricts the daemon socket to this group
+if getent group nix-users >/dev/null; then
+    usermod -aG nix-users {RUN_USER}
+fi
+
+cat > /etc/profile.d/debius.sh <<'PROFILE'
+export PATH="$HOME/.nix-profile/bin:$PATH"
+export LANG=C.UTF-8
+PROFILE
+
+cat > /usr/local/sbin/debius-gc <<'GC'
+#!/bin/sh
+# Drop dev shells of projects unused for a while, old generations, then unrooted paths
+find {DEVSHELL_DIR} -maxdepth 1 -name 'devshell-*' -mtime +{DEVSHELL_KEEP_DAYS} -delete 2>/dev/null
+for p in {DEVSHELL_DIR}/devshell-*; do
+    case "$p" in *-link) continue ;; esac
+    [ -L "$p" ] && nix-env -p "$p" --delete-generations old >/dev/null
+done
+nix-store --gc
+GC
+chmod 755 /usr/local/sbin/debius-gc
+
+"""
+
+
+def run(cmd, **kwargs):
+    """
+    Run a command, logging it first. Raises CalledProcessError on failure
+    unless the caller passes check=False.
+
+    :param cmd: Command and arguments as a list of strings.
+    :param kwargs: Extra keyword arguments forwarded to subprocess.run.
+    :return: The completed subprocess.CompletedProcess instance.
+    """
+    log.debug("+ %s", " ".join(cmd))
+    kwargs.setdefault("check", True)
+    return subprocess.run(cmd, **kwargs)
+
+
+def exec_root(shell_cmd, tty=True, **kwargs):
+    """
+    Run a shell command as root inside the container.
+
+    :param shell_cmd: Command string, run by `bash -c`.
+    :param tty: False to pass -T (no pty), for binary streams on stdin/stdout.
+    :param kwargs: Extra keyword arguments forwarded to run().
+    :return: The completed process.
+    """
+    cmd = ["incus", "exec"] + ([] if tty else ["-T"])
+    return run(cmd + [CONTAINER, "--", "bash", "-c", shell_cmd], **kwargs)
+
+
+def exec_user(shell_cmd, cwd=None, **kwargs):
+    """
+    Run a shell command inside the container as RUN_USER, through a login
+    shell (su -), so HOME/USER/PATH (incl. ~/.nix-profile/bin) are set up.
+
+    :param shell_cmd: Command string, run by the user's login shell.
+    :param cwd: Directory to cd into first.
+    :param kwargs: Extra keyword arguments forwarded to run().
+    :return: The completed process.
+    """
+    if cwd:
+        shell_cmd = f"cd {shlex.quote(cwd)} && {shell_cmd}"
+    cmd = ["incus", "exec", CONTAINER]
+    if cwd:
+        cmd += ["--cwd", cwd]
+    return run(cmd + ["--", "su", "-", RUN_USER, "-c", shell_cmd], **kwargs)
+
+
+def instance_state():
+    """
+    :return: The instance status (Running, Stopped...), or None if it doesn't exist.
+    """
+    result = subprocess.run(
+        ["incus", "query", f"/1.0/instances/{CONTAINER}/state"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    return json.loads(result.stdout).get("status")
+
+
+def instance_devices():
+    """
+    :return: Instance-local devices as {name: config} (not profile ones).
+    """
+    result = run(
+        ["incus", "query", f"/1.0/instances/{CONTAINER}"],
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    return json.loads(result.stdout).get("devices", {})
+
+
+def require_container():
+    if instance_state() is None:
+        log.error("%s does not exist yet. Run debius normally to create it.", CONTAINER)
+        sys.exit(1)
+
+
+def remove_device(device_name):
+    run(["incus", "config", "device", "remove", CONTAINER, device_name])
+
+
+def cleanup_devices():
+    """
+    Remove all instance-local devices except those in DEVICES_KEEP.
+    """
+    to_remove = [d for d in instance_devices() if d not in DEVICES_KEEP]
+    if not to_remove:
+        return
+    log.info("Removing devices: %s", ", ".join(to_remove))
+    for dev in to_remove:
+        remove_device(dev)
+
+
+def remove_missing_mounts():
+    """
+    Remove disk devices whose host folder no longer exists: Incus refuses
+    to start the container otherwise.
+    """
+    for name, dev in instance_devices().items():
+        if name in DEVICES_KEEP or dev.get("type") != "disk":
+            continue
+        source = dev.get("source", "")
+        if source.startswith("/") and not os.path.exists(source):
+            log.info("Removing mount %s: %s no longer exists", name, source)
+            remove_device(name)
+
+
+def wait_until(check_cmd, what, timeout_s, poll_interval_s):
+    """
+    Poll a root shell command inside the container until it succeeds.
+
+    :param check_cmd: Command string, run by `bash -c`.
+    :param what: Description for logs.
+    """
+    log.info("Waiting for %s...", what)
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        result = exec_root(
+            check_cmd,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        if result.returncode == 0:
+            return
+        time.sleep(poll_interval_s)
+    log.error("Timed out waiting for %s", what)
+    sys.exit(1)
+
+
+def wait_for_boot():
+    wait_until("true", f"{CONTAINER} to boot", BOOT_TIMEOUT_S, BOOT_POLL_INTERVAL_S)
+
+
+def add_disk_device(device_name, path):
+    """
+    Add a shifted disk device mounting a host path at the same path.
+    """
+    log.info("Mounting %s into %s...", path, CONTAINER)
+    run(
+        [
+            "incus",
+            "config",
+            "device",
+            "add",
+            CONTAINER,
+            device_name,
+            "disk",
+            f"source={path}",
+            f"path={path}",
+            "shift=true",
+        ]
+    )
+    wait_until(
+        f"test -e {shlex.quote(path)}",
+        f"{path} inside {CONTAINER}",
+        PATH_TIMEOUT_S,
+        PATH_POLL_INTERVAL_S,
+    )
+
+
+def import_store_paths(paths):
+    """
+    Copy store paths from the host into the container's Nix store.
+
+    `nix-store --import` as root: no signatures needed. Already present paths
+    are skipped by Nix.
+
+    :param paths: Store paths, each with its closure if it's to be used.
+    """
+    with subprocess.Popen(
+        ["nix-store", "--export", *paths], stdout=subprocess.PIPE
+    ) as export:
+        # -T: no pty, so the binary export stream reaches nix-store untouched.
+        exec_root(
+            "nix-store --import",
+            tty=False,
+            stdin=export.stdout,
+            stdout=subprocess.DEVNULL,
+        )
+    if export.returncode != 0:
+        raise subprocess.CalledProcessError(export.returncode, export.args)
+
+
+def flake_archive_paths(node):
+    """
+    :param node: A node of `nix flake archive --json`: {"path", "inputs"}.
+    :return: Store paths of the node and all its nested inputs.
+    """
+    paths = [node["path"]]
+    for child in node.get("inputs", {}).values():
+        paths.extend(flake_archive_paths(child))
+    return paths
+
+
+def sync_project_inputs(path):
+    """
+    Copy a project flake's inputs into the container, so `nix develop` there
+    doesn't need to fetch them (the container has no SSH key for private
+    inputs). Not fatal: public inputs can still be fetched by the container.
+    """
+    archive = subprocess.run(
+        [*NIX, "flake", "archive", "--json", path],
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    if archive.returncode != 0:
+        log.warning("Could not archive the flake inputs of %s on the host", path)
+        return
+    paths = flake_archive_paths(json.loads(archive.stdout))
+    # The project itself is mounted, no need to copy it
+    paths = paths[1:]
+    if paths:
+        log.info("Copying flake inputs into %s...", CONTAINER)
+        import_store_paths(paths)
+
+
+def sync_env():
+    """
+    Build the debius environment on the host, copy its closure into the
+    container and make it RUN_USER's Nix profile.
+
+    The container never evaluates the dotfiles flake, so it doesn't need its
+    (private) inputs nor any nixpkgs source.
+    """
+    log.info("Building the debius environment...")
+    out = run(
+        [*NIX, "build", "--no-link", "--print-out-paths", ENV_FLAKE],
+        stdout=subprocess.PIPE,
+        text=True,
+    ).stdout.strip()
+    closure = run(
+        ["nix-store", "--query", "--requisites", out],
+        stdout=subprocess.PIPE,
+        text=True,
+    ).stdout.split()
+    log.info("Copying it into %s...", CONTAINER)
+    import_store_paths(closure)
+    exec_user(f"nix-env --set {shlex.quote(out)} && nix-env --delete-generations old")
+
+
+def launch_and_provision():
+    """
+    Create the debius container from IMAGE and provision it end to end.
+    """
+    log.info("Launching %s from %s...", CONTAINER, IMAGE)
+    run(
+        [
+            "incus",
+            "launch",
+            IMAGE,
+            CONTAINER,
+            "-c",
+            "boot.autostart=false",
+            "-c",
+            "limits.memory=6GiB",
+            # Nix sandbox: needs to mount /proc in its own namespaces
+            "-c",
+            "security.nesting=true",
+        ]
+    )
+    wait_for_boot()
+    wait_until(
+        "getent hosts deb.debian.org",
+        f"{CONTAINER} network",
+        BOOT_TIMEOUT_S,
+        BOOT_POLL_INTERVAL_S,
+    )
+
+    log.info("Provisioning...")
+    exec_root(PROVISION_SCRIPT)
+
+    if "dotfiles" not in instance_devices():
+        add_disk_device("dotfiles", DOTFILES_PATH)
+
+    sync_env()
+
+    log.info("Install dotfiles")
+    exec_user(shlex.quote(f"{DOTFILES_PATH}/bin/dotfiles"))
+
+
+def start_container():
+    log.info("%s exists but is stopped — starting it.", CONTAINER)
+    remove_missing_mounts()
+    run(["incus", "start", CONTAINER])
+    wait_for_boot()
+
+
+def ensure_container_ready():
+    """
+    Make sure debius exists and is running, creating it if needed.
+    """
+    state = instance_state()
+    if state is None:
+        launch_and_provision()
+    elif state == "Stopped":
+        start_container()
+
+
+def restart_container():
+    require_container()
+    log.info("Restarting %s...", CONTAINER)
+    remove_missing_mounts()
+    run(["incus", "restart", CONTAINER])
+    wait_for_boot()
+
+
+def update_container():
+    """
+    Rebuild the environment from the dotfiles flake and upgrade Debian.
+    """
+    require_container()
+    if instance_state() == "Stopped":
+        start_container()
+    sync_env()
+    log.info("Upgrading Debian packages...")
+    exec_root(
+        "export DEBIAN_FRONTEND=noninteractive && apt-get update && "
+        "apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*"
+    )
+    run_gc()
+
+
+def run_gc():
+    """
+    Clean the container's Nix store (old env generations, copied flake
+    inputs, dev shells unused for DEVSHELL_KEEP_DAYS) and show disk usage.
+    """
+    log.info("Cleaning the Nix store...")
+    exec_root("/usr/local/sbin/debius-gc")
+    exec_root("df -h /")
+
+
+def gc_container():
+    """
+    Run the Nix store cleanup now (also run by update).
+    """
+    require_container()
+    if instance_state() == "Stopped":
+        start_container()
+    run_gc()
+
+
+def mount_current_project():
+    """
+    Ensure the current working directory is mounted into the container at
+    the same path, under a device name derived from its basename.
+
+    :return: (path, device_name)
+    """
+    path = os.getcwd()
+    device_name = re.sub(r"[^A-Za-z0-9_.-]+", "-", os.path.basename(path)).strip(".-")
+
+    if not device_name:
+        log.error("Could not derive a device name from the current directory: %s", path)
+        sys.exit(1)
+
+    if device_name not in instance_devices():
+        add_disk_device(device_name, path)
+
+    return path, device_name
+
+
+def has_dev_shell(path):
+    """
+    Cheap check (no evaluation) for a flake defining a dev shell.
+    """
+    try:
+        with open(os.path.join(path, "flake.nix"), encoding="utf-8") as f:
+            return "devShell" in f.read()
+    except OSError:
+        return False
+
+
+def launch_agent(agent, path, device_name, agent_args=(), develop=True):
+    """
+    Launch the agent CLI inside the container as RUN_USER, in path.
+
+    With a flake dev shell, run it through `nix develop`, saved as a profile
+    (GC root) so the shell's tools survive the GC (debius update or gc) between sessions.
+
+    :param agent: Agent binary (e.g. "claude", "codex", or "bash").
+    :param path: Project directory (same path in the container).
+    :param device_name: Project device name, used to name its dev shell profile.
+    :param agent_args: Extra CLI arguments forwarded to the agent as-is.
+    :param develop: False to never use `nix develop`.
+    """
+    agent_cmd = " ".join([shlex.quote(agent), *(shlex.quote(a) for a in agent_args)])
+
+    if develop and has_dev_shell(path):
+        sync_project_inputs(path)
+        profile = shlex.quote(f"{DEVSHELL_DIR}/devshell-{device_name}")
+        # touch (the profile and its current generation): keeps the GC from
+        # dropping the shell of a project in use
+        agent_cmd = (
+            f"mkdir -p {DEVSHELL_DIR} && "
+            f'touch -h {profile} "{DEVSHELL_DIR}/$(readlink {profile})" 2>/dev/null; '
+            f"exec nix develop --profile {profile} --command {agent_cmd}"
+        )
+        log.info("Using the project dev shell")
+
+    exec_user(agent_cmd, cwd=path)
+
+
+COMMANDS = {
+    "restart": restart_container,
+    "update": update_container,
+    "upgrade": update_container,
+    "gc": gc_container,
+}
+
+
+def init_cli_arg():
+    """
+    Parse command-line arguments. Unrecognized ones are forwarded to the agent.
+
+    :return: The parsed argparse.Namespace.
+    """
+    parser = argparse.ArgumentParser(
+        description="Mount the current directory into the debius container and run "
+        "an AI coding agent there, inside the project's `nix develop` shell when it "
+        "has one. Creates the Incus container if it doesn't exist yet. "
+        "Any unrecognized arguments are forwarded to the agent. "
+        "Commands: 'restart', 'update' (rebuild the environment, upgrade Debian, "
+        "clean the Nix store), 'gc' (only clean the Nix store).",
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s {0}".format(__version__),
+        help="show program's version number and exit",
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="Debug flag", default=DEBUG
+    )
+    parser.add_argument(
+        "-c",
+        "--cleanup",
+        action="store_true",
+        help=f"Remove existing project mounts (except {DEVICES_KEEP}) before mounting "
+        "the current directory",
+        default=False,
+    )
+    parser.add_argument(
+        "-a",
+        "--agent",
+        help=f"Agent CLI to launch inside the container (default: {DEFAULT_AGENT})",
+        default=DEFAULT_AGENT,
+    )
+    parser.add_argument(
+        "-n",
+        "--no-develop",
+        action="store_true",
+        help="Don't run the agent inside the project's `nix develop` shell",
+        default=False,
+    )
+    parser.add_argument(
+        "command",
+        nargs="?",
+        default=None,
+        help=f"Command to run instead of launching an agent: {', '.join(COMMANDS)}",
+    )
+    args, agent_args = parser.parse_known_args()
+
+    if args.command is not None and args.command not in COMMANDS:
+        # Not a real command (e.g. a positional prompt meant for the agent)
+        agent_args = [args.command] + agent_args
+        args.command = None
+
+    args.agent_args = agent_args
+    return args
+
+
+def main():
+    global DEBUG
+
+    args = init_cli_arg()
+    DEBUG = args.debug
+
+    log.setLevel(logging.DEBUG if DEBUG else logging.INFO)
+
+    if RUN_UID == 0:
+        log.error("Run %s as your user, not root", PATH_SCRIPT)
+        return 1
+    if not os.path.isdir(DOTFILES_PATH):
+        log.error("%s not found", DOTFILES_PATH)
+        return 1
+
+    try:
+        if args.command is not None:
+            COMMANDS[args.command]()
+            return 0
+
+        ensure_container_ready()
+
+        if args.cleanup:
+            cleanup_devices()
+
+        path, device_name = mount_current_project()
+        launch_agent(
+            args.agent,
+            path,
+            device_name,
+            agent_args=args.agent_args,
+            develop=not args.no_develop,
+        )
+
+    except subprocess.CalledProcessError as exc:
+        log.error(exc)
+        if DEBUG:
+            raise
+        return 1
+
+    except Exception as exc:
+        log.error(exc)
+        if DEBUG:
+            raise
+        return 1
+
+    except KeyboardInterrupt:
+        sys.exit(1)
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
