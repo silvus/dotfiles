@@ -8,6 +8,8 @@ The agent environment (claude...) is built on the host from the dotfiles flake
 (packages.x86_64-linux.debius) and copied into the container's Nix store, so
 its versions match claudius. When the project has a flake with a dev shell,
 the agent runs inside `nix develop`, with the project's own tool versions.
+If the host has the Cloudflare Gateway CA installed, debius imports it into
+Debian's trust store without changing the container's network.
 """
 
 import argparse
@@ -56,6 +58,7 @@ PATH_TIMEOUT_S = 20
 PATH_POLL_INTERVAL_S = 1
 # Host nix: flakes may not be enabled in its config (e.g. Nix on Ubuntu)
 NIX = ["nix", "--extra-experimental-features", "nix-command flakes"]
+GATEWAY_CA = "/usr/local/share/ca-certificates/Cloudflare_CA_2029.crt"
 # Only instance-local devices show up in `incus config device list`.
 # root and eth0 come from the profile.
 DEVICES_KEEP = ["dotfiles"]
@@ -361,6 +364,47 @@ def sync_env():
     exec_user(f"nix-env --set {shlex.quote(out)} && nix-env --delete-generations old")
 
 
+def sync_gateway_ca():
+    """Make Debian and its Nix daemon trust the host's Gateway CA, if present."""
+    try:
+        cert = open(GATEWAY_CA, "rb")
+    except FileNotFoundError:
+        return
+
+    with cert:
+        exec_root(
+            f"""
+set -eu
+cert={shlex.quote(GATEWAY_CA)}
+bundle=/etc/ssl/certs/ca-certificates.crt
+conf=/etc/nix/nix.conf
+setting="ssl-cert-file = $bundle"
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+cat > "$tmp"
+
+changed=false
+if ! cmp -s "$tmp" "$cert" || ! openssl verify -CAfile "$bundle" "$tmp" >/dev/null 2>&1; then
+    install -m 0644 "$tmp" "$cert"
+    update-ca-certificates
+    changed=true
+fi
+
+if ! grep -Fxq "$setting" "$conf"; then
+    sed -i '/^[[:space:]]*ssl-cert-file[[:space:]]*=/d' "$conf"
+    printf '\\n%s\\n' "$setting" >> "$conf"
+    changed=true
+fi
+
+if "$changed"; then
+    systemctl restart nix-daemon.service
+fi
+""",
+            tty=False,
+            stdin=cert,
+        )
+
+
 def launch_and_provision():
     """
     Create the debius container from IMAGE and provision it end to end.
@@ -391,6 +435,7 @@ def launch_and_provision():
 
     log.info("Provisioning...")
     exec_root(PROVISION_SCRIPT)
+    sync_gateway_ca()
 
     if "dotfiles" not in instance_devices():
         add_disk_device("dotfiles", DOTFILES_PATH)
@@ -415,8 +460,10 @@ def ensure_container_ready():
     state = instance_state()
     if state is None:
         launch_and_provision()
-    elif state == "Stopped":
-        start_container()
+    else:
+        if state == "Stopped":
+            start_container()
+        sync_gateway_ca()
 
 
 def restart_container():
@@ -434,6 +481,7 @@ def update_container():
     require_container()
     if instance_state() == "Stopped":
         start_container()
+    sync_gateway_ca()
     sync_env()
     log.info("Upgrading Debian packages...")
     exec_root(
