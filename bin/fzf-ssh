@@ -12,12 +12,14 @@ function print_usage() {
 }
 
 function resolve_fzf() {
-	if [ -x "$HOME/.fzf/bin/fzf" ]; then
+	if command -v fzf >/dev/null 2>&1; then
+		command -v fzf
+	elif [ -x "$HOME/.fzf/bin/fzf" ]; then
 		echo "$HOME/.fzf/bin/fzf"
 	elif [ -x "/run/current-system/sw/bin/fzf" ]; then
 		echo "/run/current-system/sw/bin/fzf"
 	else
-		echo "fzf not found in ~/.fzf/bin or /run/current-system/sw/bin" 1>&2
+		echo "fzf not found in PATH, ~/.fzf/bin or /run/current-system/sw/bin" 1>&2
 		exit 1
 	fi
 }
