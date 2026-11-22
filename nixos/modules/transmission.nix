@@ -90,7 +90,10 @@ in
   # Web UI from the LAN: the socket is on the host, each connection is handed to a proxy inside the namespace (no veth, no route out of the namespace)
   systemd.sockets.transmission-rpc-proxy = {
     description = "Transmission RPC from the LAN";
-    wantedBy = [ "sockets.target" ];
+    # Listens only while Transmission runs: a request never revives the tunnel,
+    # it gets "connection refused" (and no failed-start loop on the socket)
+    wantedBy = [ "transmission.service" ];
+    partOf = [ "transmission.service" ];
     listenStreams = [ "0.0.0.0:${toString rpcPort}" ];
     # The RPC has no password and Transmission sees every client as 127.0.0.1: only the host itself here, hosts add their LAN to IPAddressAllow.
     socketConfig = {
@@ -99,7 +102,8 @@ in
     };
   };
   systemd.services.transmission-rpc-proxy = lib.mkMerge [
-    confine
+    # Only the namespace settings: confine's Requires/BindsTo would start the tunnel
+    { inherit (confine) serviceConfig; }
     {
       description = "Transmission RPC proxy into the VPN namespace";
       # Requisite, not Requires: a web UI request never starts a stopped Transmission
@@ -124,6 +128,9 @@ in
     confine
     {
       description = "ProtonVPN NAT-PMP Port Forward";
+      # Sets Transmission's peer port: start once its RPC answers
+      wants = [ "transmission.service" ];
+      after = [ "transmission.service" ];
 
       # Systemd services only get a minimal PATH (coreutils, grep, sed, ...)
       path = with pkgs; [ gawk ];
