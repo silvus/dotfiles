@@ -8,12 +8,10 @@
 }:
 
 let
-  # Physical NIC
-  nic = "enp2s0";
   lanSubnet = "192.168.1.0/24";
   # External SSH port (router forwards TCP 2222, 22 stays for the LAN)
   sshPort = 2222;
-  # DDNS user, its traffic bypasses the VPN table
+  # DDNS user
   ddnsUid = 400;
 in
 {
@@ -51,7 +49,6 @@ in
     ../../modules/mdorg.nix
     ../../modules/movies.nix
     ../../modules/transmission.nix
-    ../../modules/wireguard_kill_switch.nix
 
   ];
 
@@ -146,21 +143,8 @@ in
     '';
   };
 
-  # motionEye: web UI for the Motion daemon
-  services.motioneye = {
-    enable = true;
-    settings = {
-      listen = "0.0.0.0";
-      port = "8765";
-    };
-  };
-
   networking.firewall.allowedTCPPorts = [
     2049 # NFS
-  ];
-  # LAN NIC only: not on the VPN interface
-  networking.firewall.interfaces.${nic}.allowedTCPPorts = [
-    8765 # motionEye
   ];
 
   # SSH from outside, openFirewall (default) opens both ports
@@ -177,53 +161,20 @@ in
     '';
   };
 
-  # sshd's replies and DDNS bypass the VPN table
-  systemd.services.vpn-bypass =
-    let
-      wg = "wg-quick-${config.killswitch.interface}.service";
-      ip = "${pkgs.iproute2}/bin/ip";
-      sshRule = "ipproto tcp sport ${toString sshPort} lookup main priority 100";
-      ddnsRule = "uidrange ${toString ddnsUid}-${toString ddnsUid} lookup main priority 100";
-    in
-    {
-      description = "Route sshd replies and DDNS outside the VPN";
-      # After wg-quick's rules (unprioritized, they'd go before ours), re-added when it restarts
-      after = [ wg ];
-      partOf = [ wg ];
-      wantedBy = [
-        wg
-        "multi-user.target"
-      ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStartPre = [
-          "-${ip} rule del ${sshRule}"
-          "-${ip} rule del ${ddnsRule}"
-        ];
-        ExecStart = [
-          "${ip} rule add ${sshRule}"
-          "${ip} rule add ${ddnsRule}"
-        ];
-        ExecStop = [
-          "-${ip} rule del ${sshRule}"
-          "-${ip} rule del ${ddnsRule}"
-        ];
-      };
-    };
+  # Transmission's VPN (namespace)
+  vpnNetns = {
+    address = "10.2.0.2/32"; # [Interface] Address
+    publicKey = "yDABIIjKHTfyA+J+cuHetkq2G6u+9yiRh3OsEEPS01M="; # [Peer] PublicKey
+    endpoint = "103.69.224.6:51820"; # [Peer] Endpoint
+  };
+  # Transmission web UI: LAN only
+  systemd.sockets.transmission-rpc-proxy.socketConfig.IPAddressAllow = [ lanSubnet ];
 
-  # Strict drops internet clients (their route back is the VPN)
-  networking.firewall.checkReversePath = "loose";
-
-  # Kill switch holes
-  killswitch.extraCommands = ''
-    # SSH replies (to connections in on sshPort, not any process using that source port)
-    iptables -w -A killswitch-out -o ${nic} -p tcp -m conntrack --ctdir REPLY --ctorigdstport ${toString sshPort} -j ACCEPT
-
-    # DDNS: real IP only, never the VPN's
-    iptables -w -A killswitch-out -o ${config.killswitch.interface} -m owner --uid-owner ${toString ddnsUid} -j REJECT
-    iptables -w -A killswitch-out -o ${nic} -p tcp --dport 443 -m owner --uid-owner ${toString ddnsUid} -j ACCEPT
-  '';
+  # No IPv6
+  networking.enableIPv6 = false;
+  boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = 1;
+  boot.kernel.sysctl."net.ipv6.conf.default.disable_ipv6" = 1;
+  boot.kernel.sysctl."net.ipv6.conf.lo.disable_ipv6" = 1;
 
   # Autologin
   services.displayManager.autoLogin = {
