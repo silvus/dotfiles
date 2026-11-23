@@ -4,6 +4,7 @@
 theme = "carbonfox"
 
 [editor]
+true-color = true
 default-line-ending = "lf"
 trim-final-newlines = true
 trim-trailing-whitespace = true
