@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import fcntl
 import importlib.machinery
 import importlib.util
 import logging
@@ -53,6 +54,12 @@ DEV_SCAN_PATHS = [DEV_PATH, PROD_PATH, PROJECTS_PATH]
 SPECIAL_PATHS = [TODO_PATH, str(DOTFILES_HOME), NOTES_PATH, WORK_PATH]
 EDIT_PATHS = [NOTES_PATH, WORK_PATH]
 MAIN_SESSION = "main"
+# Serializes concurrent bootstraps of MAIN_SESSION (e.g. several panes
+# connecting at once): only the first creates it, the others wait and attach
+BOOTSTRAP_LOCK_PATH = (
+    Path(os.environ.get("XDG_RUNTIME_DIR") or "/tmp")
+    / f"tmuxdev-{os.getuid()}.lock"
+)
 
 
 def is_tmux_running() -> bool:
@@ -172,11 +179,19 @@ def build_target(session: str, window: str | None = None) -> str:
     return f"{session}:{window}" if window else f"{session}:"
 
 
-def bootstrap_main_session() -> None:
+def bootstrap_main_session(window: int | None = None) -> None:
     """Ensure the persistent "main" session exists and attach to it. Default
-    behavior with no flags -- what window-manager configs invoke bare."""
+    behavior with no flags -- what window-manager configs invoke bare.
+    window: index to show in the attached client (default: 1 for a fresh
+    session, whatever is current otherwise)."""
     _ = subprocess.run(["tmux", "start-server"], check=False)
     _ = os.environ.pop("FISH_IS_STARTED", None)
+
+    # Held until exec: the fd is close-on-exec, so handing over to tmux
+    # releases it, once MAIN_SESSION exists and is initialized. A concurrent
+    # run blocks here, then finds the session and attaches to it.
+    lock = open(BOOTSTRAP_LOCK_PATH, "w")
+    fcntl.flock(lock, fcntl.LOCK_EX)
 
     log.debug(f"bootstrapping {MAIN_SESSION!r}")
     session_exists = (
@@ -206,14 +221,23 @@ def bootstrap_main_session() -> None:
         )
         run_custom_init(MAIN_SESSION, home, build_target(MAIN_SESSION))
         _ = subprocess.run(
-            ["tmux", "select-window", "-t", build_target(MAIN_SESSION, "1")],
+            [
+                "tmux",
+                "select-window",
+                "-t",
+                build_target(MAIN_SESSION, str(window if window is not None else 1)),
+            ],
             check=False,
         )
         os.execvp("tmux", ["tmux", "attach", "-t", MAIN_SESSION])
     else:
         # Attach as a grouped client instead of a plain attach, so we don't
         # disturb the window/pane other clients already have selected.
-        os.execvp("tmux", ["tmux", "new-session", "-t", MAIN_SESSION])
+        cmd = ["tmux", "new-session", "-t", MAIN_SESSION]
+        if window is not None:
+            # ":N" targets the new grouped session (the current one by then)
+            cmd += [";", "select-window", "-t", f":{window}"]
+        os.execvp("tmux", cmd)
 
 
 def run_fzf(paths: list[str]) -> str | None:
@@ -241,6 +265,7 @@ class Args(argparse.Namespace):
     project: str | None = None
     name: str | None = None
     command: str | None = None
+    window: int | None = None
 
     def picker_mode(self) -> bool:
         """Any project-selection flag implies picker mode; only the bare,
@@ -287,6 +312,13 @@ def init_cli_arg() -> Args:
         "-c",
         "--command",
         help="Override the open command (ignore -p for the command execution)",
+    )
+    _ = parser.add_argument(
+        "-w",
+        "--window",
+        type=int,
+        help=f"Window index to show when attaching to the {MAIN_SESSION!r} session "
+        + "(default mode only)",
     )
 
     return parser.parse_args(namespace=Args())
@@ -418,7 +450,7 @@ def main() -> None:
         if args.picker_mode():
             open_project(args)
         else:
-            bootstrap_main_session()
+            bootstrap_main_session(args.window)
 
         log.debug("end")
 
